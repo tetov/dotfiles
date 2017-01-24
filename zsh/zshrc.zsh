@@ -3,6 +3,9 @@ setopt HIST_IGNORE_DUPS
 ZSHA_BASE=$HOME/tetov-dotfiles/zsh
 source $ZSHA_BASE/antigen/antigen.zsh
 
+git config --global user.email "sonya.mamurin@gmail.com"
+git config --global user.name "Sonya Mamurin"
+
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
 
