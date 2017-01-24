@@ -25,11 +25,9 @@ if [ "$OSTYPE"="darwin16.3.0" ]; then
 	export PATH="$HOME/.bin:$PATH" 
 	
 elif [ "$OSTYPE"="linux-gnu" ]; then
-		source $ZSHA_BASE/rc-linux.zsh
-
+	source $ZSHA_BASE/rc-linux.zsh
 else
 	echo 'OSTYPE is wrong'
-
 fi
 
 if [ `whoami` = "gudrun" ]; then
