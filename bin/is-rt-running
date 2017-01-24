@@ -1,0 +1,2 @@
+pgrep rtorrent &>/dev/null && exit 0
+echo |mail -s"rTorrent is not running." farligm@localhost

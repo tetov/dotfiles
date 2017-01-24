@@ -1,0 +1,4 @@
+#!/bin/bash
+#echo "`date -u` Start script." >> $HOME/fballdebug.log
+/usr/bin/filebot -script fn:amc "$HOME/bay/vind/rtorrent.data/" --output "$HOME/bay/vind/plex.bibl" --log-file /home/farligm/.filebot/logs/rt_manual_amc.log --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y subtitles=en,sv skipExtract=y excludeList=amc.excludes &
+#echo "`date -u` End script." >> $HOME/fballdebug.log

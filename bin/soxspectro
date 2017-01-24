@@ -1,0 +1,50 @@
+#!/bin/bash
+
+DIR="${1}"
+
+#Fix for spaces in file names
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+#Checking for sox, add check for optipng as well?
+if [[ "$(which sox >> /dev/null ; echo $?)" -ne "0" ]]; then
+    echo "Unable to find sox in your PATH."
+    exit 1
+fi
+
+if [[ "$(which optipng >> /dev/null ; echo $?)" -eq "0" ]]; then
+	OPTI=true
+fi	
+
+
+#Only process flac, wav and mp3
+for file in $(find $DIR -maxdepth 1 -iname \*flac -o -iname \*wav -o -iname \*mp3);do
+	
+	outfile_full="${file%.*}_full.png"
+	outfile_partial="${file%.*}_partial.png"
+	
+    if [ ! -e "$outfile_full" ]; then
+		echo "Making full spectral for $file."
+    	sox "$file" -n remix 1 spectrogram -x 3000 -y 513 -z160 -w Kaiser -t "file" -o "$outfile_full" 
+		if [ $OPTI ]; then
+			optipng -quiet "$outfile_full"
+			echo "Opti $outfile_full"
+		fi
+	else
+        echo "$outfile_full already exists, not overwriting."		
+    fi
+	
+	if [ ! -e "$outfile_partial" ]; then
+		echo "Making partial spectral for ${file}."
+		sox "$file" -n remix 1 spectrogram -X 500 -y 1025 -z 160 -w Kaiser -S 1:00 -d 0:04 -t "$file" -o"$outfile_partial"
+		if [ $OPTI ]; then
+			optipng -quiet "$outfile_partial"
+			echo "Opti $outfile_partial"
+		fi
+    else
+        echo "$outfile_partial already exists, not overwriting."		
+    fi
+	
+done
+
+IFS=$SAVEIFS
