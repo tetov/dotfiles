@@ -36,7 +36,9 @@ fi
 antigen bundle zsh-users/zsh-syntax-highlighting
 
 # Load the theme.
-antigen theme avit
+antigen theme gentoo
+
+PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_$(prompt_char)%{$reset_color%} '
 
 # Tell antigen that you're done.
 antigen apply
