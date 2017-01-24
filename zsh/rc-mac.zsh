@@ -29,6 +29,8 @@ alias zshconfig="mate ~/.zshrc"
 
 alias lg='login gudrun'
 
+alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask update && brew cask cleanup && brew cask doctor'
+
 #The first is f, which searches the current directory subtree for files with names containing a string (ignoring case). f png would find all PNG files in the current subtree, as well as “PNGisMyFavorite.txt” and so forth.
 
 #The second is r, which recursively greps the current directory subtree for files matching a pattern. r HTTP would grep for files containing that exact string, while r '"http[^"]*"' -i would search for double-quoted strings starting with “http”, ignoring case.
