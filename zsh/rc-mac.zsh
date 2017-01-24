@@ -29,7 +29,7 @@ alias zshconfig="mate ~/.zshrc"
 
 alias lg='login gudrun'
 
-alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask update && brew cask cleanup && brew cask doctor'
+alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
 
 #The first is f, which searches the current directory subtree for files with names containing a string (ignoring case). f png would find all PNG files in the current subtree, as well as “PNGisMyFavorite.txt” and so forth.
 
