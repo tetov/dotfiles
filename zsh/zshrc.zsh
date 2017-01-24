@@ -21,7 +21,7 @@ if [ "$OSTYPE"="darwin16.3.0" ]; then
 else if [ "$OSTYPE"="linux-gnu" ]; then
 	source $ZSHA_BASE/rc-linux.zsh
 else
-	echo "OSTYPE is wrong"
+	echo 'OSTYPE is wrong'
 fi
 
 # Syntax highlighting bundle.
