@@ -1,0 +1,19 @@
+# flack CONFIG v2 -- DO NOT EDIT THIS LINE
+#
+# copy this to ~/.flackrc for per-user settings
+# 
+# uncomment the variables to change them from default values
+#
+
+# set the location of the logfile.
+# if you choose to keep a permanent logfile, it must be in a location
+# that the user has write access to otherwise flack will break.
+#LOGFILE="${TMPDIR}/flack.log"
+
+# set common tag fields you wish to see as options in the tag menu.
+# remove ones you don't use for easier visibility. custom fields can
+# also be added here.
+#COMMON_FIELDS=( TITLE VERSION ALBUM TRACKNUMBER ARTIST PERFORMER COPYRIGHT LICENSE ORGANISATION DESCRIPTION GENRE DATE LOCATION CONTACT ISRC )
+
+# set the default custom filename rule.
+#CUSTOM_RULE="${TRACKNUMBER} - ${TITLE}"
