@@ -5,6 +5,9 @@ export PATH="$HOME/.bin:$PATH"
 ZSHA_BASE=$HOME/tetov-dotfiles/zsh
 source $ZSHA_BASE/antigen/antigen.zsh
 
+setopt CLICOLOR  # same as 'alias ls=ls -G' which I also have set
+export LSCOLORS=exfxcxdxbxexexabagacad
+
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
 
