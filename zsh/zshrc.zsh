@@ -15,8 +15,11 @@ antigen bundle textmate
 #antigen bundle command-not-found
 antigen bundle djui/alias-tips
 
-if [ "$OSTYPE"="darwin11.0" ]; then
-  antigen-bundle osx
+if [ "$OSTYPE"="darwin16.3.0" ]; then
+	antigen-bundle osx
+	source $ZSHA_BASE/rc-mac.zsh
+else
+	source $ZSHA_BASE/rc-linux.zsh
 fi
 
 # Syntax highlighting bundle.
