@@ -1,5 +1,17 @@
 #my aliases for arka
 
+alias ls='ls -F --color=auto'
+alias ll='ls -lh'
+alias la='ls -A'
+alias l='ls'
+alias l.='ls -d .*'
+alias cd..='cd ..'
+alias mkdir='mkdir -pv'
+alias rmi='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ..='cd ..'
+
 alias topu='top -U farligm'
 alias whatmp3='whatmp3 --skipgenre'
 

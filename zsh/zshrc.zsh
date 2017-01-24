@@ -46,12 +46,3 @@ PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_pro
 
 # Tell antigen that you're done.
 antigen apply
-
-#Generella alias
-alias ls='ls -FG'
-alias ll='ls -lh'
-alias la='ls -A'
-alias l='ls'
-alias whatmp3='whatmp3 --skipgenre'
-alias ..='cd ..'
-alias cd..='cd ..'
