@@ -20,6 +20,7 @@ if [ "$OSTYPE"="darwin16.3.0" ]; then
 	source $ZSHA_BASE/rc-mac.zsh
 else if [ "$OSTYPE"="linux-gnu" ]; then
 	source $ZSHA_BASE/rc-linux.zsh
+fi
 else
 	echo 'OSTYPE is wrong'
 fi
