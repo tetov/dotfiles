@@ -27,8 +27,3 @@ antigen theme avit
 
 # Tell antigen that you're done.
 antigen apply
-
-#homebrew
-export HOMEBREW_GITHUB_API_TOKEN=36525685ffae44acd45e20eee28274c71da5f2a9
-
-export TERM="xterm-256color"
