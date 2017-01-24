@@ -1,10 +1,7 @@
 setopt HIST_IGNORE_DUPS
 
-export PATH="$HOME/.bin:$PATH" 
-
 ZSHA_BASE=$HOME/tetov-dotfiles/zsh
 source $ZSHA_BASE/antigen/antigen.zsh
-source ~/.githubtoken
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
@@ -18,11 +15,18 @@ antigen bundle djui/alias-tips
 if [ "$OSTYPE"="darwin16.3.0" ]; then
 	antigen-bundle osx
 	source $ZSHA_BASE/rc-mac.zsh
-else if [ "$OSTYPE"="linux-gnu" ]; then
-	source $ZSHA_BASE/rc-linux.zsh
-fi
+	export PATH="$HOME/.bin:$PATH" 
+	
+elif [ "$OSTYPE"="linux-gnu" ]; then
+		source $ZSHA_BASE/rc-linux.zsh
+
 else
 	echo 'OSTYPE is wrong'
+
+fi
+
+if [ `whoami` = "gudrun" ]; then
+	source ~/.githubtoken
 fi
 
 # Syntax highlighting bundle.
