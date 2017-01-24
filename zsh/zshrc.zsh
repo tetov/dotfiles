@@ -4,7 +4,6 @@ export PATH="$HOME/.bin:$PATH"
 
 ZSHA_BASE=$HOME/tetov-dotfiles/zsh
 source $ZSHA_BASE/antigen/antigen.zsh
-source $ZSHA_BASE/aliases.zsh
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
