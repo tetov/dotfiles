@@ -22,7 +22,6 @@ alias whatmp3n='whatmp3 --V0 -n '
 #Nya till ZSH
 
 alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias lg='login gudrun'
 

@@ -5,9 +5,6 @@ export PATH="$HOME/.bin:$PATH"
 ZSHA_BASE=$HOME/tetov-dotfiles/zsh
 source $ZSHA_BASE/antigen/antigen.zsh
 
-setopt CLICOLOR  # same as 'alias ls=ls -G' which I also have set
-export LSCOLORS=exfxcxdxbxexexabagacad
-
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
 
@@ -32,3 +29,12 @@ antigen theme avit
 
 # Tell antigen that you're done.
 antigen apply
+
+#Generella alias
+alias ls='ls -FG'
+alias ll='ls -lh'
+alias la='ls -A'
+alias l='ls'
+alias whatmp3='whatmp3 --skipgenre'
+alias ..='cd ..'
+alias cd..=' cd ..'
