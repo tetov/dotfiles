@@ -1,3 +1,7 @@
+#Inställningar
+export PATH="$HOME/.bin:$PATH" 
+export EDITOR="/usr/local/bin/mate -w"
+
 #my aliases
 
 # Koperiat och redigerat från ~/.bash_profile 20161002

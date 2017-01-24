@@ -19,11 +19,10 @@ antigen bundle textmate
 #antigen bundle command-not-found
 antigen bundle djui/alias-tips
 
-if [ "$OSTYPE"="darwin16.3.0" ]; then
+if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
 	source $ZSHA_BASE/rc-mac.zsh
-	export PATH="$HOME/.bin:$PATH" 
-	echo 'Mac settings'
+	#echo 'Mac settings'
 	
 elif [ "$OSTYPE"="linux-gnu" ]; then
 	source $ZSHA_BASE/rc-linux.zsh
@@ -41,7 +40,7 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 # Load the theme.
 antigen theme gentoo
 
-PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_$(prompt_char)%{$reset_color%} '
-
 # Tell antigen that you're done.
 antigen apply
+
+PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '

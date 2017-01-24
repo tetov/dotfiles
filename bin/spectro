@@ -25,7 +25,7 @@ command -v sox >/dev/null 2>&1 || { echo >&2 "This script requires SoX but it's 
 command -v curl >/dev/null 2>&1 || { echo >&2 "This script requires curl but it's not installed. Aborting."; exit 1; }
 
 # Public one:
-apikey="97d1b5592248c32"
+apikey="6bf8cf819aff12a"
 
 # Set offline=1 if you want to create local spectrals by default
 # Can be reversed with the -l, --local flag

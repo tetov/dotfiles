@@ -100,7 +100,7 @@ encoders = {
 	}
 }
 
-dither_command = 'sox -t wav - -G -b 16 -t wav - rate 44100 dither'
+dither_command = 'sox -t wav - -G -b 16 -t wav - rate 48000 dither'
 
 ### END CONFIGURATION ###
 
