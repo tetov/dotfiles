@@ -23,6 +23,7 @@ if [ "$OSTYPE"="darwin16.3.0" ]; then
 	antigen-bundle osx
 	source $ZSHA_BASE/rc-mac.zsh
 	export PATH="$HOME/.bin:$PATH" 
+	echo 'Mac settings'
 	
 elif [ "$OSTYPE"="linux-gnu" ]; then
 	source $ZSHA_BASE/rc-linux.zsh
