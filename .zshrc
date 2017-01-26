@@ -28,9 +28,8 @@ else
 fi
 
 if [ `whoami` = "gudrun" ]; then
-	source ~/.githubtoken
-	
-	
+	source $HOME/.githubtoken
+	alias lg='echo "Already logged in as Gudrun"'
 fi
 
 #Platform independent aliases
@@ -46,11 +45,11 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias ..='cd ..'
 
-alias zshconfig="$EDITOR ~/.zshrc"
+alias zshconfig='$EDITOR ~/.zshrc'
 
 alias arka='ssh farligm@a.tetov.se'
 
-alias watch="watch -n30 "
+alias watch='watch -n30 '
 
 alias whatmp3='whatmp3 --skipgenre'
 alias whatmp3n='whatmp3 --V0 -n '
