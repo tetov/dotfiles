@@ -46,7 +46,6 @@ alias mv='mv -i'
 alias ..='cd ..'
 
 alias bare='git --git-dir=$HOME/.baredotfiles/ --work-tree=$HOME $@'
-alias zshconfig='edit-command-line $HOME/.zshrc'
 
 alias arka='ssh farligm@a.tetov.se'
 
