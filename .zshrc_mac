@@ -6,6 +6,8 @@ export EDITOR="/usr/local/bin/mate -w"
 
 alias ls='ls -FG'
 
+alias zshconfig='mate -w $HOME/.zshrc'
+
 alias trrr='mv -v /Users/farligmidsommar/Downloads/*.torrent /Volumes/Anathema/Dropbox/trrtz/rtorrent/'
 
 alias lg='login gudrun'
