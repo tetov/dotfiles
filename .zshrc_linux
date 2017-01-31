@@ -19,6 +19,8 @@ alias ls='ls -F --color=auto'
 
 alias zshconfig='nano $HOME/.zshrc'
 
+alias rclone='/usr/sbin/rclone'
+
 alias rthot="watch -n30 'rtcontrol -rs up,down,name xfer=+0 2>&1'"
 alias rtmsg="rtcontrol -s alias,message,name 'message=?*' 'message=!*Tried?all?trackers*'"
 alias rtmsgstats="rtcontrol -q -s alias,message -o alias,message 'message=?*' 'message=!*Tried?all?trackers*' | uniq -c"
