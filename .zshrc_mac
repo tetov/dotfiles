@@ -23,7 +23,7 @@ alias f="ag -g"
 alias r=ag
 
 function iterm2_print_user_vars() {
-	iterm2_set_user_var humpday $(is_it_wednesday	)
+	iterm2_set_user_var humpday $(is_it_wednesday)
 }
 
 function is_it_wednesday {
