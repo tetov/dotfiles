@@ -68,3 +68,16 @@ antigen apply
 PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+function iterm2_print_user_vars() {
+	iterm2_set_user_var humpday $(is_it_wednesday)
+}
+
+function is_it_wednesday {
+  if [[ $(date +%A) = "Wednesday" ]]
+    then
+     echo "🐪" # Camel Prompt
+    else
+    echo "🐙" # Inky Prompt
+  fi
+}

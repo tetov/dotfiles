@@ -21,16 +21,3 @@ alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew c
 
 alias f="ag -g"
 alias r=ag
-
-function iterm2_print_user_vars() {
-	iterm2_set_user_var humpday $(is_it_wednesday)
-}
-
-function is_it_wednesday {
-  if [[ $(date +%A) = "Wednesday" ]]
-    then
-     echo "🐪" # Camel Prompt
-    else
-    echo "🐙" # Inky Prompt
-  fi
-}
