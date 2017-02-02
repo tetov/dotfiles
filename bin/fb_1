@@ -6,6 +6,6 @@
 ARG_PATH="$1"
 ARG_NAME="$2"
 
-/usr/bin/filebot -script fn:amc --output "$HOME/bay/vind/plex.bibl" --log-file /home/farligm/.filebot/logs/rt_manual_amc.log --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y subtitles=en,sv skipExtract=y excludeList=amc.excludes ut_dir="$ARG_PATH" ut_kind="multi" ut_title="$ARG_NAME" &
+/usr/bin/filebot -script fn:amc --output "$HOME/bay/vind/plex.bibl" --log-file /home/farligm/.filebot/logs/rt_amc_on_complete.log --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y subtitles=en,sv skipExtract=y excludeList=amc.excludes ut_dir="$ARG_PATH" ut_kind="multi" ut_title="$ARG_NAME" &
 
 #echo "`date -u` End script." >> $HOME/fballdebug.log
