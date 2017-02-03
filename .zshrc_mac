@@ -1,6 +1,7 @@
 #Inställningar
 export PATH="$HOME/bin:$PATH" 
 export EDITOR="/usr/local/bin/mate -w"
+export HOMEBREW_NO_ANALYTICS=1
 
 #my aliases
 

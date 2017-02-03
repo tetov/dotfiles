@@ -1,6 +1,7 @@
 #!/bin/bash
 
 EXCLUDEFILE=/home/farligm/v/syncthing/exclude-rclone.txt
+LOGFILE=/home/farligm/v/syncthing/rclone_st.log
 
 BASEPATHLOCAL=/home/farligm/v/syncthing
 BASEPATHREMOTE="secret:properbackup"
@@ -10,12 +11,12 @@ ARRAYLENGTH=${#BACKUPFOLDERS[@]}
 
 #echo $ARRAYLENGTH
 
-BACKUPCOMMAND="/usr/sbin/rclone sync --quiet --exclude-from $EXCLUDEFILE"
+BACKUPCOMMAND="/usr/sbin/rclone sync --quiet --log-file $LOGFILE --exclude-from $EXCLUDEFILE"
 
 for (( i=0; i<${ARRAYLENGTH}; i++ ))
 do
 	#echo "$BACKUPCOMMAND $BASEPATHLOCAL/${BACKUPFOLDERS[$i]} $BASEPATHREMOTE/${BACKUPFOLDERS[$i]}"
-	$BACKUPCOMMAND $BASEPATHLOCAL/${BACKUPFOLDERS[$i]} $BASEPATHREMOTE/${BACKUPFOLDERS[$i]}
+	$BACKUPCOMMAND $BASEPATHLOCAL/${BACKUPFOLDERS[$i]} $BASEPATHREMOTE/${BACKUPFOLDERS[$i]} 
 done
 
 #echo "$BACKUPCOMMAND $EXCLUDEFILE $BASEPATHLOCAL/$BACKUPFOLDER1 $BASEPATHREMOTE/$BACKUPFOLDER1"
