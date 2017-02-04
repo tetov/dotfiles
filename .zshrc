@@ -74,10 +74,15 @@ function iterm2_print_user_vars() {
 }
 
 function is_it_wednesday {
-  if [[ $(date +%A) = "Wednesday" ]]
-    then
-     echo "🐪" # Camel Prompt
+	if [[ $(date +%A) = "Wednesday" ]]; then
+    	echo "🐪" # Camel Prompt
+	elif [[ $(date +%A) = "Thursday" ]]; then
+		echo "🐝" # Bee Prompt
+	elif [[ $(date +%A) = "Friday" ]]; then
+		echo "👽" # Alien Prompt
+	elif [[ $(date +%A) = "Saturday" ]]; then
+		echo "🐈" # Caturday
     else
-    echo "🐙" # Inky Prompt
+    	echo "🐙" # Inky Prompt
   fi
 }
