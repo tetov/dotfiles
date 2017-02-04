@@ -1,5 +1,5 @@
 #Inställningar
-export PATH="$HOME/bin:/usr/local/bin:$PATH" 
+export PATH=$HOME/bin:/usr/local/bin:$PATH 
 export EDITOR="/usr/local/bin/mate -w"
 export HOMEBREW_NO_ANALYTICS=1
 
