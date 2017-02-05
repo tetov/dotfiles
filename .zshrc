@@ -19,6 +19,7 @@ antigen bundle djui/alias-tips
 if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
 	source $HOME/.zshrc_mac
+	path+=/usr/local/sbin
 	#echo 'Mac settings'
 	
 elif [ "$OSTYPE"="linux-gnu" ]; then
