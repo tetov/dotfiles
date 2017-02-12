@@ -1,8 +1,12 @@
-#####################
-# Installera nytt på ny mac
-# Kör line by line
-# Det mesta anpassat från https://github.com/atomantic/dotfiles/blob/master/install.sh
-#####################
+#####################################################################################
+## Script for new installation on mac
+## Do not execute, run line by line.
+##
+## Sources
+## https://github.com/drduh/macOS-Security-and-Privacy-Guide                              ##
+## https://github.com/atomantic/dotfiles/blob/master/install.sh
+##
+#####################################################################################
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -42,7 +46,7 @@ brew install sqlite
 brew install svtplay-dl
 brew install the_silver_searcher
 brew install tmux
-brew install tor 
+brew install tor
 brew install transmission
 brew install tree
 brew install unrar
@@ -71,6 +75,7 @@ brew cask install adobe-reader
 brew cask install angry-ip-scanner
 brew cask install animated-gif-quicklook
 brew cask install appcleaner
+brew cask install appcleaner
 brew cask install betterzipql
 brew cask install cheatsheet
 brew cask install discord
@@ -87,8 +92,8 @@ brew cask install iterm2
 brew cask install jumpcut
 brew cask install karabiner-elements
 brew cask install keepingyouawake
-brew cask install kid3
 brew cask install kindle
+brew cask install little-flocker
 brew cask install little-snitch
 brew cask install mediainfo
 brew cask install messenger
@@ -106,14 +111,13 @@ brew cask install quicklook-pfm
 brew cask install quicklookase
 brew cask install quicknfo
 brew cask install rcdefaultapp
+brew cask install santa
 brew cask install skype
 brew cask install slack
-brew cask install spek
 brew cask install spotifree
 brew cask install steam
 brew cask install suspicious-package
 brew cask install syncthing-bar
-brew cask install textmate
 brew cask install tomighty
 brew cask install transmission
 brew cask install tuntap
@@ -126,7 +130,6 @@ brew cask install wineskin-winery
 brew cask install xld
 brew cask install xquartz
 
-./fonts/install.sh
 brew tap caskroom/fonts
 brew cask install font-fontawesome
 brew cask install font-awesome-terminal-fonts
@@ -140,8 +143,138 @@ brew cask install font-source-code-pro
 
 brew cleanup
 
-# Installera Dropbox, sedan
-mackup restore
+mackup restore # after logged in to Dropbox
+
+################################################################################
+# Start drduh/macOS-Security-and-Privacy-Guide recommendations
+# Use admin account
+#
+################################################################################
+
+# Firmware password
+#
+
+# "The firmware password can also be managed with the firmwarepasswd utility while booted into the OS. For example, to prompt for the firmware password when attempting to boot from a different volume:""
+sudo firmwarepasswd -setpasswd -setmode command
+
+# MacOS firewall
+#
+
+# Enable firewall
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+
+# Enable logging
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+
+# Host file
+# Append and edit /etc/hosts from:
+# http://someonewhocares.org/hosts/zero/hosts
+# https://github.com/l1k/osxparanoia/blob/master/hosts
+# https://github.com/StevenBlack/hosts
+# https://github.com/gorhill/uMatrix/blob/master/assets/umatrix/hosts-files.json
+#
+# To append:
+# curl "URL" | sudo tee -a /etc/hosts
+#
+# To check length:
+# wc -l /etc/hosts
+#
+# To test
+# egrep -ve "^#|^255.255.255|^0.0.0.0|^127.0.0.0|^0 " /etc/hosts
+#
+# Expected output:
+# ::1 localhost
+# fe80::1%lo0 localhost
+
+# Computer name, host name
+#
+
+sudo scutil --set ComputerName your_computer_name
+sudo scutil --set LocalHostName your_hostname
+
+# Disable captive portal function
+#
+
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
+
+# Setup privoxy
+#
+
+# Start service
+sudo brew services start privoxy
+
+# Set http-proxy
+sudo networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8118
+
+# Set https-proxy
+sudo networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8118
+
+# Confirm proxy set
+scutil --proxy
+
+# Expected output:
+#<dictionary> {
+#  ExceptionsList : <array> {
+#    0 : *.local
+#    1 : 169.254/16
+#  }
+#  FTPPassive : 1
+#  HTTPEnable : 1
+#  HTTPPort : 8118
+#  HTTPProxy : 127.0.0.1
+#}
+
+# and
+ALL_PROXY=127.0.0.1:8118 curl -I http://p.p/
+
+# Expected output:
+# HTTP/1.1 200 OK
+# Content-Length: 2401
+# Content-Type: text/html
+# Cache-Control: no-cache
+
+# Edit user.action and config according to backup gist
+# https://gist.github.com/sonyamamurin/8b91a9b18452a5692b3ad0e39b06dd86
+
+# Setup spoof-mac
+#
+
+# Edit homebrew.mxcl.spoof-mac.plist in /usr/local/Cellar/spoof-mac/x.x.x
+# to look like this: (make en1 is the right one, run spoof-mac list)
+
+#<?xml version="1.0" encoding="UTF-8"?>
+#<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+#<plist version="1.0">
+#  <dict>
+#    <key>Label</key>
+#    <string>homebrew.mxcl.spoof-mac</string>
+#    <key>ProgramArguments</key>
+#    <array>
+#      <string>/usr/local/opt/spoof-mac/bin/spoof-mac</string>
+#      <string>randomize</string>
+#      <string>en1</string>
+#    </array>
+#    <key>RunAtLoad</key>
+#    <true/>
+#    <key>StandardErrorPath</key>
+#    <string>/dev/null</string>
+#    <key>StandardOutPath</key>
+#    <string>/dev/null</string>
+#  </dict>
+#</plist>
+
+# Setup santa
+# https://github.com/drduh/macOS-Security-and-Privacy-Guide#binary-whitelisting
+#
+
+# start lockdown
+sudo defaults write /var/db/santa/config.plist ClientMode -int 2
+
+################################################################################
+# Start of commands from atomantic/dotfiles
+# https://github.com/atomantic/dotfiles/blob/master/install.sh
+#
+################################################################################
 
 # Enable firewall. Possible values:
 #   0 = off
@@ -153,7 +286,6 @@ sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 sudo defaults write /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false
 
 # SSD specific tweaks
-
 # Disable local Time Machine snapshots
 sudo tmutil disablelocal
 
@@ -183,10 +315,6 @@ defaults write com.apple.systemuiserver menuExtras -array \
   "/System/Library/CoreServices/Menu Extras/Clock.menu"
 ok
 
-# Always show scrollbars
-defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
-# Possible values: `WhenScrolling`, `Automatic` and `Always`
-
 # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
@@ -207,17 +335,11 @@ defaults write com.apple.CrashReporter DialogType -string "none"
 # Set Help Viewer windows to non-floating mode"
 defaults write com.apple.helpviewer DevMode -bool true
 
-# Reveal IP, hostname, OS, etc. when clicking clock in login window"
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
 # Restart automatically if the computer freezes"
 sudo systemsetup -setrestartfreeze on
 
 # Check for software updates daily, not just once per week"
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
-
-# Disable Notification Center and remove the menu bar icon"
-launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
 
 # Disable smart quotes as they’re annoying when typing code"
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
@@ -230,12 +352,6 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
-
-# Use scroll gesture with the Ctrl (^) modifier key to zoom"
-# defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
-# defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
-# Follow the keyboard focus while zoomed in"
-# defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
 # Disable press-and-hold for keys in favor of key repeat"
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
@@ -266,63 +382,66 @@ defaults write NSGlobalDomain AppleFontSmoothing -int 2
 # Enable HiDPI display modes (requires restart)"
 sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
 
-# Allow quitting via ⌘ + Q; doing so will also hide desktop icons"
+################################################################################
+# Finder
+################################################################################
+
+# Allow quitting Finder via ⌘ + Q; doing so will also hide desktop icons"
 defaults write com.apple.finder QuitMenuItem -bool true
 
-# Set Desktop as the default location for new Finder windows"
+# Set ~ as the default location for new Finder windows"
 # For other paths, use 'PfLo' and 'file:///full/path/here/'
-defaults write com.apple.finder NewWindowTarget -string "PfDe"
-defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Desktop/"
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
 
-# Show hidden files by default"
+# Show hidden files by default
 defaults write com.apple.finder AppleShowAllFiles -bool true
 
-# Show all filename extensions"
+# Show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-# Show status bar"
+# Show status bar
 defaults write com.apple.finder ShowStatusBar -bool true
 
-# Show path bar"
+# Show path bar
 defaults write com.apple.finder ShowPathbar -bool true
 
-# Allow text selection in Quick Look"
+# Allow text selection in Quick Look
 defaults write com.apple.finder QLEnableTextSelection -bool true
 
-# Display full POSIX path as Finder window title"
+# Display full POSIX path as Finder window title
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
-# When performing a search, search the current folder by default"
+# When performing a search, search the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
-# Disable the warning when changing a file extension"
+# Disable the warning when changing a file extension
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
-# Enable spring loading for directories"
+# Enable spring loading for directories
 defaults write NSGlobalDomain com.apple.springing.enabled -bool true
 
-# Remove the spring loading delay for directories"
+# Remove the spring loading delay for directories
 defaults write NSGlobalDomain com.apple.springing.delay -float 0
 
-# Avoid creating .DS_Store files on network volumes"
+# Avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
-# Automatically open a new Finder window when a volume is mounted"
+# Automatically open a new Finder window when a volume is mounted
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
 defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 
-# Use list view in all Finder windows by default"
+# Use list view in all Finder windows by default
 # Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
-# Empty Trash securely by default"
+# Empty Trash securely by default
 defaults write com.apple.finder EmptyTrashSecurely -bool true
 
-# Enable AirDrop over Ethernet and on unsupported Macs running Lion"
+# Enable AirDrop over Ethernet and on unsupported Macs running Lion
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
-# Show the ~/Library folder"
+# Show the ~/Library folder
 chflags nohidden ~/Library
 
 
@@ -354,40 +473,40 @@ defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
 # Show indicator lights for open applications in the Dock"
 defaults write com.apple.dock show-process-indicators -bool true
 
-# Don’t animate opening applications from the Dock"
+# Don’t animate opening applications from the Dock
 # defaults write com.apple.dock launchanim -bool false
 
-# Speed up Mission Control animations"
+# Speed up Mission Control animations
 defaults write com.apple.dock expose-animation-duration -float 0.1
 
-# Don’t group windows by application in Mission Control"
+# Don’t group windows by application in Mission Control
 # (i.e. use the old Exposé behavior instead)
 defaults write com.apple.dock expose-group-by-app -bool false
 
-# Disable Dashboard"
+# Disable Dashboard
 defaults write com.apple.dashboard mcx-disabled -bool true
 
-# Don’t show Dashboard as a Space"
+# Don’t show Dashboard as a Space
 defaults write com.apple.dock dashboard-in-overlay -bool true
 
-# Don’t automatically rearrange Spaces based on most recent use"
+# Don’t automatically rearrange Spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 
-# Remove the auto-hiding Dock delay"
+# Remove the auto-hiding Dock delay
 # defaults write com.apple.dock autohide-delay -float 0
 # Remove the animation when hiding/showing the Dock"
 # defaults write com.apple.dock autohide-time-modifier -float 0
 
-# Automatically hide and show the Dock"
+# Automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true
 
-# Make Dock icons of hidden applications translucent"
+# Make Dock icons of hidden applications translucent
 defaults write com.apple.dock showhidden -bool true
 
-# Make Dock more transparent"
+# Make Dock more transparent
 # defaults write com.apple.dock hide-mirror -bool true
 
-# Reset Launchpad, but keep the desktop wallpaper intact"
+# Reset Launchpad, but keep the desktop wallpaper intact
 # find "${HOME}/Library/Application Support/Dock" -name "*-*.db" -maxdepth 1 -delete
 
 # Configuring Hot Corners
@@ -535,7 +654,7 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 # Disable local Time Machine backups"
 hash tmutil &> /dev/null && sudo tmutil disablelocal
 ###############################################################################
-bot "Activity Monitor"
+# Activity Monitor
 ###############################################################################
 # Show the main window when launching Activity Monitor"
 defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
@@ -547,7 +666,7 @@ defaults write com.apple.ActivityMonitor ShowCategory -int 0
 defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
 defaults write com.apple.ActivityMonitor SortDirection -int 0
 ###############################################################################
-bot "Address Book, Dashboard, iCal, TextEdit, and Disk Utility"
+# Address Book, Dashboard, iCal, TextEdit, and Disk Utility
 ###############################################################################
 # Enable the debug menu in Address Book"
 defaults write com.apple.addressbook ABShowDebugMenu -bool true
@@ -562,14 +681,14 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
 defaults write com.apple.DiskUtility advanced-image-options -bool true
 ###############################################################################
-bot "Mac App Store"
+# Mac App Store
 ###############################################################################
 # Enable the WebKit Developer Tools in the Mac App Store"
 defaults write com.apple.appstore WebKitDeveloperExtras -bool true
 # Enable Debug Menu in the Mac App Store"
 defaults write com.apple.appstore ShowDebugMenu -bool true
 ###############################################################################
-bot "Messages"
+# Messages
 ###############################################################################
 # Disable automatic emoji substitution (i.e. use plain text smileys)"
 # defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
@@ -577,3 +696,7 @@ bot "Messages"
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
 # Disable continuous spell checking"
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "continuousSpellCheckingEnabled" -bool false
+
+# Time to run kristovatlas/osx-config-check
+# https://github.com/kristovatlas/osx-config-check
+# !!
