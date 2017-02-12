@@ -28,16 +28,6 @@ else
 	echo 'OSTYPE is wrong'
 fi
 
-if [ `whoami` = "gudrun" ]; then
-	source $HOME/.githubtoken
-	
-	alias lg='echo "Already logged in as Gudrun"'
-	
-	alias scert='sudo santactl rule --whitelist --certificate --sha256'
-	alias sfile='sudo santactl rule --whitelist --sha256'
-	alias slookup='santactl fileinfo'
-fi
-
 #Platform independent aliases
 
 alias ll='ls -lh'
