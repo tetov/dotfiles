@@ -13,17 +13,17 @@ antigen use oh-my-zsh
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
 antigen bundle textmate
-#antigen bundle command-not-found
+antigen bundle command-not-found
 antigen bundle djui/alias-tips
 
 if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
-	source $HOME/.zshrc_mac
+	source $HOME/.zsh_mac.rc
 	path+=/usr/local/sbin
 	#echo 'Mac settings'
-	
+
 elif [ "$OSTYPE"="linux-gnu" ]; then
-	source $HOME/.zshrc_linux
+	source $HOME/.zsh_linux.rc
 else
 	echo 'OSTYPE is wrong'
 fi
@@ -42,8 +42,6 @@ alias mv='mv -i'
 alias ..='cd ..'
 
 alias bare='git --git-dir=$HOME/.baredotfiles/ --work-tree=$HOME $@'
-
-alias arka='ssh farligm@a.tetov.se'
 
 alias watch='watch -n30 '
 
