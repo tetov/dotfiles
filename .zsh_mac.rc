@@ -1,5 +1,5 @@
 # Inställningar
-export EDITOR=atom -nw""
+export EDITOR="atom -nw"
 export HOMEBREW_NO_ANALYTICS=1
 
 path+=$HOME/bin
