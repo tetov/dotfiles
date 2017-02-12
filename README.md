@@ -16,16 +16,14 @@ Install via this [gist](https://gist.github.com/sonyamamurin/1bc7caeb3c4b842da30
 * [ChromeHelper.app is still there (used with Safari.app extension to open page in Chrome)](https://github.com/lhagan/Open-in-Chrome)
 
 ## TODO
-* setup script for debian
-* lots of tidying
-* implement more security options into install_mac.sh
-* merge gist and install script
+* write setup-script for debian
+* Find any Swedish comments and translate them
 
 ## References I use often
 
 ### OS X security
-* [drduh: macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide)
-* [kristovatlas: osx-config-check](https://github.com/kristovatlas/osx-config-check)
+* [drduh/macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide)
+* [kristovatlas/osx-config-check](https://github.com/kristovatlas/osx-config-check)
 
 ### Text edting
 * [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)

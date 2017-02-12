@@ -13,8 +13,6 @@ antigen use oh-my-zsh
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
 antigen bundle textmate
-antigen bundle command-not-found
-antigen bundle djui/alias-tips
 
 if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
