@@ -10,7 +10,7 @@ Bare dotfiles setup after Nicola Paolucci's [example](https://developer.atlassia
 * scripts for transcoding audio files
 * scripts for rsync
 * [script](./bin/mashpodder-script) for [mashpodder](https://github.com/chessgriffin/mashpodder)
-* [setup script](./install_mac.sh) for Mac
+* [setup script](./bin/install_mac.sh) for Mac
 * [ChromeHelper.app is still there (used with Safari.app extension to open page in Chrome)](https://github.com/lhagan/Open-in-Chrome)
 
 ## TODO
