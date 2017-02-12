@@ -1,4 +1,4 @@
-export EDITOR=/usr/bin/nano
+export EDITOR=/usr/bin/vim
 
 export LANG=en_US.UTF-8
 export LC_ADDRESS=sv_SE.UTF-8
