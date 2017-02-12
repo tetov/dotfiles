@@ -1,10 +1,10 @@
-#Inställningar
-export EDITOR="/usr/local/bin/mate -w"
+# Inställningar
+export EDITOR=atom -nw""
 export HOMEBREW_NO_ANALYTICS=1
 
 path+=$HOME/bin
 
-#my aliases
+# my aliases
 
 alias ls='ls -FG'
 alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
@@ -14,13 +14,15 @@ alias zshconfig='mate -w $HOME/.zshrc'
 alias trrr='mv -v /Users/farligmidsommar/Downloads/*.torrent /Volumes/Anathema/Dropbox/trrtz/rtorrent/'
 alias lsrtr='ssh -qt farligm@a.tetov.se "ls -tr ~/v/rtorrent.data | tail -n10"'
 
+alias arka='ssh farligm@a.tetov.se'
+
 alias lg='login gudrun'
 
 alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
 
-#The first is f, which searches the current directory subtree for files with names containing a string (ignoring case). f png would find all PNG files in the current subtree, as well as “PNGisMyFavorite.txt” and so forth.
+# The first is f, which searches the current directory subtree for files with names containing a string (ignoring case). f png would find all PNG files in the current subtree, as well as “PNGisMyFavorite.txt” and so forth.
 
-#The second is r, which recursively greps the current directory subtree for files matching a pattern. r HTTP would grep for files containing that exact string, while r '"http[^"]*"' -i would search for double-quoted strings starting with “http”, ignoring case.
+# The second is r, which recursively greps the current directory subtree for files matching a pattern. r HTTP would grep for files containing that exact string, while r '"http[^"]*"' -i would search for double-quoted strings starting with “http”, ignoring case.
 
 alias f="ag -g"
 alias r=ag
@@ -31,9 +33,9 @@ alias sstatus='defaults read /var/db/santa/config.plist ClientMode'
 
 if [ `whoami` = "gudrun" ] ; then
 	source $HOME/.githubtoken
-	
+
 	alias lg='echo "Already logged in as Gudrun"'
-	
+
 	alias slock='sudo defaults write /var/db/santa/config.plist ClientMode -int 2'
 	alias sopen='sudo defaults delete /var/db/santa/config.plist ClientMode'
 	alias scert='sudo santactl rule --whitelist --certificate --sha256'

@@ -13,20 +13,24 @@ brew update
 brew upgrade
 
 brew install bash-completion
+brew install duti
 brew install fdupes
+brew install findutils
 brew install git
 brew install googler
 brew install homebrew/boneyard/lftp
-brew install livestreamer
 brew install lynx
 brew install mackup
 brew install mas
 brew install md5sha1sum
 brew install media-info
+brew install minisign
 brew install mktorrent
 brew install ncdu
 brew install nmap
 brew install openssl
+brew install pandoc
+brew install privoxy
 brew install python
 brew install python3
 brew install rclone
@@ -38,6 +42,7 @@ brew install sqlite
 brew install svtplay-dl
 brew install the_silver_searcher
 brew install tmux
+brew install tor 
 brew install transmission
 brew install tree
 brew install unrar
