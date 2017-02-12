@@ -24,8 +24,8 @@ Install via this [gist](https://gist.github.com/sonyamamurin/1bc7caeb3c4b842da30
 ## References I use often
 
 ### OS X security
-* https://github.com/drduh/macOS-Security-and-Privacy-Guide
-* https://github.com/kristovatlas/osx-config-check
+* [drduh: macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide)
+* [kristovatlas: osx-config-check](https://github.com/kristovatlas/osx-config-check)
 
 ### Text edting
 * [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
