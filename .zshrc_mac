@@ -12,6 +12,7 @@ alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias zshconfig='mate -w $HOME/.zshrc'
 
 alias trrr='mv -v /Users/farligmidsommar/Downloads/*.torrent /Volumes/Anathema/Dropbox/trrtz/rtorrent/'
+alias lsrtr='ssh -qt farligm@a.tetov.se "ls -tr ~/v/rtorrent.data | tail -n10"'
 
 alias lg='login gudrun'
 
@@ -23,3 +24,19 @@ alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew c
 
 alias f="ag -g"
 alias r=ag
+
+alias lsrtr='ssh -qt farligm@a.tetov.se "ls -tr ~/v/rtorrent.data | tail -n10"'
+
+alias sstatus='defaults read /var/db/santa/config.plist ClientMode'
+
+if [ `whoami` = "gudrun" ] ; then
+	source $HOME/.githubtoken
+	
+	alias lg='echo "Already logged in as Gudrun"'
+	
+	alias slock='sudo defaults write /var/db/santa/config.plist ClientMode -int 2'
+	alias sopen='sudo defaults delete /var/db/santa/config.plist ClientMode'
+	alias scert='sudo santactl rule --whitelist --certificate --sha256'
+	alias sfile='sudo santactl rule --whitelist --sha256'
+	alias slookup='santactl fileinfo'
+fi
