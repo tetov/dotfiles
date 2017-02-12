@@ -28,11 +28,6 @@ else
 	echo 'OSTYPE is wrong'
 fi
 
-if [ `whoami` = "gudrun" ]; then
-	source $HOME/.githubtoken
-	alias lg='echo "Already logged in as Gudrun"'
-fi
-
 #Platform independent aliases
 
 alias ll='ls -lh'
