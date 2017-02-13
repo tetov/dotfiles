@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#Thanks to: nameisbrian2 for aesthetic inspiration, takeyourhatoff for the original script, farligm/reversibel for bugs etc, people in the thread who posted bugs, cakewizard for sha suggestion, #code and #bash for general help
+#Thanks to: nameisbrian2 for aesthetic inspiration, takeyourhatoff for the original script, sonyamamurin for bugs etc, people in the thread who posted bugs, cakewizard for sha suggestion, #code and #bash for general help
 #TODO: Github page!
 #TODO: Allow user/album option for imgur, copy https://github.com/moraesgp/imgur_bash_uploader/blob/master/upload_image.sh
 #changelog: Added option to create url links for spectrals instead of embedded images

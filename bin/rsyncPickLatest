@@ -24,18 +24,18 @@ downloadSelection=()
 finished=false
 
 while ! $finished ; do
-	
+
 	read -e -p "How many recent files would you like to see? [20]: " tail
-	
+
 	if [[ "$tail" == "" ]] ; then
 		tail=20
 		finished=true
-	elif [[ "$tail" =~ ^[0-9]+$ ]] ; then 
+	elif [[ "$tail" =~ ^[0-9]+$ ]] ; then
 		finished=true
 	else
 		echo "Sorry integers only."
 	fi
-	
+
 done
 
 echo -e "\n${RED}$tail${NC} newest files in of ${CYAN}$SOURCEDIR${NC}\n"
@@ -47,10 +47,10 @@ IFS='
 # Get file list from server. Yes, I have read http://mywiki.wooledge.org/ParsingLs
 fileList=($(ssh -qt farligm@a.tetov.se "/bin/ls -1tr ~/v/rtorrent.data | tail -n$tail"))
 
-IFS=$oldIFS							# Reset IFS
+IFS=$oldIFS									# Reset IFS
 
-j=1									# j is the users choice, starts at 1
-for i in "${fileList[@]}" ; do		# in contrast to the array
+j=1													# j is the users choice, starts at 1 in contrast to the array
+for i in "${fileList[@]}" ; do
 
 	if (( $j < 10 ))					# Tidier row (extra whitespace when <10)
 	then
@@ -58,9 +58,9 @@ for i in "${fileList[@]}" ; do		# in contrast to the array
 	else
 		echo -e "${YELLOW}$j.${NC} $i"
 	fi
-	
+
 	((j++))
-	
+
 done
 
 echo
@@ -72,7 +72,7 @@ u=0
 while ! $finished ; do
 
 	read -e -p "Enter index of files to download, q when finished: " fileChoice
-	
+
 	if [[ "$fileChoice" = "q" ]] ; then
 		finished=true
 	elif ! [[ "$fileChoice" =~ ^[0-9]+$ ]] ; then
@@ -85,18 +85,18 @@ while ! $finished ; do
 		downloadSelection[$u]=$fileChoice
 		((u++))
 	fi
-	
+
 done
 
 # https://stackoverflow.com/questions/15520339/how-to-remove-carriage-return-and-newline-from-a-variable-in-shell-script
 
 for z in "${downloadSelection[@]}" ; do	
-		
+
 	toDownload="$(echo ${fileList[$z]} | tr -d '\r')"
 	echo $toDownload
-	
+
 	/usr/local/bin/rsync -rvze 'ssh -q' "$SOURCEDIR/'$toDownload'" --progress $TARGETDIR
-	
+
 done
 
 exit 0
