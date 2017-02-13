@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#reset mount
+umount -f /Volumes/sarka
+mkdir -pv /Volumes/sarka
+
+#mount dir
+sshfs farligm@a.tetov.se:/home/farligm/ /Volumes/sarka -oauto_cache,ssh_command='ssh -F /dev/null',reconnect,defer_permissions,noappledouble,negative_vncache,volname=sarka

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+## Copy my syncthing folders to acs
+
 EXCLUDEFILE=/home/farligm/v/syncthing/exclude-rclone.txt
 LOGFILE=/home/farligm/v/syncthing/rclone_st.log
 
@@ -7,20 +9,9 @@ BASEPATHLOCAL=/home/farligm/v/syncthing
 BASEPATHREMOTE="secret:properbackup"
 
 BACKUPFOLDERS=('Arkivy' 'Bildervf' 'iTunesMusic')
-ARRAYLENGTH=${#BACKUPFOLDERS[@]}
+#ARRAYLENGTH=${#BACKUPFOLDERS[@]}
 
-#echo $ARRAYLENGTH
-
-BACKUPCOMMAND="/usr/sbin/rclone sync --quiet --log-file $LOGFILE --exclude-from $EXCLUDEFILE"
-
-for (( i=0; i<${ARRAYLENGTH}; i++ ))
-do
-	#echo "$BACKUPCOMMAND $BASEPATHLOCAL/${BACKUPFOLDERS[$i]} $BASEPATHREMOTE/${BACKUPFOLDERS[$i]}"
-	$BACKUPCOMMAND $BASEPATHLOCAL/${BACKUPFOLDERS[$i]} $BASEPATHREMOTE/${BACKUPFOLDERS[$i]} 
+for i in "${BACKUPFOLDERS[@]}" ; do
+	echo $i
+	#/usr/sbin/rclone sync --log-file $LOGFILE --exclude-from $EXCLUDEFILE $BASEPATHLOCAL/${BACKUPFOLDERS[$i]} $BASEPATHREMOTE/${BACKUPFOLDERS[$i]}
 done
-
-#echo "$BACKUPCOMMAND $EXCLUDEFILE $BASEPATHLOCAL/$BACKUPFOLDER1 $BASEPATHREMOTE/$BACKUPFOLDER1"
-
-#echo "$BACKUPCOMMAND $EXCLUDEFILE $BASEPATHLOCAL/$BACKUPFOLDER2 $BASEPATHREMOTE/$BACKUPFOLDER2"
-
-#echo "$BACKUPCOMMAND $EXCLUDEFILE $BASEPATHLOCAL/$BACKUPFOLDER3 $BASEPATHREMOTE/$BACKUPFOLDER3"

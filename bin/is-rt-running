@@ -1,2 +1,4 @@
+#!/bin/bash
+## Send me an email if rtorrent is not running.
 pgrep rtorrent &>/dev/null && exit 0
-echo |mail -s"rTorrent is not running." farligm@localhost
+echo |mail -s"rTorrent is not running." root@localhost
