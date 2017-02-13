@@ -1,5 +1,6 @@
-### rtorrent settings #######################################################
-# Environment & personal preferences (check & adapt these)
+################################################################################
+## My rtorrent setup with rTorrent-PS
+################################################################################
 
 download_rate = 3400
 
@@ -28,7 +29,7 @@ max_peers_seed = 80
 max_memory_usage = 3000M
 xmlrpc_size_limit = 2M
 
-# CORE settings 
+# CORE settings
 http_capath = /etc/ssl/certs
 encoding_list = utf8
 
@@ -49,7 +50,6 @@ schedule = scgi_permission,0,0,"execute_nothrow=chmod,g+w,/home/farligm/private/
 # WATCH DIR
 #Keeping watches on interal HD, data folder on vind
 schedule = watch_directory_1,10,10,"load.start=/home/farligm/Dropbox/trrtz/rtorrent/*.torrent,d.directory.set=/home/farligm/bay/vind/rtorrent.data/,d.delete_tied="
-#schedule = watch_directory_1,10,10,"load.start=/home/farligm/private/rtorrent/watch/*.torrent,d.directory.set=/home/farligm/bay/vind/rtorrent.data/,d.delete_tied="
 
 # SCHEDULE: Watch disk space
 schedule = low_diskspace,15,60,close_low_diskspace=1000M
