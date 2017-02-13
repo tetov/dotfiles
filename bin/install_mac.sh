@@ -1,12 +1,12 @@
-#####################################################################################
+################################################################################
 ## Script for new installation on mac
 ## Do not execute, run line by line.
 ##
 ## Sources
-## https://github.com/drduh/macOS-Security-and-Privacy-Guide                              ##
+## https://github.com/drduh/macOS-Security-and-Privacy-Guide
 ## https://github.com/atomantic/dotfiles/blob/master/install.sh
 ##
-#####################################################################################
+################################################################################
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -42,6 +42,7 @@ brew install rename
 brew install sox
 brew install speedtest_cli
 brew install spoof-mac
+brew install homebrew/fuse/sshfs
 brew install sqlite
 brew install svtplay-dl
 brew install the_silver_searcher
@@ -98,6 +99,7 @@ brew cask install little-snitch
 brew cask install mediainfo
 brew cask install messenger
 brew cask install onyx
+brew cask install osxfuse
 brew cask install qlcolorcode
 brew cask install qlimagesize
 brew cask install qlmarkdown
