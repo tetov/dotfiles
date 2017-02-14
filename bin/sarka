@@ -27,5 +27,5 @@ done
 for (( i = 0 ; i < ${#remoteDirs[@]} ; i++ )) do
     x=${remoteDirs[$i]}
     y=${mountDirs[$i]}
-    sshfs $remote:$x $mountPath/$y -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=$y &
+    sshfs $remote:$x $mountPath/$y -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=$y
 done

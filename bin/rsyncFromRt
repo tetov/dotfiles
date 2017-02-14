@@ -5,7 +5,6 @@
 dl="\"$1\""
 
 sourceDir=$server_user@$server_url:$server_media_dir
-
 targetDir=$local_drop_dir
 
-/usr/local/bin/rsync -vrze 'ssh -q' "$sourceDir"/"$dl" --progress "$targetDir"
+/usr/local/bin/rsync -vrze 'ssh -q' "$source_dir"/"$dl" --progress "$targetDir"

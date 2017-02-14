@@ -7,8 +7,6 @@ path+=$HOME/bin
 
 ## ALIASES
 
-alias ssh='ssh -o "UseKeychain yes" -o "RemoteForward 52698 localhost:52698"'
-
 alias ls='ls -FG'
 alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
