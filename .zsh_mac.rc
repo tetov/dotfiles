@@ -33,8 +33,6 @@ alias r=ag
 alias sstatus='defaults read /var/db/santa/config.plist ClientMode'
 
 if [ $(whoami) = "$local_admin" ] ; then
-	source $HOME/.githubtoken
-
 	alias lg='echo "Already logged in as "$local_admin'
 
 	alias slock='sudo defaults write /var/db/santa/config.plist ClientMode -int 2'

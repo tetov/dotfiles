@@ -4,7 +4,7 @@
 
 dl="\"$1\""
 
-sourceDir=$server_user@$server_url:$server_media_folder
+sourceDir=$server_user@$server_url:$server_media_dir
 
 targetDir=$local_drop_dir
 
