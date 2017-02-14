@@ -2,10 +2,10 @@
 
 ## Grab specified folder or file from rtorrent.data to Deaddrop
 
-DL="\"$1\""
+dl="\"$1\""
 
-SOURCEDIR=farligm@a.tetov.se:/home/farligm/v/rtorrent.data
+sourceDir=$server_user@$server_url:$server_media_folder
 
-TARGETDIR=/Volumes/JUDITH/Deaddrop/
+targetDir=$local_drop_dir
 
-rsync -vrze 'ssh -q' "$SOURCEDIR"/"$DL" --progress "$TARGETDIR"
+/usr/local/bin/rsync -vrze 'ssh -q' "$sourceDir"/"$dl" --progress "$targetDir"

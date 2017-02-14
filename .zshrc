@@ -18,7 +18,6 @@ if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
 	source $HOME/.zsh_mac.rc
 	path+=/usr/local/sbin
-	#echo 'Mac settings'
 
 elif [ "$OSTYPE"="linux-gnu" ]; then
 	source $HOME/.zsh_linux.rc
@@ -58,6 +57,14 @@ antigen theme gentoo
 antigen apply
 
 PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '
+
+dropboxPath=$(jq -r .personal.path .dropbox/info.json)
+if command -v jq &&  [ -f $HOME/.dropbox/info.json ] ; then
+	export dropboxPath=$(jq -r .personal.path .dropbox/info.json)
+else
+	export dropboxPath=$(cat $HOME/.altDropboxPath)
+
+source $dropboxPath/.confidentials
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 

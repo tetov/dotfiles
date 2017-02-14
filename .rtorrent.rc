@@ -34,22 +34,21 @@ http_capath = /etc/ssl/certs
 encoding_list = utf8
 
 #Keeping work and log on internal HD
-directory = /home/farligm/private/rtorrent/work
-session = /home/farligm/private/rtorrent/.session
-scgi_local = /home/farligm/private/rtorrent/.scgi_local
+directory = ~/work
+session = ~/private/rtorrent/.session
+scgi_local = ~/private/rtorrent/.scgi_local
 #scgi_port = localhost:5000
-log.execute = /home/farligm/private/rtorrent/log/execute.log
+log.execute = ~/private/rtorrent/log/execute.log
 
 # This was broken in some rTorrent versions, so always set it explicitely
 # (also allows you to use something else than the hostname to id the instance)
 session.name.set = "$cat=$system.hostname=,:,$system.pid="
 
 # SCHEDULE: Make SCGI socket group-writable
-schedule = scgi_permission,0,0,"execute_nothrow=chmod,g+w,/home/farligm/private/rtorrent/.scgi_local"
+schedule = scgi_permission,0,0,"execute_nothrow=chmod,g+w,$HOME/private/rtorrent/.scgi_local"
 
 # WATCH DIR
-#Keeping watches on interal HD, data folder on vind
-schedule = watch_directory_1,10,10,"load.start=/home/farligm/Dropbox/trrtz/rtorrent/*.torrent,d.directory.set=/home/farligm/bay/vind/rtorrent.data/,d.delete_tied="
+schedule = watch_directory_1,10,10,"load.start=$dropboxPath/trrtz/rtorrent/*.torrent,d.directory.set=$server_media_dir/,d.delete_tied="
 
 # SCHEDULE: Watch disk space
 schedule = low_diskspace,15,60,close_low_diskspace=1000M
@@ -65,9 +64,8 @@ view_sort_current = seeding,greater=d.get_ratio=
 #make active tab work in rtorrent
 #schedule = filter_active,30,30,"view.filter = active,\"or={d.up.rate=,d.down.rate=}\""
 
-#filebot media folder
-system.method.set_key = event.download.finished,fb_1,"execute={/home/farligm/bin/fb_1,$d.get_base_path=,$d.get_name=}"
-#system.method.set_key = event.download.finished,fb_all,"execute={/home/farligm/bin/fb_all,}"
+#filebot media dir
+system.method.set_key = event.download.finished,fb_1,"execute={$HOME/bin/fb_1,$d.get_base_path=,$d.get_name=}"
 
 # PyroScope SETTINGS
 

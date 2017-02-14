@@ -34,10 +34,10 @@ zeropad = 1
 dither = 1
 
 # Specify tracker ("http://tracker.what.cd:34000/")
-tracker = "http://tracker.what.cd:34000/"
+tracker = ""
 
 # Specify torrent passkey
-passkey = "whrjpadeh2kp0atly9hjbcglkhxvp4ci"
+passkey = ""
 
 # Max number of threads (ex: Normal: 1, Dual-core = 2, Hyperthreaded Dual-core = 4)
 max_threads = 2

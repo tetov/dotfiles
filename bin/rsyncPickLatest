@@ -1,25 +1,21 @@
 #!/bin/bash
 
-############################################################
-## Script to list most recent files in specific directory ##
-## (var SOURCEDIR) and pick one to download with rsync to ##
-## specific directory (var TARGETDIR)					  ##
-##														  ##
-## Reason for creation? lftp got moved to				  ##
-## homebrew/boneyard so I thought I should switch to 	  ##
-## instead. Missed landing in the right dir, ls -tr to    ##
-## get my latest files, select line, ⌘+C, write qqm " ⌘+V ##
-############################################################
+################################################################################
+## Script to list most recent files in specific directory (var sourceDir) and
+## pick one to download with rsyclnc to specific directory (var targetDir)
+##
+## Reason for creation? lftp got moved to homebrew/boneyard so I thought I
+## homebrew/boneyard so I thought I should switch to rsync instead. This is a
+## recreation of my lftp workflow.
+################################################################################
 
-RED='\033[0;31m'
-CYAN='\033[0;36m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+clRed='\033[0;31m'
+clCyan='\033[0;36m'
+clYellow='\033[0;33m'
+clNoColor='\033[0m' # No Color
 
-SOURCEDIR=farligm@a.tetov.se:/home/farligm/v/rtorrent.data
-TARGETDIR=/Volumes/JUDITH/Deaddrop/
-
-downloadSelection=()
+sourceDir=$server_user@$server_url:$server_media_dir
+targetDir=$local_drop_dir
 
 finished=false
 
@@ -38,25 +34,31 @@ while ! $finished ; do
 
 done
 
-echo -e "\n${RED}$tail${NC} newest files in of ${CYAN}$SOURCEDIR${NC}\n"
+echo -e "\n${clRed}$tail${clNoColor} newest files in of ${clCyan}$sourceDir${clNoColor}\n"
 
-oldIFS=$IFS							# Back up IFS
+# Back up IFS
+oldIFS=$IFS
+
+# Change how new line is read
 IFS='
-'									# Change how new line is read
+'
 
 # Get file list from server. Yes, I have read http://mywiki.wooledge.org/ParsingLs
-fileList=($(ssh -qt farligm@a.tetov.se "/bin/ls -1tr ~/v/rtorrent.data | tail -n$tail"))
+fileList=($(ssh -qt $server_user@$server_url "/bin/ls -1tr $server_media_dir | tail -n$tail"))
 
-IFS=$oldIFS									# Reset IFS
+# Reset IFS
+IFS=$oldIFS
 
-j=1													# j is the users choice, starts at 1 in contrast to the array
+# j is the users choice, starts at 1 in contrast to the array
+j=1
+
 for i in "${fileList[@]}" ; do
-
-	if (( $j < 10 ))					# Tidier row (extra whitespace when <10)
+	# Tidier row (extra whitespace when <10)
+	if (( $j < 10 ))
 	then
-		echo -e " ${YELLOW}$j.${NC} $i"
+		echo -e " ${clYellow}$j.${clNoColor} $i"
 	else
-		echo -e "${YELLOW}$j.${NC} $i"
+		echo -e "${clYellow}$j.${clNoColor} $i"
 	fi
 
 	((j++))
@@ -81,7 +83,8 @@ while ! $finished ; do
 	then
 		echo "Number needs to be between 1 and $tail"
 	else
-		((fileChoice--)) 					# Account for zero index in array
+		# Account for zero index in array
+		((fileChoice--))
 		downloadSelection[$u]=$fileChoice
 		((u++))
 	fi
@@ -90,12 +93,12 @@ done
 
 # https://stackoverflow.com/questions/15520339/how-to-remove-carriage-return-and-newline-from-a-variable-in-shell-script
 
-for z in "${downloadSelection[@]}" ; do	
+for z in "${downloadSelection[@]}" ; do
 
 	toDownload="$(echo ${fileList[$z]} | tr -d '\r')"
 	echo $toDownload
 
-	/usr/local/bin/rsync -rvze 'ssh -q' "$SOURCEDIR/'$toDownload'" --progress $TARGETDIR
+	/usr/local/bin/rsync -rvze 'ssh -q' "$sourceDir/'$toDownload'" --progress $targetDir
 
 done
 
