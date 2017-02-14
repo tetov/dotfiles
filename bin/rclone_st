@@ -9,9 +9,8 @@ BASEPATHLOCAL=/home/farligm/v/syncthing
 BASEPATHREMOTE="secret:properbackup"
 
 BACKUPFOLDERS=('Arkivy' 'Bildervf' 'iTunesMusic')
-#ARRAYLENGTH=${#BACKUPFOLDERS[@]}
 
 for i in "${BACKUPFOLDERS[@]}" ; do
 	echo $i
-	#/usr/sbin/rclone sync --log-file $LOGFILE --exclude-from $EXCLUDEFILE $BASEPATHLOCAL/${BACKUPFOLDERS[$i]} $BASEPATHREMOTE/${BACKUPFOLDERS[$i]}
+	/usr/sbin/rclone sync --log-file $LOGFILE --exclude-from $EXCLUDEFILE $BASEPATHLOCAL/$i $BASEPATHREMOTE/$i
 done
