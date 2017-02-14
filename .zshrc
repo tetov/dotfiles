@@ -58,7 +58,7 @@ antigen apply
 PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '
 
 if command -v jq >/dev/null 2>&1 &&  [ -f $HOME/.dropbox/info.json ] ; then
-	export dropboxPath=$(jq -r .personal.path .dropbox/info.json)
+	export dropboxPath=$(jq -r .personal.path $HOME/.dropbox/info.json)
 else
 	export dropboxPath=$(cat $HOME/.altDropboxPath)
 fi
