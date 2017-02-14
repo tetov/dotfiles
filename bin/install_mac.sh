@@ -23,6 +23,7 @@ brew install findutils
 brew install git
 brew install googler
 brew install homebrew/boneyard/lftp
+brew install jq
 brew install lynx
 brew install mackup
 brew install mas

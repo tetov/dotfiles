@@ -7,6 +7,6 @@
 
 #echo "`date -u` Start script." >> $HOME/fballdebug.log   # debug
 
-/usr/bin/filebot -script fn:amc "$HOME/bay/vind/rtorrent.data/" --output "$HOME/bay/vind/plex.bibl" --log-file /home/farligm/.filebot/logs/rt_catchall_weekly.log --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y subtitles=en,sv skipExtract=y excludeList=amc.excludes >/dev/null
+/usr/bin/filebot -script fn:amc "$server_media_dir" --output "$server_plex_dir" --log-file $HOME/.filebot/logs/rt_catchall_weekly.log --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y subtitles=en,sv skipExtract=y excludeList=amc.excludes
 
 #echo "`date -u` End script." >> $HOME/fballdebug.log     #debug

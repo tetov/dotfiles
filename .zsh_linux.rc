@@ -13,7 +13,7 @@ export LC_RESPONSE=en_US.UTF-8
 export LC_TELEPHONE=sv_SE.UTF-8
 export LC_TIME=sv_SE.UTF-8
 
-#my aliases for arka
+# Aliases
 
 alias ls='ls -F --color=auto'
 alias grep='grep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
@@ -29,9 +29,9 @@ alias rt2days="rtcontrol --column-headers -scompleted -ocompletion completed=-2d
 alias rtstats="rtcontrol -q -o alias -s alias \\* | uniq -c"
 alias rti="rtcontrol is_complete=no"
 
-alias lsrtr='ls -1rt ~/bay/vind/rtorrent.data/ | tail -15'
+alias lsrtr='ls -1rt $server_media_dir | tail -15'
 
-alias nohard='find /home/farligm/v/plex.bibl/ -type f ! \( -name "*.jpg" -o -name "*.png" -o -name "*.nfo" -o -name "*.srt" -o -name "amc.excludes" -o -name "*.sub" \) -links 1 -exec du -bh {} \; | sort -h'
+alias nohard='find $server_plex_dir -type f ! \( -name "*.jpg" -o -name "*.png" -o -name "*.nfo" -o -name "*.srt" -o -name "amc.excludes" -o -name "*.sub" \) -links 1 -exec du -bh {} \; | sort -h'
 
 alias trippy='sudo tripwire -m c -I'
 alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'

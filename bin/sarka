@@ -2,15 +2,15 @@
 
 ## Adapted from https://coderwall.com/p/tixbrq/mount-remote-dir-in-the-osx-finder-using-sshfs-and-homebrew
 
-HOST=farligm@a.tetov.se
+remote=$server_user@$server_url
 
-REMOTEDIRS=( /home/farligm/ /home/farligm/bay/vind/ )
+remoteDirs=( $server_home $server_hdd )
 
-MOUNTPATH=$HOME/Desktop
+mountPath=$HOME/Desktop
 
-MOUNTDIRS=( ahome avind )
+mountDirs=( ahome avind )
 
-if ! [[ ${#REMOTEPOINTS[@]} == ${#MOUNTNAMES[@]} ]] ;
+if ! [[ ${#remoteDirs[@]} == ${#mountDirs[@]} ]] ;
 then
     echo "Length of arrays differ."
     exit 1
@@ -18,14 +18,14 @@ fi
 
 #reset mount
 
-for i in ${MOUNTDIRS[@]} ; do
-    umount -f $MOUNTPATH/$i
-    mkdir -pv $MOUNTPATH/$i
+for i in ${mountDirs[@]} ; do
+    umount -f $mountPath/$i
+    mkdir -pv $mountPath/$i
 done
 
 #mount dir
-for (( i = 0 ; i < ${#REMOTEDIRS[@]} ; i++ )) do
-    REMOTELOC=${REMOTEDIRS[$i]}
-    LOCALNAME=${MOUNTDIRS[$i]}
-    sshfs $HOST:$REMOTELOC $MOUNTPATH/$LOCALNAME -oauto_cache,"ssh_command=ssh -F $HOME/.ssh/sshfsconfig",reconnect,defer_permissions,noappledouble,negative_vncache,volname=$LOCALNAME &
+for (( i = 0 ; i < ${#remoteDirs[@]} ; i++ )) do
+    x=${remoteDirs[$i]}
+    y=${mountDirs[$i]}
+    sshfs $remote:$x $mountPath/$y -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=$y &
 done

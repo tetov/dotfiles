@@ -1,22 +1,25 @@
-# Inställningar
+## ENV
+
 export EDITOR="atom -nw"
 export HOMEBREW_NO_ANALYTICS=1
 
 path+=$HOME/bin
 
-# my aliases
+## ALIASES
+
+alias ssh='ssh -o "UseKeychain yes" -o "RemoteForward 52698 localhost:52698"'
 
 alias ls='ls -FG'
 alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
 alias zshconfig='mate -w $HOME/.zshrc'
 
-alias trrr='mv -v /Users/farligmidsommar/Downloads/*.torrent /Volumes/Anathema/Dropbox/trrtz/rtorrent/'
-alias lsrtr='ssh -qt farligm@a.tetov.se "ls -tr ~/v/rtorrent.data | tail -n10"'
+alias trrr='mv -v ~/Downloads/*.torrent $dropbox_path/trrtz/rtorrent/'
+alias lsrtr='ssh -qt $server_user@$server_url "ls -tr $server_media_dir | tail -n10"'
 
-alias arka='ssh farligm@a.tetov.se'
+alias arka='ssh $server_user@$server_url'
 
-alias lg='login gudrun'
+alias lg='login $local_admin'
 
 alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
 
@@ -27,14 +30,12 @@ alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew c
 alias f="ag -g"
 alias r=ag
 
-alias lsrtr='ssh -qt farligm@a.tetov.se "ls -tr ~/v/rtorrent.data | tail -n10"'
-
 alias sstatus='defaults read /var/db/santa/config.plist ClientMode'
 
-if [ `whoami` = "gudrun" ] ; then
+if [ $(whoami) = "$local_admin" ] ; then
 	source $HOME/.githubtoken
 
-	alias lg='echo "Already logged in as Gudrun"'
+	alias lg='echo "Already logged in as "$local_admin'
 
 	alias slock='sudo defaults write /var/db/santa/config.plist ClientMode -int 2'
 	alias sopen='sudo defaults delete /var/db/santa/config.plist ClientMode'

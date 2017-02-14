@@ -1,15 +1,16 @@
 #!/bin/bash
 
 ## Copy my syncthing folders to acs
+## TODO: Should I put syncthing folders in a global variable?
 
-EXCLUDEFILE=/home/farligm/v/syncthing/exclude-rclone.txt
-LOGFILE=/home/farligm/v/syncthing/rclone_st.log
+excludeFile=$server_syncthing_dir/exclude-rclone.txt
+logFile=$server_syncthing_dir/rclone_st.log
 
-BASEPATHLOCAL=/home/farligm/v/syncthing
-BASEPATHREMOTE="secret:properbackup"
+localBasePath=$server_syncthing_dir
+remoteBasePath=$encrypted_acd:$acd_backup_dir
 
-BACKUPFOLDERS=('Arkivy' 'Bildervf' 'iTunesMusic')
+toBackup=( 'Arkivy' 'Bildervf' 'iTunesMusic' )
 
-for i in "${BACKUPFOLDERS[@]}" ; do
-	/usr/sbin/rclone sync --delete-excluded --checksum --log-file $LOGFILE --exclude-from $EXCLUDEFILE $BASEPATHLOCAL/$i $BASEPATHREMOTE/$i
+for i in "${toBackup[@]}" ; do
+	/usr/sbin/rclone sync --delete-excluded --checksum --log-file $logFile --exclude-from $excludeFile $localBasePath/$i $remoteBasePath/$i
 done

@@ -10,17 +10,18 @@
 # executable, change the necessary settings, and set a cron job, e.g.:
 # 02 01 * * * /home/user/bin/sample-wrapper-for-cron.sh
 
-# BASEDIR: Location of mashpodder and related files are located
-BASEDIR=$HOME/saved/Podcast.Collection/
+# baseDir: Location of mashpodder and related files are located
+baseDir=$HOME/saved/Podcast.Collection/
 
-# DAILYLOG/PERMLOG: Location and name of daily and permanent log files
-DAILYLOG=$BASEDIR/dailypodcastlog.txt
-PERMLOG=$BASEDIR/permpodcastlog.txt
+# dailyLog/permLog: Location and name of daily and permanent log files
+dailyLog=$baseDir/dailypodcastlog.txt
+permLog=$baseDir/permpodcastlog.txt
 
 # Now, the actual wrapper part.  First, run mashpodder and send output to
-# the $DAILYLOG:
-$BASEDIR/mashpodder.sh > $DAILYLOG 2>&1
+# the $dailyLog:
+$baseDir/mashpodder.sh > $dailyLog 2>&1
 
-# Next, concatenate this to the $PERMLOG.
-cat $DAILYLOG >> $PERMLOG
+# Next, concatenate this to the $permLog.
+cat $dailyLog >> $permLog
+
 exit 0
