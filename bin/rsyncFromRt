@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Grab specified folder or file from rtorrent.data to Deaddrop
+## Grab specified folder or file from media dir to to drop dir
 
 dl="\"$1\""
 

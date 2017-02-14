@@ -57,7 +57,6 @@ antigen apply
 
 PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '
 
-<<<<<<< HEAD
 dropboxPath=$(jq -r .personal.path .dropbox/info.json)
 if command -v jq &&  [ -f $HOME/.dropbox/info.json ] ; then
 	export dropboxPath=$(jq -r .personal.path .dropbox/info.json)
@@ -66,8 +65,6 @@ else
 
 source $dropboxPath/.confidentials
 
-=======
->>>>>>> b06ade6f72c32385fd9884564474a2c78f8c3842
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 function iterm2_print_user_vars() {
