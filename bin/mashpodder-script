@@ -23,4 +23,5 @@ $baseDir/mashpodder.sh > $dailyLog 2>&1
 
 # Next, concatenate this to the $permLog.
 cat $dailyLog >> $permLog
+
 exit 0
