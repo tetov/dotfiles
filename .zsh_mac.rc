@@ -12,7 +12,7 @@ alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
 alias zshconfig='mate -w $HOME/.zshrc'
 
-alias trrr='mv -v ~/Downloads/*.torrent $dropbox_path/trrtz/rtorrent/'
+alias trrr='mv -v ~/Downloads/*.torrent $dropboxPath/trrtz/rtorrent/'
 alias lsrtr='ssh -qt $server_user@$server_url "ls -tr $server_media_dir | tail -n10"'
 
 alias arka='ssh $server_user@$server_url'
