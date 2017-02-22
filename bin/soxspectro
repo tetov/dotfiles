@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ## soxspectro makes spectrograms of flac, wav and mp3's. One spectrogram for the whole file and one at the 1 minute mark for 4 seconds.
 ## Usage: soxspectro /path/to/directory/

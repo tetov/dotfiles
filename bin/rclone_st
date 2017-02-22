@@ -1,7 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+################################################################################
 ## Copy my syncthing folders to acs
-## TODO: Should I put syncthing folders in a global variable?
+################################################################################
+
+# Load global vars from source_confidentials
+source $HOME/bin/source_confidentials
 
 excludeFile=$server_syncthing_dir/exclude-rclone.txt
 logFile=$server_syncthing_dir/rclone_st.log

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ################################################################################
 ## Script to list most recent files in specific directory (var sourceDir) and

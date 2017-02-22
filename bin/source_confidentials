@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+################################################################################
+## Script to source file .confidentials in Dropbox containing global variables.
+################################################################################
+
+if command -v jq >/dev/null 2>&1 &&  [ -f $HOME/.dropbox/info.json ] ; then
+	export dropboxPath=$(jq -r .personal.path $HOME/.dropbox/info.json)
+elif [ -f $HOME/.altDropboxPath ] ; then
+	export dropboxPath=$(cat $HOME/.altDropboxPath)
+else
+	echo "Missing jq, Dropbox path or .altDropboxPath file."
+	exit 1;
+fi
+}
+
+source $dropboxPath/.confidentials

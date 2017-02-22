@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo 'This will remove iTunes-specific personal metadata in all .m4a files in the current directory and subdirectories.'
 echo 'The following files will be modified :'
 echo ''
