@@ -12,6 +12,5 @@ else
 	echo "Missing jq, Dropbox path or .altDropboxPath file."
 	exit 1;
 fi
-}
 
 source $dropboxPath/.confidentials
