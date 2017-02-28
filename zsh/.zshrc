@@ -58,7 +58,7 @@ antigen apply
 
 PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '
 
-source $HOME/bin/source_confidentials
+source $dotfiles_dir/bin/source_confidentials
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 

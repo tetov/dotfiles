@@ -5,8 +5,10 @@
 ## Called by rtorrent; system.method.set_key = event.download.finished,fb_1,"execute={$HOME/bin/fb_1,$d.get_base_path=,$d.get_name=}"
 ################################################################################
 
+dotfiles_dir=$HOME/tetov-dotfiles
+
 # Load global vars from source_confidentials
-source $HOME/bin/source_confidentials
+source $dotfiles_dir/bin/source_confidentials
 
 # Input Parameters
 path="$1"
