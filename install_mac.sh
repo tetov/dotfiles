@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ################################################################################
 ## Script for new installation on mac
 ## Do not execute, run line by line.
@@ -10,11 +11,12 @@
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-curl -Lks https://gist.githubusercontent.com/sonyamamurin/1bc7caeb3c4b842da302bdb155bc8d52/raw/afff4077f6234f0680d06422a1b5e13ff68280cb/install-baredotfiles.sh | /bin/bash
-# Eller kör manuellt från https://gist.github.com/sonyamamurin/1bc7caeb3c4b842da302bdb155bc8d52
-
 brew update
 brew upgrade
+
+brew install stow
+
+source $HOME/tetov-dotfiles/stow.sh
 
 brew install bash-completion
 brew install duti
@@ -62,7 +64,7 @@ brew install zsh-completions
 # set zsh as the user login shell
 CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
 if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
-  # "setting newer homebrew zsh (/usr/local/bin/zsh) as your shell (password required)"
+  echo "setting newer homebrew zsh (/usr/local/bin/zsh) as your shell (password required)"
   # sudo bash -c 'echo "/usr/local/bin/zsh" >> /etc/shells'
   # chsh -s /usr/local/bin/zsh
   sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1

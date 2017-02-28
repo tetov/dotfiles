@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# shellcheck disable=2154
 
 ################################################################################
 ## Script to run filebot in rtorrent data folder using exclude file to catch

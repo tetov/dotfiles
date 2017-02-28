@@ -1,5 +1,4 @@
-#!/usr/bin/python
-
+#!/usr/bin/env python
 ################################################################################
 ## Script to check which app has focus. Useful for when something is stealing
 ## focus. Like Google Drive.

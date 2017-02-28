@@ -1,6 +1,10 @@
 setopt HIST_IGNORE_DUPS
 
-ZSHA_BASE=$HOME/.antigen
+dotfiles_dir=$HOME/tetov-dotfiles
+
+path+=$dotfiles_dir/bin
+
+ZSHA_BASE=$dotfiles_dir/antigen
 source $ZSHA_BASE/antigen.zsh
 
 LS_COLORS='no=00;37:fi=00:di=00;33:ln=04;36:pi=40;33:so=01;35:bd=40;33;01:'
@@ -12,14 +16,13 @@ antigen use oh-my-zsh
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
-antigen bundle textmate
 
 if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
-	source $HOME/.zsh_mac.rc
+	source $dotfiles_dir/zsh-support/zsh_mac.rc
 	path+=/usr/local/sbin
 elif [ "$OSTYPE"="linux-gnu" ]; then
-	source $HOME/.zsh_linux.rc
+	source $dotfiles_dir/zsh-support/zsh_mac.rc
 else
 	echo 'OSTYPE is wrong'
 fi
@@ -36,8 +39,6 @@ alias rmi='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias ..='cd ..'
-
-alias bare='git --git-dir=$HOME/.baredotfiles/ --work-tree=$HOME $@'
 
 alias watch='watch -n30 '
 

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# shellcheck disable=2154
 
 ## Adapted from https://coderwall.com/p/tixbrq/mount-remote-dir-in-the-osx-finder-using-sshfs-and-homebrew
 
@@ -10,7 +11,7 @@ mountPath=$HOME/Desktop
 
 mountDirs=( ahome avind )
 
-if ! [[ ${#remoteDirs[@]} == ${#mountDirs[@]} ]] ;
+if ! [[ ${#remoteDirs[@]} == "${#mountDirs[@]}" ]] ;
 then
     echo "Length of arrays differ."
     exit 1
@@ -18,7 +19,7 @@ fi
 
 #reset mount
 
-for i in ${mountDirs[@]} ; do
+for i in "${mountDirs[@]}" ; do
     umount -f $mountPath/$i
     mkdir -pv $mountPath/$i
 done
