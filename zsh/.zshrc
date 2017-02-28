@@ -22,7 +22,7 @@ if [[ $OSTYPE == darwin* ]] ; then
 	source $dotfiles_dir/zsh-support/zsh_mac.rc
 	path+=/usr/local/sbin
 elif [ "$OSTYPE"="linux-gnu" ]; then
-	source $dotfiles_dir/zsh-support/zsh_mac.rc
+	source $dotfiles_dir/zsh-support/zsh_linux.rc
 else
 	echo 'OSTYPE is wrong'
 fi
