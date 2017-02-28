@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#
+
 # This is a sample script to run mashpodder from a cron job.  There are many
 # better ways to do this; this is just an example.  This script will capture
 # the mashpodder output into a dailypodcastlog.txt file, which is overwritten
