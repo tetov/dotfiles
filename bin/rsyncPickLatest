@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck disable=2154
 
 ################################################################################
 ## Script to list most recent files in specific directory (var sourceDir) and
