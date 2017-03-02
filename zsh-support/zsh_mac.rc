@@ -4,6 +4,7 @@ export EDITOR="atom -nw"
 export HOMEBREW_NO_ANALYTICS=1
 
 path+=$HOME/bin
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 ## ALIASES
 
