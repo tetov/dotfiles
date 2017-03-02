@@ -21,8 +21,8 @@ if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
 	source $dotfiles_dir/zsh-support/zsh_mac.rc
 	path+=/usr/local/sbin
-elif [ "$OSTYPE" = "linux-gnu" ]; then
-	source $dotfiles_dir/zsh-support/zsh_mac.rc
+elif [ "$OSTYPE"="linux-gnu" ]; then
+	source $dotfiles_dir/zsh-support/zsh_linux.rc
 else
 	echo 'OSTYPE is wrong'
 fi
