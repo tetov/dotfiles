@@ -33,7 +33,7 @@ alias r=ag
 
 alias sstatus='defaults read /var/db/santa/config.plist ClientMode'
 
-if groups $whoami | grep "\badmin\b" ; then
+if groups $whoami | grep &>/dev/null "\badmin\b" ; then
 	alias lg='echo "Already logged in as $local_admin"'
 
 	alias slock='sudo defaults write /var/db/santa/config.plist ClientMode -int 2'
