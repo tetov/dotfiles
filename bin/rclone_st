@@ -18,5 +18,5 @@ remoteBasePath=$encrypted_acd:$acd_backup_dir
 toBackup=( 'Arkivy' 'Bildervf' 'iTunesMusic' )
 
 for i in "${toBackup[@]}" ; do
-	/usr/sbin/rclone sync --delete-excluded --checksum --log-file $logFile --exclude-from $excludeFile $localBasePath/$i $remoteBasePath/$i
+	/usr/sbin/rclone sync -q --delete-excluded --checksum --log-file $logFile --exclude-from $excludeFile $localBasePath/$i $remoteBasePath/$i
 done
