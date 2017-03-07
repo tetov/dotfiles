@@ -38,15 +38,19 @@ end
 
 -- Single keybinding for app launch
 singleapps = {
-  {'t', 'iTerm'},
-  {'w', 'TextMate'},
+-- First row
+  {'q', 'iTerm'},
+  {'w', 'Google Chrome'},
   {'e', 'Finder'},
-  {'c', 'Calendar'},
-  {'q', 'Messages'},
-  {'a', 'Messenger'},
   {'r', 'Remember the milk'},
-  {'d', 'Standard Notes'},
-  {'s', 'Safari'}
+-- Second row
+  {'a', '/Applications/Atom.app'}, -- Full path because otherwise launch duplicate Atom apps
+  {'s', 'Standard Notes'},
+  {'d', 'Calendar'},
+-- Third row
+  {'z', 'Messages'},
+  {'x', 'Messenger'},
+  {'c', 'System Preferences'}
 }
 
 for i, app in ipairs(singleapps) do

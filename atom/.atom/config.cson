@@ -1,0 +1,82 @@
+"*":
+  "block-cursor":
+    global:
+      blinkOff:
+        backgroundColor: "#fffb00"
+      blinkOn:
+        backgroundColor: "#ff9300"
+        borderColor: "#942192"
+  core:
+    closeEmptyWindows: false
+    destroyEmptyPanes: false
+    disabledPackages: [
+      "language-gfm"
+      "welcome"
+      "metrics"
+      "language-toml"
+      "language-sql"
+      "language-source"
+      "language-mustache"
+    ]
+    openEmptyEditorOnStart: false
+    projectHome: "/Volumes/Anathema/git-dir/"
+    telemetryConsent: "no"
+    themes: [
+      "unity-ui"
+      "solarized-dark-syntax"
+    ]
+  editor:
+    fontSize: 13
+    showIndentGuide: true
+    softWrap: true
+    softWrapAtPreferredLineLength: true
+  "exception-reporting":
+    userId: "1c4fb84e-4b66-430d-9504-167eed8b4d53"
+  "git-plus":
+    commits:
+      verboseCommits: true
+  "highlight-column": {}
+  "highlight-line": {}
+  linter:
+    errorPanelHeight: 24
+  "nord-atom-ui": {}
+  "spell-check":
+    locales: [
+      "en-US"
+      "sv-SE"
+    ]
+  "unity-ui":
+    colorStatusIndicatorsInTreeView: true
+    showIcons: true
+  welcome:
+    showOnStartup: false
+"block-cursor":
+  "coffee-script":
+    blinkOn:
+      backgroundColor: "red"
+    scopes: [
+      ".source.coffee"
+    ]
+  global:
+    blinkOn:
+      backgroundColor: "orange"
+    cursorLineFix: true
+  mini:
+    blinkOn:
+      backgroundColor: "darkgrey"
+    selector: "atom-text-editor[mini]"
+  "no-focus":
+    blinkOn:
+      backgroundColor: "transparent"
+      borderColor: "white"
+      borderStyle: "bordered-box"
+      borderWidth: 1
+    selector: "atom-text-editor:not(.is-focused)"
+  "one-dark-syntax":
+    blinkOn:
+      backgroundColor: "lightgray"
+    selector: ".theme-one-dark-syntax atom-text-editor"
+  "one-light-syntax":
+    blinkOn:
+      backgroundColor: "darkgray"
+    selector: ".theme-one-light-syntax atom-text-editor"
