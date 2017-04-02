@@ -19,13 +19,9 @@ antigen bundle git
 
 if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
-	source $dotfiles_dir/zsh-support/zsh_mac.rc
-	path+=/usr/local/sbin
-elif [ "$OSTYPE"="linux-gnu" ]; then
-	source $dotfiles_dir/zsh-support/zsh_linux.rc
-else
-	echo 'OSTYPE is wrong'
 fi
+
+antigen apply
 
 #Platform independent aliases
 
@@ -39,22 +35,19 @@ alias rmi='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias ..='cd ..'
-
 alias watch='watch -n30 '
-
 alias whatmp3='whatmp3 --skipgenre'
 alias whatmp3n='whatmp3 --V0 -n '
-
 alias dithr='mkdir ../"${PWD##*/}_16"; for flac in *.flac; do sox -S "${flac}" -G -b 16 ../"${PWD##*/}_16"/"${flac}" rate -v -L 48000 dither; done'
 
-# Syntax highlighting bundle.
-antigen bundle zsh-users/zsh-syntax-highlighting
-
-# Load the theme.
-antigen theme gentoo
-
-# Tell antigen that you're done.
-antigen apply
+if [[ $OSTYPE == darwin* ]] ; then
+	source $dotfiles_dir/zsh-support/zsh_mac.rc
+	path+=/usr/local/sbin
+elif [ "$OSTYPE"="linux-gnu" ]; then
+	source $dotfiles_dir/zsh-support/zsh_linux.rc
+else
+	echo 'OSTYPE is wrong'
+fi
 
 PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '
 
