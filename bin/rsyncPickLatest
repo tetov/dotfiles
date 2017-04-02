@@ -7,6 +7,8 @@
 ## Reason for creation? lftp got moved to homebrew/boneyard so I thought I
 ## homebrew/boneyard so I thought I should switch to rsync instead. This is a
 ## recreation of my lftp workflow.
+##
+## TODO: Add connection check
 ################################################################################
 
 clRed='\033[0;31m'
@@ -18,6 +20,8 @@ sourceDir=$server_user@$server_url:$server_media_dir
 targetDir=$local_drop_dir
 
 finished=false
+
+## if [ ssh -o BatchMode=yes -o ConnectTimeout=5 skinner echo ok 2>&1
 
 while ! $finished ; do
 
@@ -98,7 +102,7 @@ for z in "${downloadSelection[@]}" ; do
 	toDownload="$(echo ${fileList[$z]} | tr -d '\r')"
 	echo $toDownload
 
-	/usr/local/bin/rsync -rvze 'ssh -q' "$sourceDir/'$toDownload'" --progress $targetDir
+	/usr/local/bin/rsync -rhvze 'ssh -q' "$sourceDir/'$toDownload'" --progress $targetDir
 
 done
 
