@@ -21,6 +21,8 @@ if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
 fi
 
+antigen theme gentoo
+
 antigen apply
 
 #Platform independent aliases
