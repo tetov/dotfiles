@@ -17,6 +17,9 @@ antigen use oh-my-zsh
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
 
+# zsh-completions https://github.com/zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-completions
+
 if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
 fi
