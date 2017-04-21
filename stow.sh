@@ -8,6 +8,7 @@ stow bash
 stow zsh
 stow vim
 stow lftp
+stow git
 
 if [[ $OSTYPE == darwin* ]] ; then
   stow karabiner-elements
