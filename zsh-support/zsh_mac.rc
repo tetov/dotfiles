@@ -1,12 +1,8 @@
 ## ENV
 
-export EDITOR="atom -nw"
 export HOMEBREW_NO_ANALYTICS=1
 
 eval "$(rbenv init -)"
-
-path+=$HOME/bin
-export PATH="$HOME/.rbenv/bin:$PATH"
 
 ## ALIASES
 
@@ -22,13 +18,11 @@ alias arka='ssh $server_user@$server_url'
 
 alias lg='login $local_admin'
 
-alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
-
 # The first is f, which searches the current directory subtree for files with names containing a string (ignoring case). f png would find all PNG files in the current subtree, as well as “PNGisMyFavorite.txt” and so forth.
 
 # The second is r, which recursively greps the current directory subtree for files matching a pattern. r HTTP would grep for files containing that exact string, while r '"http[^"]*"' -i would search for double-quoted strings starting with “http”, ignoring case.
 
-alias f="ag -g"
+alias f='ag -g'
 alias r=ag
 
 alias sstatus='defaults read /var/db/santa/config.plist ClientMode'
@@ -38,7 +32,11 @@ if groups $whoami | grep &>/dev/null "\badmin\b" ; then
 
 	alias slock='sudo defaults write /var/db/santa/config.plist ClientMode -int 2'
 	alias sopen='sudo defaults delete /var/db/santa/config.plist ClientMode'
+
 	alias scert='sudo santactl rule --whitelist --certificate --sha256'
 	alias sfile='sudo santactl rule --whitelist --sha256'
+
 	alias slookup='santactl fileinfo'
+
+  alias brww='sopen && brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor && slock'
 fi

@@ -1,3 +1,8 @@
+# ENV
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 setopt HIST_IGNORE_DUPS
 
 dotfiles_dir=$HOME/tetov-dotfiles
@@ -37,7 +42,7 @@ alias l.='ls -d .*'
 alias cd..='cd ..'
 alias mkdir='mkdir -pv'
 alias rmi='rm -i'
-alias cp='cp -i'
+alias cp='cp -i' 
 alias mv='mv -i'
 alias ..='cd ..'
 alias watch='watch -n30 '
@@ -48,10 +53,12 @@ alias dithr='mkdir ../"${PWD##*/}_16"; for flac in *.flac; do sox -S "${flac}" -
 if [[ $OSTYPE == darwin* ]] ; then
 	source $dotfiles_dir/zsh-support/zsh_mac.rc
 	path+=/usr/local/sbin
+  path+="$HOME/.rbenv/bin:$PATH"
 elif [ "$OSTYPE"="linux-gnu" ]; then
 	source $dotfiles_dir/zsh-support/zsh_linux.rc
+  path+=$HOME/bin
 else
-	echo 'OSTYPE is wrong'
+	echo 'OSTYPE unknown'
 fi
 
 PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%}%n@)%m %{$fg[blue]%}%(!.%1~.%~) $(git_prompt_info)%_%{$fg[white]%}$(prompt_char)%{$reset_color%} '
