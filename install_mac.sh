@@ -14,52 +14,11 @@
 brew update
 brew upgrade
 
-brew install stow
+brew tap Homebrew/bundle
+brew bundle
 
 source $HOME/tetov-dotfiles/stow.sh
 
-brew install bash-completion
-brew install duti
-brew install fdupes
-brew install findutils
-brew install git
-brew install googler
-brew install homebrew/boneyard/lftp
-brew install jq
-brew install lynx
-brew install mackup
-brew install mas
-brew install md5sha1sum
-brew install media-info
-brew install minisign
-brew install mktorrent
-brew install ncdu
-brew install nmap
-brew install openssl
-brew install pandoc
-brew install privoxy
-brew install python
-brew install python3
-brew install rclone
-brew install rename
-brew install sox
-brew install speedtest_cli
-brew install spoof-mac
-brew install homebrew/fuse/sshfs
-brew install sqlite
-brew install svtplay-dl
-brew install the_silver_searcher
-brew install tmux
-brew install tor
-brew install transmission
-brew install tree
-brew install unrar
-brew install watch
-brew install wget
-brew install youtube-dl
-brew install z
-brew install zsh
-brew install zsh-completions
 
 # set zsh as the user login shell
 CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
@@ -70,81 +29,6 @@ if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
   sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
   ok
 fi
-
-brew tap caskroom/cask
-
-brew cask install 1password
-brew cask install adobe-digital-editions
-brew cask install adobe-reader
-brew cask install angry-ip-scanner
-brew cask install animated-gif-quicklook
-brew cask install appcleaner
-brew cask install appcleaner
-brew cask install betterzipql
-brew cask install cheatsheet
-brew cask install discord
-brew cask install dropbox
-brew cask install firefox
-brew cask install github-desktop
-brew cask install gmail-notifier
-brew cask install google-chrome
-brew cask install google-drive
-brew cask install gpgtools
-brew cask install grandperspective
-brew cask install hammerspoon
-brew cask install iterm2
-brew cask install jumpcut
-brew cask install karabiner-elements
-brew cask install keepingyouawake
-brew cask install kindle
-brew cask install little-flocker
-brew cask install little-snitch
-brew cask install mediainfo
-brew cask install messenger
-brew cask install onyx
-brew cask install osxfuse
-brew cask install qlcolorcode
-brew cask install qlimagesize
-brew cask install qlmarkdown
-brew cask install qlprettypatch
-brew cask install qlstephen
-brew cask install qlvideo
-brew cask install quicklook-csv
-brew cask install quicklook-json
-brew cask install quicklook-pat
-brew cask install quicklook-pfm
-brew cask install quicklookase
-brew cask install quicknfo
-brew cask install rcdefaultapp
-brew cask install santa
-brew cask install skype
-brew cask install slack
-brew cask install spotifree
-brew cask install steam
-brew cask install suspicious-package
-brew cask install syncthing-bar
-brew cask install tomighty
-brew cask install transmission
-brew cask install tuntap
-brew cask install virtualbox
-brew cask install viscosity
-brew cask install vlc
-brew cask install vlc-webplugin
-brew cask install webpquicklook
-brew cask install wineskin-winery
-brew cask install xld
-brew cask install xquartz
-
-brew tap caskroom/fonts
-brew cask install font-fontawesome
-brew cask install font-awesome-terminal-fonts
-brew cask install font-hack
-brew cask install font-inconsolata-dz-for-powerline
-brew cask install font-inconsolata-g-for-powerline
-brew cask install font-inconsolata-for-powerline
-brew cask install font-roboto-mono
-brew cask install font-roboto-mono-for-powerline
-brew cask install font-source-code-pro
 
 brew cleanup
 

@@ -19,6 +19,12 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-sensible'
+Plugin 'LucHermitte/lh-vim-lib'
+Plugin 'LucHermitte/lh-dev'
+Plugin 'LucHermitte/lh-brackets'
+" And a lh-dev dependency, not required by lh-brackets
+Plugin 'LucHermitte/lh-tags'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'rdnetto/YCM-Generator'
 
