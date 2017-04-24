@@ -80,7 +80,7 @@ function is_it_wednesday {
 		echo "👽" # Alien Prompt
 	elif [[ $(date +%A) = "Saturday" ]]; then
 		echo "🐈" # Caturday
-    else
-    	echo "🐙" # Inky Prompt
+  else
+  	echo "🐙" # Inky Prompt
   fi
 }

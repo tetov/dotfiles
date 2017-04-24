@@ -267,11 +267,11 @@ singleapps = {
 -- Second row
   {'a', '/Applications/Atom.app'}, -- Full path because otherwise launch duplicate Atom apps
   {'s', 'Standard Notes'},
-  {'d', 'Calendar'},
+  {'d', 'System Preferences'},
 -- Third row
   {'z', 'Messages'},
   {'x', 'Messenger'},
-  {'c', 'System Preferences'}
+  {'c', 'Calendar'}
 }
 
 for i, app in ipairs(singleapps) do

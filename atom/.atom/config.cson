@@ -37,8 +37,7 @@
       verboseCommits: true
   "highlight-column": {}
   "highlight-line": {}
-  linter:
-    errorPanelHeight: 24
+  linter: {}
   "nord-atom-ui": {}
   "spell-check":
     locales: [

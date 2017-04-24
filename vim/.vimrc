@@ -16,7 +16,11 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'valloric/youcompleteme'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'rdnetto/YCM-Generator'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -43,8 +47,9 @@ set background=dark
 colorscheme solarized
 
 " TABS
-set tabstop=2               " number of visual spaces per TAB
-set softtabstop=2           " number of spaces in tab when editing
+set tabstop=4               " number of visual spaces per TAB
+set softtabstop=4           " number of spaces in tab when editing
+set shiftwidth=4
 set expandtab               " tabs are spaces
 
 " General UI
