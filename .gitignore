@@ -2,4 +2,6 @@ vim/.vim/backup/*
 vim/.vim/swap/*
 vim/.vim/bundle/*
 lftp/.lftp/rl_history
+.netrwhist
+
 

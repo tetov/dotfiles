@@ -9,14 +9,11 @@ stow zsh
 stow vim
 stow lftp
 stow git
+stow tmux
 
 if [[ $OSTYPE == darwin* ]] ; then
   stow karabiner-elements
   stow hammerspoon
-elif [ "$OSTYPE" = "linux-gnu" ]; then
-	stow rmate
-else
-	echo "Unknown OS type"
 fi
 
 exit 0

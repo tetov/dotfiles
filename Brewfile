@@ -63,7 +63,7 @@ brew 'transmission'
 brew 'tree'
 brew 'tor'
 brew 'unrar'
-brew 'vim', args: ['with-override-system-vi', 'with-python3']
+brew 'vim' 
 brew 'watch'
 brew 'wget'
 brew 'youtube-dl'

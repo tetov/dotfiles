@@ -15,8 +15,6 @@ set mirror:parallel-transfer-count 2
 set mirror:parallel-directories true
 
 #Below taken straight from https://gist.github.com/fxthomas/1030591
-alias hostls command ls
-alias dir ls
 alias less more
 alias zless zmore
 alias bzless bzmore

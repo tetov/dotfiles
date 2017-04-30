@@ -1,3 +1,0 @@
-host: auto                   # Prefer host from SSH_CONNECTION over localhost
-port: 52698
-unixsocket: ~/.rmate.socket  # Use this socket file if it exists

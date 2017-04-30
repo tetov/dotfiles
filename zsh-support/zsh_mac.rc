@@ -9,8 +9,6 @@ eval "$(rbenv init -)"
 alias ls='ls -FG'
 alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
-alias zshconfig='mate -w $HOME/.zshrc'
-
 alias trrr='mv -v ~/Downloads/*.torrent $dropboxPath/trrtz/rtorrent/'
 alias lsrtr='ssh -qt $server_user@$server_url "ls -tr $server_media_dir | tail -n10"'
 
@@ -36,7 +34,7 @@ if groups $whoami | grep &>/dev/null "\badmin\b" ; then
 	alias scert='sudo santactl rule --whitelist --certificate --sha256'
 	alias sfile='sudo santactl rule --whitelist --sha256'
 
-	alias slookup='santactl fileinfo'
+    alias slookup='santactl fileinfo'
 
-  alias brww='sopen && brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor && slock'
+    alias brww='sopen && brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor && slock'
 fi

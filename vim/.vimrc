@@ -26,6 +26,7 @@ Plugin 'LucHermitte/lh-brackets'
 " And a lh-dev dependency, not required by lh-brackets
 Plugin 'LucHermitte/lh-tags'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'sjl/vitality.vim'
 Plugin 'rdnetto/YCM-Generator'
 
 " All of your Plugins must be added before the following line
@@ -90,3 +91,35 @@ nnoremap k gk
 set nobackup
 set nowb
 set noswapfile
+
+" No markers for LH-brackets
+let b:usemarks=0
+
+" Following from https://github.com/mcantor/no_plugins
+
+" Built in fuzzy find
+set path+=**
+set wildmenu
+" - Hit tab to :find by partial match
+" - Use * to make it fuzzy
+" - Use :b and type in unique part of path and enter to open up file in buffer
+
+" Get off my lawn - helpful when learning Vim :)
+nnoremap <Left> :echoe "Use h"<CR>
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up> :echoe "Use k"<CR>
+nnoremap <Down> :echoe "Use j"<CR>
+
+" Tweaks for netrw (file-browser) 
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+
+" Relative numbers and current line number
+set relativenumber 
+set number  
+
+" Save with sudo
+command! -nargs=0 Sw w !sudo tee % > /dev/null

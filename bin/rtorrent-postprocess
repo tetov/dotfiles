@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck disable=2154
 
 torrentPath="$1"
 torrentName="$2"

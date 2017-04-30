@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-################################################################################
 ## Script to run filebot on directory.
 ## Called by rtorrent; system.method.set_key = event.download.finished,fb_1,"execute={$HOME/bin/fb_1,$d.get_base_path=,$d.get_name=}"
-################################################################################
 
 dotfiles_dir=$HOME/tetov-dotfiles
 

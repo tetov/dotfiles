@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-################################################################################
 ## Script to run filebot in rtorrent data folder using exclude file to catch
 ## files missed by rt post execution script.
-################################################################################
 
 dotfiles_dir=$HOME/tetov-dotfiles
 

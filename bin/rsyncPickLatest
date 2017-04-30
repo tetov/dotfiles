@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
-################################################################################
 ## Script to list most recent files in specific directory (var sourceDir) and
 ## pick one to download with rsyclnc to specific directory (var targetDir)
 ##
 ## Reason for creation? lftp got moved to homebrew/boneyard so I thought I
-## homebrew/boneyard so I thought I should switch to rsync instead. This is a
-## recreation of my lftp workflow.
+## should switch to rsync instead. This is a recreation of my lftp workflow.
 ##
 ## TODO: Add connection check
-################################################################################
 
 clRed='\033[0;31m'
 clCyan='\033[0;36m'
