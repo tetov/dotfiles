@@ -23,7 +23,7 @@ alias lg='login $local_admin'
 alias f='ag -g'
 alias r=ag
 
-alias sstatus='defaults read /var/db/santa/config.plist ClientMode'
+alias sstatus='santactl status'
 
 if groups $whoami | grep &>/dev/null "\badmin\b" ; then
 	alias lg='echo "Already logged in as $local_admin"'

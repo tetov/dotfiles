@@ -355,11 +355,11 @@ wifiWatcher:start()
 
 -- Keybindings
 
-k:bind({}, 'left', nil, mvWinLeft)
-k:bind({}, 'right', nil, mvWinRight)
+k:bind({}, 'h', nil, mvWinLeft)
+k:bind({}, 'l', nil, mvWinRight)
 
-k:bind({}, 'up', nil, mvWinTop)
-k:bind({}, 'down', nil, mvWinBottom)
+k:bind({}, 'k', nil, mvWinTop)
+k:bind({}, 'j', nil, mvWinBottom)
 
 k:bind({}, '1', nil, mvWinLeftOneThird)
 k:bind({}, '2', nil, mvWinMiddleOneThird)
@@ -376,10 +376,10 @@ k:bind({}, '0', nil, mvWinRightBottomCorner)
 
 k:bind({}, 'm', nil, maxset)
 
-k:bind({}, "h", nil, shiftLeft)
-k:bind({}, "j", nil, shiftUp)
-k:bind({}, "k", nil, shiftDown)
-k:bind({}, "l", nil, shiftRight)
+k:bind({}, "left", nil, shiftLeft)
+k:bind({}, "up", nil, shiftUp)
+k:bind({}, "down", nil, shiftDown)
+k:bind({}, "right", nil, shiftRight)
 
 k:bind({}, "y", nil, wider)
 k:bind({}, "u", nil, taller)

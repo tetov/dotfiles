@@ -28,6 +28,8 @@ Plugin 'LucHermitte/lh-tags'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'sjl/vitality.vim'
 Plugin 'rdnetto/YCM-Generator'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'kopischke/vim-stay'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -61,6 +63,7 @@ set expandtab               " tabs are spaces
 
 " General UI
 set number                  " show line numbers
+set relativenumber 
 set showcmd                 " show command in bottom bar
 set cursorline              " highlight current line
 filetype indent on          " load filetype-specific indent files
@@ -79,8 +82,10 @@ set ignorecase              " Make searches case-insensitive.
 set foldenable              " enable folding
 set foldlevelstart=10       " open most folds by default
 set foldnestmax=10          " 10 nested fold max
-" nnoremap <space> za       " space open/closes folds
+nnoremap <space> za       " space open/closes folds
 set foldmethod=indent       " fold based on indent level
+"au BufWinLeave ?* mkview     " save folds on exit
+"au BufWinEnter ?* silent loadview " load folds on open
 
 " MOVEMENT
 " move vertically by visual line
@@ -95,31 +100,24 @@ set noswapfile
 " No markers for LH-brackets
 let b:usemarks=0
 
-" Following from https://github.com/mcantor/no_plugins
-
-" Built in fuzzy find
+" Built in fuzzy find from https://github.com/mcantor/no_plugins
 set path+=**
-set wildmenu
 " - Hit tab to :find by partial match
 " - Use * to make it fuzzy
 " - Use :b and type in unique part of path and enter to open up file in buffer
 
-" Get off my lawn - helpful when learning Vim :)
-nnoremap <Left> :echoe "Use h"<CR>
-nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up> :echoe "Use k"<CR>
-nnoremap <Down> :echoe "Use j"<CR>
-
-" Tweaks for netrw (file-browser) 
+" Tweaks for netrw (file-browser) from https://github.com/mcantor/no_plugins 
 let g:netrw_banner=0        " disable annoying banner
 let g:netrw_browse_split=4  " open in prior window
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
 
-" Relative numbers and current line number
-set relativenumber 
-set number  
+" Get off my lawn - helpful when learning Vim :)
+nnoremap <Left> :echoe "Use h"<CR>
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up> :echoe "Use k"<CR>
+nnoremap <Down> :echoe "Use j"<CR>
 
 " Save with sudo
 command! -nargs=0 Sw w !sudo tee % > /dev/null
