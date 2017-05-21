@@ -36,5 +36,5 @@ if groups $whoami | grep &>/dev/null "\badmin\b" ; then
 
     alias slookup='santactl fileinfo'
 
-    alias brww='sopen && brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor && slock'
+    alias brww='sopen ; brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor && slock'
 fi
