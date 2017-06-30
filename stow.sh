@@ -6,6 +6,7 @@ cd ~/tetov-dotfiles || { echo "Can't cd to ~/tetov-dotfiles." >&2; exit 1; }
 
 stow bash
 stow zsh
+stow ssh
 stow vim
 stow lftp
 stow git
