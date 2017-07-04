@@ -63,7 +63,7 @@ set expandtab               " tabs are spaces
 
 " General UI
 set number                  " show line numbers
-set relativenumber 
+set relativenumber
 set showcmd                 " show command in bottom bar
 set cursorline              " highlight current line
 filetype indent on          " load filetype-specific indent files
