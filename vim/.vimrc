@@ -14,7 +14,14 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'valloric/youcompleteme'
+if has ("unix")
+    let s:uname = system("uname -s")
+    if s:uname == "Darwin"
+        Plugin 'valloric/youcompleteme'
+        Plugin 'rdnetto/YCM-Generator'
+    endif
+endif
+
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
@@ -27,7 +34,6 @@ Plugin 'LucHermitte/lh-brackets'
 Plugin 'LucHermitte/lh-tags'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'sjl/vitality.vim'
-Plugin 'rdnetto/YCM-Generator'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'kopischke/vim-stay'
 
@@ -106,7 +112,7 @@ set path+=**
 " - Use * to make it fuzzy
 " - Use :b and type in unique part of path and enter to open up file in buffer
 
-" Tweaks for netrw (file-browser) from https://github.com/mcantor/no_plugins 
+" Tweaks for netrw (file-browser) from https://github.com/mcantor/no_plugins
 let g:netrw_banner=0        " disable annoying banner
 let g:netrw_browse_split=4  " open in prior window
 let g:netrw_altv=1          " open splits to the right
