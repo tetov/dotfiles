@@ -11,7 +11,7 @@ stow lftp
 stow git
 stow tmux
 
-if [ "$uname" = "darwin" ]; then
+if [ $(uname) = "Darwin" ]; then
   stow karabiner-elements
   stow hammerspoon
   stow ssh-mac

@@ -14,13 +14,12 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-if has ("unix")
-    let s:uname = system("uname -s")
-    if s:uname == "Darwin"
-        Plugin 'valloric/youcompleteme'
-        Plugin 'rdnetto/YCM-Generator'
-    endif
+let s:uname = system("echo -n \"$(uname)\"")
+if !v:shell_error && s:uname == "Darwin"
+  Plugin 'valloric/youcompleteme'
+  Plugin 'rdnetto/YCM-Generator'
 endif
+
 
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-commentary'
@@ -118,12 +117,6 @@ let g:netrw_browse_split=4  " open in prior window
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
-
-" Get off my lawn - helpful when learning Vim :)
-nnoremap <Left> :echoe "Use h"<CR>
-nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up> :echoe "Use k"<CR>
-nnoremap <Down> :echoe "Use j"<CR>
 
 " Save with sudo
 command! -nargs=0 Sw w !sudo tee % > /dev/null
