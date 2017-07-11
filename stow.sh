@@ -11,7 +11,7 @@ stow lftp
 stow git
 stow tmux
 
-if [[ $OSTYPE == darwin* ]] ; then
+if [ "$uname" = "darwin" ]; then
   stow karabiner-elements
   stow hammerspoon
   stow ssh-mac
