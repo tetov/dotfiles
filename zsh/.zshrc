@@ -32,6 +32,9 @@ if [[ $OSTYPE == darwin* ]] ; then
 	antigen-bundle osx
 fi
 
+# Self-update
+antigen bundle unixorn/autoupdate-antigen.zshplugin
+
 antigen theme gentoo
 
 antigen apply

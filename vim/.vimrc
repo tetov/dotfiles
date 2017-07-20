@@ -35,6 +35,7 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'sjl/vitality.vim'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'kopischke/vim-stay'
+Plugin 'vim-syntastic/syntastic'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -117,6 +118,16 @@ let g:netrw_browse_split=4  " open in prior window
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
+
+" Settings for syntastic (recommended settings from README
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " Save with sudo
 command! -nargs=0 Sw w !sudo tee % > /dev/null
