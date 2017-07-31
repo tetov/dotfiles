@@ -3,7 +3,7 @@
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 setopt HIST_IGNORE_DUPS
@@ -29,11 +29,8 @@ antigen bundle git
 antigen bundle zsh-users/zsh-completions
 
 if [[ $OSTYPE == darwin* ]] ; then
-	antigen-bundle osx
+	antigen bundle osx
 fi
-
-# Self-update
-antigen bundle unixorn/autoupdate-antigen.zshplugin
 
 antigen theme gentoo
 

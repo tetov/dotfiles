@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 ## Adapted from https://coderwall.com/p/tixbrq/mount-remote-dir-in-the-osx-finder-using-sshfs-and-homebrew
 

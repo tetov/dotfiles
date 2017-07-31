@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Script for new installation on mac
 # Do not execute, run line by line.
@@ -17,7 +17,7 @@ brew upgrade
 brew tap Homebrew/bundle
 brew bundle # see ./Brewfile
 
-source $HOME/tetov-dotfiles/stow.sh
+. "$HOME/tetov-dotfiles/stow.sh"
 
 ## Set zsh as the user login shell
 chsh -s /usr/local/bin/zsh
@@ -394,7 +394,7 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
 ## Spotlight
-    
+
 ### Change indexing order and disable some file types from being indexed"
 defaults write com.apple.spotlight orderedItems -array \
   '{"enabled" = 1;"name" = "APPLICATIONS";}' \
@@ -431,7 +431,7 @@ defaults write com.apple.terminal StringEncodings -array 4
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 ### Disable local Time Machine backups"
-hash tmutil &> /dev/null && sudo tmutil disablelocal
+hash tmutil >/dev/null 2>&1 && sudo tmutil disablelocal
 
 ## Activity Monitor
 

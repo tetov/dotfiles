@@ -21,16 +21,11 @@ if !v:shell_error && s:uname == "Darwin"
 endif
 
 
-Plugin 'tpope/vim-fugitive'
+"lugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-sensible'
-Plugin 'LucHermitte/lh-vim-lib'
-Plugin 'LucHermitte/lh-dev'
-Plugin 'LucHermitte/lh-brackets'
-" And a lh-dev dependency, not required by lh-brackets
-Plugin 'LucHermitte/lh-tags'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'sjl/vitality.vim'
 Plugin 'ntpeters/vim-better-whitespace'
@@ -102,9 +97,6 @@ nnoremap k gk
 set nobackup
 set nowb
 set noswapfile
-
-" No markers for LH-brackets
-let b:usemarks=0
 
 " Built in fuzzy find from https://github.com/mcantor/no_plugins
 set path+=**
