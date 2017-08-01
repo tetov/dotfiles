@@ -12,12 +12,12 @@ dotfiles_dir=$HOME/tetov-dotfiles
 
 path+=$dotfiles_dir/bin
 
-ZSHA_BASE=$dotfiles_dir/antigen
-source $ZSHA_BASE/antigen.zsh
-
 LS_COLORS='no=00;37:fi=00:di=00;33:ln=04;36:pi=40;33:so=01;35:bd=40;33;01:'
 export LS_COLORS
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+ZSHA_BASE=$dotfiles_dir/antigen
+source $ZSHA_BASE/antigen.zsh
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
@@ -45,18 +45,17 @@ alias l.='ls -d .*'
 alias cd..='cd ..'
 alias mkdir='mkdir -pv'
 alias rmi='rm -i'
-alias cp='cp -i' 
+alias cp='cp -i'
 alias mv='mv -i'
 alias ..='cd ..'
 alias watch='watch -n30 '
 alias whatmp3='whatmp3 --skipgenre'
 alias whatmp3n='whatmp3 --V0 -n '
-alias dithr='mkdir ../"${PWD##*/}_16"; for flac in *.flac; do sox -S "${flac}" -G -b 16 ../"${PWD##*/}_16"/"${flac}" rate -v -L 48000 dither; done'
 
 if [[ $OSTYPE == darwin* ]] ; then
 	source $dotfiles_dir/zsh-support/zsh_mac.rc
 	path+=/usr/local/sbin
-  path+="$HOME/.rbenv/bin:$PATH"
+    path+="$HOME/.rbenv/bin:$PATH"
 elif [ "$OSTYPE"="linux-gnu" ]; then
 	source $dotfiles_dir/zsh-support/zsh_linux.rc
   path+=$HOME/bin
