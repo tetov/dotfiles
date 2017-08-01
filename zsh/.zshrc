@@ -20,10 +20,10 @@ source $dotfiles_dir/bin/source_confidentials
 ZSHA_BASE=$dotfiles_dir/antigen
 source $ZSHA_BASE/antigen.zsh
 
-antigen bundle Tarrasch/zsh-command-not-found
+antigen bundle command-not-found
 antigen bundle zsh-users/zsh-completions
 
-antigen theme fishy
+antigen theme gentoo
 
 antigen apply
 
