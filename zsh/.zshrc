@@ -24,8 +24,13 @@ antigen use oh-my-zsh
 
 antigen bundle command-not-found
 antigen bundle zsh-users/zsh-completions
+antigen bundle djui/alias-tips
+antigen bundle git
 
 antigen theme gentoo
+
+# zsh-syntax-highlighting needs to go last
+antigen bundle zsh-users/zsh-syntax-highlighting
 
 antigen apply
 
@@ -61,7 +66,6 @@ if [[ $OSTYPE == darwin* ]] ; then
         alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
     fi
 elif [ "$OSTYPE"="linux-gnu" ]; then
-    source $dotfiles_dir/zsh-support/zsh_linux.rc
     path+=$HOME/bin
 
     alias ls='ls -F --color=auto'
