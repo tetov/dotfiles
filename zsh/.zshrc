@@ -20,6 +20,8 @@ source $dotfiles_dir/bin/source_confidentials
 ZSHA_BASE=$dotfiles_dir/antigen
 source $ZSHA_BASE/antigen.zsh
 
+antigen use oh-my-zsh
+
 antigen bundle command-not-found
 antigen bundle zsh-users/zsh-completions
 
