@@ -1,0 +1,41 @@
+# General env
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+LS_COLORS='no=00;37:fi=00:di=00;33:ln=04;36:pi=40;33:so=01;35:bd=40;33;01:'
+export LS_COLORS
+
+dotfiles_dir=$HOME/tetov-dotfiles
+
+# Load variables containing server adresses and user names
+. "$dotfiles_dir/bin/source_confidentials"
+
+# Aliases
+. $HOME/.aliases
+
+# Update path only if path not present
+_path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
+    set -- ${PATH:=$1} ; for p in $add ; do {
+        [ -z "${p%-[AP]}" ] && { unset P A
+                eval ${p#-}= ; continue ; }
+        for d ; do [ -z "${d%"$p"}" ] && break
+        done ; } || set -- ${P+$p} $* ${A+$p}
+        done ; export PATH="$*" ; IFS=$oFS
+}
+
+_path_assign \
+    $HOME/bin \
+    $dotfiles_dir/bin
+
+if [ $(uname) = "Darwin" ] ; then
+    export HOMEBREW_NO_ANALYTICS=1
+
+    _path_assign \
+        /usr/local/sbin \
+        $HOME/.rbenv/bin
+
+    eval "$(rbenv init -)"
+fi

@@ -1,8 +1,9 @@
 shell-env/.vim/backup/*
-shell-env/.vim/bundle/*
-shell-env/.vim/swap/*
-shell-env/.vim/view/*
 shell-env/.lftp/rl_history
 shell-env/.lftp/cwd_history
 shell-env/.lftp/transfer_log*
+shell-env/.vim/bundle/*
+shell-env/.vim/spell/*
+shell-env/.vim/swap/*
+shell-env/.vim/view/*
 .netrwhist
