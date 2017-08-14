@@ -9,7 +9,7 @@ alias ..='cd ..'
 alias ofd='open_command $PWD'
 alias _='sudo '
 
-if [ "$OSTYPE" = "linux-gnu" ] ; then
+if [ $(uname) = "Linux" ] ; then
     alias ls='ls -F --color=auto'
     alias grep='grep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
@@ -23,11 +23,13 @@ if [ "$OSTYPE" = "linux-gnu" ] ; then
 
     alias trippy='sudo tripwire -m c -I'
     alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
-else
+elif [ $(uname) = "Darwin" ] ; then
     alias ls='ls -FG'
     alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
     alias trrr='mv -v ~/Downloads/*.torrent $dropboxPath/trrtz/rtorrent/'
 
     alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
+else
+    echo "Not configured for uname =" $(uname)
 fi
