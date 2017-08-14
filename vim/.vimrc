@@ -18,16 +18,16 @@ let s:uname = system("echo -n \"$(uname)\"")
 if !v:shell_error && s:uname == "Darwin"
   Plugin 'valloric/youcompleteme'
   Plugin 'rdnetto/YCM-Generator'
+  Plugin 'vim-airline/vim-airline'
 endif
-
 
 "lugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-sensible'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'sjl/vitality.vim'
+Plugin 'Raimondi/delimitMate'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'kopischke/vim-stay'
 Plugin 'vim-syntastic/syntastic'
@@ -63,8 +63,7 @@ set shiftwidth=4
 set expandtab               " tabs are spaces
 
 " General UI
-set number                  " show line numbers
-set relativenumber
+set number
 set showcmd                 " show command in bottom bar
 set cursorline              " highlight current line
 filetype indent on          " load filetype-specific indent files

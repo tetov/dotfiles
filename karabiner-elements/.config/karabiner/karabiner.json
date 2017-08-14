@@ -1,8 +1,8 @@
 {
     "global": {
         "check_for_updates_on_startup": true,
-        "show_in_menu_bar": true,
-        "show_profile_name_in_menu_bar": true
+        "show_in_menu_bar": false,
+        "show_profile_name_in_menu_bar": false
     },
     "profiles": [
         {
@@ -10,42 +10,65 @@
                 "parameters": {
                     "basic.to_if_alone_timeout_milliseconds": 1000
                 },
-                "rules": []
+                "rules": [
+                    {
+                        "manipulators": [
+                            {
+                                "description": "Change caps_lock to command+control+option+shift.",
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_shift",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
             },
-            "devices": [],
-            "fn_function_keys": {
-                "f1": "display_brightness_decrement",
-                "f10": "mute",
-                "f11": "volume_decrement",
-                "f12": "volume_increment",
-                "f2": "display_brightness_increment",
-                "f3": "mission_control",
-                "f4": "launchpad",
-                "f5": "illumination_decrement",
-                "f6": "illumination_increment",
-                "f7": "rewind",
-                "f8": "play_or_pause",
-                "f9": "fastforward"
-            },
-            "name": "External keyboard",
-            "selected": false,
-            "simple_modifications": {
-                "caps_lock": "f18",
-                "grave_accent_and_tilde": "f15"
-            },
-            "virtual_hid_keyboard": {
-                "caps_lock_delay_milliseconds": 0,
-                "keyboard_type": "ansi"
-            }
-        },
-        {
-            "complex_modifications": {
-                "parameters": {
-                    "basic.to_if_alone_timeout_milliseconds": 1000
+            "devices": [
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": {},
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 545,
+                        "vendor_id": 1452
+                    },
+                    "ignore": false,
+                    "simple_modifications": {
+                        "grave_accent_and_tilde": "f15"
+                    }
                 },
-                "rules": []
-            },
-            "devices": [],
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": {},
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 567,
+                        "vendor_id": 1452
+                    },
+                    "ignore": false,
+                    "simple_modifications": {
+                        "non_us_backslash": "f15"
+                    }
+                }
+            ],
             "fn_function_keys": {
                 "f1": "display_brightness_decrement",
                 "f10": "mute",
@@ -60,15 +83,12 @@
                 "f8": "play_or_pause",
                 "f9": "fastforward"
             },
-            "name": "Internal keyboard",
+            "name": "tetov",
             "selected": true,
-            "simple_modifications": {
-                "caps_lock": "f18",
-                "non_us_backslash": "f15"
-            },
+            "simple_modifications": {},
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,
-                "keyboard_type": "ansi"
+                "keyboard_type": "iso"
             }
         }
     ]

@@ -1,22 +1,15 @@
---[[
-Sources:
-	functions:
-		http://www.hammerspoon.org/go/
-	grid:
-		https://gist.github.com/moshen/a7c8805fa2827981584d
-	hyper key:
-		https://github.com/lodestone/hyper-hacks/blob/master/hammerspoon/init.lua
-		https://gist.github.com/ttscoff/cce98a711b5476166792d5e6f1ac5907#gistcomment-1886969
---
-]]--
--- Set grid size
-hs.grid.MARGINX = 0    -- The margin between each window horizontally
-hs.grid.MARGINY = 0    -- The margin between each window vertically
-hs.grid.GRIDWIDTH = 12  -- The number of cells wide the grid is
-hs.grid.GRIDHEIGHT = 12  -- The number of cells high the grid is
+-- ENV
 
 -- No animations
 hs.window.animationDuration = 0
+
+-- A global variable for the Hyper Mode
+hyper = {"⌘", "⌥", "⌃", "⇧"}
+
+-- capture before binding with hyper
+hyperfns = {}
+
+-- FUNCTIONS
 
 -- Reload config when .lua files are modified
 function reloadConfig(files)
@@ -35,282 +28,54 @@ local myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", relo
 
 hs.alert.show("Config loaded")
 
--- A global variable for the Hyper Mode
-k = hs.hotkey.modal.new({}, "F17")
+-- Move window to part of screen
+leftHalf = { 0, 0, 0.5, 1 }
+rightHalf = { 0.5, 0, 0.5, 1 }
+leftThird = { 0, 0, 1/3, 1 }
+rightThird = { 2/3, 0, 1/3, 1 }
+leftTwoThirds = { 0, 0, 2/3, 1 }
+rightTwoThirds = { 1/3, 0, 2/3, 1 }
 
-launch = function(appname)
-  hs.application.launchOrFocus(appname)
-  k.triggered = true
+
+function moveWindow(unitCoord)
+    hs.window.focusedWindow():moveToUnit(hs.geometry.rect(unitCoord))
 end
 
-mvWinLeft = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y
-  f.w = max.w / 2
-  f.h = max.h
-  win:setFrame(f)
-	k.triggered = true
+-- Get and move to screen
+function getNextScreen(s)
+    all = hs.screen.allScreens()
+    for i = 1, #all do
+        if all[i] == s then
+            return all[(i - 1 + 1) % #all + 1]
+        end
+    end
+    return nil
 end
 
-mvWinRight = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x + (max.w / 2)
-  f.y = max.y
-  f.w = max.w / 2
-  f.h = max.h
-  win:setFrame(f)
-	k.triggered = true
-end
-
-mvWinTop = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y
-  f.w = max.w
-  f.h = max.h / 2
-  win:setFrame(f)
-	k.triggered = true
-end
-
-mvWinBottom = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y + (max.h / 2)
-  f.w = max.w
-  f.h = max.h / 2
-  win:setFrame(f)
-	k.triggered = true
-end
-
-mvWinLeftTwoThirds = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y
-  f.w = 2 * max.w / 3
-  f.h = max.h
-  win:setFrame(f)
-	k.triggered = true
-end
-
-mvWinLeftOneThird = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y
-  f.w = max.w / 3
-  f.h = max.h
-  win:setFrame(f)
-	k.triggered = true
-end
-
-mvWinRightTwoThirds = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x + max.w / 3
-  f.y = max.y
-  f.w = 2 * max.w / 3
-  f.h = max.h
-  win:setFrame(f)
-  
-  k.triggered = true
-end
-
-mvWinRightOneThird = function ()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x + 2 * max.w / 3
-  f.y = max.y
-  f.w = max.w / 3
-  f.h = max.h
-  win:setFrame(f)
-  
-  k.triggered = true
-end
-
-mvWinMiddleOneThird = function ()
+function moveToNextScreen()
     local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-
-    f.x = max.x + max.w / 3
-    f.y = max.y
-    f.w = max.w / 3
-    f.h = max.h
-    win:setFrame(f)
-
-    k.triggered = true
+    if win ~= nil then
+        currentScreen = win:screen()
+        nextScreen = getNextScreen(currentScreen)
+        if nextScreen then
+            win:moveToScreen(nextScreen)
+        end
+    end
 end
 
-mvWinMiddleTwoThirds = function ()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
+-- Toggle a window between its normal size, and being maximized
+local frameCache = {}
 
-    f.x = max.x + max.w / 6
-    f.y = max.y
-    f.w = 2 * max.w / 3
-    f.h = max.h
-    win:setFrame(f)
-
-    k.triggered = true
-end
-
-mvWinLeftTopCorner = function ()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-
-    f.x = max.x
-    f.y = max.y
-    f.w = max.w / 2
-    f.h = max.h / 2
-    win:setFrame(f)
-
-    k.triggered = true
-end
-  
-mvWinRightTopCorner = function ()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-
-    f.x = max.x + max.w / 2
-    f.y = max.y
-    f.w = max.w / 2
-    f.h = max.h / 2
-    win:setFrame(f)
-
-    k.triggered = true
-end
-
-mvWinLeftBottomCorner = function ()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-
-    f.x = max.x
-    f.y = max.y + max.h / 2
-    f.w = max.w / 2
-    f.h = max.h / 2
-    win:setFrame(f)
-
-    k.triggered = true
-end
-
-mvWinRightBottomCorner = function ()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-
-    f.x = max.x + max.w / 2
-    f.y = max.y + max.h / 2
-    f.w = max.w / 2
-    f.h = max.h / 2
-    win:setFrame(f)
-
-    k.triggered = true
-end
-
-maxset = function()
-	hs.grid.maximizeWindow(hs.window.focusedWindow())
-	k.triggered = true
-end
-
--- Shift window on grid
-shiftLeft = function ()
-	hs.grid.pushWindowLeft(hs.window.focusedWindow())
-	k.triggered = true
-end
-
-shiftDown = function ()
-	hs.grid.pushWindowDown(hs.window.focusedWindow())
-	k.triggered = true
-end
-
-shiftUp = function ()
-	hs.grid.pushWindowUp(hs.window.focusedWindow())
-	k.triggered = true
-end
-
-shiftRight = function ()
-	hs.grid.pushWindowRight(hs.window.focusedWindow())
-	k.triggered = true
-end
-
--- Resize window on grid
-taller = function ()
-    hs.grid.resizeWindowTaller(hs.window.focusedWindow())
-    k.triggered = true
-end
-
-shorter = function ()
-    hs.grid.resizeWindowShorter(hs.window.focusedWindow())
-    k.triggered = true
-end
-
-wider = function ()
-    hs.grid.resizeWindowWider(hs.window.focusedWindow())
-    k.triggered = true
-end
-
-thinner = function ()
-    hs.grid.resizeWindowThinner(hs.window.focusedWindow())
-    k.triggered = true
-end
-
--- Enter Hyper Mode when F18 (Hyper/Capslock) is pressed
-pressedF18 = function()
-  k.triggered = false
-  k:enter()
-end
-
--- Leave Hyper Mode when F18 (Hyper/Capslock) is pressed,
---   send ESCAPE if no other keys are pressed.
-releasedF18 = function()
-  k:exit()
-  if not k.triggered then
-    hs.eventtap.keyStroke({}, 'ESCAPE')
+function toggleMaximized()
+  local win = hs.window.focusedWindow()
+  if frameCache[win:id()] then
+    win:setFrame(frameCache[win:id()])
+    frameCache[win:id()] = nil
+  else
+    frameCache[win:id()] = win:frame()
+    win:maximize()
   end
 end
-
--- Bind the Hyper key
-f18 = hs.hotkey.bind({}, 'F18', pressedF18, releasedF18)
 
 -- Bring all Finder windows forward when one gets activated
 function applicationWatcher(appName, eventType, appObject)
@@ -323,8 +88,6 @@ end
 local appWatcher = hs.application.watcher.new(applicationWatcher)
 appWatcher:start()
 
--- Paste fungerar trots blockering (t ex mount .dmg i finder)
-hs.hotkey.bind({"cmd", "alt"}, "V", function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end)
 
 -- Ändra volym baserat på wifi-nätverk
 local wifiWatcher = nil
@@ -353,56 +116,48 @@ end
 wifiWatcher = hs.wifi.watcher.new(ssidChangedCallback)
 wifiWatcher:start()
 
--- Keybindings
+-- KEYBINDINGS
 
-k:bind({}, 'h', nil, mvWinLeft)
-k:bind({}, 'l', nil, mvWinRight)
+-- Move to next screen
+hyperfns['<'] = moveToNextScreen
 
-k:bind({}, 'k', nil, mvWinTop)
-k:bind({}, 'j', nil, mvWinBottom)
+-- Window Hints
+hyperfns['+'] = hs.hints.windowHints
 
-k:bind({}, '1', nil, mvWinLeftOneThird)
-k:bind({}, '2', nil, mvWinMiddleOneThird)
-k:bind({}, '3', nil, mvWinRightOneThird)
+-- Get past pasteblocking
+hyperfns['v'] = function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end
 
-k:bind({}, '4', nil, mvWinLeftTwoThirds)
-k:bind({}, '5', nil, mvWinMiddleTwoThirds)
-k:bind({}, '6', nil, mvWinRightTwoThirds)
+-- Window layouts
+hyperfns['1'] = function() moveWindow(leftHalf) end
+hyperfns['2'] = function() moveWindow(rightHalf) end
+hyperfns['3'] = function() moveWindow(leftThird) end
+hyperfns['4'] = function() moveWindow(rightThird) end
+hyperfns['5'] = function() moveWindow(leftTwoThirds) end
+hyperfns['6'] = function() moveWindow(rightTwoThirds) end
 
-k:bind({}, '7', nil, mvWinLeftTopCorner)
-k:bind({}, '8', nil, mvWinRightTopCorner)
-k:bind({}, '9', nil, mvWinLeftBottomCorner)
-k:bind({}, '0', nil, mvWinRightBottomCorner)
+hyperfns['m'] = toggleMaximized
 
-k:bind({}, 'm', nil, maxset)
+-- Change focus
+hyperfns['h'] = function() hs.window.focusedWindow():focusWindowWest() end
+hyperfns['l'] = function() hs.window.focusedWindow():focusWindowEast() end
+hyperfns['k'] = function() hs.window.focusedWindow():focusWindowNorth() end
+hyperfns['j'] = function() hs.window.focusedWindow():focusWindowSouth() end
 
-k:bind({}, "left", nil, shiftLeft)
-k:bind({}, "up", nil, shiftUp)
-k:bind({}, "down", nil, shiftDown)
-k:bind({}, "right", nil, shiftRight)
+-- Launch apps
+hyperfns['q'] = function() hs.application.launchOrFocus('iTerm') end
+hyperfns['w'] = function() hs.application.launchOrFocus('Google Chrome') end
+hyperfns['e'] = function() hs.application.launchOrFocus('Finder') end
+hyperfns['r'] = function() hs.application.launchOrFocus('Remember the milk') end
 
-k:bind({}, "y", nil, wider)
-k:bind({}, "u", nil, taller)
-k:bind({}, "i", nil, shorter)
-k:bind({}, "o", nil, thinner)
+hyperfns['a'] = function() hs.urlevent.openURLWithBundle('https://mail.google.com/', 'com.google.chrome') end
+hyperfns['s'] = function() hs.application.launchOrFocus('Standard Notes') end
+hyperfns['d'] = function() hs.application.launchOrFocus('System Preferences') end
 
--- Single keybinding for app launch
-singleapps = {
--- First row
-  {'q', 'iTerm'},
-  {'w', 'Google Chrome'},
-  {'e', 'Finder'},
-  {'r', 'Remember the milk'},
--- Second row
-  {'a', '/Applications/Atom.app'}, -- Full path because otherwise launch duplicate Atom apps
-  {'s', 'Standard Notes'},
-  {'d', 'System Preferences'},
--- Third row
-  {'z', 'Messages'},
-  {'x', 'Messenger'},
-  {'c', 'Calendar'}
-}
+hyperfns['z'] = function() hs.application.launchOrFocus('Messages') end
+hyperfns['x'] = function() hs.application.launchOrFocus('Messenger') end
+hyperfns['c'] = function() hs.urlevent.openURLWithBundle('https://calendar.google.com/', 'com.google.chrome') end
 
-for i, app in ipairs(singleapps) do
-  k:bind({}, app[1], function() launch(app[2]); k:exit(); end)
+-- Set up hyper keybindings
+for _hotkey, _fn in pairs(hyperfns) do
+    hs.hotkey.bind(hyper, _hotkey, _fn)
 end

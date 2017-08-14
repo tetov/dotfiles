@@ -4,5 +4,5 @@ vim/.vim/swap/*
 vim/.vim/view/*
 lftp/.lftp/rl_history
 lftp/.lftp/cwd_history
-lftp/.lftp/transfer_log
+lftp/.lftp/transfer_log*
 .netrwhist
