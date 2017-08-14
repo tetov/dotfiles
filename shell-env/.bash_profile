@@ -23,6 +23,6 @@ export LS_COLORS
 # Source aliases from dot-di# Source aliases from dot-dir
 . "$dotfiles_dir/aliases"
 
-if [ -f "$(brew --prefix)"/etc/bash_completion ]; then
+if [ -f "$(brew --prefix)"/etc/bash_completion >/dev/null 2>&1 ]; then
     . "$(brew --prefix)"/etc/bash_completion
 fi
