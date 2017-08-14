@@ -4,12 +4,7 @@ command -v stow >/dev/null 2>&1 || { echo "Stow is required. Please install befo
 
 cd ~/tetov-dotfiles || { echo "Can't cd to ~/tetov-dotfiles." >&2; exit 1; }
 
-stow bash
-stow zsh
-stow vim
-stow lftp
-stow git
-stow tmux
+stow shell-env 
 
 if [ $(uname) = "Darwin" ]; then
   stow karabiner-elements
@@ -18,5 +13,3 @@ if [ $(uname) = "Darwin" ]; then
   else
       stow ssh-other
 fi
-
-exit 0

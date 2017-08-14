@@ -1,8 +1,8 @@
-vim/.vim/backup/*
-vim/.vim/bundle/*
-vim/.vim/swap/*
-vim/.vim/view/*
-lftp/.lftp/rl_history
-lftp/.lftp/cwd_history
-lftp/.lftp/transfer_log*
+shell-env/.vim/backup/*
+shell-env/.vim/bundle/*
+shell-env/.vim/swap/*
+shell-env/.vim/view/*
+shell-env/.lftp/rl_history
+shell-env/.lftp/cwd_history
+shell-env/.lftp/transfer_log*
 .netrwhist

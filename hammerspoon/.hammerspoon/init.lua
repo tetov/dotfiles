@@ -3,9 +3,6 @@
 -- No animations
 hs.window.animationDuration = 0
 
--- A global variable for the Hyper Mode
-hyper = {"⌘", "⌥", "⌃", "⇧"}
-
 -- capture before binding with hyper
 hyperfns = {}
 
@@ -117,6 +114,14 @@ wifiWatcher = hs.wifi.watcher.new(ssidChangedCallback)
 wifiWatcher:start()
 
 -- KEYBINDINGS
+
+-- Spotlight
+
+-- A global variable for the Hyper Mode
+hyper = {"⌘", "⌥", "⌃", "⇧"}
+
+-- § to Spotlight
+hs.hotkey.bind("", "§", function() hs.eventtap.keyStroke({"⌘"}, 'space') end)
 
 -- Move to next screen
 hyperfns['<'] = moveToNextScreen

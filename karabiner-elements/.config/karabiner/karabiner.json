@@ -51,7 +51,8 @@
                     },
                     "ignore": false,
                     "simple_modifications": {
-                        "grave_accent_and_tilde": "f15"
+                        "grave_accent_and_tilde": "non_us_backslash",
+                        "non_us_backslash": "grave_accent_and_tilde"
                     }
                 },
                 {
@@ -64,9 +65,7 @@
                         "vendor_id": 1452
                     },
                     "ignore": false,
-                    "simple_modifications": {
-                        "non_us_backslash": "f15"
-                    }
+                    "simple_modifications": {}
                 }
             ],
             "fn_function_keys": {
@@ -88,7 +87,7 @@
             "simple_modifications": {},
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,
-                "keyboard_type": "iso"
+                "keyboard_type": "ansi"
             }
         }
     ]
