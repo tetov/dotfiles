@@ -4,12 +4,13 @@ command -v stow >/dev/null 2>&1 || { echo "Stow is required. Please install befo
 
 cd ~/tetov-dotfiles || { echo "Can't cd to ~/tetov-dotfiles." >&2; exit 1; }
 
-stow shell-env 
+stow shell-env
+stow vim
+stow git
+stow lftp
+stow ssh
 
 if [ $(uname) = "Darwin" ]; then
   stow karabiner-elements
   stow hammerspoon
-  stow ssh-mac
-  else
-      stow ssh-other
 fi

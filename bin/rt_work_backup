@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-## Backup torrent files in .session
-
-find $HOME/private/rtorrent/.session/ -type f -iname "*.torrent" -mtime -1 | sed -r 's/^.+\///' | tar -C $HOME/private/rtorrent/.session/ -cjf $HOME/saved/rt_work_backup/rt_work_change_"$(date +\%Y-\%m-\%d)".tar.bz2 --files-from - --warning=no-file-changed

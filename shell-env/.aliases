@@ -27,7 +27,9 @@ elif [ $(uname) = "Darwin" ] ; then
     alias ls='ls -FG'
     alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
-    alias trrr='mv -v ~/Downloads/*.torrent $dropboxPath/trrtz/rtorrent/'
+    alias ssh='ssh -F $HOME/.ssh/config-mac'
+
+    alias trrr='mv -v ~/Downloads/*.torrent /Volumes/JUDITH/twatch/'
 
     alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
 else

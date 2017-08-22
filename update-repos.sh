@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 if [ ! -d $HOME/.vim/bundle/Vundle.vim ] ; then
+    makedir -p ~/.vim/bundle
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
