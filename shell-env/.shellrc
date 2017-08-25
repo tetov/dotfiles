@@ -38,4 +38,6 @@ if [ $(uname) = "Darwin" ] ; then
         $HOME/.rbenv/bin
 
     eval "$(rbenv init -)"
+else
+    eval `keychain --eval id_rsa`
 fi

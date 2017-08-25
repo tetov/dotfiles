@@ -21,6 +21,8 @@ if [ $(uname) = "Linux" ] ; then
     alias rti="rtcontrol is_complete=no"
     alias rttrump='rtcontrol -s alias,message,name message="*nregistered*"'
 
+    alias nohard='find /mnt/vind/plex/ -type f ! \( -name "*.jpg" -o -name "*.png" -o -name "*.nfo" -o -name "*.srt" -o -name "amc.excludes" -o -name "*.sub" \) -links 1 -exec du -bh {} \; | sort -h'
+
     alias trippy='sudo tripwire -m c -I'
     alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
 elif [ $(uname) = "Darwin" ] ; then
