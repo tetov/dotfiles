@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+## Script to run filebot on directory.
+## Called by rtorrent; method.set_key = event.download.finished,rt-exec-filebot,"execute={~/tetov-dotfiles/bin/rt-exec-filebot,$d.base_path=,$d.name=}"
+
+# Input Parameters
+basePath="$1"
+torrentName="$2"
+
+$HOME/tetov-dotfiles/bin/filebot.sh -script fn:amc --output "/mnt/vind/plex" --log-file $HOME/filebot/log/rt-exec-filebot.log --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y subtitles=en,sv skipExtract=y excludeList=amc.excludes ut_dir="$basePath" ut_kind="multi" ut_title="$torrentName"
