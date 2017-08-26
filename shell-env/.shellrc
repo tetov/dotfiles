@@ -11,10 +11,18 @@ export LS_COLORS
 dotfiles_dir=$HOME/tetov-dotfiles
 
 # Load variables containing server adresses and user names
-. "$dotfiles_dir/bin/source_confidentials"
+if [ -f "$HOME/.confidentials" ] ; then
+    . $HOME/.confidentials
+else
+    echo ".confidentials not found in ~"
+fi
 
 # Aliases
-. $HOME/.aliases
+if [ -f "$HOME/.confidentials" ] ; then
+    . $HOME/.aliases
+else
+    echo ".aliases not found in ~"
+fi
 
 # Update path only if path not present
 _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=

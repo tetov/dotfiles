@@ -13,8 +13,8 @@ clCyan='\033[0;36m'
 clYellow='\033[0;33m'
 clNoColor='\033[0m' # No Color
 
-sourceDir=$server_user@$server_url:$server_media_dir
-targetDir=$local_drop_dir
+sourceDir=$SSH1_USER@$SSH1_URL:$SSH1_RTORRENT_DATA
+targetDir=$LOCAL_TARGET
 
 finished=false
 
@@ -22,7 +22,7 @@ finished=false
 
 while ! $finished ; do
 
-	read -e -p "How many recent files would you like to see? [20]: " tail
+	read -er -p "How many recent files would you like to see? [20]: " tail
 
 	if [[ "$tail" == "" ]] ; then
 		tail=20
@@ -45,7 +45,7 @@ IFS='
 '
 
 # Get file list from server. Yes, I have read http://mywiki.wooledge.org/ParsingLs
-fileList=($(ssh -qt $server_user@$server_url "/bin/ls -1tr $server_media_dir | tail -n$tail"))
+fileList=($(ssh -qt "$SSH1_USER"@"$SSH1_URL" "/bin/ls -1tr $SSH1_RTORRENT_DATA | tail -n$tail"))
 
 # Reset IFS
 IFS=$oldIFS
@@ -55,7 +55,7 @@ j=1
 
 for i in "${fileList[@]}" ; do
 	# Tidier row (extra whitespace when <10)
-	if (( $j < 10 ))
+	if (( j < 10 ))
 	then
 		echo -e " ${clYellow}$j.${clNoColor} $i"
 	else
@@ -74,13 +74,13 @@ u=0
 
 while ! $finished ; do
 
-	read -e -p "Enter index of files to download, q when finished: " fileChoice
+	read -er -p "Enter index of files to download, q when finished: " fileChoice
 
 	if [[ "$fileChoice" = "q" ]] ; then
 		finished=true
 	elif ! [[ "$fileChoice" =~ ^[0-9]+$ ]] ; then
 		echo "Sorry integers only"
-	elif (( $fileChoice > $tail || $fileChoice < 1 ))
+	elif (( fileChoice > tail || fileChoice < 1 ))
 	then
 		echo "Number needs to be between 1 and $tail"
 	else
@@ -96,10 +96,10 @@ done
 
 for z in "${downloadSelection[@]}" ; do
 
-	toDownload="$(echo ${fileList[$z]} | tr -d '\r')"
-	echo $toDownload
+	toDownload="$(echo "${fileList[$z]}" | tr -d '\r')"
+	echo "$toDownload"
 
-	/usr/local/bin/rsync -rhvze 'ssh -q' "$sourceDir/'$toDownload'" --progress $targetDir
+	/usr/local/bin/rsync -rhvze "ssh -q -F $HOME/.ssh/config-mac" "$sourceDir"/"$toDownload" --progress "$targetDir"
 
 done
 
