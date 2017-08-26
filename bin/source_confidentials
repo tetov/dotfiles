@@ -7,10 +7,9 @@ export dropboxPath
 if command -v jq >/dev/null 2>&1 &&  [ -f "$HOME/.dropbox/info.json" ] ; then
     dropboxPath=$(jq -r .personal.path "$HOME/.dropbox/info.json")
     . "$dropboxPath/.confidentials"
-elif [ -f "$HOME/.altDropboxPath" ] ; then
-	dropboxPath=$(cat "$HOME/.altDropboxPath")
-    . "$dropboxPath/.confidentials"
+elif [ -f "$HOME/.confidentials" ] ; then
+    . "$HOME/.confidentials"
 else
-	echo "Missing jq, Dropbox path or .altDropboxPath file."
+	echo "Missing jq, Dropbox path or .confidentials in ~."
 fi
 
