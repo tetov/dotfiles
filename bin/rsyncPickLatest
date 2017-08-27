@@ -99,7 +99,7 @@ for z in "${downloadSelection[@]}" ; do
 	toDownload="$(echo "${fileList[$z]}" | tr -d '\r')"
 	echo "$toDownload"
 
-	/usr/local/bin/rsync -rhvze "ssh -q -F $HOME/.ssh/config-mac" "$sourceDir"/"$toDownload" --progress "$targetDir"
+	/usr/local/bin/rsync -rhvze "ssh -q -F $HOME/.ssh/config-mac" "$sourceDir/'$toDownload'" --progress "$targetDir"
 
 done
 
