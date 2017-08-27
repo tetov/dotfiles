@@ -5,8 +5,6 @@
 ##
 ## Reason for creation? lftp got moved to homebrew/boneyard so I thought I
 ## should switch to rsync instead. This is a recreation of my lftp workflow.
-##
-## TODO: Add connection check
 
 clRed='\033[0;31m'
 clCyan='\033[0;36m'
@@ -18,7 +16,9 @@ targetDir=$LOCAL_TARGET
 
 finished=false
 
-## if [ ssh -o BatchMode=yes -o ConnectTimeout=5 skinner echo ok 2>&1
+## https://stackoverflow.com/a/11562762
+ssh -q -o "BatchMode=yes" -F "$HOME/.ssh/config-mac" "$SSH1_USER@$SSH1_URL" "echo 2>&1" || { echo "Cannot connect to $SSH1_URL" && exit 1; }
+
 
 while ! $finished ; do
 
