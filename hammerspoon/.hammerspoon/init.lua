@@ -159,7 +159,7 @@ hyperfns['s'] = function() hs.application.launchOrFocus('Standard Notes') end
 hyperfns['d'] = function() hs.application.launchOrFocus('System Preferences') end
 
 hyperfns['z'] = function() hs.application.launchOrFocus('Messages') end
-hyperfns['x'] = function() hs.application.launchOrFocus('Messenger') end
+hyperfns['x'] = function() hs.application.launchOrFocus('Caprine') end
 hyperfns['c'] = function() hs.urlevent.openURLWithBundle('https://calendar.google.com/', 'com.google.chrome') end
 
 -- Set up hyper keybindings

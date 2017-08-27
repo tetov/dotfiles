@@ -4,6 +4,9 @@ command -v stow >/dev/null 2>&1 || { echo "Stow is required. Please install befo
 
 cd ~/tetov-dotfiles || { echo "Can't cd to ~/tetov-dotfiles." >&2; exit 1; }
 
+mkdir -p ~/.vim/colors ~/.lftp
+mkdir -m 700 ~/.ssh
+
 stow shell-env
 stow vim
 stow git
@@ -11,6 +14,8 @@ stow lftp
 stow ssh
 
 if [ $(uname) = "Darwin" ]; then
-  stow karabiner-elements
-  stow hammerspoon
+    mkdir ~/.hammerspoon ~/.config
+
+    stow karabiner-elements
+    stow hammerspoon
 fi
