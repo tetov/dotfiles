@@ -155,7 +155,7 @@ hyperfns['e'] = function() hs.application.launchOrFocus('Finder') end
 hyperfns['r'] = function() hs.application.launchOrFocus('Remember the milk') end
 
 hyperfns['a'] = function() hs.urlevent.openURLWithBundle('https://mail.google.com/', 'com.google.chrome') end
-hyperfns['s'] = function() hs.application.launchOrFocus('Standard Notes') end
+hyperfns['s'] = function() hs.urlevent.openURLWithBundle('https://app.standardnotes.org/', 'com.google.chrome') end
 hyperfns['d'] = function() hs.application.launchOrFocus('System Preferences') end
 
 hyperfns['z'] = function() hs.application.launchOrFocus('Messages') end

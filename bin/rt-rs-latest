@@ -9,7 +9,7 @@
 clRed='\033[0;31m'
 clCyan='\033[0;36m'
 clYellow='\033[0;33m'
-clNoColor='\033[0m' # No Color
+clNoColor='\033[0m'
 
 sourceDir=$SSH1_USER@$SSH1_URL:$SSH1_RTORRENT_DATA
 targetDir=$LOCAL_TARGET
@@ -17,8 +17,9 @@ targetDir=$LOCAL_TARGET
 finished=false
 
 ## https://stackoverflow.com/a/11562762
-ssh -q -o "BatchMode=yes" -F "$HOME/.ssh/config-mac" "$SSH1_USER@$SSH1_URL" "echo 2>&1" || { echo "Cannot connect to $SSH1_URL" && exit 1; }
+ssh -o "BatchMode=yes" "$SSH1_USER@$SSH1_URL" "echo 2>&1" || { echo "Cannot connect to $SSH1_URL" ; exit 1 ; }
 
+hash rsync >/dev/null 2>&1 || { echo "Rsync required but not found." ; exit 1 ; }
 
 while ! $finished ; do
 
@@ -45,7 +46,7 @@ IFS='
 '
 
 # Get file list from server. Yes, I have read http://mywiki.wooledge.org/ParsingLs
-fileList=($(ssh -qt "$SSH1_USER"@"$SSH1_URL" "/bin/ls -1tr $SSH1_RTORRENT_DATA | tail -n$tail"))
+fileList=($(ssh -t "$SSH1_USER"@"$SSH1_URL" "/bin/ls -1tr $SSH1_RTORRENT_DATA | tail -n$tail"))
 
 # Reset IFS
 IFS=$oldIFS
@@ -99,7 +100,7 @@ for z in "${downloadSelection[@]}" ; do
 	toDownload="$(echo "${fileList[$z]}" | tr -d '\r')"
 	echo "$toDownload"
 
-	/usr/local/bin/rsync -rhvze "ssh -q -F $HOME/.ssh/config-mac" "$sourceDir/'$toDownload'" --progress "$targetDir"
+	rsync -rhvz "$sourceDir/'$toDownload'" --progress "$targetDir"
 
 done
 

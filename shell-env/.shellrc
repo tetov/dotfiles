@@ -17,6 +17,8 @@ else
     echo ".confidentials not found in ~"
 fi
 
+eval `keychain --eval id_rsa`
+
 # Aliases
 if [ -f "$HOME/.confidentials" ] ; then
     . $HOME/.aliases
@@ -46,6 +48,4 @@ if [ $(uname) = "Darwin" ] ; then
         $HOME/.rbenv/bin
 
     eval "$(rbenv init -)"
-else
-    eval `keychain --eval id_rsa`
 fi
