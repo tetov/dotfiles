@@ -16,18 +16,15 @@ Plugin 'VundleVim/Vundle.vim'
 
 let s:uname = system("echo -n \"$(uname)\"")
 if !v:shell_error && s:uname == "Darwin"
-  Plugin 'valloric/youcompleteme'
-  Plugin 'rdnetto/YCM-Generator'
   Plugin 'vim-airline/vim-airline'
 endif
 
-"lugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-sensible'
-Plugin 'plasticboy/vim-markdown'
+Plugin 'sheerun/vim-polyglot'
 Plugin 'sjl/vitality.vim'
-Plugin 'Raimondi/delimitMate'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'kopischke/vim-stay'
 Plugin 'vim-syntastic/syntastic'
@@ -109,6 +106,24 @@ let g:netrw_browse_split=4  " open in prior window
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
+
+" AUTOCOMPLETE
+" - ^x^n for JUST this file
+" - ^x^f for filenames (works with our path trick!)
+" - ^x^] for tags only
+" - ^n for anything specified by the 'complete' option
+" - ^p prev suggestion
+
+" From :help ins-completion
+function! CleverTab()
+    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+      return "\<Tab>"
+   else
+      return "\<C-N>"
+    endif
+endfunction
+inoremap <Tab> <C-R>=CleverTab()<CR>
+
 
 " Settings for syntastic (recommended settings from README
 set statusline+=%#warningmsg#

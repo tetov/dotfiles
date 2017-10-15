@@ -33,4 +33,5 @@ Temporary Items
 ### vim ###
 */.vim/*
 !*/.vim/colors/*
+!vimrc
 .netrwhist
