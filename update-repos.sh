@@ -9,4 +9,10 @@ git -C "$HOME/tetov-dotfiles" submodule init
 git -C "$HOME/tetov-dotfiles" submodule update --remote
 git -C "$HOME/.vim/bundle/Vundle.vim" pull
 
+# Disable fsck check of git repos to get around issue described here:
+# https://github.com/mileszs/ack.vim/issues/204
+git config --global fetch.fsckObjects false
+
 vim +PluginUpdate +qall
+
+git config --global fetch.fsckObjects true
