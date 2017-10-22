@@ -23,7 +23,7 @@ eval `keychain --eval id_rsa`
 if [ -f "$HOME/.confidentials" ] ; then
     . $HOME/.aliases
 else
-    echo ".aliases not found in ~"
+    echo ".confidentials not found in ~"
 fi
 
 # Update path only if path not present
