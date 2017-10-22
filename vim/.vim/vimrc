@@ -14,20 +14,27 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-let s:uname = system("echo -n \"$(uname)\"")
-if !v:shell_error && s:uname == "Darwin"
-  Plugin 'vim-airline/vim-airline'
-endif
+" let s:uname = system("echo -n \"$(uname)\"")
+" if !v:shell_error && s:uname == "Darwin"
+"     Do things if machine is Mac
+" endif
 
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-sensible'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'docunext/closetag.vim'
+Plugin 'itchyny/lightline.vim'
+Plugin 'junegunn/fzf.vim'
+Plugin 'junegunn/goyo.vim'
+Plugin 'kopischke/vim-stay'
+Plugin 'mileszs/ack.vim'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'raimondi/delimitMate'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'sjl/vitality.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'kopischke/vim-stay'
-Plugin 'vim-syntastic/syntastic'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-sensible'
+Plugin 'w0rp/ale'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -52,12 +59,20 @@ syntax enable               " enable syntax highlighting (previously syntax on).
 " COLORS
 set background=dark
 colorscheme solarized
+if !has('gui_running')
+    let g:solarized_termcolors=256
+endif
 
 " TABS
 set tabstop=4               " number of visual spaces per TAB
 set softtabstop=4           " number of spaces in tab when editing
 set shiftwidth=4
 set expandtab               " tabs are spaces
+
+set cindent                 " Automatic program indenting
+set cinkeys-=0#             " Comments don't fiddle with indenting
+set cino=                   " See :h cinoptions-values
+set copyindent              " Make autoindent use the same chars as prev line
 
 " General UI
 set number
@@ -69,6 +84,8 @@ set lazyredraw              " redraw only when we need to.
 set showmatch               " highlight matching [{()}]
 set ruler                   " Always show info along bottom.
 set wrap                    " Wrap lines
+set linebreak               " Break long lines by word, not char
+set textwidth=100           " 100 is the new 80
 
 " SEARCH
 set incsearch               " search as characters are entered
@@ -88,6 +105,15 @@ set foldmethod=indent       " fold based on indent level
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+
+" BUFFERS AND FILES
+
+" Open last file edited 
+nmap <C-e> :e#<CR>
+
+" Move between open buffers.
+nmap <C-n> :bnext<CR>
+nmap <C-p> :bprev<CR>
 
 " BACKUP off
 set nobackup
@@ -125,15 +151,103 @@ endfunction
 inoremap <Tab> <C-R>=CleverTab()<CR>
 
 
-" Settings for syntastic (recommended settings from README
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
 " Save with sudo
 command! -nargs=0 Sw w !sudo tee % > /dev/null
+
+" PLUGINS
+
+" For any plugins that use this, make their keymappings use comma
+let mapleader = ","
+let maplocalleader = ","
+
+" FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
+set rtp+=/usr/local/opt/fzf
+set rtp+=~/.fzf
+nmap ; :Buffers<CR>
+nmap <Leader>r :Tags<CR>
+nmap <Leader>t :Files<CR>
+nmap <Leader>a :Ag<CR>
+
+" Tell ack.vim to use ag (the Silver Searcher) instead (if available)
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" GitGutter styling to use · instead of +/-
+let g:gitgutter_sign_added = '∙'
+let g:gitgutter_sign_modified = '∙'
+let g:gitgutter_sign_removed = '∙'
+let g:gitgutter_sign_modified_removed = '∙'
+
+" Highlight YAML frontmatter in Markdown files
+let g:vim_markdown_frontmatter = 1
+
+" ALE
+let g:ale_sign_warning = '▲'
+let g:ale_sign_error = '✗'
+highlight link ALEWarningSign String
+highlight link ALEErrorSign Title
+
+function! ProseMode()
+  call goyo#execute(0, [])
+  setlocal spell noci nosi noai nolist noshowmode noshowcmd
+  setlocal complete+=s
+  setlocal bg=light
+endfunction
+
+command! ProseMode call ProseMode()
+nmap <leader>p :ProseMode<CR>
+
+" Lightline
+let g:lightline = {
+\ 'colorscheme': 'wombat',
+\ 'active': {
+\   'left': [['mode', 'paste'], ['filename', 'modified']],
+\   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\ },
+\ 'component_expand': {
+\   'linter_warnings': 'LightlineLinterWarnings',
+\   'linter_errors': 'LightlineLinterErrors',
+\   'linter_ok': 'LightlineLinterOK'
+\ },
+\ 'component_type': {
+\   'readonly': 'error',
+\   'linter_warnings': 'warning',
+\   'linter_errors': 'error'
+\ },
+\ }
+function! LightlineLinterWarnings() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
+endfunction
+function! LightlineLinterErrors() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
+endfunction
+function! LightlineLinterOK() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '✓ ' : ''
+endfunction
+
+" Update and show lightline but only if it's visible (e.g., not in Goyo)
+autocmd User ALELint call s:MaybeUpdateLightline()
+function! s:MaybeUpdateLightline()
+  if exists('#lightline')
+    call lightline#update()
+  end
+endfunction
+
+" Put these lines at the very end of your vimrc file.
+
+" Load all plugins now.
+" Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+silent! helptags ALL
