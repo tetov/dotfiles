@@ -17,7 +17,7 @@ promptThenRun () {
 aptInstall () {
     sudo apt-get update
 
-    xargs sudo apt-get -y install <"$HOME"/tetov-dotfiles/apt-pkgs.txt
+    xargs sudo apt-get -y install <"$HOME"/tetov-dotfiles/Aptfile
 }
 
 fzfInstall () {
@@ -34,7 +34,8 @@ cloneDotfilesRepo () {
 
     promptThenRun 'Do you want to run the stow script? ' ~/tetov-dotfiles/stow.sh
 
-    promptThenRun 'Do you want to run the antigen & vundle script? ' ~/tetov-dotfiles/update-repos.sh
+    promptThenRun 'Do you want to run the antigen & vundle script? '
+    ~/tetov-dotfiles/install-common.sh
 
 }
 

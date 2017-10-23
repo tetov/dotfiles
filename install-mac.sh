@@ -18,9 +18,10 @@ brew tap Homebrew/bundle
 brew bundle # see ./Brewfile
 
 . "$HOME/tetov-dotfiles/stow.sh"
+. "$HOME/tetov-dotfiles/install-common.sh"
 
 ## Set zsh as the user login shell
-chsh -s /usr/local/bin/zsh
+chsh -s "$(which zsh)"
 
 brew cleanup
 
@@ -133,20 +134,8 @@ ALL_PROXY=127.0.0.1:8118 curl -I http://p.p/
 ####  </dict>
 ####</plist>
 
-## Setup santa
-### https://github.com/drduh/macOS-Security-and-Privacy-Guide#binary-whitelisting
-
-### start lockdown
-sudo defaults write /var/db/santa/config.plist ClientMode -int 2
-
 # Start of commands from atomantic/dotfiles
 ## https://github.com/atomantic/dotfiles/blob/master/install.sh
-
-## Enable firewall. Possible values:
-##   0 = off
-##   1 = on for specific sevices
-##   2 = on for essential services
-sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 
 ## Disable guest account login
 sudo defaults write /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false
@@ -177,6 +166,7 @@ for domain in ~/Library/Preferences/ByHost/com.apple.systemuiserver.*; do
 #    "/System/Library/CoreServices/Menu Extras/Volume.menu" \
     "/System/Library/CoreServices/Menu Extras/User.menu"
 done;
+
 defaults write com.apple.systemuiserver menuExtras -array \
 #  "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" \
   "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
@@ -248,9 +238,6 @@ defaults write com.apple.screencapture disable-shadow -bool true
 ## Enable subpixel font rendering on non-Apple LCDs"
 defaults write NSGlobalDomain AppleFontSmoothing -int 2
 
-## Enable HiDPI display modes (requires restart)"
-sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
-
 ## Finder
 
 ### Allow quitting Finder via ⌘ + Q; doing so will also hide desktop icons"
@@ -293,20 +280,12 @@ defaults write NSGlobalDomain com.apple.springing.delay -float 0
 ###  Avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
-###  Automatically open a new Finder window when a volume is mounted
-defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
-defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
-defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
-
 ###  Use list view in all Finder windows by default
 ### Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 ###  Empty Trash securely by default
 defaults write com.apple.finder EmptyTrashSecurely -bool true
-
-###  Enable AirDrop over Ethernet and on unsupported Macs running Lion
-defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
 ###  Show the ~/Library folder
 chflags nohidden ~/Library
@@ -369,58 +348,12 @@ defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 ### Allow hitting the Backspace key to go to the previous page in history"
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled -bool true
 
-### Hide Safari’s bookmarks bar by default"
-defaults write com.apple.Safari ShowFavoritesBar -bool false
-
-### Hide Safari’s sidebar in Top Sites"
-defaults write com.apple.Safari ShowSidebarInTopSites -bool false
-
-### Disable Safari’s thumbnail cache for History and Top Sites"
-defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
-
-### Enable Safari’s debug menu"
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
-
-### Make Safari’s search banners default to Contains instead of Starts With"
-defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
-
-### Remove useless icons from Safari’s bookmarks bar"
-defaults write com.apple.Safari ProxiesInBookmarksBar "()"
 ### Enable the Develop menu and the Web Inspector in Safari"
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
-### Add a context menu item for showing the Web Inspector in web views"
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
-## Spotlight
-
-### Change indexing order and disable some file types from being indexed"
-defaults write com.apple.spotlight orderedItems -array \
-  '{"enabled" = 1;"name" = "APPLICATIONS";}' \
-  '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
-  '{"enabled" = 1;"name" = "DIRECTORIES";}' \
-  '{"enabled" = 1;"name" = "PDF";}' \
-  '{"enabled" = 1;"name" = "FONTS";}' \
-  '{"enabled" = 0;"name" = "DOCUMENTS";}' \
-  '{"enabled" = 0;"name" = "MESSAGES";}' \
-  '{"enabled" = 0;"name" = "CONTACT";}' \
-  '{"enabled" = 0;"name" = "EVENT_TODO";}' \
-  '{"enabled" = 0;"name" = "IMAGES";}' \
-  '{"enabled" = 0;"name" = "BOOKMARKS";}' \
-  '{"enabled" = 0;"name" = "MUSIC";}' \
-  '{"enabled" = 0;"name" = "MOVIES";}' \
-  '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
-  '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
-  '{"enabled" = 0;"name" = "SOURCE";}'
-### Load new settings before rebuilding the index"
-killall mds > /dev/null 2>&1
-### Make sure indexing is enabled for the main volume"
-sudo mdutil -i on / > /dev/null
-### Rebuild the index from scratch"
-sudo mdutil -E / > /dev/null
-
-## Terminal & iTerm2
+## Terminal
 
 ### Only use UTF-8 in Terminal.app"
 defaults write com.apple.terminal StringEncodings -array 4
@@ -443,10 +376,6 @@ defaults write com.apple.ActivityMonitor IconType -int 5
 
 ### Show all processes in Activity Monitor"
 defaults write com.apple.ActivityMonitor ShowCategory -int 0
-
-### Sort Activity Monitor results by CPU usage"
-defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
-defaults write com.apple.ActivityMonitor SortDirection -int 0
 
 ## Address Book, Dashboard, iCal, TextEdit, and Disk Utility
 
@@ -476,9 +405,6 @@ defaults write com.apple.appstore WebKitDeveloperExtras -bool true
 defaults write com.apple.appstore ShowDebugMenu -bool true
 
 ## Messages
-
-###  Disable automatic emoji substitution (i.e. use plain text smileys)"
-###  defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
 
 ###  Disable smart quotes as it’s annoying for messages that contain code"
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false

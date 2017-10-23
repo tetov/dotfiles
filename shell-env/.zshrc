@@ -14,6 +14,7 @@ antigen bundle command-not-found
 antigen bundle zsh-users/zsh-completions
 antigen bundle djui/alias-tips
 antigen bundle git
+antigen bundle docker
 
 antigen theme gentoo
 
