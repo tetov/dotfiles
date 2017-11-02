@@ -42,10 +42,7 @@ cloneDotfilesRepo () {
 
 # INTERACTION
 
+promptThenRun 'Do you want to install fzf ' fzfInstall
+promptThenRun 'Set zsh as login shell? ' setZshShell
 promptThenRun 'Do you want to install apt packages? ' aptInstall
-
-
-promptThenRun 'Do you want to install fzf ' aptInstall
-promptThenRun 'Set zsh as login shell? ' fzfInstall
-promptThenRun 'Do you want to install apt packages? ' setZshShell
 promptThenRun 'Do you want clone dotfiles repo? ' cloneDotfilesRepo
