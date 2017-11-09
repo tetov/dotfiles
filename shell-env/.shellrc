@@ -20,10 +20,10 @@ fi
 eval `keychain --eval id_rsa`
 
 # Aliases
-if [ -f "$HOME/.confidentials" ] ; then
+if [ -f "$HOME/.aliases" ] ; then
     . $HOME/.aliases
 else
-    echo ".confidentials not found in ~"
+    echo ".aliases not found in ~"
 fi
 
 # Update path only if path not present
@@ -40,6 +40,9 @@ _path_assign \
     $HOME/bin \
     $dotfiles_dir/bin
 
+# https://stackoverflow.com/a/20460402
+stringContain() { [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]; }
+
 if [ $(uname) = "Darwin" ] ; then
     export HOMEBREW_NO_ANALYTICS=1
 
@@ -48,4 +51,9 @@ if [ $(uname) = "Darwin" ] ; then
         $HOME/.rbenv/bin
 
     eval "$(rbenv init -)"
+else
+    _path_assign \
+        $HOME/.pyenv/bin
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
 fi

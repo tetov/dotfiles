@@ -20,6 +20,7 @@ Plugin 'VundleVim/Vundle.vim'
 " endif
 
 Plugin 'airblade/vim-gitgutter'
+Plugin 'ajh17/VimCompletesMe'
 Plugin 'docunext/closetag.vim'
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf.vim'
@@ -108,7 +109,7 @@ nnoremap k gk
 
 " BUFFERS AND FILES
 
-" Open last file edited 
+" Open last file edited
 nmap <C-e> :e#<CR>
 
 " Move between open buffers.
@@ -164,8 +165,8 @@ let maplocalleader = ","
 set rtp+=/usr/local/opt/fzf
 set rtp+=~/.fzf
 nmap ; :Buffers<CR>
-nmap <Leader>r :Tags<CR>
-nmap <Leader>t :Files<CR>
+nmap <Leader>t :Tags<CR>
+nmap <Leader>f :Files<CR>
 nmap <Leader>a :Ag<CR>
 
 " Tell ack.vim to use ag (the Silver Searcher) instead (if available)
