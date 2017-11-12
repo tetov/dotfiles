@@ -25,13 +25,19 @@ antigen apply
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# fzf settings
+# fzf installed from git
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # fzf via Homebrew
 if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
   source /usr/local/opt/fzf/shell/key-bindings.zsh
   source /usr/local/opt/fzf/shell/completion.zsh
+fi
+
+# fzf on arch
+if [ -e /usr/share/fzf/key-bindings.zsh ] ; then
+    source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh
 fi
 
 # fzf + ag configuration
