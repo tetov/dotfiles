@@ -149,8 +149,8 @@ hyperfns['k'] = function() hs.window.focusedWindow():focusWindowNorth() end
 hyperfns['j'] = function() hs.window.focusedWindow():focusWindowSouth() end
 
 -- Launch apps
-hyperfns['q'] = function() hs.application.launchOrFocus('iTerm') end
-hyperfns['w'] = function() hs.application.launchOrFocus('Google Chrome') end
+hyperfns['q'] = function() hs.application.launchOrFocus('Terminal') end
+hyperfns['w'] = function() hs.application.launchOrFocus('FirefoxDeveloperEdition') end
 hyperfns['e'] = function() hs.application.launchOrFocus('Finder') end
 hyperfns['r'] = function() hs.application.launchOrFocus('Remember the milk') end
 
