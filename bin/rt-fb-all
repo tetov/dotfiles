@@ -3,4 +3,4 @@
 ## Script to run filebot in rtorrent data folder using exclude file to catch
 ## files missed by rt post execution script.
 
-$HOME/filebot/filebot.sh -script fn:amc "$HOME/rtorrent/data" --output "/mnt/vind/plex" --log-file "$HOME/filebot/logs/rt-fb-all.log" --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y skipExtract=y excludeList=amc.excludes plex=localhost:$PLEX_X_TOKEN
+$HOME/filebot/filebot.sh -script fn:amc "$HOME/rtorrent/data" --output "/mnt/vind/plex" --log-file "$HOME/filebot/logs/rt-fb-all.log" --action duplicate --conflict auto -non-strict --def unsorted=y artwork=y skipExtract=y excludeList=amc.excludes
