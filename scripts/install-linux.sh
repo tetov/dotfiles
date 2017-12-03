@@ -2,23 +2,25 @@
 
 # Env
 
-# TODO: Change to test if commands used are available instead
 source ~/tetov-dotfiles/scripts/support-functions.sh
 
 scriptUser=$(whoami)
 
-
 # Functions
 
 aptInstall () {
-    # TODO: Make platform agnostic
-
+    # TODO: Install AUR pkgs
     test -z $pkgCommand || _selectPKGRepo
 
     case $pkgCommand in
         "apt-get")
             sudo apt-get update
-            xargs sudo apt-get -y install <"$HOME"/tetov-dotfiles/Aptfile ;;
+            xargs sudo apt-get -y install <"$HOME"/tetov-dotfiles/Aptfile
+            ;;
+        "pacman")
+            sudo pacman -Syu
+            wget -qO - https://gist.githubusercontent.com/tetov/6dae96b24b30d55af2b132ee5dd54971/raw/ff802031b0bd224212a976257b601f45bdb59487/pacman-list.pkg | sudo pacman -S --needed -
+            ;;
         "*")
             echo "Script not configured for " $pkgCommand
             return 1
@@ -29,7 +31,7 @@ fzfInstall () {
     test -z $pkgCommand || _selectPKGRepo
 
     case $pkgCommand in
-        "pacman") sudo pacman -Ss fzf ;;
+        "pacman") sudo pacman -Syu fzf ;;
         "brew") brew install fzf ;;
         "apt-get")
             checkDep git || return 1
