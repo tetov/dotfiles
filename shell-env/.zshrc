@@ -50,3 +50,15 @@ if command -v fzf >/dev/null 2>&1 && command -v ag >/dev/null 2>&1; then
   --color info:108,prompt:109,spinner:108,pointer:168,marker:168
   '
 fi
+
+# Vi mode in zsh, taken from https://dougblack.io/words/zsh-vi-mode.html
+bindkey -v
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+
+export KEYTIMEOUT=1
