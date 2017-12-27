@@ -1,3 +1,5 @@
+set sftp:connect-program "ssh -a -x -i $HOME/.ssh/id_rsa"
+
 #mine
 set bmk:save-passwords
 set color:use-color true
