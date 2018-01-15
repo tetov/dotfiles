@@ -14,7 +14,6 @@ antigen bundle command-not-found
 antigen bundle zsh-users/zsh-completions
 antigen bundle djui/alias-tips
 antigen bundle git
-antigen bundle docker
 
 antigen theme gentoo
 
@@ -26,7 +25,7 @@ antigen apply
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # fzf installed from git
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -e ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # fzf via Homebrew
 if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
@@ -41,7 +40,7 @@ if [ -e /usr/share/fzf/key-bindings.zsh ] ; then
 fi
 
 # fzf + ag configuration
-if command -v fzf >/dev/null 2>&1 && command -v ag >/dev/null 2>&1; then
+if command -v fzf >/dev/null && command -v ag >/dev/null ; then
   export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -59,6 +58,6 @@ bindkey '^N' down-history
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
+bindkey '^R' fzf-history-widget
 
 export KEYTIMEOUT=1

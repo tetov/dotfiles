@@ -22,9 +22,10 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ajh17/VimCompletesMe'
 Plugin 'docunext/closetag.vim'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'godlygeek/tabular'
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/goyo.vim'
 Plugin 'kopischke/vim-stay'
 Plugin 'mileszs/ack.vim'
 Plugin 'ntpeters/vim-better-whitespace'
@@ -35,7 +36,9 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-sensible'
+Plugin 'vim-scripts/utl.vim'
 Plugin 'w0rp/ale'
+Plugin 'wincent/terminus'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -79,6 +82,7 @@ set copyindent              " Make autoindent use the same chars as prev line
 set number
 set showcmd                 " show command in bottom bar
 set cursorline              " highlight current line
+set cursorcolumn            " highlight current column
 filetype indent on          " load filetype-specific indent files
 set wildmenu                " visual autocomplete for command menu
 set lazyredraw              " redraw only when we need to.
@@ -155,11 +159,37 @@ inoremap <Tab> <C-R>=CleverTab()<CR>
 " Save with sudo
 command! -nargs=0 Sw w !sudo tee % > /dev/null
 
+" Enter and backspaces moves through paragraphs in normal mode
+nnoremap <BS> {
+onoremap <BS> {
+vnoremap <BS> {
+
+nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+vnoremap <CR> }
+
 " PLUGINS
 
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
 let maplocalleader = ","
+
+" MOVE PRECISELY TO ANY POSITION IN THE VISIBLE BUFFER
+nmap F <Plug>(easymotion-prefix)s
+
+" Cucumbertables.vim (from https://gist.github.com/tpope/287147)
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+    let p = '^\s*|\s.*\s|\s*$'
+    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+        Tabularize/|/l1
+        normal! 0
+        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+      endif
+endfunction
 
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
 set rtp+=/usr/local/opt/fzf
@@ -188,16 +218,6 @@ let g:ale_sign_warning = '▲'
 let g:ale_sign_error = '✗'
 highlight link ALEWarningSign String
 highlight link ALEErrorSign Title
-
-function! ProseMode()
-  call goyo#execute(0, [])
-  setlocal spell noci nosi noai nolist noshowmode noshowcmd
-  setlocal complete+=s
-  setlocal bg=light
-endfunction
-
-command! ProseMode call ProseMode()
-nmap <leader>p :ProseMode<CR>
 
 " Lightline
 let g:lightline = {
