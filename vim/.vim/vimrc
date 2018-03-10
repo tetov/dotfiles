@@ -89,8 +89,8 @@ set lazyredraw              " redraw only when we need to.
 set showmatch               " highlight matching [{()}]
 set ruler                   " Always show info along bottom.
 set wrap                    " Wrap lines
+set textwidth=0             " No automatic breaks
 set linebreak               " Break long lines by word, not char
-set textwidth=100           " 100 is the new 80
 
 " SEARCH
 set incsearch               " search as characters are entered
