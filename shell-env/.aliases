@@ -24,7 +24,7 @@ if [ $(uname) = "Linux" ] ; then
     alias rttrump='rtcontrol -s alias,message,name message="*nregistered*"'
 
     alias trippy='sudo tripwire -m c -I'
-    alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
+    alias trippyaf='tmux && sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I && exit'
 elif [ $(uname) = "Darwin" ] ; then
     alias ls='ls -FG'
     alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
