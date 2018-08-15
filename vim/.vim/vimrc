@@ -30,6 +30,7 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'kopischke/vim-stay'
 Plugin 'mileszs/ack.vim'
 Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'raimondi/delimitMate'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'sjl/vitality.vim'
@@ -37,6 +38,7 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/utl.vim'
 Plugin 'w0rp/ale'
 Plugin 'wincent/terminus'
@@ -106,6 +108,9 @@ nnoremap <space> za       " space open/closes folds
 set foldmethod=indent       " fold based on indent level
 "au BufWinLeave ?* mkview     " save folds on exit
 "au BufWinEnter ?* silent loadview " load folds on open
+
+" Set register to correspond to X's primary
+set clipboard=unnamedplus
 
 " MOVEMENT
 " move vertically by visual line
@@ -214,6 +219,11 @@ let g:gitgutter_sign_modified_removed = '∙'
 " Highlight YAML frontmatter in Markdown files
 let g:vim_markdown_frontmatter = 1
 
+" Highlight YAML frontmatter in Markdown files
+let g:vim_markdown_toml_frontmatter = 1
+
+let g:vim_markdown_folding_style_pythonic = 1
+
 " ALE
 let g:ale_sign_warning = '▲'
 let g:ale_sign_error = '✗'
@@ -225,7 +235,10 @@ let g:lightline = {
 \ 'colorscheme': 'wombat',
 \ 'active': {
 \   'left': [['mode', 'paste'], ['filename', 'modified']],
-\   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\   'right': [['lineinfo'], ['percent', 'wordcount'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\ },
+\ 'component_function': {
+\   'wordcount': 'WordCount',
 \ },
 \ 'component_expand': {
 \   'linter_warnings': 'LightlineLinterWarnings',
@@ -238,23 +251,57 @@ let g:lightline = {
 \   'linter_errors': 'error'
 \ },
 \ }
+
 function! LightlineLinterWarnings() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
   return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
 endfunction
+
 function! LightlineLinterErrors() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
   return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
 endfunction
+
 function! LightlineLinterOK() abort
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
   return l:counts.total == 0 ? '✓ ' : ''
+endfunction
+
+function! WordCount()
+    " https://gist.github.com/cormacrelf/d0bee254f5630b0e93c3
+    let currentmode = mode()
+    if !exists("g:lastmode_wc")
+        let g:lastmode_wc = currentmode
+    endif
+    " if we modify file, open a new buffer, be in visual ever, or switch modes
+    " since last run, we recompute.
+    if &modified || !exists("b:wordcount") || currentmode =~? '\c.*v' || currentmode != g:lastmode_wc
+        let g:lastmode_wc = currentmode
+        let l:old_position = getpos('.')
+        let l:old_status = v:statusmsg
+        execute "silent normal g\<c-g>"
+        if v:statusmsg == "--No lines in buffer--"
+            let b:wordcount = 0
+        else
+            let s:split_wc = split(v:statusmsg)
+            if index(s:split_wc, "Selected") < 0
+                let b:wordcount = str2nr(s:split_wc[11])
+            else
+                let b:wordcount = str2nr(s:split_wc[5])
+            endif
+            let v:statusmsg = l:old_status
+        endif
+        call setpos('.', l:old_position)
+        return b:wordcount
+    else
+        return b:wordcount
+    endif
 endfunction
 
 " Update and show lightline but only if it's visible (e.g., not in Goyo)
