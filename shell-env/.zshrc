@@ -24,6 +24,7 @@ antigen apply
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+set -o vi # Make fzf work with vi mode in zsh
 # fzf installed from git
 [ -e ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -40,8 +41,8 @@ if [ -e /usr/share/fzf/key-bindings.zsh ] ; then
 fi
 
 # fzf + ag configuration
-if command -v fzf >/dev/null && command -v ag >/dev/null ; then
-  export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+if command -v fzf >/dev/null && command -v rg >/dev/null ; then
+    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_DEFAULT_OPTS='
