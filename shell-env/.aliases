@@ -25,6 +25,11 @@ if [ $(uname) = "Linux" ] ; then
 
     alias trippy='sudo tripwire -m c -I'
     alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
+
+    function open () {
+        xdg-open "$*" &
+    }
+
 elif [ $(uname) = "Darwin" ] ; then
     alias ls='ls -FG'
     alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
