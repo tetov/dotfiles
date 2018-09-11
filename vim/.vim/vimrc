@@ -1,9 +1,7 @@
-" Lines picked from https://dougblack.io/words/a-good-vimrc.html
-
-set nocompatible            " get rid of Vi compatibility mode. SET FIRST!
+set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 
 " Start Vundle config
-filetype off                  " required
+filetype off     " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -19,29 +17,27 @@ Plugin 'VundleVim/Vundle.vim'
 "     Do things if machine is Mac
 " endif
 
-Plugin 'airblade/vim-gitgutter'
-Plugin 'ajh17/VimCompletesMe'
-Plugin 'docunext/closetag.vim'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'fholgado/minibufexpl.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'itchyny/lightline.vim'
-Plugin 'junegunn/fzf.vim'
-Plugin 'kopischke/vim-stay'
-Plugin 'mileszs/ack.vim'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'raimondi/delimitMate'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'sjl/vitality.vim'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-sensible'
-Plugin 'tpope/vim-surround'
-Plugin 'vim-scripts/utl.vim'
-Plugin 'w0rp/ale'
-Plugin 'wincent/terminus'
+Plugin 'airblade/vim-gitgutter'           " Shows diff line by line
+Plugin 'ajh17/VimCompletesMe'             " Tab-completion
+Plugin 'altercation/vim-colors-solarized' " Color-scheme
+Plugin 'docunext/closetag.vim'            " Closes html and xml tags
+Plugin 'godlygeek/tabular'                " Lines up code
+Plugin 'itchyny/lightline.vim'            " Statusbar
+Plugin 'junegunn/fzf.vim'                 " Quicker searching
+Plugin 'kopischke/vim-stay'               " Remembers cursor locations in buffers
+Plugin 'ntpeters/vim-better-whitespace'   " Highlights extraneous whitespace
+Plugin 'raimondi/delimitMate'             " Closes parens, hyphens etc
+Plugin 'sheerun/vim-polyglot'             " Lots of more syntax highlighting
+Plugin 'tpope/vim-commentary'             " Comment and uncomment
+Plugin 'tpope/vim-endwise'                " Completes with end in ruby and sh
+Plugin 'tpope/vim-repeat'                 " Allows repetition (with .) for plugin commands
+Plugin 'tpope/vim-sensible'               " Sensible standards
+Plugin 'tpope/vim-surround'               " Operate on surrounding characters
+Plugin 'vim-pandoc/vim-pandoc'            " Pandoc functionality in Vim and markdown functions
+Plugin 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown highlighting
+Plugin 'vim-scripts/utl.vim'              " Opens urls
+Plugin 'w0rp/ale'                         " Linter
+Plugin 'wincent/terminus'                 " Enhances vim + terminal integration eg cursor shapes etc
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -63,12 +59,19 @@ set t_Co=256                " enable 256-color mode.
 
 syntax enable               " enable syntax highlighting (previously syntax on).
 
+" gVIM
+set guioptions=g
+
 " COLORS
 set background=dark
+let g:solarized_termcolors=256
 colorscheme solarized
-if !has('gui_running')
-    let g:solarized_termcolors=256
-endif
+
+" No undercurls thanks
+hi SpellBad ctermfg=117 ctermbg=203 guifg=#8ac6f2 guibg=#e5786d
+hi SpellCap ctermfg=240 ctermbg=180 guifg=#585858 guibg=#cae682
+hi SpellRare ctermfg=203 ctermbg=117 guifg=#e5786d guibg=#8ac6f2
+hi SpellLocal ctermfg=252 ctermbg=235 guifg=#d0d0d0 guibg=#242424
 
 " TABS
 set tabstop=4               " number of visual spaces per TAB
@@ -101,16 +104,26 @@ set hlsearch                " highlight matches
 set ignorecase              " Make searches case-insensitive.
 
 " FOLDING
-set foldenable              " enable folding
-set foldlevelstart=10       " open most folds by default
-set foldnestmax=10          " 10 nested fold max
-nnoremap <space> za       " space open/closes folds
-set foldmethod=indent       " fold based on indent level
-"au BufWinLeave ?* mkview     " save folds on exit
-"au BufWinEnter ?* silent loadview " load folds on open
+set foldenable                    " enable folding
+set foldlevelstart=10             " open most folds by default
+set foldnestmax=10                " 10 nested fold max
+set foldmethod=indent             " fold based on indent level
+au BufWinLeave ?* mkview          " save folds on exit
+au BufWinEnter ?* silent loadview " load folds on open
 
-" Set register to correspond to X's primary
+" space open/closes folds
+nnoremap <space> za
+
+" CLIPBOARD
 set clipboard=unnamedplus
+
+" SPELLCHECK
+set rtp+=/usr/share/vim/vimfiles/
+set rtp+=~/.vim/spell/
+
+set spell spl=sv,en " Select language
+set nospell " Turn it off at start
+nmap <F7> :set spell! <CR>
 
 " MOVEMENT
 " move vertically by visual line
@@ -161,7 +174,6 @@ function! CleverTab()
 endfunction
 inoremap <Tab> <C-R>=CleverTab()<CR>
 
-
 " Save with sudo
 command! -nargs=0 Sw w !sudo tee % > /dev/null
 
@@ -176,12 +188,12 @@ vnoremap <CR> }
 
 " PLUGINS
 
+let g:pandoc#folding#fold_yaml=1
+let g:pandoc#folding#fdc=0
+
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
 let maplocalleader = ","
-
-" MOVE PRECISELY TO ANY POSITION IN THE VISIBLE BUFFER
-nmap F <Plug>(easymotion-prefix)s
 
 " Cucumbertables.vim (from https://gist.github.com/tpope/287147)
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
@@ -198,31 +210,18 @@ function! s:align()
 endfunction
 
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
-set rtp+=/usr/local/opt/fzf
+set rtp+=/usr/bin/fzf
 set rtp+=~/.fzf
 nmap ; :Buffers<CR>
 nmap <Leader>t :Tags<CR>
 nmap <Leader>f :Files<CR>
 nmap <Leader>a :Ag<CR>
 
-" Tell ack.vim to use ag (the Silver Searcher) instead (if available)
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
 " GitGutter styling to use · instead of +/-
 let g:gitgutter_sign_added = '∙'
 let g:gitgutter_sign_modified = '∙'
 let g:gitgutter_sign_removed = '∙'
 let g:gitgutter_sign_modified_removed = '∙'
-
-" Highlight YAML frontmatter in Markdown files
-let g:vim_markdown_frontmatter = 1
-
-" Highlight YAML frontmatter in Markdown files
-let g:vim_markdown_toml_frontmatter = 1
-
-let g:vim_markdown_folding_style_pythonic = 1
 
 " ALE
 let g:ale_sign_warning = '▲'
@@ -302,14 +301,6 @@ function! WordCount()
     else
         return b:wordcount
     endif
-endfunction
-
-" Update and show lightline but only if it's visible (e.g., not in Goyo)
-autocmd User ALELint call s:MaybeUpdateLightline()
-function! s:MaybeUpdateLightline()
-  if exists('#lightline')
-    call lightline#update()
-  end
 endfunction
 
 " Put these lines at the very end of your vimrc file.
