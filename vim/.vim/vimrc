@@ -26,6 +26,7 @@ Plugin 'itchyny/lightline.vim'            " Statusbar
 Plugin 'junegunn/fzf.vim'                 " Quicker searching
 Plugin 'kopischke/vim-stay'               " Remembers cursor locations in buffers
 Plugin 'ntpeters/vim-better-whitespace'   " Highlights extraneous whitespace
+Plugin 'qpkorr/vim-renamer'               " Bulk rename in vim
 Plugin 'raimondi/delimitMate'             " Closes parens, hyphens etc
 Plugin 'sheerun/vim-polyglot'             " Lots of more syntax highlighting
 Plugin 'tpope/vim-commentary'             " Comment and uncomment
