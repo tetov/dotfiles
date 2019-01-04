@@ -1,5 +1,9 @@
 set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 
+" Enable completion where available.
+" This setting must be set before ALE is loaded.
+let g:ale_completion_enabled = 1
+
 " Start Vundle config
 filetype off     " required
 
@@ -11,11 +15,6 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-" let s:uname = system("echo -n \"$(uname)\"")
-" if !v:shell_error && s:uname == "Darwin"
-"     Do things if machine is Mac
-" endif
 
 Plugin 'airblade/vim-gitgutter'           " Shows diff line by line
 Plugin 'ajh17/VimCompletesMe'             " Tab-completion
@@ -68,12 +67,6 @@ set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
 
-" No undercurls thanks
-hi SpellBad ctermfg=117 ctermbg=203 guifg=#8ac6f2 guibg=#e5786d
-hi SpellCap ctermfg=240 ctermbg=180 guifg=#585858 guibg=#cae682
-hi SpellRare ctermfg=203 ctermbg=117 guifg=#e5786d guibg=#8ac6f2
-hi SpellLocal ctermfg=252 ctermbg=235 guifg=#d0d0d0 guibg=#242424
-
 " TABS
 set tabstop=4               " number of visual spaces per TAB
 set softtabstop=4           " number of spaces in tab when editing
@@ -125,6 +118,19 @@ set rtp+=~/.vim/spell/
 set spell spl=sv,en " Select language
 set nospell " Turn it off at start
 nmap <F7> :set spell! <CR>
+
+" mkspell if needed
+for d in glob('~/.vim/spell/*.add', 1, 1)
+    if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
+        exec 'mkspell! ' . fnameescape(d)
+    endif
+endfor
+
+" No undercurls thanks
+hi SpellBad ctermfg=117 ctermbg=203 guifg=#8ac6f2 guibg=#e5786d
+hi SpellCap ctermfg=240 ctermbg=180 guifg=#585858 guibg=#cae682
+hi SpellRare ctermfg=203 ctermbg=117 guifg=#e5786d guibg=#8ac6f2
+hi SpellLocal ctermfg=252 ctermbg=235 guifg=#d0d0d0 guibg=#242424
 
 " MOVEMENT
 " move vertically by visual line
@@ -187,6 +193,18 @@ nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 vnoremap <CR> }
 
+" Splits https://robots.thoughtbot.com/vim-splits-move-faster-and-more-naturally
+
+" Remaps split movement to CTRL + hjkl
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Open splits to the right and below
+set splitbelow
+set splitright
+
 " PLUGINS
 
 let g:pandoc#folding#fold_yaml=1
@@ -225,10 +243,10 @@ let g:gitgutter_sign_removed = '∙'
 let g:gitgutter_sign_modified_removed = '∙'
 
 " ALE
-let g:ale_sign_warning = '▲'
-let g:ale_sign_error = '✗'
-highlight link ALEWarningSign String
-highlight link ALEErrorSign Title
+let b:ale_fixers = {
+            \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+            \ 'html': ['tidy']
+            \}
 
 " Lightline
 let g:lightline = {
