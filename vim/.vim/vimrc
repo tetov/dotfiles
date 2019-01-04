@@ -19,6 +19,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'airblade/vim-gitgutter'           " Shows diff line by line
 Plugin 'ajh17/VimCompletesMe'             " Tab-completion
 Plugin 'altercation/vim-colors-solarized' " Color-scheme
+Plugin 'dbeniamine/todo.txt-vim'          " Todo-txt
 Plugin 'docunext/closetag.vim'            " Closes html and xml tags
 Plugin 'godlygeek/tabular'                " Lines up code
 Plugin 'itchyny/lightline.vim'            " Statusbar
