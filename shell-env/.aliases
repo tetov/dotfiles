@@ -9,34 +9,22 @@ alias ..='cd ..'
 alias ofd='open_command $PWD'
 alias _='sudo '
 
-if [ $(uname) = "Linux" ] ; then
-    alias ls='ls -F --color=auto'
-    alias grep='grep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias ls='ls -F --color=auto'
+alias grep='grep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
-    alias cpc='xclip -selection c'
+alias cpc='xclip -selection c'
 
-    alias rthot="watch -n30 'rtcontrol -rs up,down,name xfer=+0 2>&1'"
-    alias rtmsg="rtcontrol -s alias,message,name 'message=?*' 'message=!*Tried?all?trackers*'"
-    alias rtmsgstats="rtcontrol -q -s alias,message -o alias,message 'message=?*' 'message=!*Tried?all?trackers*' | uniq -c"
-    alias rt2days="rtcontrol --column-headers -scompleted -ocompletion completed=-2d"
-    alias rtstats="rtcontrol -q -o alias -s alias \\* | uniq -c"
-    alias rti="rtcontrol is_complete=no"
-    alias rttrump='rtcontrol -s alias,message,name message="*nregistered*"'
+alias rthot="watch -n30 'rtcontrol -rs up,down,name xfer=+0 2>&1'"
+alias rtmsg="rtcontrol -s alias,message,name 'message=?*' 'message=!*Tried?all?trackers*'"
+alias rtmsgstats="rtcontrol -q -s alias,message -o alias,message 'message=?*' 'message=!*Tried?all?trackers*' | uniq -c"
+alias rt2days="rtcontrol --column-headers -scompleted -ocompletion completed=-2d"
+alias rtstats="rtcontrol -q -o alias -s alias \\* | uniq -c"
+alias rti="rtcontrol is_complete=no"
+alias rttrump='rtcontrol -s alias,message,name message="*nregistered*"'
 
-    alias trippy='sudo tripwire -m c -I'
-    alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
+alias trippy='sudo tripwire -m c -I'
+alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
 
-    function open () {
-        xdg-open "$*" &
-    }
-
-elif [ $(uname) = "Darwin" ] ; then
-    alias ls='ls -FG'
-    alias grep='ggrep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-
-    alias cpc='pbcopy'
-
-    alias brww='brew update && brew upgrade && brew cleanup && brew doctor && brew cask cleanup && brew cask doctor'
-else
-    echo "Not configured for uname =" $(uname)
-fi
+function open () {
+    xdg-open "$*" &
+}

@@ -42,18 +42,3 @@ _path_assign \
 
 # https://stackoverflow.com/a/20460402
 stringContain() { [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]; }
-
-if [ $(uname) = "Darwin" ] ; then
-    export HOMEBREW_NO_ANALYTICS=1
-
-    _path_assign \
-        /usr/local/sbin \
-        $HOME/.rbenv/bin
-
-    eval "$(rbenv init -)"
-else
-    _path_assign \
-        # $HOME/.pyenv/bin
-        # eval "$(pyenv init -)"
-        # eval "$(pyenv virtualenv-init -)"
-fi
