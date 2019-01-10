@@ -70,4 +70,3 @@ _promptUser 'Set zsh as login shell?' && setZshShell
 _promptUser 'Do you want to install fzf?' && fzfInstall
 _promptUser 'Do you want to install apt packages?' && aptInstall
 _promptUser 'Do you want to run the stow script?' && ~/tetov-dotfiles/scripts/stow.sh
-_promptUser 'Do you want to run the antigen & vundle script?' && ~/tetov-dotfiles/scripts/install-common.sh
