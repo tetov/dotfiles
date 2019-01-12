@@ -19,13 +19,6 @@ fi
 
 eval `keychain --eval id_rsa`
 
-# Aliases
-if [ -f "$HOME/.aliases" ] ; then
-    . $HOME/.aliases
-else
-    echo ".aliases not found in ~"
-fi
-
 # Update path only if path not present
 _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
     set -- ${PATH:=$1} ; for p in $add ; do {
@@ -42,3 +35,41 @@ _path_assign \
 
 # https://stackoverflow.com/a/20460402
 stringContain() { [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]; }
+
+# aliases
+alias ll='ls -lh'
+alias la='ls -A'
+alias l='ls'
+alias mkdir='mkdir -pv'
+alias rmi='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ..='cd ..'
+alias _='sudo '
+
+alias ls='ls -F --color=auto'
+alias grep='grep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+
+alias cpc='xclip -selection c'
+
+alias rthot="watch -n30 'rtcontrol -rs up,down,name xfer=+0 2>&1'"
+alias rtmsg="rtcontrol -s alias,message,name 'message=?*' 'message=!*Tried?all?trackers*'"
+alias rtmsgstats="rtcontrol -q -s alias,message -o alias,message 'message=?*' 'message=!*Tried?all?trackers*' | uniq -c"
+alias rt2days="rtcontrol --column-headers -scompleted -ocompletion completed=-2d"
+alias rtstats="rtcontrol -q -o alias -s alias \\* | uniq -c"
+alias rti="rtcontrol is_complete=no"
+alias rttrump='rtcontrol -s alias,message,name message="*nregistered*"'
+
+alias trippy='sudo tripwire -m c -I'
+alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
+
+function open () {
+    if command -v xdg-open >/dev/null ; then
+        xdg-open "$*" &
+    elif command -v cmd.exe >/dev/null ; then
+        # based on https://superuser.com/questions/1160419/how-can-i-open-a-file-from-wsl-with-the-default-application#comment1846408_1252579
+        readlink -f "$*" | sed -e 's/\/mnt\/\(.\)/\1:/1' -e 's/.*/\"&\"/g' | xargs cmd.exe /c start ""
+    else
+        echo "open command not set up for this env"
+    fi
+}
