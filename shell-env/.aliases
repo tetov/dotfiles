@@ -26,5 +26,11 @@ alias trippy='sudo tripwire -m c -I'
 alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
 
 function open () {
-    xdg-open "$*" &
+    if command -v xdg-open >/dev/null ; then
+        xdg-open "$*" &
+    elif command -v cmd.exe >/dev/null ; then
+        readlink -f "$*" | sed -e 's/\/mnt\/\(.\)/\1:/1' -e 's/.*/\"&\"/g' | xargs cmd.exe /c start ""
+    else
+        echo "open command not set up for this env"
+    fi
 }
