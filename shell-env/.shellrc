@@ -17,7 +17,7 @@ else
     echo ".confidentials not found in ~"
 fi
 
-eval `keychain --eval id_rsa`
+eval $(keychain --eval --quiet id_rsa)
 
 # Update path only if path not present
 _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
