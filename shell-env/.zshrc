@@ -2,6 +2,7 @@
 . $HOME/.shellrc
 
 setopt HIST_IGNORE_DUPS
+unsetopt BG_NICE # not nice since WSL is not nice
 
 source <(antibody init)
 antibody bundle < ~/.zsh_plugins.txt
