@@ -73,3 +73,5 @@ function open () {
         echo "open command not set up for this env"
     fi
 }
+
+# vi:syntax=sh
