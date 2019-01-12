@@ -3,24 +3,30 @@
 
 setopt HIST_IGNORE_DUPS
 
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+source <(antibody init)
+antibody bundle < ~/.zsh_plugins.txt
 
-ZSHA_BASE=$dotfiles_dir/antigen
-. $ZSHA_BASE/antigen.zsh
+#Pure
+autoload -U compinit promptinit
+PURE_CMD_MAX_EXEC_TIME=60
+# Make pure theme single line
+prompt_newline='%666v'
+PROMPT=" $PROMPT"
 
-antigen use oh-my-zsh
+# forces zsh to realize new commands
+zstyle ':completion:*' completer _oldlist _expand _complete _match _ignored _approximate
 
-antigen bundle command-not-found
-antigen bundle zsh-users/zsh-completions
-antigen bundle djui/alias-tips
-antigen bundle git
+# matches case insensitive for lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-antigen theme gentoo
+# pasting with tabs doesn't perform completion
+zstyle ':completion:*' insert-tab pending
 
-# zsh-syntax-highlighting needs to go last
-antigen bundle zsh-users/zsh-syntax-highlighting
+# rehash if command not found (possibly recently installed)
+zstyle ':completion:*' rehash true
 
-antigen apply
+# menu if nb items > 2
+zstyle ':completion:*' menu select=2
 
 set -o vi # Make fzf work with vi mode in zsh
 
@@ -31,17 +37,6 @@ set -o vi # Make fzf work with vi mode in zsh
 if [ -e /usr/share/fzf/key-bindings.zsh ] ; then
     source /usr/share/fzf/key-bindings.zsh
     source /usr/share/fzf/completion.zsh
-fi
-
-# fzf + ag configuration
-if command -v fzf >/dev/null && command -v rg >/dev/null ; then
-    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_DEFAULT_OPTS='
-    --color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108
-    --color info:108,prompt:109,spinner:108,pointer:168,marker:168
-    '
 fi
 
 # Vi mode in zsh, taken from https://dougblack.io/words/zsh-vi-mode.html
@@ -55,3 +50,11 @@ bindkey '^w' backward-kill-word
 bindkey '^R' fzf-history-widget
 
 export KEYTIMEOUT=1
+
+autoload -Uz compinit
+typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
+if [ $(date +'%j') != $updated_at ]; then
+  compinit -i
+else
+  compinit -C -i
+fi
