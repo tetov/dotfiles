@@ -21,6 +21,8 @@
   # https://git-scm.com/docs/git-log
   # via https://medium.com/@payload.dd/thanks-for-the-git-st-i-will-use-this-4da5839a21a4
 
+  d = difftool
+
 [merge]
   ff = only
   # I pretty much never mean to do a real merge, since I use a rebase workflow.
@@ -60,3 +62,9 @@
   # via https://groups.google.com/forum/#!topic/binary-transparency/f-BI4o8HZW0
 [fetch]
 	fsckObjects = true
+
+# diff in vim
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false

@@ -1,7 +1,22 @@
 # Source general shell env
 . $HOME/.shellrc
 
-setopt HIST_IGNORE_DUPS
+# history settings
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=10000
+
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt inc_append_history     # add commands to HISTFILE in order of execution
+setopt share_history          # share command history dat
+
+setopt auto_cd # cd by typing directory name if it's not a command
+setopt correct_all # autocorrect commands
+
 unsetopt BG_NICE # not nice since WSL is not nice
 
 source <(antibody init)
@@ -52,6 +67,7 @@ bindkey '^R' fzf-history-widget
 
 export KEYTIMEOUT=1
 
+# cache completions https://blog.callstack.io/supercharge-your-terminal-with-zsh-8b369d689770
 autoload -Uz compinit
 typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
 if [ $(date +'%j') != $updated_at ]; then

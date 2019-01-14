@@ -1,8 +1,5 @@
 zsh-users/zsh-completions
-zsh-users/zsh-autosuggestions
 djui/alias-tips
-
-robbyrussell/oh-my-zsh path:plugins/vi-mode/
 
 rupa/z
 changyuheng/fz
@@ -11,4 +8,4 @@ mafredri/zsh-async
 sindresorhus/pure
 
 # zsh-syntax-highlighting needs to go last
-zsh-users/zsh-syntax-highlighting
+zdharma/fast-syntax-highlighting

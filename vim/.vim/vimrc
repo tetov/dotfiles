@@ -15,28 +15,31 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'airblade/vim-gitgutter'           " Shows diff line by line
-Plug 'ajh17/VimCompletesMe'             " Tab-completion
-Plug 'altercation/vim-colors-solarized' " Color-scheme
-Plug 'alvan/vim-closetag'               " Closes html and xml tags
-Plug 'dbeniamine/todo.txt-vim'          " Todo-txt
-Plug 'godlygeek/tabular'                " Lines up code
-Plug 'itchyny/lightline.vim'            " Statusbar
-Plug 'junegunn/fzf.vim'                 " Quicker searching
-Plug 'kopischke/vim-stay'               " Remembers cursor locations in buffers
-Plug 'ntpeters/vim-better-whitespace'   " Highlights extraneous whitespace
-Plug 'qpkorr/vim-renamer'               " Bulk rename in vim
-Plug 'raimondi/delimitMate'             " Closes parens, hyphens etc
-Plug 'sheerun/vim-polyglot'             " Lots of more syntax highlighting
-Plug 'tpope/vim-commentary'             " Comment and uncomment
-Plug 'tpope/vim-endwise'                " Completes with end in ruby and sh
-Plug 'tpope/vim-repeat'                 " Allows repetition (with .) for plugin commands
-Plug 'tpope/vim-sensible'               " Sensible standards
-Plug 'tpope/vim-surround'               " Operate on surrounding characters
-Plug 'vim-pandoc/vim-pandoc'            " Pandoc functionality in Vim and markdown functions
-Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown highlighting
-Plug 'w0rp/ale'                         " Linter
-Plug 'wincent/terminus'                 " Enhances vim + terminal integration eg cursor shapes etc
+Plug 'airblade/vim-gitgutter'            " Shows diff line by line
+Plug 'ajh17/VimCompletesMe'              " Tab-completion
+Plug 'altercation/vim-colors-solarized'  " Color-scheme
+Plug 'alvan/vim-closetag'                " Closes html and xml tags
+Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
+Plug 'easymotion/vim-easymotion'         " double leader then movement
+Plug 'godlygeek/tabular'                 " Lines up code
+Plug 'itchyny/lightline.vim'             " Statusbar
+Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
+Plug 'junegunn/fzf.vim'                  " Quicker searching
+Plug 'junegunn/goyo.vim'                 " Distraction free writing
+Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
+Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
+Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
+Plug 'raimondi/delimitMate'              " Closes parens, hyphens etc
+Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
+Plug 'tpope/vim-commentary'              " Comment and uncomment
+Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
+Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
+Plug 'tpope/vim-sensible'                " Sensible standards
+Plug 'tpope/vim-surround'                " Operate on surrounding characters
+Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
+Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
+Plug 'w0rp/ale'                          " Linter
+Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
 
 call plug#end()
 
@@ -65,7 +68,7 @@ set cino=                   " See :h cinoptions-values
 set copyindent              " Make autoindent use the same chars as prev line
 
 " General UI
-set number
+set number relativenumber   " Show relative number and normal number.
 set showcmd                 " show command in bottom bar
 set cursorline              " highlight current line
 set cursorcolumn            " highlight current column
