@@ -16,6 +16,8 @@ setopt share_history          # share command history dat
 
 setopt auto_cd # cd by typing directory name if it's not a command
 setopt correct_all # autocorrect commands
+setopt complete_in_word # complete where cursor is
+setopt always_to_end # always put cursor at end after completing
 
 unsetopt BG_NICE # not nice since WSL is not nice
 
@@ -32,8 +34,9 @@ PROMPT=" $PROMPT"
 # forces zsh to realize new commands
 zstyle ':completion:*' completer _oldlist _expand _complete _match _ignored _approximate
 
-# matches case insensitive for lowercase
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# matches case insensitive and partial and substring
+zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
+
 
 # pasting with tabs doesn't perform completion
 zstyle ':completion:*' insert-tab pending
@@ -41,8 +44,18 @@ zstyle ':completion:*' insert-tab pending
 # rehash if command not found (possibly recently installed)
 zstyle ':completion:*' rehash true
 
+
+# Group matches and describe.
+zstyle ':completion:*:*:*:*:*' menu select
+
 # menu if nb items > 2
 zstyle ':completion:*' menu select=2
+
+zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors  'reply=( "=(#b)(*$PREFIX)(?)*=00=$color[green]=$color[bg-green]" )'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
 set -o vi # Make fzf work with vi mode in zsh
 
