@@ -197,12 +197,17 @@ set splitright
 
 " PLUGINS
 
-let g:pandoc#folding#fold_yaml=1
-let g:pandoc#folding#fdc=0
-
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
 let maplocalleader = ","
+
+"Pandoc
+" make markdown files not appears as pandoc files to w0rp/ale
+let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
+let g:pandoc#filetypes#pandoc_markdown = 0
+
+let g:pandoc#folding#fold_yaml=1
+let g:pandoc#folding#fdc=0
 
 " Cucumbertables.vim (from https://gist.github.com/tpope/287147)
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
@@ -238,6 +243,9 @@ let g:ale_fixers = {
             \ 'html': ['prettier'],
             \ 'css': ['prettier']
             \}
+" let g:ale_linters = {
+            " \ 'pandoc': ['alex', 'markdownlint', 'mdl', 'prettier', 'proselint', 'redpen', 'remark-lint', 'textlint', 'vale', 'write-good'],
+            " \}
 
 " Lightline
 let g:lightline = {
