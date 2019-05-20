@@ -2,7 +2,7 @@ set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 
 " Enable completion where available.
 " This setting must be set before ALE is loaded.
-let g:ale_completion_enabled = 1
+" let g:ale_completion_enabled = 1
 
 " Automatic installation vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -16,26 +16,30 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'            " Shows diff line by line
-Plug 'ajh17/VimCompletesMe'              " Tab-completion
 Plug 'altercation/vim-colors-solarized'  " Color-scheme
 Plug 'alvan/vim-closetag'                " Closes html and xml tags
+Plug 'davidhalter/jedi-vim'
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
 Plug 'easymotion/vim-easymotion'         " double leader then movement
+Plug 'ervandew/supertab'                 " Maps tab in various ways
 Plug 'godlygeek/tabular'                 " Lines up code
 Plug 'itchyny/lightline.vim'             " Statusbar
 Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
 Plug 'junegunn/fzf.vim'                  " Quicker searching
 Plug 'junegunn/goyo.vim'                 " Distraction free writing
+Plug 'konfekt/fastfold'                  " Apparently folds are slow?
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
 Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'raimondi/delimitMate'              " Closes parens, hyphens etc
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
+Plug 'tmhedberg/simpylfold'              " Folding for Python
 Plug 'tpope/vim-commentary'              " Comment and uncomment
 Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
 Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
 Plug 'tpope/vim-sensible'                " Sensible standards
+Plug 'tpope/vim-sleuth'                  " Guess tab width
 Plug 'tpope/vim-surround'                " Operate on surrounding characters
 Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
 Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
@@ -143,9 +147,6 @@ set noswapfile
 
 " Built in fuzzy find from https://github.com/mcantor/no_plugins
 set path+=**
-" - Hit tab to :find by partial match
-" - Use * to make it fuzzy
-" - Use :b and type in unique part of path and enter to open up file in buffer
 
 " Tweaks for netrw (file-browser) from https://github.com/mcantor/no_plugins
 let g:netrw_banner=0        " disable annoying banner
@@ -153,26 +154,6 @@ let g:netrw_browse_split=4  " open in prior window
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
-
-" AUTOCOMPLETE
-" - ^x^n for JUST this file
-" - ^x^f for filenames (works with our path trick!)
-" - ^x^] for tags only
-" - ^n for anything specified by the 'complete' option
-" - ^p prev suggestion
-
-" From :help ins-completion
-function! CleverTab()
-    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-      return "\<Tab>"
-   else
-      return "\<C-N>"
-    endif
-endfunction
-inoremap <Tab> <C-R>=CleverTab()<CR>
-
-" Save with sudo
-command! -nargs=0 Sw w !sudo tee % > /dev/null
 
 " Enter and backspaces moves through paragraphs in normal mode
 nnoremap <BS> {
@@ -240,12 +221,13 @@ let g:gitgutter_sign_modified_removed = '∙'
 " ALE
 let g:ale_fixers = {
             \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-            \ 'html': ['prettier'],
-            \ 'css': ['prettier']
+            \ 'css': ['prettier', 'stylelint'],
+            \ 'html': ['tidy'],
+            \ 'python': ['yapf']
             \}
-" let g:ale_linters = {
-            " \ 'pandoc': ['alex', 'markdownlint', 'mdl', 'prettier', 'proselint', 'redpen', 'remark-lint', 'textlint', 'vale', 'write-good'],
-            " \}
+let g:ale_linters = {
+            \ 'pandoc': ['alex', 'markdownlint', 'mdl', 'prettier', 'proselint', 'redpen', 'remark-lint', 'textlint', 'vale', 'write-good'],
+            \}
 
 " Lightline
 let g:lightline = {
