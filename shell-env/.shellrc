@@ -5,8 +5,7 @@ export EDITOR="$VISUAL"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-LS_COLORS='no=00;37:fi=00:di=00;33:ln=04;36:pi=40;33:so=01;35:bd=40;33;01:'
-export LS_COLORS
+eval `dircolors $HOME/.dircolors.dark256`
 
 dotfiles_dir=$HOME/tetov-dotfiles
 
@@ -60,6 +59,9 @@ alias rt2days="rtcontrol --column-headers -scompleted -ocompletion completed=-2d
 alias rtstats="rtcontrol -q -o alias -s alias \\* | uniq -c"
 alias rti="rtcontrol is_complete=no"
 alias rttrump='rtcontrol -s alias,message,name message="*nregistered*"'
+
+# plex
+alias notlinked='find . -type f -links 1 \( \! -iname "*.jpg" \! -iname "*.nfo" \! -iname "*.png" \! -iname "*.srt" \)'
 
 # tripwire
 alias trippy='sudo tripwire -m c -I'

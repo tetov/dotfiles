@@ -27,7 +27,7 @@ Plug 'itchyny/lightline.vim'             " Statusbar
 Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
 Plug 'junegunn/fzf.vim'                  " Quicker searching
 Plug 'junegunn/goyo.vim'                 " Distraction free writing
-Plug 'konfekt/fastfold'                  " Apparently folds are slow?
+Plug 'Konfekt/fastfold'                  " Apparently folds are slow?
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
 Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
@@ -35,6 +35,7 @@ Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'raimondi/delimitMate'              " Closes parens, hyphens etc
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
 Plug 'tmhedberg/simpylfold'              " Folding for Python
+Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
 Plug 'tpope/vim-commentary'              " Comment and uncomment
 Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
 Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
@@ -103,7 +104,7 @@ au BufWinEnter ?* silent loadview " load folds on open
 nnoremap <space> za
 
 " CLIPBOARD
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
 
 " SPELLCHECK
 set rtp+=/usr/share/vim/vimfiles/
