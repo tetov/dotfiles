@@ -255,6 +255,13 @@ let g:lightline = {
 \ },
 \ }
 
+" Todo.txt
+" Auto complete projects
+au filetype todo imap <buffer> + +<C-X><C-O>
+
+" Auto complete contexts
+au filetype todo imap <buffer> @ @<C-X><C-O>
+
 function! WordCount()
     " https://gist.github.com/cormacrelf/d0bee254f5630b0e93c3
     let currentmode = mode()
