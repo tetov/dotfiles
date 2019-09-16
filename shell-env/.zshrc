@@ -35,15 +35,13 @@ PROMPT=" $PROMPT"
 zstyle ':completion:*' completer _oldlist _expand _complete _match _ignored _approximate
 
 # matches case insensitive and partial and substring
-zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
-
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
 
 # pasting with tabs doesn't perform completion
 zstyle ':completion:*' insert-tab pending
 
 # rehash if command not found (possibly recently installed)
 zstyle ':completion:*' rehash true
-
 
 # Group matches and describe.
 zstyle ':completion:*:*:*:*:*' menu select
