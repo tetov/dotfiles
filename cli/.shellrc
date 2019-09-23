@@ -9,13 +9,6 @@ eval `dircolors $HOME/.dircolors.dark256`
 
 dotfiles_dir=$HOME/tetov-dotfiles
 
-# Load variables containing server adresses and user names
-if [ -f "$HOME/.confidentials" ] ; then
-    . $HOME/.confidentials
-else
-    echo ".confidentials not found in ~"
-fi
-
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # Update path only if path not present
