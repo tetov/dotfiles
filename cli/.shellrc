@@ -9,7 +9,7 @@ eval `dircolors $HOME/.dircolors.dark256`
 
 dotfiles_dir=$HOME/tetov-dotfiles
 
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+eval $(keychain --eval --quiet id_rsa)
 
 # Update path only if path not present
 _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
