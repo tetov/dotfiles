@@ -86,18 +86,23 @@ else
   compinit -C -i
 fi
 
-ssh-add -l &>/dev/null
-if [ "$?" -eq 2 ]; then
-  test -r ~/.gnome-keyring && \
-    source ~/.gnome-keyring && \
-    export DBUS_SESSION_BUS_ADDRESS GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
-
-  ssh-add -l &>/dev/null
-  if [ "$?" -eq 2 ]; then
-    (umask 066; echo `dbus-launch --sh-syntax` > ~/.gnome-keyring; gnome-keyring-daemon >> ~/.gnome-keyring)
-    source ~/.gnome-keyring && \
-    export DBUS_SESSION_BUS_ADDRESS GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
-  fi
-fi
-
 export GPG_TTY=$(tty)
+
+# https://gist.github.com/BGBRWR/82e66547d7013f3ae687eb792b6b7e20
+function check_for_virtual_env {
+  [ -d .git ] || git rev-parse --git-dir &> /dev/null
+
+  if [ $? -eq 0 ]; then
+    local ENV_NAME=`basename \`pwd\`-dev`
+
+    if [ "${VIRTUAL_ENV##*/}" != $ENV_NAME ] && [ -e $WORKON_HOME/$ENV_NAME/bin/activate ]; then
+      workon $ENV_NAME && export CD_VIRTUAL_ENV=$ENV_NAME
+    fi
+  elif [ $CD_VIRTUAL_ENV ]; then
+    deactivate && unset CD_VIRTUAL_ENV
+  fi
+}
+
+function cd {
+  builtin cd "$@" && check_for_virtual_env
+}

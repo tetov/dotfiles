@@ -6,6 +6,8 @@ cd "$HOME/tetov-dotfiles" || { echo "Can't cd to ~/tetov-dotfiles." >&2; exit 1;
 
 mkdir -p "$HOME/.vim/colors" "$HOME/.lftp"
 
-stow shell-env
+stow cli
+stow config
 stow vim
-stow lftp
+stow virtualenvwrapper
+
