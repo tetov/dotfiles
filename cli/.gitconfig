@@ -1,6 +1,7 @@
 [user]
-	email = a@tetov.se
+	email = anton@tetov.se
 	name = tetov
+	signingkey = 0982BDC1DA044047
 
 # from https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
 [alias]
@@ -24,14 +25,15 @@
   d = difftool
 
 [merge]
-  ff = only
-  # I pretty much never mean to do a real merge, since I use a rebase workflow.
-  # Note: this global option applies to all merges, including those done during a git pull
-  # https://git-scm.com/docs/git-config#git-config-mergeff
-
   conflictstyle = diff3
   # Standard diff is two sets of final changes. This introduces the original text before each side's changes.
   # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
+
+  # https://www.rosipov.com/blog/use-vimdiff-as-git-mergetool/
+  tool = vimdiff
+
+[mergetool]
+  prompt = false
 
 #[commit]
 #  gpgSign = true
@@ -63,8 +65,18 @@
 [fetch]
 	fsckObjects = false
 
-# diff in vim
 [diff]
 	tool = vimdiff
+# diff in vim
+
 [difftool]
 	prompt = false
+
+[gpg]
+	program = gpg2
+
+[credential]
+	helper = /c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
+
+[commit]
+	gpgsign = true

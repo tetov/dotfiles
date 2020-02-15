@@ -9,7 +9,6 @@ eval `dircolors $HOME/.dircolors.dark256`
 
 dotfiles_dir=$HOME/tetov-dotfiles
 
-eval $(keychain --eval --quiet id_rsa)
 
 # Update path only if path not present
 _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
@@ -25,6 +24,11 @@ _path_assign \
     $HOME/bin \
     $dotfiles_dir/bin
 
+# virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/l-repos
+source /usr/bin/virtualenvwrapper.sh
+
 # https://stackoverflow.com/a/20460402
 stringContain() { [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]; }
 
@@ -38,6 +42,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias ..='cd ..'
 alias _='sudo '
+alias r='rolldice -s '
 
 alias ls='ls -F --color=auto'
 alias grep='grep -i --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
@@ -60,15 +65,22 @@ alias notlinked='find . -type f -links 1 \( \! -iname "*.jpg" \! -iname "*.nfo" 
 alias trippy='sudo tripwire -m c -I'
 alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire -m c -I'
 
+# todo.txt
+alias todo='vim /c/Users/a/Dropbox/todo/todo.txt /c/Users/a/Dropbox/todo/done.txt'
+
 function open () {
-    if command -v xdg-open >/dev/null ; then
-        xdg-open "$*" &
-    elif command -v cmd.exe >/dev/null ; then
+    if command -v cmd.exe >/dev/null ; then
         # based on https://superuser.com/questions/1160419/how-can-i-open-a-file-from-wsl-with-the-default-application#comment1846408_1252579
-        readlink -f "$*" | sed -e 's/\/mnt\/\(.\)/\1:/1' -e 's/.*/\"&\"/g' | xargs cmd.exe /c start ""
+        readlink -f "$*" | sed -e 's/\/\(.\)/\1:/1' -e 's/.*/\"&\"/g' | xargs cmd.exe /c start ""
+    elif command -v xdg-open >/dev/null ; then
+        xdg-open "$*" &
     else
         echo "open command not set up for this env"
     fi
+}
+
+function oppw () {
+    op get item "$1" | jq '.details.fields[] | select(.designation=="password").value'
 }
 
 # git
@@ -79,6 +91,7 @@ alias ga='git add'
 alias gb='git branch'
 
 alias gc='git commit -v'
+alias gcd='cd "$(git rev-parse --show-toplevel)"'
 alias gcmsg='git commit -m'
 alias gco='git checkout'
 

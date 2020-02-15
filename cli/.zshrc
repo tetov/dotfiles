@@ -15,7 +15,6 @@ setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history dat
 
 setopt auto_cd # cd by typing directory name if it's not a command
-setopt correct_all # autocorrect commands
 setopt complete_in_word # complete where cursor is
 setopt always_to_end # always put cursor at end after completing
 
@@ -86,3 +85,19 @@ if [ $(date +'%j') != $updated_at ]; then
 else
   compinit -C -i
 fi
+
+ssh-add -l &>/dev/null
+if [ "$?" -eq 2 ]; then
+  test -r ~/.gnome-keyring && \
+    source ~/.gnome-keyring && \
+    export DBUS_SESSION_BUS_ADDRESS GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
+
+  ssh-add -l &>/dev/null
+  if [ "$?" -eq 2 ]; then
+    (umask 066; echo `dbus-launch --sh-syntax` > ~/.gnome-keyring; gnome-keyring-daemon >> ~/.gnome-keyring)
+    source ~/.gnome-keyring && \
+    export DBUS_SESSION_BUS_ADDRESS GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
+  fi
+fi
+
+export GPG_TTY=$(tty)

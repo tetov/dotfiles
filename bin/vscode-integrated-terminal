@@ -1,0 +1,4 @@
+#! /bin/env sh
+SESSION="vscode`pwd | md5sum | awk '{print substring ($1,1,8)}'`"
+echo $SESSION
+tmux attach-session -d -t $SESSION || tmux new-session -s $SESSION

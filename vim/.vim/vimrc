@@ -2,7 +2,7 @@ set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 
 " Enable completion where available.
 " This setting must be set before ALE is loaded.
-" let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 1
 
 " Automatic installation vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -16,11 +16,14 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'            " Shows diff line by line
+Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
 Plug 'altercation/vim-colors-solarized'  " Color-scheme
 Plug 'alvan/vim-closetag'                " Closes html and xml tags
 Plug 'davidhalter/jedi-vim'
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
+Plug 'dense-analysis/ale'                          " Linter
 Plug 'easymotion/vim-easymotion'         " double leader then movement
+Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
 Plug 'ervandew/supertab'                 " Maps tab in various ways
 Plug 'godlygeek/tabular'                 " Lines up code
 Plug 'itchyny/lightline.vim'             " Statusbar
@@ -33,18 +36,19 @@ Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
 Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'raimondi/delimitMate'              " Closes parens, hyphens etc
+Plug 'samoshkin/vim-mergetool'           " Mergetool
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
 Plug 'tmhedberg/simpylfold'              " Folding for Python
 Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
 Plug 'tpope/vim-commentary'              " Comment and uncomment
 Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
+Plug 'tpope/vim-fugitive'                " Git
 Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
 Plug 'tpope/vim-sensible'                " Sensible standards
 Plug 'tpope/vim-sleuth'                  " Guess tab width
 Plug 'tpope/vim-surround'                " Operate on surrounding characters
 Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
 Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
-Plug 'w0rp/ale'                          " Linter
 Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
 
 call plug#end()
@@ -104,7 +108,16 @@ au BufWinEnter ?* silent loadview " load folds on open
 nnoremap <space> za
 
 " CLIPBOARD
-" set clipboard=unnamedplus
+" from https://vi.stackexchange.com/a/16114
+let s:clip = '/c/Windows/System32/clip.exe'
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * call system('echo '.shellescape(join(v:event.regcontents, "\<CR>")).' | '.s:clip)
+    augroup END
+end
+
+noremap "p :exe 'norm a'.system('/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Clipboard')<CR>
 
 " SPELLCHECK
 set rtp+=/usr/share/vim/vimfiles/
@@ -183,6 +196,11 @@ set splitright
 let mapleader = ","
 let maplocalleader = ","
 
+" SuperTab
+
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
+
 "Pandoc
 " make markdown files not appears as pandoc files to w0rp/ale
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
@@ -214,14 +232,17 @@ nmap <Leader>f :Files<CR>
 nmap <Leader>a :Ag<CR>
 
 " ALE
+set omnifunc=ale#completion#OmniFunc
+
 let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
     \ 'css': ['prettier', 'stylelint'],
     \ 'html': ['tidy'],
-    \ 'python': ['yapf']
+    \ 'python': ['isort', 'black']
 \}
 let g:ale_linters = {
     \ 'pandoc': ['alex', 'markdownlint', 'mdl', 'prettier', 'proselint', 'redpen', 'remark-lint', 'textlint', 'vale', 'write-good'],
+    \ 'python': ['flake8', 'mypy']
 \}
 
 " Lightline
@@ -230,16 +251,18 @@ let g:lightline = {
     \ 'active': {
     \   'left': [
     \     ['mode', 'paste'],
-    \     ['filename', 'modified']
+    \     ['gitbranch', 'filename', 'modified']
     \   ],
     \   'right': [
     \     ['lineinfo'],
     \     ['percent', 'wordcount'],
+    \     [ 'fileformat', 'fileencoding', 'filetype'],
     \     ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok, linter_checking']
     \   ]
     \ },
     \ 'component_function': {
     \   'wordcount': 'WordCount',
+    \   'gitbranch': 'fugitive#head'
     \ },
     \ 'component_expand': {
     \   'buffers': 'lightline#bufferline#buffers',
