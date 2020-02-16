@@ -1,3 +1,4 @@
 #! /bin/env sh
-SESSION="vscode-`pwd | shasum | cut -c1-7`"
-tmux attach-session -d -t $SESSION || tmux new-session -s $SESSION
+SESSION="vscode-`pwd|/usr/sbin/md5sum|head -c8`"
+tmux attach-session -d -t "$SESSION" || tmux new-session -s "$SESSION"
+
