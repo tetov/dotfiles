@@ -1,0 +1,65 @@
+# rTorrent-PS systemd unit (with dedicated tmux, as a user service)
+# https://github.com/pyroscope/pimp-my-box/blob/master/roles/rtorrent-ps/templates/rtps.service
+#
+# Save to:
+#   ~/.config/systemd/user/rtps.service
+#
+# Exec as *root*:
+#   loginctl enable-linger rtorrent
+#
+# Exec as *rtorrent*:
+#   systemctl --user start rtps
+#   systemctl --user status rtps
+#   journalctl -xe --user-unit=rtps
+#
+# To start at boot (exec as *rtorrent*):
+#   systemctl --user enable rtps
+#
+# Attach to tmux:
+#   tmux -2u -L rtps-$USER attach
+#
+# Trouble-shooting:
+#
+#   a) Check the status output (see above); make sure the service 
+#      is "active (running)" and rtorrent is listed at the end of 
+#      the "CGroup" process tree
+#
+#   b) Attach to tmux session and look out for errors (e.g. errors
+#      in the rtorrent.rc configuration)
+#
+#   c) Add "-vv" to the tmux call in ExecStart
+#      (writes tmux log files to "~/rtorrent")
+
+[Unit]
+Description=rTorrent-PS in tmux
+Documentation=https://rtorrent-ps.readthedocs.io/
+Documentation=https://rtorrent-docs.readthedocs.io/
+Documentation=https://pimp-my-box.readthedocs.io/
+Documentation=https://pyrocore.readthedocs.io/
+After=network.target
+
+[Service]
+Environment="TERM=xterm-256color"
+WorkingDirectory=%h/rtorrent
+ExecStartPre=/bin/bash -c "if test -e %h/rtorrent/.session/rtorrent.lock && ! ( test -S %h/rtorrent/.scgi_local && lsof %h/rtorrent/.scgi_local >/dev/null ); then rm -f %h/rtorrent/.session/rtorrent.lock; fi"
+ExecStop=/bin/bash -c "/bin/kill -INT `pgrep -u %u rtorrent` 2>/dev/null || : ; for i in {180..1..-1}; do if pgrep -u %u rtorrent >/dev/null; then echo Stopping rtorrent... [$i]; sleep 1; else break; fi; done"
+TimeoutStopSec=200
+TimeoutStartSec=20
+Restart=on-failure
+
+#Type=forking
+#ExecStart=/usr/bin/tmux -2u -L rtps-%u new-session -s rtps-%u -n rT-PS -d bash -c "%h/rtorrent/start ; exec $SHELL"
+
+Type=notify
+NotifyAccess=all
+ExecStart=/bin/bash -c "/usr/bin/tmux -2u -L rtps-%u new-session -s rtps-%u -n rT-PS -d /bin/bash -c '%h/rtorrent/start ; exec $SHELL' ; while ! ( test -S %h/rtorrent/.scgi_local && lsof -a -U -u %u -t %h/rtorrent/.scgi_local >/dev/null 2>&1 ); do sleep 1; done ; systemd-notify --ready --status SESSION=$(rtxmlrpc --repr session.name 2>/dev/null) ; while test -S %h/rtorrent/.scgi_local && lsof -a -U -u %u -t %h/rtorrent/.scgi_local >/dev/null 2>&1; do systemd-notify WATCHDOG=1; sleep 420; done ; systemd-notify --status 'rTorrent died before '\"$(date --rfc-3339=seconds)\" ; sleep 420 ; exit 69"
+WatchdogSec=15min
+StartLimitInterval=1min
+StartLimitBurst=6
+
+# Prevent starts with unmounted data volumes
+#AssertPathExists=/mnt/data-volume/.mounted
+
+[Install]
+WantedBy=default.target
+
