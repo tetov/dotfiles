@@ -1,0 +1,4 @@
+# Global gitignore
+# Set core.excludefiles = ~/.gitignore
+.vimrc
+.pre-commit-config.yaml

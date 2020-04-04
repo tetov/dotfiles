@@ -5,7 +5,7 @@ pip install jupyter notebook pdbpp flake8 pytest
 
 PYTHONVER=`python -c 'import sys; print(sys.version_info[0])'`
 
-if [ PYTHONVER -eq "3" ]; then
+if test PYTHONVER = "3"; then
   pip install jupyterlab mypy
   jupyter labextension install jupyterlab_vim jupyter-threejs jupyterlab-datawidgets ipyvolume
 fi

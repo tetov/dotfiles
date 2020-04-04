@@ -1,9 +1,5 @@
 set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 
-" Enable completion where available.
-" This setting must be set before ALE is loaded.
-let g:ale_completion_enabled = 1
-
 " Automatic installation vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -11,45 +7,94 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+let g:ale_completion_enabled = 0
+let g:jedi#completions_enabled = 0 
+" let g:deoplete#enable_at_startup = 1
+
 " vim-plug configuration
 
 call plug#begin('~/.vim/plugged')
+"
+"" COMPLETION
+let g:python3_host_prog='/home/tetov/.virtualenvs/nvim/bin/python'
+Plug 'ncm2/ncm2'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'roxma/nvim-yarp'
 
-Plug 'airblade/vim-gitgutter'            " Shows diff line by line
-Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
-Plug 'altercation/vim-colors-solarized'  " Color-scheme
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
+" IMPORTANT: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'wellle/tmux-complete.vim'
+
+set shortmess+=c
+
+" GENERAL
 Plug 'alvan/vim-closetag'                " Closes html and xml tags
-Plug 'davidhalter/jedi-vim'
-Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
-Plug 'dense-analysis/ale'                          " Linter
-Plug 'easymotion/vim-easymotion'         " double leader then movement
 Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
 Plug 'ervandew/supertab'                 " Maps tab in various ways
 Plug 'godlygeek/tabular'                 " Lines up code
-Plug 'itchyny/lightline.vim'             " Statusbar
-Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
 Plug 'junegunn/fzf.vim'                  " Quicker searching
+Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
 Plug 'Konfekt/fastfold'                  " Apparently folds are slow?
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
-Plug 'maximbaz/lightline-ale'            " ALE status for lightline
-Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
-Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
-Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'raimondi/delimitMate'              " Closes parens, hyphens etc
-Plug 'samoshkin/vim-mergetool'           " Mergetool
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
-Plug 'tmhedberg/simpylfold'              " Folding for Python
 Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
 Plug 'tpope/vim-commentary'              " Comment and uncomment
-Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
-Plug 'tpope/vim-fugitive'                " Git
 Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
 Plug 'tpope/vim-sensible'                " Sensible standards
+Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
 Plug 'tpope/vim-sleuth'                  " Guess tab width
 Plug 'tpope/vim-surround'                " Operate on surrounding characters
+Plug 'tpope/vim-vinegar'                 " netrw as proj browser
+
+" UTILITY
+Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
+Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
+Plug 'samoshkin/vim-mergetool'           " Mergetool
+
+" UI
+Plug 'airblade/vim-gitgutter'            " Shows diff line by line
+Plug 'altercation/vim-colors-solarized'  " Color-scheme
+Plug 'itchyny/lightline.vim'             " Statusbar
+Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
+Plug 'maximbaz/lightline-ale'            " ALE status for lightline
+Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
+Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
+
+" LINT
+Plug 'dense-analysis/ale'                          " Linter
+
+" MOVEMENT
+Plug 'bkad/CamelCaseMotion'
+Plug 'easymotion/vim-easymotion'         " double leader then movement
+
+" GIT
+Plug 'ncm2/ncm2-github'
+Plug 'tpope/vim-fugitive'                " Git
+Plug 'tpope/vim-rhubarb'                 " Github plugin for fugitive
+
+" SNIPPETS
+Plug 'honza/vim-snippets'                " Collection of snippets
+Plug 'ncm2/ncm2-ultisnips'
+Plug 'SirVer/ultisnips'                  " Snippet engine
+
+" PYTHON
+Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
+Plug 'davidhalter/jedi-vim'
+Plug 'jmcantrell/vim-virtualenv'           " Make vim use venv
+Plug 'ncm2/ncm2-jedi'
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'tmhedberg/simpylfold'              " Folding for Python
+
+" MARKDOWN ETC
 Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
 Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
-Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
 
 call plug#end()
 
@@ -90,6 +135,8 @@ set ruler                   " Always show info along bottom.
 set wrap                    " Wrap lines
 set textwidth=0             " No automatic breaks
 set linebreak               " Break long lines by word, not char
+set scrolloff=20            " Lines to keep visible below and above
+set colorcolumn=80          " Visual marker at col 80
 
 " SEARCH
 set incsearch               " search as characters are entered
@@ -101,11 +148,15 @@ set foldenable                    " enable folding
 set foldlevelstart=10             " open most folds by default
 set foldnestmax=10                " 10 nested fold max
 set foldmethod=indent             " fold based on indent level
+let g:markdown_folding=1
 au BufWinLeave ?* mkview          " save folds on exit
 au BufWinEnter ?* silent loadview " load folds on open
 
 " space open/closes folds
 nnoremap <space> za
+
+" Load project specific vimrc
+set exrc
 
 " CLIPBOARD
 " from https://vi.stackexchange.com/a/16114
@@ -164,10 +215,9 @@ set path+=**
 
 " Tweaks for netrw (file-browser) from https://github.com/mcantor/no_plugins
 let g:netrw_banner=0        " disable annoying banner
-let g:netrw_browse_split=4  " open in prior window
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_winsize = 25
 
 " Enter and backspaces moves through paragraphs in normal mode
 nnoremap <BS> {
@@ -192,9 +242,18 @@ set splitright
 
 " PLUGINS
 
+" CamelCaseMotion
+let g:camelcasemotion_key = '<leader>'
+
+" Snippets
+let g:ultisnips_python_style="numpy"
+let g:ultisnips_python_quoting_style="double"
+
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
 let maplocalleader = ","
+
+let g:jedi#use_splits_not_buffers = "right"
 
 " SuperTab
 
@@ -204,7 +263,6 @@ let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 "Pandoc
 " make markdown files not appears as pandoc files to w0rp/ale
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
-let g:pandoc#filetypes#pandoc_markdown = 0
 
 let g:pandoc#folding#fold_yaml=1
 let g:pandoc#folding#fdc=0
@@ -229,10 +287,15 @@ set rtp+=~/.fzf
 nmap ; :Buffers<CR>
 nmap <Leader>t :Tags<CR>
 nmap <Leader>f :Files<CR>
-nmap <Leader>a :Ag<CR>
+nmap <Leader>a :Rg<CR>
+nnoremap <C-p> :Files<Cr>
+
+" Python
+autocmd FileType python setlocal indentkeys-=<:>
+autocmd FileType python setlocal indentkeys-=:
 
 " ALE
-set omnifunc=ale#completion#OmniFunc
+" set omnifunc=ale#completion#OmniFunc
 
 let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -242,8 +305,14 @@ let g:ale_fixers = {
 \}
 let g:ale_linters = {
     \ 'pandoc': ['alex', 'markdownlint', 'mdl', 'prettier', 'proselint', 'redpen', 'remark-lint', 'textlint', 'vale', 'write-good'],
-    \ 'python': ['flake8', 'mypy']
+    \ 'python': ['flake8', 'mypy', 'pydocstyle']
 \}
+
+nmap ]a :ALENextWrap<CR>
+nmap [a :ALEPreviousWrap<CR>
+nmap ]A :ALELast
+nmap [A :ALEFirst
+nmap <F8> <Plug>(ale_fix)
 
 " Lightline
 let g:lightline = {
@@ -251,7 +320,7 @@ let g:lightline = {
     \ 'active': {
     \   'left': [
     \     ['mode', 'paste'],
-    \     ['gitbranch', 'filename', 'modified']
+    \     ['venv', 'gitbranch', 'filename', 'modified']
     \   ],
     \   'right': [
     \     ['lineinfo'],
@@ -261,8 +330,8 @@ let g:lightline = {
     \   ]
     \ },
     \ 'component_function': {
-    \   'wordcount': 'WordCount',
-    \   'gitbranch': 'fugitive#head'
+    \   'gitbranch': 'fugitive#head',
+    \   'venv': 'virtualenv#statusline'
     \ },
     \ 'component_expand': {
     \   'buffers': 'lightline#bufferline#buffers',
@@ -318,3 +387,6 @@ function! WordCount()
         return b:wordcount
     endif
 endfunction
+
+" Disables unsafe commands in project vimrcs
+set secure

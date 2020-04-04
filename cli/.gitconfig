@@ -1,18 +1,14 @@
+[core]
+  excludesfile = ~/.gitignore_global
+
 [user]
-	email = anton@tetov.se
-	name = tetov
-	signingkey = 0982BDC1DA044047
+  email = anton@tetov.se
+  name = tetov
+  signingkey = 0982BDC1DA044047
 
-# from https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
+# Parts of settings and comments from
+# https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
 [alias]
-  prune = fetch --prune
-  # Because I constantly forget how to do this
-  # https://git-scm.com/docs/git-fetch#git-fetch--p
-
-  undo = reset --soft HEAD^
-  # Not quite as common as an amend, but still common
-  # https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
-
   stash-all = stash save --include-untracked
   # We wanna grab those pesky un-added files!
   # https://git-scm.com/docs/git-stash
@@ -35,8 +31,8 @@
 [mergetool]
   prompt = false
 
-#[commit]
-#  gpgSign = true
+[commit]
+  gpgSign = true
   # "other people can trust that the changes you've made really were made by you"
   # https://help.github.com/articles/about-gpg/
   # https://git-scm.com/docs/git-config#git-config-commitgpgSign
@@ -62,21 +58,15 @@
   # Note: this global option applies during receive and transmit
   # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
   # via https://groups.google.com/forum/#!topic/binary-transparency/f-BI4o8HZW0
-[fetch]
-	fsckObjects = false
 
 [diff]
-	tool = vimdiff
-# diff in vim
+  tool = vimdiff
 
 [difftool]
-	prompt = false
+  prompt = false
 
 [gpg]
-	program = gpg2
+  program = gpg2
 
 [credential]
-	helper = /c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
-
-[commit]
-	gpgsign = true
+  helper = /c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe

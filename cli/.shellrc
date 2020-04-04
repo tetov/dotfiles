@@ -2,12 +2,21 @@
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
+export PAGER="less"
+export LESS=" -R"
+if test -f "/usr/bin/src-hilite-lesspipe.sh"; then
+    export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
+fi
+
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 eval `dircolors $HOME/.dircolors.dark256`
 
 dotfiles_dir=$HOME/tetov-dotfiles
+
+export GPG_TTY="$(tty)"
+eval $(keychain --eval --quiet --nogui --agents gpg,ssh --ignore-missing ~/.ssh/id_rsa)
 
 
 # Update path only if path not present

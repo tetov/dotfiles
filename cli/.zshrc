@@ -65,6 +65,12 @@ if [ -e /usr/share/fzf/key-bindings.zsh ] ; then
     source /usr/share/fzf/completion.zsh
 fi
 
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+
+_fzf_compgen_path() {
+  rg --files --hidden . "$"
+}
+
 # Vi mode in zsh, taken from https://dougblack.io/words/zsh-vi-mode.html
 bindkey -v
 
@@ -85,8 +91,6 @@ if [ $(date +'%j') != $updated_at ]; then
 else
   compinit -C -i
 fi
-
-export GPG_TTY=$(tty)
 
 # https://gist.github.com/BGBRWR/82e66547d7013f3ae687eb792b6b7e20
 function check_for_virtual_env {
