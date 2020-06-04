@@ -1,7 +1,7 @@
 [user]
   email = anton@tetov.se
   name = tetov
-  signingkey = 0982BDC1DA044047
+  signingkey = 337DDB574A8834DB
 
 # Parts of settings and comments from
 # https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
@@ -50,7 +50,7 @@
   # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
 
 [transfer]
-  fsckobjects = true
+	fsckObjects = false
   # To combat repository corruption!
   # Note: this global option applies during receive and transmit
   # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
@@ -67,3 +67,7 @@
 
 [credential]
   helper = /c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
+[fetch]
+	fsckObjects = false
+[recieve]
+	fsckObjects = false

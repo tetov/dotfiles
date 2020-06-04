@@ -2,3 +2,5 @@
 # Set core.excludefiles = ~/.gitignore
 .vimrc
 .pre-commit-config.yaml
+tags
+.ycm_extra_conf.py

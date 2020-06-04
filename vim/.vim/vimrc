@@ -7,36 +7,26 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-let g:ale_completion_enabled = 0
-let g:jedi#completions_enabled = 0 
-" let g:deoplete#enable_at_startup = 1
-
 " vim-plug configuration
 
 call plug#begin('~/.vim/plugged')
-"
-"" COMPLETION
-let g:python3_host_prog='/home/tetov/.virtualenvs/nvim/bin/python'
-Plug 'ncm2/ncm2'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'roxma/nvim-yarp'
 
-" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
+" AUTOCOMPLETION
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py
+  endif
+endfunction
 
-" IMPORTANT: :help Ncm2PopupOpen for more information
-set completeopt=noinsert,menuone,noselect
-
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'wellle/tmux-complete.vim'
-
-set shortmess+=c
+Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') }
 
 " GENERAL
 Plug 'alvan/vim-closetag'                " Closes html and xml tags
 Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
-Plug 'ervandew/supertab'                 " Maps tab in various ways
 Plug 'godlygeek/tabular'                 " Lines up code
 Plug 'junegunn/fzf.vim'                  " Quicker searching
 Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
@@ -51,21 +41,22 @@ Plug 'tpope/vim-sensible'                " Sensible standards
 Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
 Plug 'tpope/vim-sleuth'                  " Guess tab width
 Plug 'tpope/vim-surround'                " Operate on surrounding characters
-Plug 'tpope/vim-vinegar'                 " netrw as proj browser
-
-" UTILITY
+Plug 'ludovicchabant/vim-gutentags'      " autogenerate tags
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'samoshkin/vim-mergetool'           " Mergetool
+Plug 'majutsushi/tagbar'
 
 " UI
 Plug 'airblade/vim-gitgutter'            " Shows diff line by line
-Plug 'altercation/vim-colors-solarized'  " Color-scheme
+" Plug 'altercation/vim-colors-solarized'  " Color-scheme
+Plug 'lifepillar/vim-solarized8'
 Plug 'itchyny/lightline.vim'             " Statusbar
 Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
 Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
 Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
+Plug 'christoomey/vim-tmux-navigator'    " Same bindings for vim and tmux for splits
 
 " LINT
 Plug 'dense-analysis/ale'                          " Linter
@@ -75,26 +66,26 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'easymotion/vim-easymotion'         " double leader then movement
 
 " GIT
-Plug 'ncm2/ncm2-github'
 Plug 'tpope/vim-fugitive'                " Git
 Plug 'tpope/vim-rhubarb'                 " Github plugin for fugitive
-
-" SNIPPETS
-Plug 'honza/vim-snippets'                " Collection of snippets
-Plug 'ncm2/ncm2-ultisnips'
-Plug 'SirVer/ultisnips'                  " Snippet engine
+Plug 'jreybert/vimagit'                  " Commit chunks and more
 
 " PYTHON
 Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
-Plug 'davidhalter/jedi-vim'
-Plug 'jmcantrell/vim-virtualenv'           " Make vim use venv
-Plug 'ncm2/ncm2-jedi'
+Plug 'jmcantrell/vim-virtualenv'         " Make vim use venv
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'tmhedberg/simpylfold'              " Folding for Python
 
 " MARKDOWN ETC
 Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
 Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
+Plug 'ChesleyTan/wordCount.vim'          " Wordcount displayed in statusbar
+Plug 'quentindecock/vim-cucumber-align-pipes' " Markdown tables
+"
+" SNIPPETS
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 
 call plug#end()
 
@@ -108,8 +99,7 @@ set guioptions=g
 
 " COLORS
 set background=dark
-let g:solarized_termcolors=256
-colorscheme solarized
+colorscheme solarized8
 
 " TABS
 set tabstop=4               " number of visual spaces per TAB
@@ -136,27 +126,22 @@ set wrap                    " Wrap lines
 set textwidth=0             " No automatic breaks
 set linebreak               " Break long lines by word, not char
 set scrolloff=20            " Lines to keep visible below and above
-set colorcolumn=80          " Visual marker at col 80
+let g:EditorConfig_max_line_indicator = "none"
+let &colorcolumn=80
 
 " SEARCH
 set incsearch               " search as characters are entered
 set hlsearch                " highlight matches
 set ignorecase              " Make searches case-insensitive.
-
 " FOLDING
 set foldenable                    " enable folding
 set foldlevelstart=10             " open most folds by default
 set foldnestmax=10                " 10 nested fold max
-set foldmethod=indent             " fold based on indent level
+set foldmethod=indent
 let g:markdown_folding=1
-au BufWinLeave ?* mkview          " save folds on exit
-au BufWinEnter ?* silent loadview " load folds on open
 
 " space open/closes folds
 nnoremap <space> za
-
-" Load project specific vimrc
-set exrc
 
 " CLIPBOARD
 " from https://vi.stackexchange.com/a/16114
@@ -241,45 +226,38 @@ set splitbelow
 set splitright
 
 " PLUGINS
-
-" CamelCaseMotion
-let g:camelcasemotion_key = '<leader>'
-
-" Snippets
-let g:ultisnips_python_style="numpy"
-let g:ultisnips_python_quoting_style="double"
-
+"
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
 let maplocalleader = ","
 
-let g:jedi#use_splits_not_buffers = "right"
+" CamelCaseMotion
+let g:camelcasemotion_key = '<leader>'
 
+" Settings for vim-stay, what to save between sessions
+set viewoptions=cursor,slash,unix
+
+" Snippets
+let g:UltiSnipsExpandTrigger = '<C-j>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+let g:ultisnips_python_style="numpy"
+let g:ultisnips_python_quoting_style="double" 
+"
 " SuperTab
+let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
+" ycm completion
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_goto_buffer_command = 'split-or-existing-window'
+nnoremap <F10> :YcmCompleter GoTo<CR>
 
-"Pandoc
+" Pandoc
 " make markdown files not appears as pandoc files to w0rp/ale
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
-
 let g:pandoc#folding#fold_yaml=1
 let g:pandoc#folding#fdc=0
-
-" Cucumbertables.vim (from https://gist.github.com/tpope/287147)
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-
-function! s:align()
-    let p = '^\s*|\s.*\s|\s*$'
-    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-        Tabularize/|/l1
-        normal! 0
-        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-      endif
-endfunction
 
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
 set rtp+=/usr/bin/fzf
@@ -288,15 +266,25 @@ nmap ; :Buffers<CR>
 nmap <Leader>t :Tags<CR>
 nmap <Leader>f :Files<CR>
 nmap <Leader>a :Rg<CR>
+nmap <Leader>m :Marks<CR>
 nnoremap <C-p> :Files<Cr>
+
+" GutenTags
+let g:gutentags_file_list_command = {
+   \ 'markers': {
+       \ '.git': 'git ls-files',
+       \ '.hg': 'hg files',
+       \ },
+   \ }
+" Tagbar
+nmap <F6> :TagbarToggle<CR>
+let g:tagbar_map_togglefold = "<SPACE>"
 
 " Python
 autocmd FileType python setlocal indentkeys-=<:>
 autocmd FileType python setlocal indentkeys-=:
 
-" ALE
-" set omnifunc=ale#completion#OmniFunc
-
+" ale linting and fixing
 let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
     \ 'css': ['prettier', 'stylelint'],
@@ -314,6 +302,8 @@ nmap ]A :ALELast
 nmap [A :ALEFirst
 nmap <F8> <Plug>(ale_fix)
 
+let g:ale_completion_enabled = 0
+
 " Lightline
 let g:lightline = {
     \ 'colorscheme': 'wombat',
@@ -325,12 +315,13 @@ let g:lightline = {
     \   'right': [
     \     ['lineinfo'],
     \     ['percent', 'wordcount'],
-    \     [ 'fileformat', 'fileencoding', 'filetype'],
+    \     ['fileformat', 'fileencoding', 'filetype'],
     \     ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok, linter_checking']
     \   ]
     \ },
     \ 'component_function': {
     \   'gitbranch': 'fugitive#head',
+    \   'wordcount': 'wordCount#WordCount',
     \   'venv': 'virtualenv#statusline'
     \ },
     \ 'component_expand': {
@@ -350,43 +341,7 @@ let g:lightline = {
     \ },
 \}
 
-" Todo.txt
-" Auto complete projects
-au filetype todo imap <buffer> + +<C-X><C-O>
-
-" Auto complete contexts
-au filetype todo imap <buffer> @ @<C-X><C-O>
-
-function! WordCount()
-    " https://gist.github.com/cormacrelf/d0bee254f5630b0e93c3
-    let currentmode = mode()
-    if !exists("g:lastmode_wc")
-        let g:lastmode_wc = currentmode
-    endif
-    " if we modify file, open a new buffer, be in visual ever, or switch modes
-    " since last run, we recompute.
-    if &modified || !exists("b:wordcount") || currentmode =~? '\c.*v' || currentmode != g:lastmode_wc
-        let g:lastmode_wc = currentmode
-        let l:old_position = getpos('.')
-        let l:old_status = v:statusmsg
-        execute "silent normal g\<c-g>"
-        if v:statusmsg == "--No lines in buffer--"
-            let b:wordcount = 0
-        else
-            let s:split_wc = split(v:statusmsg)
-            if index(s:split_wc, "Selected") < 0
-                let b:wordcount = str2nr(s:split_wc[11])
-            else
-                let b:wordcount = str2nr(s:split_wc[5])
-            endif
-            let v:statusmsg = l:old_status
-        endif
-        call setpos('.', l:old_position)
-        return b:wordcount
-    else
-        return b:wordcount
-    endif
-endfunction
-
+" local vimrc (project specific settings)
+set exrc
 " Disables unsafe commands in project vimrcs
 set secure

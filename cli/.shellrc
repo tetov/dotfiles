@@ -15,11 +15,9 @@ eval `dircolors $HOME/.dircolors.dark256`
 
 dotfiles_dir=$HOME/tetov-dotfiles
 
-export GPG_TTY="$(tty)"
 eval $(keychain --eval --quiet --nogui --agents gpg,ssh --ignore-missing ~/.ssh/id_rsa)
 
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
-
 
 # Update path only if path not present
 _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
@@ -38,7 +36,11 @@ _path_assign \
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/l-repos
-source /usr/bin/virtualenvwrapper.sh
+if test -f /usr/bin/virtualenvwrapper.sh ; then
+    source /usr/bin/virtualenvwrapper.sh
+elif test -f /usr/share/usr/share/virtualenvwrapper/virtualenvwrapper.sh ; then
+    source /usr/share/usr/share/virtualenvwrapper/virtualenvwrapper.sh
+fi
 
 # https://stackoverflow.com/a/20460402
 stringContain() { [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]; }

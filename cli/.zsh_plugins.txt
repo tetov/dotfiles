@@ -8,5 +8,5 @@ mafredri/zsh-async
 sindresorhus/pure
 
 # zsh-syntax-highlighting needs to go last
-# zdharma/fast-syntax-highlighting
 zsh-users/zsh-syntax-highlighting
+
