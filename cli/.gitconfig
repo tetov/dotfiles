@@ -1,7 +1,8 @@
 [user]
   email = anton@tetov.se
   name = tetov
-  signingkey = 337DDB574A8834DB
+  ; signingkey = 337DDB574A8834DB
+  signingkey = 2B4D0035AFF0F7DACE5B29D7337DDB574A8834DB
 
 # Parts of settings and comments from
 # https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29

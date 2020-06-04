@@ -15,8 +15,6 @@ eval `dircolors $HOME/.dircolors.dark256`
 
 dotfiles_dir=$HOME/tetov-dotfiles
 
-eval $(keychain --eval --quiet --nogui --agents gpg,ssh --ignore-missing ~/.ssh/id_rsa)
-
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 # Update path only if path not present

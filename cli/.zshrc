@@ -1,6 +1,15 @@
 # Source general shell env
 . $HOME/.shellrc
 
+if [ -z "$SSH_CLIENT"]; then  # if this is not a ssh session
+  # https://github.com/BlackReloaded/wsl2-ssh-pageant
+  export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
+  export GPG_AGENT_SOCK=$HOME/.gnupg/S.gpg-agent
+
+  $dotfiles_dir/bin/gpg-ssh-pageant.sh
+
+fi
+
 # history settings
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
@@ -29,6 +38,10 @@ PURE_CMD_MAX_EXEC_TIME=60
 # Make pure theme single line
 prompt_newline='%666v'
 PROMPT=" $PROMPT"
+zstyle :prompt:pure:user color green
+zstyle :prompt:pure:host color green
+zstyle :prompt:pure:git:branch color white
+zstyle :prompt:pure:git:stash show yes
 
 # forces zsh to realize new commands
 zstyle ':completion:*' completer _oldlist _expand _complete _match _ignored _approximate
@@ -53,6 +66,7 @@ zstyle ':completion:*' list-colors  'reply=( "=(#b)(*$PREFIX)(?)*=00=$color[gree
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+
 
 set -o vi # Make fzf work with vi mode in zsh
 
