@@ -22,7 +22,17 @@ function! BuildYCM(info)
   endif
 endfunction
 
-Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') }
+if has('python3')
+  Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') }
+  " SNIPPETS
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
+  " PYTHON
+  Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
+  Plug 'jmcantrell/vim-virtualenv'         " Make vim use venv
+  Plug 'Vimjas/vim-python-pep8-indent'
+  Plug 'tmhedberg/simpylfold'              " Folding for Python
+endif
 
 " GENERAL
 Plug 'alvan/vim-closetag'                " Closes html and xml tags
@@ -70,21 +80,12 @@ Plug 'tpope/vim-fugitive'                " Git
 Plug 'tpope/vim-rhubarb'                 " Github plugin for fugitive
 Plug 'jreybert/vimagit'                  " Commit chunks and more
 
-" PYTHON
-Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
-Plug 'jmcantrell/vim-virtualenv'         " Make vim use venv
-Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'tmhedberg/simpylfold'              " Folding for Python
-
 " MARKDOWN ETC
 Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
 Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
 Plug 'ChesleyTan/wordCount.vim'          " Wordcount displayed in statusbar
 Plug 'quentindecock/vim-cucumber-align-pipes' " Markdown tables
 "
-" SNIPPETS
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 
 
 call plug#end()

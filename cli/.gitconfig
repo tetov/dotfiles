@@ -1,7 +1,6 @@
 [user]
   email = anton@tetov.se
   name = tetov
-  ; signingkey = 337DDB574A8834DB
   signingkey = 2B4D0035AFF0F7DACE5B29D7337DDB574A8834DB
 
 # Parts of settings and comments from
@@ -17,6 +16,9 @@
   # via https://medium.com/@payload.dd/thanks-for-the-git-st-i-will-use-this-4da5839a21a4
 
   d = difftool
+
+  # https://stackoverflow.com/a/21857717
+  branch-cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
 
 [merge]
   conflictstyle = diff3
@@ -50,13 +52,6 @@
   # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
   # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
 
-[transfer]
-	fsckObjects = false
-  # To combat repository corruption!
-  # Note: this global option applies during receive and transmit
-  # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
-  # via https://groups.google.com/forum/#!topic/binary-transparency/f-BI4o8HZW0
-
 [diff]
   tool = vimdiff
 
@@ -66,9 +61,15 @@
 [gpg]
   program = gpg2
 
-[credential]
-  helper = /c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
+# To make zsh and vim plugins work
 [fetch]
-	fsckObjects = false
+  fsckObjects = false
+
 [recieve]
-	fsckObjects = false
+  fsckObjects = false
+
+[transfer]
+  fsckObjects = false
+
+[pull]
+  rebase = true

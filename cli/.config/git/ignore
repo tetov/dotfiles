@@ -3,4 +3,6 @@
 .vimrc
 .pre-commit-config.yaml
 tags
+tags.lock
 .ycm_extra_conf.py
+*.orig
