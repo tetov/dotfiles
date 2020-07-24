@@ -7,6 +7,10 @@ path=(~/bin $DOTFILES/bin ~/.cargo/bin $path)
 
 fpath+=$DOTFILES/zshfuncs
 
+if [[ -f /opt/ros/melodic/setup.zsh ]] ; then
+  . /opt/ros/melodic/setup.zsh
+fi
+
 # history settings
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
