@@ -157,7 +157,7 @@ nmap <F7> :set spell! <CR>
 
 " mkspell if needed
 for d in glob('~/.vim/spell/*.add', 1, 1)
-    if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
+    if filereadable(resolve(d)) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
         exec 'mkspell! ' . fnameescape(d)
     endif
 endfor
@@ -216,6 +216,10 @@ nnoremap <C-H> <C-W><C-H>
 " Open splits to the right and below
 set splitbelow
 set splitright
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+" https://stackoverflow.com/a/7078429
+cmap w!! w !sudo tee > /dev/null %
 
 " PLUGINS
 "
