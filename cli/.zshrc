@@ -1,9 +1,11 @@
 # Source general shell env
 . $HOME/.shellrc
 
-if [ -z "$SSH_CLIENT"]; then  # if this is not a ssh session
-  "$DOTFILES/bin/gpgbridge"
-fi
+# Path
+typeset -U path
+path=(~/bin $DOTFILES/bin ~/.cargo/bin $path)
+
+fpath+=$DOTFILES/zshfuncs
 
 # history settings
 HISTFILE="$HOME/.zsh_history"
@@ -101,21 +103,25 @@ else
   compinit -C -i
 fi
 
-# https://gist.github.com/BGBRWR/82e66547d7013f3ae687eb792b6b7e20
-function check_for_virtual_env {
+autoload -U add-zsh-hook
+add-zsh-hook -Uz chpwd (){
+  # https://gist.github.com/BGBRWR/82e66547d7013f3ae687eb792b6b7e20
+  # https://stackoverflow.com/a/45444758
   [ -d .git ] || git rev-parse --git-dir &> /dev/null
 
   if [ $? -eq 0 ]; then
-    local ENV_NAME=`basename \`pwd\`-dev`
+      local ENV_NAME=`basename \`pwd\`-dev`
 
-    if [ "${VIRTUAL_ENV##*/}" != $ENV_NAME ] && [ -e $WORKON_HOME/$ENV_NAME/bin/activate ]; then
+  if [ "${VIRTUAL_ENV##*/}" != $ENV_NAME ] && [ -e $WORKON_HOME/$ENV_NAME/bin/activate ]; then
       workon $ENV_NAME && export CD_VIRTUAL_ENV=$ENV_NAME
-    fi
+  fi
+
   elif [ $CD_VIRTUAL_ENV ]; then
-    deactivate && unset CD_VIRTUAL_ENV
+      deactivate && unset CD_VIRTUAL_ENV
   fi
 }
 
-function cd {
-  builtin cd "$@" && check_for_virtual_env
-}
+if [ -z "$SSH_CLIENT"]; then  # if this is not a ssh session
+  . "$DOTFILES/bin/gpgbridge"
+  autoload set_DISPLAY && set_DISPLAY
+fi

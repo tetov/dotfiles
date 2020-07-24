@@ -17,21 +17,6 @@ export DOTFILES=$HOME/tetov-dotfiles
 
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
-# Update path only if path not present
-_path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
-    set -- ${PATH:=$1} ; for p in $add ; do {
-        [ -z "${p%-[AP]}" ] && { unset P A
-                eval ${p#-}= ; continue ; }
-        for d ; do [ -z "${d%"$p"}" ] && break
-        done ; } || set -- ${P+$p} $* ${A+$p}
-        done ; export PATH="$*" ; IFS=$oFS
-}
-
-_path_assign \
-    $HOME/bin \
-    $DOTFILES/bin \
-    $HOME/.cargo/bin
-
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/l-repos
@@ -40,9 +25,6 @@ if test -f /usr/bin/virtualenvwrapper.sh ; then
 elif test -f /usr/share/usr/share/virtualenvwrapper/virtualenvwrapper.sh ; then
     source /usr/share/usr/share/virtualenvwrapper/virtualenvwrapper.sh
 fi
-
-# https://stackoverflow.com/a/20460402
-stringContain() { [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ]; }
 
 # aliases
 alias ll='ls -lh'

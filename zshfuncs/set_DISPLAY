@@ -1,0 +1,13 @@
+if [[ -v DISPLAY ]] ; then
+    return
+fi
+
+if [ $# -eq 0 ] ; then
+    screen="0.0"
+else
+    screen="$1"
+fi
+
+ip=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)
+
+export DISPLAY="$ip:$screen"

@@ -1,4 +1,4 @@
-#! /bin/env sh
+#!/usr/bin/env sh
 # https://medium.com/@joaomoreno/persistent-terminal-sessions-in-vs-code-8fc469ed6b41
 SESSION="vscode-`pwd|/usr/sbin/md5sum|head -c8`"
 tmux attach-session -d -t "$SESSION" || tmux new-session -s "$SESSION"
