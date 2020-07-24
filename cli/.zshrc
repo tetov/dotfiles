@@ -2,7 +2,7 @@
 . $HOME/.shellrc
 
 if [ -z "$SSH_CLIENT"]; then  # if this is not a ssh session
-  $HOME/.gpgbridge
+  "$DOTFILES/bin/gpgbridge"
 fi
 
 # history settings

@@ -13,7 +13,7 @@ export LANG=en_US.UTF-8
 
 eval `dircolors $HOME/.dircolors.dark256`
 
-dotfiles_dir=$HOME/tetov-dotfiles
+export DOTFILES=$HOME/tetov-dotfiles
 
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
@@ -29,7 +29,7 @@ _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
 
 _path_assign \
     $HOME/bin \
-    $dotfiles_dir/bin
+    $DOTFILES/bin
 
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
