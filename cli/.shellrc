@@ -29,7 +29,8 @@ _path_assign() { oFS=$IFS ; IFS=: ; add=$* ; unset P A ; A=
 
 _path_assign \
     $HOME/bin \
-    $DOTFILES/bin
+    $DOTFILES/bin \
+    $HOME/.cargo/bin
 
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
