@@ -145,15 +145,6 @@ let g:markdown_folding=1
 nnoremap <space> za
 
 " CLIPBOARD
-" from https://vi.stackexchange.com/a/16114
-let s:clip = '/c/Windows/System32/clip.exe'
-if executable(s:clip)
-    augroup WSLYank
-        autocmd!
-        autocmd TextYankPost * call system('echo '.shellescape(join(v:event.regcontents, "\<CR>")).' | '.s:clip)
-    augroup END
-end
-
 noremap "p :exe 'norm a'.system('/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Clipboard')<CR>
 
 " SPELLCHECK
@@ -243,7 +234,7 @@ let g:UltiSnipsExpandTrigger = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:ultisnips_python_style="numpy"
-let g:ultisnips_python_quoting_style="double" 
+let g:ultisnips_python_quoting_style="double"
 "
 " SuperTab
 let g:SuperTabDefaultCompletionType = "<c-n>"

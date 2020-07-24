@@ -2,12 +2,7 @@
 . $HOME/.shellrc
 
 if [ -z "$SSH_CLIENT"]; then  # if this is not a ssh session
-  # https://github.com/BlackReloaded/wsl2-ssh-pageant
-  export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
-  export GPG_AGENT_SOCK=$HOME/.gnupg/S.gpg-agent
-
-  $dotfiles_dir/bin/gpg-ssh-pageant.sh
-
+  $HOME/.gpgbridge
 fi
 
 # history settings

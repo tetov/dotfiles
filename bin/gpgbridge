@@ -1,0 +1,39 @@
+#!/bin/env bash
+#--------------------------------------------------------------------------
+# GPG bridging from WSL gpg to gpg4win gpg-agent.exe
+# (needed to use a Yubikey, since WSL cannot access USB devices)
+#
+# Source: https://github.com/mhyllander/gpg-bridge-wsl2-ruby
+
+if [[ -f "/c/tools/gpgbridge.rb" ]]
+then
+    function start_gpgbridge
+    {
+        local opts=''
+        if ! command -v ruby.exe >/dev/null
+        then
+            echo 'No ruby.exe found in path'
+            return
+        fi
+
+        # Uncomment the following line for WSL2 to set the remote address
+        opts="--remote-address $(ip route | awk '/^default via / {print $3}')"
+
+        if [[ $1 == ssh ]]; then
+            opts="$opts --enable-ssh-support"
+            export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        fi
+        ruby /c/tools/gpgbridge.rb --daemon --pidfile ~/.gpgbridge.pid --logfile ~/.gpgbridge.log --verbose --windows-logfile 'C:\tools\gpgbridge.log' --windows-pidfile 'C:\tools\gpgbridge.pid' $opts
+    }
+    function stop_gpgbridge
+    {
+        pkill -TERM -f 'ruby.*gpgbridge\.rb'
+    }
+    function restart_gpgbridge
+    {
+        stop_gpgbridge
+        sleep 1
+        start_gpgbridge "$@"
+    }
+    start_gpgbridge ssh
+fi
