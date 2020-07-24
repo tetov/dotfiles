@@ -128,4 +128,5 @@ add-zsh-hook -Uz chpwd (){
 if [ -z "$SSH_CLIENT"]; then  # if this is not a ssh session
   . "$DOTFILES/bin/gpgbridge"
   autoload set_DISPLAY && set_DISPLAY
+  export LIBGL_ALWAYS_INDIRECT=1
 fi
