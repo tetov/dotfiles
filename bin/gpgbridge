@@ -7,7 +7,7 @@
 
 WSL2=false
 
-SCRIPT_DIR_WSL='/mnt/c/Program1/'
+SCRIPT_DIR_WSL='/mnt/c/tools/'
 # shellcheck disable=SC1003
 SCRIPT_DIR_WIN='C:\\Program1\\'
 

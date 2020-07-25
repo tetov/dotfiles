@@ -9,7 +9,8 @@ fpath+=$DOTFILES/zshfuncs
 
 if [[ -f /opt/ros/melodic/setup.zsh ]] ; then
   . /opt/ros/melodic/setup.zsh
-fi
+  CATKIN_WS=$HOME/catkin_ws
+  . "$CATKIN_WS"/devel/setup.zsh
 
 # history settings
 HISTFILE="$HOME/.zsh_history"
