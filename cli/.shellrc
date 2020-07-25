@@ -2,12 +2,6 @@
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-export PAGER="less"
-export LESS=" -R"
-if test -f "/usr/bin/src-hilite-lesspipe.sh"; then
-    export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
-fi
-
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
@@ -16,15 +10,6 @@ eval `dircolors $HOME/.dircolors.dark256`
 export DOTFILES=$HOME/tetov-dotfiles
 
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
-
-# virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/l-repos
-if test -f /usr/bin/virtualenvwrapper.sh ; then
-    source /usr/bin/virtualenvwrapper.sh
-elif test -f /usr/share/usr/share/virtualenvwrapper/virtualenvwrapper.sh ; then
-    source /usr/share/usr/share/virtualenvwrapper/virtualenvwrapper.sh
-fi
 
 # aliases
 alias ll='ls -lh'
@@ -61,21 +46,6 @@ alias trippyaf='sudo apt-get update && sudo apt-get upgrade -y && sudo tripwire 
 
 # todo.txt
 alias todo='vim /mnt/c/Users/a/Dropbox/todo/todo.txt /mnt/c/Users/a/Dropbox/todo/done.txt'
-
-function open () {
-    if command -v cmd.exe >/dev/null ; then
-        # based on https://superuser.com/questions/1160419/how-can-i-open-a-file-from-wsl-with-the-default-application#comment1846408_1252579
-        readlink -f "$*" | sed -e 's/\/\(.\)/\1:/1' -e 's/.*/\"&\"/g' | xargs cmd.exe /c start ""
-    elif command -v xdg-open >/dev/null ; then
-        xdg-open "$*" &
-    else
-        echo "open command not set up for this env"
-    fi
-}
-
-function oppw () {
-    op get item "$1" | jq '.details.fields[] | select(.designation=="password").value'
-}
 
 # git
 alias g='git'

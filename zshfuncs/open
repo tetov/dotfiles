@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh -eu
+
+if (( $+commands[cmd.exe] )) ; then
+    # based on https://superuser.com/questions/1160419/how-can-i-open-a-file-from-wsl-with-the-default-application#comment1846408_1252579
+    powershell.exe -Command Start-Process $(wslpath -wa $*)
+elif (( $+commands[xdg-open] )) ; then
+    xdg-open "$*" &
+fi

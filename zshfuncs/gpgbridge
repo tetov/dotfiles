@@ -1,0 +1,91 @@
+#!/usr/bin/env zsh -eu
+#--------------------------------------------------------------------------
+# GPG bridging from WSL gpg to gpg4win gpg-agent.exe
+# (needed to use a Yubikey, since WSL cannot access USB devices)
+
+SCRIPT_DIR_WSL=/mnt/c/Users/a/.gpgbridge
+# shellcheck disable=SC1003
+SCRIPT_DIR_WIN=$(wslpath -wa $SCRIPT_DIR_WSL)
+
+PIDFILE_WSL=$SCRIPT_DIR_WSL/gpgbridge_wsl.pid
+LOGFILE_WSL=$SCRIPT_DIR_WSL/gpgbridge_wsl.log
+
+_pidfile_win=$SCRIPT_DIR_WSL/gpgbridge_win.pid
+_logfile_win=$SCRIPT_DIR_WSL/gpgbridge_win.log
+touch $_pidfile_win $_logfile_win
+PIDFILE_WIN=$(wslpath -wa $_pidfile_win)
+LOGFILE_WIN=$(wslpath -wa $_logfile_win)
+
+SCRIPT_FILE_NAME=gpgbridge.rb
+
+SCRIPT_PATH_WSL=$SCRIPT_DIR_WSL/$SCRIPT_FILE_NAME
+
+function start_gpgbridge
+{
+    _parse_opts $@
+
+    if (( ! $+commands[ruby.exe] )); then
+        echo 'No ruby.exe found in path'
+        return
+    fi
+
+    typeset cmd
+    cmd=( ruby \
+          $SCRIPT_PATH_WSL \
+          --daemon \
+          --pidfile $PIDFILE_WSL \
+          --logfile $LOGFILE_WSL \
+          --windows-pidfile ${(q-)PIDFILE_WIN} \  # (q-) escapes chars
+          --windows-logfile ${(q-)LOGFILE_WIN} \
+   )
+
+    if ${SSH:=false} ; then
+        cmd+=( --enable-ssh-support )
+        SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        export SSH_AUTH_SOCK
+    fi
+
+    if ${WSL2:=false} ; then
+       cmd+=( --remote-address "$(ip route | awk '/^default via / {print $3}')" )
+    fi
+
+    if ${QUIET:=false} ; then
+        cmd+=( '>/dev/null 2>&1' )
+    else
+        cmd+=( --verbose )
+    fi
+
+    eval ${(z)cmd}
+}
+
+function stop_gpgbridge
+{
+    pkill -TERM -f 'ruby.*gpgbridge\.rb'
+}
+
+function restart_gpgbridge
+{
+    stop_gpgbridge
+    sleep 1
+    start_gpgbridge $@
+}
+
+function _parse_opts {
+   for a in $@ ; do
+       a=${a//-/} # remove leading dashes
+       a=${a:l} # make lovercase
+
+       case $a in
+           ssh )
+               export SSH=true
+               ;;
+           wsl2)
+               export WSL2=true
+               ;;
+           quiet|q)
+               export QUIET=true
+       esac
+   done
+}
+
+start_gpgbridge $@

@@ -1,5 +1,5 @@
 # Source general shell env
-. $HOME/.shellrc
+. ~/.shellrc
 
 # Path
 typeset -U path
@@ -7,13 +7,8 @@ path=(~/bin $DOTFILES/bin ~/.cargo/bin $path)
 
 fpath+=$DOTFILES/zshfuncs
 
-if [[ -f /opt/ros/melodic/setup.zsh ]] ; then
-  . /opt/ros/melodic/setup.zsh
-  CATKIN_WS=$HOME/catkin_ws
-  . "$CATKIN_WS"/devel/setup.zsh
-
 # history settings
-HISTFILE="$HOME/.zsh_history"
+HISTFILE=~/.zsh_history
 HISTSIZE=50000
 SAVEHIST=10000
 
@@ -69,24 +64,6 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
-
-set -o vi # Make fzf work with vi mode in zsh
-
-# fzf installed from git
-[ -e ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# fzf on arch
-if [ -e /usr/share/fzf/key-bindings.zsh ] ; then
-    source /usr/share/fzf/key-bindings.zsh
-    source /usr/share/fzf/completion.zsh
-fi
-
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-
-_fzf_compgen_path() {
-  rg --files --hidden . "$"
-}
-
 # Vi mode in zsh, taken from https://dougblack.io/words/zsh-vi-mode.html
 bindkey -v
 
@@ -108,26 +85,63 @@ else
   compinit -C -i
 fi
 
-autoload -U add-zsh-hook
-add-zsh-hook -Uz chpwd (){
-  # https://gist.github.com/BGBRWR/82e66547d7013f3ae687eb792b6b7e20
-  # https://stackoverflow.com/a/45444758
-  [ -d .git ] || git rev-parse --git-dir &> /dev/null
+autoload -U open
 
-  if [ $? -eq 0 ]; then
-      local ENV_NAME=`basename \`pwd\`-dev`
+# virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/l-repos
 
-  if [ "${VIRTUAL_ENV##*/}" != $ENV_NAME ] && [ -e $WORKON_HOME/$ENV_NAME/bin/activate ]; then
-      workon $ENV_NAME && export CD_VIRTUAL_ENV=$ENV_NAME
+VW_PATHS=( /usr/bin/virtualenvwrapper.sh \
+           /usr/share/virtualenvwrapper/virtualenvwrapper.sh )
+
+for p in $VW_PATHS ; do
+  if [[ -e $p ]] ; then
+    . $p
+    autoload -U add-zsh-hook auto_workon
+    add-zsh-hook -Uz chpwd auto_workon
+    auto_workon
+    break
   fi
+done
 
-  elif [ $CD_VIRTUAL_ENV ]; then
-      deactivate && unset CD_VIRTUAL_ENV
+set -o vi # Make fzf work with vi mode in zsh
+
+# fzf installed from git
+FZF_PATHS=(~/.fzf/shell/ /usr/share/fzf)
+
+for p in $FZF_PATHS ; do
+  if [[ -e $p/completion.zsh && -e $p/key-bindings.zsh ]] ; then
+    . $p/completion.zsh
+    . $p/key-bindings.zsh
+    break
   fi
+done
+
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+
+_fzf_compgen_path() {
+  rg --files --hidden . "$"
 }
 
-if [ -z "$SSH_CLIENT"]; then  # if this is not a ssh session
-  . "$DOTFILES/bin/gpgbridge"
-  autoload set_DISPLAY && set_DISPLAY
+if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
+  # . "$DOTFILES/bin/gpgbridge"
   export LIBGL_ALWAYS_INDIRECT=1
+  autoload -U set_DISPLAY gpgbridge restart_gpgbridge stop_gpgbridge
+  set_DISPLAY
+  gpgbridge --ssh --wsl2
 fi
+
+# Entrypoints to ROS
+if [[ -e /opt/ros/melodic/setup.zsh ]] ; then
+  . /opt/ros/melodic/setup.zsh
+  CATKIN_WS=HOME/catkin_ws
+  [[ -e $CATKIN_WS/devel/setup.zsh ]] && . $CATKIN_WS/devel/setup.zsh
+fi
+
+# Syntax highlightening for less
+export PAGER="less"
+export LESS=" -R"
+if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
+    export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
+fi
+

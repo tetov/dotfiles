@@ -1,13 +1,13 @@
-if [[ -v DISPLAY ]] ; then
-    return
-fi
+#!/usr/bin/env zsh -eu
 
-if [ $# -eq 0 ] ; then
-    screen="0.0"
+[[ -v DISPLAY ]] && return  # Exit early if DISPLAY is already set
+
+if (( $# == 0 )) ; then  # No positional arguments given
+    screen=0.0
 else
-    screen="$1"
+    screen=$1
 fi
 
 ip=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)
 
-export DISPLAY="$ip:$screen"
+export DISPLAY=$ip:$screen
