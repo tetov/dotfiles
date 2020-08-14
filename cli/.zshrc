@@ -39,7 +39,6 @@ zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
 zstyle :prompt:pure:git:branch color white
 zstyle :prompt:pure:git:stash show yes
-
 # forces zsh to realize new commands
 zstyle ':completion:*' completer _oldlist _expand _complete _match _ignored _approximate
 
@@ -107,10 +106,12 @@ done
 set -o vi # Make fzf work with vi mode in zsh
 
 # fzf installed from git
-FZF_PATHS=(~/.fzf/shell/ /usr/share/fzf)
+FZF_PATHS=(~ /usr/share/fzf)
 
 for p in $FZF_PATHS ; do
-  if [[ -e $p/completion.zsh && -e $p/key-bindings.zsh ]] ; then
+  if [[ -e $p/.fzf.zsh ]] ; then  # git installation
+    . $p/.fzf.zsh
+  elif [[ -e $p/completion.zsh && -e $p/key-bindings.zsh ]] ; then
     . $p/completion.zsh
     . $p/key-bindings.zsh
     break
@@ -126,15 +127,17 @@ _fzf_compgen_path() {
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   # . "$DOTFILES/bin/gpgbridge"
   export LIBGL_ALWAYS_INDIRECT=1
-  autoload -U set_DISPLAY gpgbridge restart_gpgbridge stop_gpgbridge
+  autoload -U set_DISPLAY
   set_DISPLAY
-  gpgbridge --ssh --wsl2
+  export _gpgbridge_wsl2=1
+  export _gpgbridge_ssh=1
+  . $DOTFILES/bin/gpgbridge_helper.sh
 fi
 
 # Entrypoints to ROS
 if [[ -e /opt/ros/melodic/setup.zsh ]] ; then
   . /opt/ros/melodic/setup.zsh
-  CATKIN_WS=HOME/catkin_ws
+  CATKIN_WS=~/catkin_ws
   [[ -e $CATKIN_WS/devel/setup.zsh ]] && . $CATKIN_WS/devel/setup.zsh
 fi
 

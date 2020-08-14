@@ -1,0 +1,92 @@
+add_newline = false
+
+[command_duration]
+min_time = 300000
+prefix = ""
+suffix = ""
+
+[directory]
+prefix = ""
+suffix = ""
+fish_style_pwd_dir_length = 2
+
+    [directory.substitutions]
+    "/mnt/c/Users/a" = "win~"
+
+[git_branch]
+prefix = ""
+suffix = ""
+symbol = " "
+
+
+[git_status]
+stashed = "≡"
+modified = "*"
+deleted = "x"
+prefix = "{"
+suffix = "} "
+
+[python]
+prefix = ""
+suffix = ""
+symbol = " "
+
+[aws]
+symbol = " "
+
+[battery]
+full_symbol = ""
+charging_symbol = ""
+discharging_symbol = ""
+
+[conda]
+symbol = " "
+
+[docker]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[memory_usage]
+symbol = " "
+
+[nim]
+symbol = " "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[package]
+symbol = " "
+
+[php]
+symbol = " "
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "
+
