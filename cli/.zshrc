@@ -87,8 +87,8 @@ fi
 autoload -U open
 
 # virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/l-repos
+export WORKON_HOME=~/.virtualenvs
+export PROJECT_HOME=~/l-repos
 
 VW_PATHS=( /usr/bin/virtualenvwrapper.sh \
            /usr/share/virtualenvwrapper/virtualenvwrapper.sh )
@@ -125,13 +125,13 @@ _fzf_compgen_path() {
 }
 
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
-  # . "$DOTFILES/bin/gpgbridge"
-  export LIBGL_ALWAYS_INDIRECT=1
+  export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
   set_DISPLAY
   export _gpgbridge_wsl2=1
   export _gpgbridge_ssh=1
   . $DOTFILES/bin/gpgbridge_helper.sh
+
 fi
 
 # Entrypoints to ROS
