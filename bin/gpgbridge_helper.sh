@@ -63,8 +63,8 @@ start_gpgbridge()
 
     if [ "$QUIET" -eq 1 ] ; then
         args="$args >/dev/null 2>&1"
-    else
-        args="$args --verbose"
+    # else
+        # args="$args --verbose"
     fi
 
     rm -f $LOGFILE_WSL
