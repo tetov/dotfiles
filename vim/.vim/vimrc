@@ -12,20 +12,12 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " AUTOCOMPLETION
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
-endfunction
+if executable('node')
+   Plug 'neoclide/coc.nvim', {'branch': 'release'} 
+endif
 
 if has('python3')
-  Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') }
   " SNIPPETS
-  Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
   " PYTHON
   Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
@@ -42,7 +34,6 @@ Plug 'junegunn/fzf.vim'                  " Quicker searching
 Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
 Plug 'Konfekt/fastfold'                  " Apparently folds are slow?
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
-Plug 'raimondi/delimitMate'              " Closes parens, hyphens etc
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
 Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
 Plug 'tpope/vim-commentary'              " Comment and uncomment
@@ -86,12 +77,16 @@ Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
 Plug 'ChesleyTan/wordCount.vim'          " Wordcount displayed in statusbar
 Plug 'quentindecock/vim-cucumber-align-pipes' " Markdown tables
 "
-
+Plug 'kevinoid/vim-jsonc'
 
 call plug#end()
 
 set ffs=unix,dos,mac        " Use Unix as the standard file type
 set t_Co=256                " enable 256-color mode.
+set hidden
+set updatetime=300
+set shortmess+=c
+set signcolumn=number
 
 syntax enable               " enable syntax highlighting (previously syntax on).
 
@@ -193,7 +188,7 @@ nmap <C-p> :bprev<CR>
 
 " BACKUP off
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
 
 " Built in fuzzy find from https://github.com/mcantor/no_plugins
@@ -253,10 +248,34 @@ let g:ultisnips_python_quoting_style="double"
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-@> coc#refresh()
+
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
 " ycm completion
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_goto_buffer_command = 'split-or-existing-window'
 nnoremap <F10> :YcmCompleter GoTo<CR>
+
+
 
 " Pandoc
 " make markdown files not appears as pandoc files to w0rp/ale
