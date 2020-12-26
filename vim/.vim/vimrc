@@ -1,5 +1,8 @@
 set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 
+let g:ale_disable_lsp = 1
+let g:ale_completion_enabled = 0
+
 " Automatic installation vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -13,10 +16,26 @@ call plug#begin('~/.vim/plugged')
 
 " AUTOCOMPLETION
 if executable('node')
-   Plug 'neoclide/coc.nvim', {'branch': 'release'} 
+   Plug 'Shougo/neco-vim'
+   Plug 'neoclide/coc-neco'
+
+   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+   Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+   Plug 'neoclide/coc-html', {'do': 'yarn install --frozen-lockfile'}
+   Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+   Plug 'josa42/coc-sh', {'do': 'yarn install --frozen-lockfile'}
+   Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
+   Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+   Plug 'neoclide/coc-yank', {'do': 'yarn install --frozen-lockfile'}
+
+   " Plug 'fannheyward/coc-pyright', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+   " B
+   " Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
 endif
 
 if has('python3')
+    " B
   " SNIPPETS
   Plug 'honza/vim-snippets'
   " PYTHON
@@ -39,28 +58,32 @@ Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
 Plug 'tpope/vim-commentary'              " Comment and uncomment
 Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
 Plug 'tpope/vim-sensible'                " Sensible standards
-Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
+Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
 Plug 'tpope/vim-sleuth'                  " Guess tab width
 Plug 'tpope/vim-surround'                " Operate on surrounding characters
 Plug 'ludovicchabant/vim-gutentags'      " autogenerate tags
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'samoshkin/vim-mergetool'           " Mergetool
-Plug 'majutsushi/tagbar'
+Plug 'preservim/tagbar'
+" Plug 'jiangmiao/auto-pairs'
+Plug 'ConradIrwin/vim-bracketed-paste'   " Make vim aware of pastes
+Plug 'tpope/vim-dispatch'
+
+
+" LINT and FIX
+Plug 'dense-analysis/ale'                          " Linter
+Plug 'thirtythreeforty/lessspace.vim'    " Removes excess whitespace from line edited
 
 " UI
 Plug 'airblade/vim-gitgutter'            " Shows diff line by line
-" Plug 'altercation/vim-colors-solarized'  " Color-scheme
-Plug 'lifepillar/vim-solarized8'
 Plug 'itchyny/lightline.vim'             " Statusbar
 Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
-Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
 Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
 Plug 'christoomey/vim-tmux-navigator'    " Same bindings for vim and tmux for splits
-
-" LINT
-Plug 'dense-analysis/ale'                          " Linter
+Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 
 " MOVEMENT
 Plug 'bkad/CamelCaseMotion'
@@ -79,23 +102,30 @@ Plug 'quentindecock/vim-cucumber-align-pipes' " Markdown tables
 "
 Plug 'kevinoid/vim-jsonc'
 
+" Themes
+" Plug 'altercation/vim-colors-solarized'  " Color-scheme
+" Plug 'lifepillar/vim-solarized8'
+Plug 'itchyny/landscape.vim'
+Plug 'sickill/vim-monokai'
+
 call plug#end()
+
+" Theme settings
+set background=dark
+colorscheme monokai
 
 set ffs=unix,dos,mac        " Use Unix as the standard file type
 set t_Co=256                " enable 256-color mode.
 set hidden
 set updatetime=300
 set shortmess+=c
-set signcolumn=number
+set signcolumn=yes
 
 syntax enable               " enable syntax highlighting (previously syntax on).
 
 " gVIM
 set guioptions=g
 
-" COLORS
-set background=dark
-colorscheme solarized8
 
 " TABS
 set tabstop=4               " number of visual spaces per TAB
@@ -139,9 +169,16 @@ let g:markdown_folding=1
 " space open/closes folds
 nnoremap <space> za
 
+" Leader key
+let mapleader = ","
+let maplocalleader = ","
+
+" edit vimrc
+nmap <leader>vr :vsp ~/.vim/vimrc <CR>
+
 " CLIPBOARD
 " https://vi.stackexchange.com/a/16114
-let s:clip = '/mnt/c/Windows/System32/clip.exe' 
+let s:clip = '/mnt/c/Windows/System32/clip.exe'
 if executable(s:clip)
     augroup WSLYank
         autocmd!
@@ -225,11 +262,11 @@ set splitright
 " https://stackoverflow.com/a/7078429
 cmap w!! w !sudo tee > /dev/null %
 
+
 " PLUGINS
 "
-" For any plugins that use this, make their keymappings use comma
-let mapleader = ","
-let maplocalleader = ","
+" dispatch
+autocmd FileType python let b:dispatch = 'pytest -v %'
 
 " CamelCaseMotion
 let g:camelcasemotion_key = '<leader>'
@@ -251,6 +288,7 @@ let g:SuperTabContextDefaultCompletionType = "<c-n>"
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-@> coc#refresh()
 
+" To make <cr> select the first completion item and confirm the completion when no item has been selected:
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
 " use <tab> for trigger completion and navigate to the next complete item
@@ -270,12 +308,61 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" ycm completion
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_goto_buffer_command = 'split-or-existing-window'
-nnoremap <F10> :YcmCompleter GoTo<CR>
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
 
 
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" Show yank list from coc-yank
+nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Pandoc
 " make markdown files not appears as pandoc files to w0rp/ale
@@ -308,16 +395,12 @@ let g:tagbar_map_togglefold = "<SPACE>"
 autocmd FileType python setlocal indentkeys-=<:>
 autocmd FileType python setlocal indentkeys-=:
 
-" ale linting and fixing
+" ALE
 let g:ale_fixers = {
-    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \ 'css': ['prettier', 'stylelint'],
-    \ 'html': ['tidy'],
-    \ 'python': ['isort', 'black']
-\}
-let g:ale_linters = {
-    \ 'pandoc': ['alex', 'markdownlint', 'mdl', 'prettier', 'proselint', 'redpen', 'remark-lint', 'textlint', 'vale', 'write-good'],
-    \ 'python': ['flake8', 'mypy', 'pydocstyle']
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['autopep8', 'isort'],
+\   'css': ['prettier', 'stylelint'],
+\   'html': ['tidy'],
 \}
 
 nmap ]a :ALENextWrap<CR>
@@ -326,44 +409,52 @@ nmap ]A :ALELast
 nmap [A :ALEFirst
 nmap <F8> <Plug>(ale_fix)
 
-let g:ale_completion_enabled = 0
-
 " Lightline
+set noshowmode  " don't show vim mode in cmd line
+
 let g:lightline = {
-    \ 'colorscheme': 'wombat',
-    \ 'active': {
-    \   'left': [
-    \     ['mode', 'paste'],
-    \     ['venv', 'gitbranch', 'filename', 'modified']
-    \   ],
-    \   'right': [
-    \     ['lineinfo'],
-    \     ['percent', 'wordcount'],
-    \     ['fileformat', 'fileencoding', 'filetype'],
-    \     ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok, linter_checking']
-    \   ]
-    \ },
-    \ 'component_function': {
-    \   'gitbranch': 'fugitive#head',
-    \   'wordcount': 'wordCount#WordCount',
-    \   'venv': 'virtualenv#statusline'
-    \ },
-    \ 'component_expand': {
-    \   'buffers': 'lightline#bufferline#buffers',
-    \   'linter_warnings': 'lightline#ale#warnings',
-    \   'linter_errors': 'lightline#ale#errors',
-    \   'linter_ok': 'lightline#ale#ok',
-    \   'linter_checking': 'lightline#ale#checking',
-    \ },
-    \ 'component_type': {
-    \   'buffers': 'tabsel',
-    \   'readonly': 'error',
-    \   'linter_warnings': 'warning',
-    \   'linter_errors': 'error',
-    \   'linter_ok' : 'left',
-    \   'linter_checking': 'left',
-    \ },
+\   'colorscheme': 'wombat',
+\   'active': {
+\       'left': [
+\           ['mode', 'paste'],
+\           ['venv', 'gitbranch', 'filename', 'modified']
+\       ],
+\       'right': [
+\           ['lineinfo'],
+\           ['percent'],
+\           ['fileformat', 'fileencoding', 'filetype'],
+\           ['readonly', 'cocstatus', 'currentfunction'],
+\            ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok']
+\       ]
+\   },
+\   'component_function': {
+\       'gitbranch': 'fugitive#head',
+\       'venv': 'virtualenv#statusline',
+\   },
+\   'component_type': {
+\       'buffers': 'tabsel',
+\       'readonly': 'error',
+\       'linter_checking': 'right',
+\       'linter_infos': 'right',
+\       'linter_warnings': 'warning',
+\       'linter_errors': 'error',
+\       'linter_ok': 'right',
+\   },
+\   'component_expand': {
+\       'linter_checking': 'lightline#ale#checking',
+\       'linter_infos': 'lightline#ale#infos',
+\       'linter_warnings': 'lightline#ale#warnings',
+\       'linter_errors': 'lightline#ale#errors',
+\       'linter_ok': 'lightline#ale#ok',
+\       'buffers':'lightline#bufferline#buffers'
+\   },
 \}
+
+let g:lightline#ale#indicator_checking = "\uf110"
+let g:lightline#ale#indicator_infos = "\uf129"
+let g:lightline#ale#indicator_warnings = "\uf071"
+let g:lightline#ale#indicator_errors = "\uf05e"
+let g:lightline#ale#indicator_ok = "\uf00c"
 
 " local vimrc (project specific settings)
 set exrc
