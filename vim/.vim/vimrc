@@ -16,9 +16,6 @@ call plug#begin('~/.vim/plugged')
 
 " AUTOCOMPLETION
 if executable('node')
-   Plug 'Shougo/neco-vim'
-   Plug 'neoclide/coc-neco'
-
    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
    Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
@@ -29,13 +26,15 @@ if executable('node')
    Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
    Plug 'neoclide/coc-yank', {'do': 'yarn install --frozen-lockfile'}
 
+   " Non node but coc
+   Plug 'Shougo/neco-vim'
+   Plug 'neoclide/coc-neco'
+
    " Plug 'fannheyward/coc-pyright', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-   " B
    " Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
 endif
 
 if has('python3')
-    " B
   " SNIPPETS
   Plug 'honza/vim-snippets'
   " PYTHON
@@ -262,7 +261,6 @@ set splitright
 " https://stackoverflow.com/a/7078429
 cmap w!! w !sudo tee > /dev/null %
 
-
 " PLUGINS
 "
 " dispatch
@@ -285,22 +283,24 @@ let g:ultisnips_python_quoting_style="double"
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-@> coc#refresh()
-
 " To make <cr> select the first completion item and confirm the completion when no item has been selected:
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
 " use <tab> for trigger completion and navigate to the next complete item
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 function! s:check_back_space() abort
   let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <C-SPACE> coc#refresh()
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -336,30 +336,8 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-
-" Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
 " Show yank list from coc-yank
-nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
+nnoremap <silent> <Leader>y  :<C-u>CocList -A --normal yank<cr>
 
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
