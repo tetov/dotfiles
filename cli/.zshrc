@@ -152,3 +152,6 @@ if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
     export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 fi
 
+# to make sure yarn/node-gyp doesn't use appdata dir
+# https://paulochaves.dev/blog/updating-gatsby-with-sharp-dependency-errors-on-ubuntu-wsl
+unset APPDATA

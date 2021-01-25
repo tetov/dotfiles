@@ -252,6 +252,14 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Set tab to 2 spaces for some filetypes
+autocmd FileType html setlocal sw=2 sts=2
+autocmd FileType js setlocal sw=2 sts=2
+autocmd FileType jsx setlocal sw=2 sts=2
+autocmd FileType json setlocal sw=2 sts=2
+autocmd FileType yaml setlocal sw=2 sts=2
+autocmd FileType toml setlocal sw=2 sts=2
+
 " Open splits to the right and below
 set splitbelow
 set splitright
@@ -378,6 +386,7 @@ let g:ale_fixers = {
 \   'python': ['autopep8', 'isort'],
 \   'css': ['prettier', 'stylelint'],
 \   'html': ['tidy'],
+\   'sh': ['shfmt'],
 \}
 
 nmap ]a :ALENextWrap<CR>
