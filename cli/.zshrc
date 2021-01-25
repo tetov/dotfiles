@@ -128,11 +128,12 @@ if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
   set_DISPLAY
-  export SCRIPT_DIR_WSL="/mnt/c/Users/a/.gpgbridge"
+  _gpgbride_dir_win_wslpath="/mnt/c/Users/a/.gpgbridge"
+  export SCRIPT_DIR_WSL="$_gpgbride_dir_win_wslpath/repo"
   export PIDFILE_WSL="$HOME/.gpgbridge_wsl.pid"
   export LOGFILE_WSL="$HOME/.gpgbridge_wsl.log"
-  export LOGFILE_WIN="$SCRIPT_DIR_WSL/gpgbridge_win.log"
-  export PIDFILE_WIN="$SCRIPT_DIR_WSL/gpgbridge_win.pid"
+  export LOGFILE_WIN="$_gpgbride_dir_win_wslpath/gpgbridge_win.log"
+  export PIDFILE_WIN="$_gpgbride_dir_win_wslpath/gpgbridge_win.pid"
   . $DOTFILES/deps/gpg-bridge-wsl2-ruby/gpgbridge_helper.sh
   start_gpgbridge --ssh --wsl2
 fi
