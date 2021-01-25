@@ -16,22 +16,21 @@ call plug#begin('~/.vim/plugged')
 
 " AUTOCOMPLETION
 if executable('node')
-   Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-   Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
-   Plug 'neoclide/coc-html', {'do': 'yarn install --frozen-lockfile'}
-   Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-   Plug 'josa42/coc-sh', {'do': 'yarn install --frozen-lockfile'}
-   Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
-   Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
-   Plug 'neoclide/coc-yank', {'do': 'yarn install --frozen-lockfile'}
-
-   " Non node but coc
-   Plug 'Shougo/neco-vim'
-   Plug 'neoclide/coc-neco'
-
-   " Plug 'fannheyward/coc-pyright', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-   " Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+    Plug 'Shougo/neco-vim'
+    Plug 'neoclide/coc-neco'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    let g:coc_global_extensions = [
+\       'coc-css',
+\       'coc-git',
+\       'coc-html',
+\       'coc-json',
+\       'coc-omnisharp',
+\       'coc-python',
+\       'coc-sh',
+\       'coc-snippets',
+\       'coc-yank',
+\       'coc-yaml',
+\       ]
 endif
 
 if has('python3')
