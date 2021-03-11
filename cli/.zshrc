@@ -63,16 +63,6 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
-# Vi mode in zsh, taken from https://dougblack.io/words/zsh-vi-mode.html
-bindkey -v
-
-bindkey '^P' up-history
-bindkey '^N' down-history
-bindkey '^?' backward-delete-char
-bindkey '^h' backward-delete-char
-bindkey '^w' backward-kill-word
-bindkey '^R' fzf-history-widget
-
 export KEYTIMEOUT=1
 
 # cache completions https://blog.callstack.io/supercharge-your-terminal-with-zsh-8b369d689770
@@ -93,25 +83,6 @@ export PROJECT_HOME=~/l-repos
 VW_PATHS=( /usr/bin/virtualenvwrapper.sh \
            /usr/share/virtualenvwrapper/virtualenvwrapper.sh )
 
-set -o vi # Make fzf work with vi mode in zsh
-
-# fzf installed from git
-FZF_PATHS=(~ /usr/share/fzf)
-
-for p in $FZF_PATHS ; do
-  if [[ -e $p/.fzf.zsh ]] ; then  # git installation
-    . $p/.fzf.zsh
-  elif [[ -e $p/completion.zsh && -e $p/key-bindings.zsh ]] ; then
-    . $p/completion.zsh
-    . $p/key-bindings.zsh
-    break
-  fi
-done
-
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-
-_fzf_compgen_path() {
-  rg --files --hidden . "$"
 # for p in $VW_PATHS ; do
 #   if [[ -e $p ]] ; then
 #     . $p
@@ -122,6 +93,26 @@ _fzf_compgen_path() {
 #   fi
 # done
 
+zvm_after_init() {
+    # fzf installed from git
+    FZF_PATHS=(~ /usr/share/fzf)
+
+    for p in $FZF_PATHS ; do
+      if [[ -e $p/.fzf.zsh ]] ; then  # git installation
+        . $p/.fzf.zsh
+      elif [[ -e $p/completion.zsh && -e $p/key-bindings.zsh ]] ; then
+        . $p/completion.zsh
+        . $p/key-bindings.zsh
+        break
+      fi
+    done
+
+    export FZF_DEFAULT_COMMAND='rg --files --hidden'
+
+    _fzf_compgen_path() {
+      rg --files --hidden . "$"
+    }
+    bindkey '^R' fzf-history-widget
 }
 
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session

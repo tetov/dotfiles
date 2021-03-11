@@ -7,6 +7,8 @@ changyuheng/fz
 mafredri/zsh-async
 sindresorhus/pure
 
+jeffreytse/zsh-vi-mode
+
 # zsh-syntax-highlighting needs to go last
 zsh-users/zsh-syntax-highlighting
 
