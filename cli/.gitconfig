@@ -1,6 +1,6 @@
 [user]
   email = anton@tetov.se
-  name = tetov
+  name = Anton Tetov
   signingkey = 2B4D0035AFF0F7DACE5B29D7337DDB574A8834DB
 
 # Parts of settings and comments from
@@ -25,11 +25,11 @@
   # Standard diff is two sets of final changes. This introduces the original text before each side's changes.
   # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
 
-  # https://www.rosipov.com/blog/use-vimdiff-as-git-mergetool/
-  tool = vimdiff
+  tool = vim_mergetool
 
-[mergetool]
-  prompt = false
+[mergetool "vim_mergetool"]
+  cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+  trustExitCode = true
 
 [commit]
   gpgSign = true
