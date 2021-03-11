@@ -93,16 +93,6 @@ export PROJECT_HOME=~/l-repos
 VW_PATHS=( /usr/bin/virtualenvwrapper.sh \
            /usr/share/virtualenvwrapper/virtualenvwrapper.sh )
 
-for p in $VW_PATHS ; do
-  if [[ -e $p ]] ; then
-    . $p
-    autoload -U add-zsh-hook auto_workon
-    add-zsh-hook -Uz chpwd auto_workon
-    auto_workon
-    break
-  fi
-done
-
 set -o vi # Make fzf work with vi mode in zsh
 
 # fzf installed from git
@@ -122,6 +112,16 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 _fzf_compgen_path() {
   rg --files --hidden . "$"
+# for p in $VW_PATHS ; do
+#   if [[ -e $p ]] ; then
+#     . $p
+#     autoload -U add-zsh-hook auto_workon
+#     add-zsh-hook -Uz chpwd auto_workon
+#     auto_workon
+#     break
+#   fi
+# done
+
 }
 
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
@@ -155,3 +155,20 @@ fi
 # to make sure yarn/node-gyp doesn't use appdata dir
 # https://paulochaves.dev/blog/updating-gatsby-with-sharp-dependency-errors-on-ubuntu-wsl
 unset APPDATA
+
+NOCONDA_PATH=$PATH
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/anaconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/anaconda/etc/profile.d/conda.sh" ]; then
+        . "/opt/anaconda/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/anaconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
