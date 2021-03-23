@@ -355,6 +355,9 @@ let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
 let g:pandoc#folding#fold_yaml=1
 let g:pandoc#folding#fdc=0
 
+au BufRead,BufNewFile *.md setlocal textwidth=80
+au BufRead,BufNewFile *.md setlocal formatoptions+=t
+
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
 set rtp+=/usr/bin/fzf
 set rtp+=~/.fzf
