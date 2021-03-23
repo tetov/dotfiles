@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/usr/bin/env zsh
 
 stow_prompt() {
     readonly dir_name=${1:?"Directory name must be specified"}
