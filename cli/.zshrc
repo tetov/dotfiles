@@ -95,24 +95,33 @@ VW_PATHS=( /usr/bin/virtualenvwrapper.sh \
 
 zvm_after_init() {
     # fzf installed from git
-    FZF_PATHS=(~ /usr/share/fzf)
+    FZF_PATHS=(~ /usr/share/fzf /usr/share/doc/fzf/examples)
 
     for p in $FZF_PATHS ; do
       if [[ -e $p/.fzf.zsh ]] ; then  # git installation
         . $p/.fzf.zsh
+        break
+        fzf_env_settings
       elif [[ -e $p/completion.zsh && -e $p/key-bindings.zsh ]] ; then
         . $p/completion.zsh
         . $p/key-bindings.zsh
+        fzf_env_settings
         break
       fi
     done
 
+}
+
+fzf_env_settings() {
+
     export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
-    _fzf_compgen_path() {
-      rg --files --hidden . "$"
-    }
     bindkey '^R' fzf-history-widget
+
+}
+
+_fzf_compgen_path() {
+      rg --files --hidden . "$"
 }
 
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
@@ -130,11 +139,16 @@ if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
 fi
 
 # Entrypoints to ROS
-if [[ -e /opt/ros/*/setup.zsh ]] ; then
-  . /opt/ros/*/setup.zsh
-  CATKIN_WS=~/catkin_ws
-  [[ -e $CATKIN_WS/devel/setup.zsh ]] && . $CATKIN_WS/devel/setup.zsh
+if [[ -e /opt/ros/melodic/setup.zsh ]] ; then
+  . /opt/ros/melodic/setup.zsh
 fi
+
+if [[ -e /opt/ros/noetic/setup.zsh ]] ; then
+  . /opt/ros/noetic/setup.zsh
+fi
+
+CATKIN_WS=~/catkin_ws
+[[ -e $CATKIN_WS/devel/setup.zsh ]] && . $CATKIN_WS/devel/setup.zsh
 
 # Syntax highlightening for less
 export PAGER="less"
