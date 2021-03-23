@@ -130,8 +130,8 @@ if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
 fi
 
 # Entrypoints to ROS
-if [[ -e /opt/ros/melodic/setup.zsh ]] ; then
-  . /opt/ros/melodic/setup.zsh
+if [[ -e /opt/ros/*/setup.zsh ]] ; then
+  . /opt/ros/*/setup.zsh
   CATKIN_WS=~/catkin_ws
   [[ -e $CATKIN_WS/devel/setup.zsh ]] && . $CATKIN_WS/devel/setup.zsh
 fi
