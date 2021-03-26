@@ -16,19 +16,14 @@ call plug#begin('~/.vim/plugged')
 
 " AUTOCOMPLETION
 if executable('node')
-    Plug 'Shougo/neco-vim'
-    Plug 'neoclide/coc-neco'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     let g:coc_global_extensions = [
-\       'coc-css',
 \       'coc-git',
 \       'coc-html',
 \       'coc-json',
-\       'coc-omnisharp',
 \       'coc-python',
 \       'coc-sh',
 \       'coc-snippets',
-\       'coc-yank',
 \       'coc-yaml',
 \       ]
 endif
@@ -37,18 +32,18 @@ if has('python3')
   " SNIPPETS
   Plug 'honza/vim-snippets'
   " PYTHON
-  Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
-  Plug 'jmcantrell/vim-virtualenv'         " Make vim use venv
+  " Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
+  " Plug 'jmcantrell/vim-virtualenv'         " Make vim use venv
   Plug 'Vimjas/vim-python-pep8-indent'
   Plug 'tmhedberg/simpylfold'              " Folding for Python
 endif
 
 " GENERAL
-Plug 'alvan/vim-closetag'                " Closes html and xml tags
+" Plug 'alvan/vim-closetag'                " Closes html and xml tags
 Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
 Plug 'godlygeek/tabular'                 " Lines up code
 Plug 'junegunn/fzf.vim'                  " Quicker searching
-Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
+" Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
 Plug 'Konfekt/fastfold'                  " Apparently folds are slow?
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
@@ -64,10 +59,10 @@ Plug 'ludovicchabant/vim-gutentags'      " autogenerate tags
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'samoshkin/vim-mergetool'           " Mergetool
-Plug 'preservim/tagbar'
+" Plug 'preservim/tagbar'
 " Plug 'jiangmiao/auto-pairs'
 Plug 'ConradIrwin/vim-bracketed-paste'   " Make vim aware of pastes
-Plug 'tpope/vim-dispatch'
+" Plug 'tpope/vim-dispatch'
 
 
 " LINT and FIX
@@ -85,7 +80,7 @@ Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 
 " MOVEMENT
 Plug 'bkad/CamelCaseMotion'
-Plug 'easymotion/vim-easymotion'         " double leader then movement
+" Plug 'easymotion/vim-easymotion'         " double leader then movement
 
 " GIT
 Plug 'tpope/vim-fugitive'                " Git

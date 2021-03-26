@@ -1,14 +1,12 @@
 zsh-users/zsh-completions
-djui/alias-tips
-
-rupa/z
-changyuheng/fz
 
 mafredri/zsh-async
 sindresorhus/pure
 
 jeffreytse/zsh-vi-mode
 
-# zsh-syntax-highlighting needs to go last
-zsh-users/zsh-syntax-highlighting
+# After compinit, but before plugs that wrap widgets, such as fast-syntax-highlighting
+Aloxaf/fzf-tab
 
+# needs to go last
+zdharma/fast-syntax-highlighting

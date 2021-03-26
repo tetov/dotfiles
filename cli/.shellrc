@@ -11,6 +11,8 @@ export DOTFILES=$HOME/tetov-dotfiles
 
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
+[ -r "/usr/share/z/z.sh" ] && source /usr/share/z/z.sh
+
 # aliases
 alias ll='ls -lh'
 alias la='ls -A'

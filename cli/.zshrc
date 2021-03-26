@@ -26,8 +26,26 @@ setopt always_to_end # always put cursor at end after completing
 
 unsetopt BG_NICE # not nice since WSL is not nice
 
-source <(antibody init)
-antibody bundle < ~/.zsh_plugins.txt
+source ~/.zinit/bin/zinit.zsh
+
+zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+zinit light trapd00r/LS_COLORS
+
+zinit wait for \
+    atinit"zicompinit; zicdreplay" \
+    zdharma/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
+    blockf atpull'zinit creinstall -q .' \
+    zsh-users/zsh-completions
+
+zinit load changyuheng/fz
+
+# Load the pure theme, with zsh-async library that's bundled with it.
+zinit ice pick"async.zsh" src"pure.zsh"
+zinit light sindresorhus/pure
 
 #Pure
 autoload -U compinit promptinit
@@ -39,8 +57,6 @@ zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
 zstyle :prompt:pure:git:branch color white
 zstyle :prompt:pure:git:stash show yes
-# forces zsh to realize new commands
-zstyle ':completion:*' completer _oldlist _expand _complete _match _ignored _approximate
 
 # matches case insensitive and partial and substring
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
@@ -57,24 +73,9 @@ zstyle ':completion:*:*:*:*:*' menu select
 # menu if nb items > 2
 zstyle ':completion:*' menu select=2
 
-zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' list-colors  'reply=( "=(#b)(*$PREFIX)(?)*=00=$color[green]=$color[bg-green]" )'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
 export KEYTIMEOUT=1
-
-# cache completions https://blog.callstack.io/supercharge-your-terminal-with-zsh-8b369d689770
-autoload -Uz compinit
-typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
-if [ $(date +'%j') != $updated_at ]; then
-  compinit -i
-else
-  compinit -C -i
-fi
-
-autoload -U open
 
 # virtualenvwrapper
 export WORKON_HOME=~/.virtualenvs
@@ -92,6 +93,10 @@ VW_PATHS=( /usr/bin/virtualenvwrapper.sh \
 #     break
 #   fi
 # done
+#
+# aliases
+alias ls="exa --group-directories-first"
+alias cat="bat"
 
 zvm_after_init() {
     # fzf installed from git
@@ -114,14 +119,35 @@ zvm_after_init() {
 
 fzf_env_settings() {
 
-    export FZF_DEFAULT_COMMAND='rg --files --hidden'
+    export FZF_DEFAULT_COMMAND='fd --type f --color=always || rg --files --hidden || find .'
+    # Use ctrl+o to open selected file(s) in vim
+    export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    # # Using bat as previewer
+    export FZF_CTRL_T_OPTS="--preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+    # # Changing from ** to ~~ the trigger for autocompletion in shell
+    export FZF_COMPLETION_TRIGGER='~~'
 
-    bindkey '^R' fzf-history-widget
+    _fzf_compgen_path() {
+      fd --hidden --follow --exclude ".git" . "$"
+    }
 
-}
+    # Use fd to generate the list for directory completion
+    _fzf_compgen_dir() {
+      fd --type d --hidden --follow --exclude ".git" . "$1"
+      }
 
-_fzf_compgen_path() {
-      rg --files --hidden . "$"
+    # edit selected
+    fe() {
+        IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+        [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+    }
+
+    # cd into selected
+    fd() {
+        DIR=`find * -maxdepth 0 -type d -print 2> /dev/null | fzf-tmux` \
+        && cd "$DIR"
+    }
 }
 
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
