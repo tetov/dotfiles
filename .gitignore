@@ -35,3 +35,6 @@ Temporary Items
 !*/.vim/colors/*
 !vimrc
 .netrwhist
+
+# vim mergetool
+.orig

@@ -1,14 +1,31 @@
 # Source general shell env
-. ~/.shellrc
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+export DOTFILES=$HOME/tetov-dotfiles
+export ZSH_DIR="$HOME/.zsh"
+
+_source_if_exists() {
+    [[ -e "$1" ]] && source "$1"
+}
+
+_source_if_exists ~/.local_env
 
 # Path
 typeset -U path
-path=(~/bin $DOTFILES/bin ~/.cargo/bin $path)
+path=(~/bin $DOTFILES/bin $path)
 
-fpath+=$DOTFILES/zshfuncs
+path+=~/.cargo/bin
+
+fpath+="$ZSH_DIR/funcs"
 
 # history settings
-HISTFILE=~/.zsh_history
+HISTFILE="~/.zsh_history"
 HISTSIZE=50000
 SAVEHIST=10000
 
@@ -26,135 +43,13 @@ setopt always_to_end # always put cursor at end after completing
 
 unsetopt BG_NICE # not nice since WSL is not nice
 
-source ~/.zinit/bin/zinit.zsh
-
-zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-zinit light trapd00r/LS_COLORS
-
-zinit wait for \
-    atinit"zicompinit; zicdreplay" \
-    zdharma/fast-syntax-highlighting \
-    atload"_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
-    blockf atpull'zinit creinstall -q .' \
-    zsh-users/zsh-completions
-
-zinit load changyuheng/fz
-
-# Load the pure theme, with zsh-async library that's bundled with it.
-zinit ice pick"async.zsh" src"pure.zsh"
-zinit light sindresorhus/pure
-
-#Pure
-autoload -U compinit promptinit
-PURE_CMD_MAX_EXEC_TIME=60
-# Make pure theme single line
-prompt_newline='%666v'
-PROMPT=" $PROMPT"
-zstyle :prompt:pure:user color green
-zstyle :prompt:pure:host color green
-zstyle :prompt:pure:git:branch color white
-zstyle :prompt:pure:git:stash show yes
-
-# matches case insensitive and partial and substring
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
-
-# pasting with tabs doesn't perform completion
-zstyle ':completion:*' insert-tab pending
-
-# rehash if command not found (possibly recently installed)
-zstyle ':completion:*' rehash true
-
-# Group matches and describe.
-zstyle ':completion:*:*:*:*:*' menu select
-
-# menu if nb items > 2
-zstyle ':completion:*' menu select=2
-
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-
-export KEYTIMEOUT=1
-
-# virtualenvwrapper
-export WORKON_HOME=~/.virtualenvs
-export PROJECT_HOME=~/l-repos
-
-VW_PATHS=( /usr/bin/virtualenvwrapper.sh \
-           /usr/share/virtualenvwrapper/virtualenvwrapper.sh )
-
-# for p in $VW_PATHS ; do
-#   if [[ -e $p ]] ; then
-#     . $p
-#     autoload -U add-zsh-hook auto_workon
-#     add-zsh-hook -Uz chpwd auto_workon
-#     auto_workon
-#     break
-#   fi
-# done
-#
-# aliases
-alias ls="exa --group-directories-first"
-alias cat="bat"
-
-zvm_after_init() {
-    # fzf installed from git
-    FZF_PATHS=(~ /usr/share/fzf /usr/share/doc/fzf/examples)
-
-    for p in $FZF_PATHS ; do
-      if [[ -e $p/.fzf.zsh ]] ; then  # git installation
-        . $p/.fzf.zsh
-        break
-        fzf_env_settings
-      elif [[ -e $p/completion.zsh && -e $p/key-bindings.zsh ]] ; then
-        . $p/completion.zsh
-        . $p/key-bindings.zsh
-        fzf_env_settings
-        break
-      fi
-    done
-
-}
-
-fzf_env_settings() {
-
-    export FZF_DEFAULT_COMMAND='fd --type f --color=always || rg --files --hidden || find .'
-    # Use ctrl+o to open selected file(s) in vim
-    export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    # # Using bat as previewer
-    export FZF_CTRL_T_OPTS="--preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
-    # # Changing from ** to ~~ the trigger for autocompletion in shell
-    export FZF_COMPLETION_TRIGGER='~~'
-
-    _fzf_compgen_path() {
-      fd --hidden --follow --exclude ".git" . "$"
-    }
-
-    # Use fd to generate the list for directory completion
-    _fzf_compgen_dir() {
-      fd --type d --hidden --follow --exclude ".git" . "$1"
-      }
-
-    # edit selected
-    fe() {
-        IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
-        [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-    }
-
-    # cd into selected
-    fd() {
-        DIR=`find * -maxdepth 0 -type d -print 2> /dev/null | fzf-tmux` \
-        && cd "$DIR"
-    }
-}
+source "$ZSH_DIR/zinit-setup.zsh"
 
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
   set_DISPLAY
-  _gpgbride_dir_win_wslpath="/mnt/c/Users/a/.gpgbridge"
+  _gpgbride_dir_win_wslpath="$WINHOME/.gpgbridge"
   export SCRIPT_DIR_WSL="$_gpgbride_dir_win_wslpath/repo"
   export PIDFILE_WSL="$HOME/.gpgbridge_wsl.pid"
   export LOGFILE_WSL="$HOME/.gpgbridge_wsl.log"
@@ -164,17 +59,11 @@ if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   start_gpgbridge --ssh --wsl2
 fi
 
-# Entrypoints to ROS
-if [[ -e /opt/ros/melodic/setup.zsh ]] ; then
-  . /opt/ros/melodic/setup.zsh
+if [[ -v ROS_DIR ]] ; then
+    # Entrypoints to ROS
+    source $ROS_DIR/setup.zsh
+    _source_if_exists $CATKIN_WS/devel/setup.zsh
 fi
-
-if [[ -e /opt/ros/noetic/setup.zsh ]] ; then
-  . /opt/ros/noetic/setup.zsh
-fi
-
-CATKIN_WS=~/catkin_ws
-[[ -e $CATKIN_WS/devel/setup.zsh ]] && . $CATKIN_WS/devel/setup.zsh
 
 # Syntax highlightening for less
 export PAGER="less"
@@ -204,16 +93,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-   +        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-   +        print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
-
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-### End of Zinit's installer chunk
+source $ZSH_DIR/aliases.zsh
