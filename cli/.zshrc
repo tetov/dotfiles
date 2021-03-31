@@ -25,7 +25,7 @@ path+=~/.cargo/bin
 fpath+="$ZSH_DIR/funcs"
 
 # history settings
-HISTFILE="~/.zsh_history"
+HISTFILE="$ZSH_DIR/.zsh_history"
 HISTSIZE=50000
 SAVEHIST=10000
 

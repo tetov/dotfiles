@@ -11,18 +11,18 @@ autoload -Uz _zinit
 ### End of Zinit installer's chunk
 
 # Install `fzf` binary and tmux helper script
-zinit ice wait lucid from"gh-r" as"command"
-zinit load junegunn/fzf-bin
-
-zinit ice wait lucid as"command" pick"bin/fzf-tmux"
+zinit ice as"program" make"install" pick"bin/*"
 zinit load junegunn/fzf
+
+# zinit ice wait lucid as"command" pick"bin/fzf-tmux"
+# zinit load junegunn/fzf
 
 # Create and bind multiple widgets using fzf
 zinit ice wait lucid multisrc"shell/{completion,key-bindings}.zsh" \
     id-as"junegunn/fzf_completions" pick"/dev/null"
 zinit load junegunn/fzf
 
-export FZF_DEFAULT_COMMAND='fd --type f --color=always || rg --files --hidden || find .'
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
 # Use ctrl+o to open selected file(s) in vim
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
