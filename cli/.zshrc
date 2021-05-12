@@ -18,9 +18,15 @@ _source_if_exists ~/.local_env
 
 # Path
 typeset -U path
-path=(~/bin $DOTFILES/bin $path)
 
-path+=~/.cargo/bin
+_add_path_if_exists() {
+    [[ -d "$1" ]] && path+="$1"
+}
+
+_add_path_if_exists ~/bin
+_add_path_if_exists $DOTFILES/bin
+_add_path_if_exists ~/.cargo/bin
+_add_path_if_exists ~/.fzf/bin
 
 fpath+="$ZSH_DIR/funcs"
 
