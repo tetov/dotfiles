@@ -19,14 +19,19 @@ _source_if_exists ~/.local_env
 # Path
 typeset -U path
 
-_add_path_if_exists() {
+_append_path_if_exists() {
     [[ -d "$1" ]] && path+="$1"
 }
 
-_add_path_if_exists ~/bin
-_add_path_if_exists $DOTFILES/bin
-_add_path_if_exists ~/.cargo/bin
-_add_path_if_exists ~/.fzf/bin
+_prepend_path_if_exists() {
+    [[ -d "$1" ]] && path=("$1" $path)
+}
+
+_prepend_path_if_exists /usr/lib/ccache
+_prepend_path_if_exists ~/.cargo/bin
+_prepend_path_if_exists ~/.fzf/bin
+_prepend_path_if_exists $DOTFILES/bin
+_prepend_path_if_exists ~/bin
 
 fpath+="$ZSH_DIR/funcs"
 
