@@ -5,7 +5,7 @@ else
 fi
 
 alias ll='ls -lh'
-alias la='ls -A'
+alias la='ls -a'
 alias l='ls'
 
 alias mkdir='mkdir -pv'
