@@ -1,8 +1,5 @@
 set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 
-let g:ale_disable_lsp = 1
-let g:ale_completion_enabled = 0
-
 " Automatic installation vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -14,26 +11,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-" AUTOCOMPLETION
-if executable('node')
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    let g:coc_global_extensions = [
-\       'coc-git',
-\       'coc-html',
-\       'coc-json',
-\       'coc-python',
-\       'coc-sh',
-\       'coc-snippets',
-\       'coc-yaml',
-\       ]
-endif
-
 if has('python3')
-  " SNIPPETS
-  Plug 'honza/vim-snippets'
-  " PYTHON
-  " Plug 'alfredodeza/coveragepy.vim'        " Show coverage.py report and mark lines
-  " Plug 'jmcantrell/vim-virtualenv'         " Make vim use venv
   Plug 'Vimjas/vim-python-pep8-indent'
   Plug 'tmhedberg/simpylfold'              " Folding for Python
 endif
@@ -63,6 +41,7 @@ Plug 'samoshkin/vim-mergetool'           " Mergetool
 " Plug 'jiangmiao/auto-pairs'
 Plug 'ConradIrwin/vim-bracketed-paste'   " Make vim aware of pastes
 " Plug 'tpope/vim-dispatch'
+Plug 'ervandew/supertab'
 
 
 " LINT and FIX
@@ -189,13 +168,6 @@ set spell spl=sv,en " Select language
 set nospell " Turn it off at start
 nmap <F7> :set spell! <CR>
 
-" mkspell if needed
-for d in glob('~/.vim/spell/*.add', 1, 1)
-    if filereadable(resolve(d)) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
-        exec 'mkspell! ' . fnameescape(d)
-    endif
-endfor
-
 " No undercurls thanks
 hi SpellBad ctermfg=117 ctermbg=203 guifg=#8ac6f2 guibg=#e5786d
 hi SpellCap ctermfg=240 ctermbg=180 guifg=#585858 guibg=#cae682
@@ -285,67 +257,6 @@ let g:ultisnips_python_quoting_style="double"
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
-if has_key(g:plugs, 'coc.nvim')
-    " To make <cr> select the first completion item and confirm the completion when no item has been selected:
-    inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
-
-    " use <tab> for trigger completion and navigate to the next complete item
-
-    inoremap <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ coc#refresh()
-    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
-
-    " Use <c-space> to trigger completion.
-    inoremap <silent><expr> <C-SPACE> coc#refresh()
-
-    " GoTo code navigation.
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
-
-    " Use K to show documentation in preview window.
-    nnoremap <silent> K :call <SID>show_documentation()<CR>
-    function! s:show_documentation()
-      if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-      elseif (coc#rpc#ready())
-        call CocActionAsync('doHover')
-      else
-        execute '!' . &keywordprg . " " . expand('<cword>')
-      endif
-    endfunction
-
-    " Highlight the symbol and its references when holding the cursor.
-    autocmd CursorHold * silent call CocActionAsync('highlight')
-
-    " Symbol renaming.
-    nmap <leader>rn <Plug>(coc-rename)
-
-    " Remap <C-f> and <C-b> for scroll float windows/popups.
-    if has('nvim-0.4.0') || has('patch-8.2.0750')
-      nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-      nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-      inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-      inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-      vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-      vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-    endif
-
-    " Show yank list from coc-yank
-    nnoremap <silent> <Leader>y  :<C-u>CocList -A --normal yank<cr>
-
-    " Add `:Fold` command to fold current buffer.
-    command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-endif
-
 " Pandoc
 " make markdown files not appears as pandoc files to w0rp/ale
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
@@ -394,6 +305,10 @@ nmap [a :ALEPreviousWrap<CR>
 nmap ]A :ALELast
 nmap [A :ALEFirst
 nmap <F8> <Plug>(ale_fix)
+
+let g:ale_completion_enabled = 1
+set omnifunc=ale#completion#OmniFunc
+let g:ale_completion_autoimport = 1
 
 " Lightline
 set noshowmode  " don't show vim mode in cmd line
