@@ -10,21 +10,28 @@ autoload -Uz _zinit
 
 ### End of Zinit installer's chunk
 
+# Recommended
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
+
 # Install `fzf` binary and tmux helper script
-zinit ice as"program" make"install" pick"bin/*"
-zinit load junegunn/fzf
-
-# zinit ice wait lucid as"command" pick"bin/fzf-tmux"
-# zinit load junegunn/fzf
-
-# Create and bind multiple widgets using fzf
-zinit ice wait lucid multisrc"shell/{completion,key-bindings}.zsh" \
-    id-as"junegunn/fzf_completions" pick"/dev/null"
-zinit load junegunn/fzf
+zinit light-mode lucid binary from"gh-r" for \
+    sbin"fzf; fzf-tmux" \
+        atdelete"rm -vf $ZPFX/man/man1/{fzf,fzf-tmux}.1" \
+        dl"https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux; \
+            https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh; \
+            https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh; \
+            https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1 -> $ZPFX/man/man1/fzf-tmux.1; \
+            https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -> $ZPFX/man/man1/fzf.1" \
+        multisrc"completion.zsh key-bindings.zsh" \
+        junegunn/fzf
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 # Use ctrl+o to open selected file(s) in vim
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort' --cycle"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # # Using bat as previewer
 export FZF_CTRL_T_OPTS="--preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
@@ -56,10 +63,8 @@ bindkey '^R' fzf-history-widget
 
 ##### BEGIN Zinit stuff #####
 ### needs: zinit, fzf
-zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-zinit light trapd00r/LS_COLORS
+#
+zinit pack for ls_colors
 
 # Load the pure theme, with zsh-async library that's bundled with it.
 zinit ice pick"async.zsh" src"pure.zsh"

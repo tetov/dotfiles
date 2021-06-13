@@ -41,9 +41,9 @@ HISTSIZE=50000
 SAVEHIST=10000
 
 setopt extended_history       # record timestamp of command in HISTFILE
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
 setopt hist_ignore_dups       # ignore duplicated commands history list
 setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_reduce_blanks # remove superfluous blanks from history items
 setopt hist_verify            # show command with history expansion to user before running it
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history dat
@@ -51,6 +51,9 @@ setopt share_history          # share command history dat
 setopt auto_cd # cd by typing directory name if it's not a command
 setopt complete_in_word # complete where cursor is
 setopt always_to_end # always put cursor at end after completing
+setopt correct_all # autocorrect commands
+
+zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
 unsetopt BG_NICE # not nice since WSL is not nice
 
