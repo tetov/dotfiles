@@ -6,9 +6,10 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
+export XDG_CONFIG_HOME=~/.config
 
-export DOTFILES=$HOME/tetov-dotfiles
-export ZSH_DIR="$HOME/.zsh"
+export DOTFILES=~/tetov-dotfiles
+export ZSH_DIR=~/.zsh
 
 _source_if_exists() {
     [[ -e "$1" ]] && source "$1"
@@ -51,7 +52,6 @@ setopt share_history          # share command history dat
 setopt auto_cd # cd by typing directory name if it's not a command
 setopt complete_in_word # complete where cursor is
 setopt always_to_end # always put cursor at end after completing
-setopt correct_all # autocorrect commands
 
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
