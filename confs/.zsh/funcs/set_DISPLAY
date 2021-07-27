@@ -8,6 +8,6 @@ else
     screen=$1
 fi
 
-ip=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)
+ip=$(ip route | awk '/^default via / {print $3}')
 
 export DISPLAY=$ip:$screen

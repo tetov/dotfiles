@@ -1,16 +1,3 @@
-# Install `zinit` if not installed
-if [ ! -d "${HOME}/.zinit" ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-fi
-#
-## Added by Zinit's installer
-source ~/.zinit/bin/zinit.zsh
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-### End of Zinit installer's chunk
-
-# Recommended
 zinit light-mode for \
     zinit-zsh/z-a-rust \
     zinit-zsh/z-a-as-monitor \
