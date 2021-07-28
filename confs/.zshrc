@@ -57,8 +57,6 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 
 unsetopt BG_NICE # not nice since WSL is not nice
 
-source "$ZSH_DIR/zinit-setup.zsh"
-
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
@@ -71,14 +69,10 @@ if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   export PIDFILE_WIN="$_gpgbride_dir_win_wslpath/gpgbridge_win.pid"
   . $DOTFILES/deps/gpg-bridge-wsl2-ruby/gpgbridge_helper.sh
   start_gpgbridge --ssh --wsl2
-fi
 
-# Adding wsl-open as a browser for Bash for Windows
-if [[ $(uname -r) =~ (m|M)icrosoft ]]; then
-  if [[ -z $BROWSER ]]; then
-    export BROWSER=wsl-open
-  else
-    export BROWSER=$BROWSER:wsl-open
+  # Adding wsl-open as a browser for Bash for Windows
+  if [[ $(uname -r) =~ [mM]icrosoft ]]; then
+    export BROWSER="${BROWSER:-wsl-open}"
   fi
 fi
 
@@ -136,3 +130,6 @@ source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
+
+source "$ZSH_DIR/zinit-setup.zsh"
+
