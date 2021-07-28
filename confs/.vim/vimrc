@@ -298,6 +298,7 @@ let g:ale_fixers = {
 \   'css': ['prettier', 'stylelint'],
 \   'html': ['tidy'],
 \   'sh': ['shfmt'],
+\   'json': ['prettier'],
 \}
 
 nmap ]a :ALENextWrap<CR>

@@ -57,6 +57,9 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 
 unsetopt BG_NICE # not nice since WSL is not nice
 
+# For gpg agent forwarding. (Dir gets deleted on log out)
+gpgconf --create-socketdir
+
 if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
@@ -112,8 +115,6 @@ unset APPDATA
 # unset __conda_setup
 # # <<< conda initialize <<<
 
-source $ZSH_DIR/aliases.zsh
-
 # Anaconda's CA bundle gets picket up by curl
 export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
@@ -132,4 +133,6 @@ autoload -Uz _zinit
 ### End of Zinit's installer chunk
 
 source "$ZSH_DIR/zinit-setup.zsh"
+
+source $ZSH_DIR/aliases.zsh
 
