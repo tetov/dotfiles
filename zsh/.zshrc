@@ -8,7 +8,7 @@ export LANG=en_US.UTF-8
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 export XDG_CONFIG_HOME=~/.config
 
-export DOTFILES=~/tetov-dotfiles
+export DOTFILES=~/dotfiles
 export ZSH_DIR=~/.zsh
 
 _source_if_exists() {
@@ -55,8 +55,6 @@ setopt always_to_end # always put cursor at end after completing
 
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
-unsetopt BG_NICE # not nice since WSL is not nice
-
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
 
@@ -75,7 +73,7 @@ if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
 
   # Adding wsl-open as a browser for Bash for Windows
   if [[ $(uname -r) =~ [mM]icrosoft ]]; then
-    export BROWSER="${BROWSER:-wsl-open}"
+  export BROWSER="${BROWSER:-wsl-open}"
   fi
 fi
 
@@ -134,5 +132,5 @@ autoload -Uz _zinit
 
 source "$ZSH_DIR/zinit-setup.zsh"
 
-source $ZSH_DIR/aliases.zsh
+source "$ZSH_DIR/aliases.zsh"
 
