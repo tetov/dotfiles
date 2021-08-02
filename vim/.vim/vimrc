@@ -20,6 +20,7 @@ endif
 " Plug 'alvan/vim-closetag'                " Closes html and xml tags
 Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
 Plug 'godlygeek/tabular'                 " Lines up code
+Plug 'junegunn/fzf'                  " Quicker searching
 Plug 'junegunn/fzf.vim'                  " Quicker searching
 " Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
 Plug 'Konfekt/fastfold'                  " Apparently folds are slow?
