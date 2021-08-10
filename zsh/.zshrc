@@ -58,7 +58,7 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
 
-if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
+if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
   export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
   set_DISPLAY
@@ -71,10 +71,14 @@ if ! [[ -v SSH_CLIENT ]] ; then  # if this is not a ssh session
   . $DOTFILES/deps/gpg-bridge-wsl2-ruby/gpgbridge_helper.sh
   start_gpgbridge --ssh --wsl2
 
-  # Adding wsl-open as a browser for Bash for Windows
-  if [[ $(uname -r) =~ [mM]icrosoft ]]; then
   export BROWSER="${BROWSER:-wsl-open}"
-  fi
+
+elif ! [[ -v SSH_CLIENT ]] ; then  # if this is not an SSH session
+    export GPG_TTY=$(tty)
+    unset SSH_AGENT_PID
+    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+      export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    fi
 fi
 
 if [[ -v ROS_DIR ]] ; then
