@@ -169,6 +169,8 @@ set spell spl=sv,en " Select language
 set nospell " Turn it off at start
 nmap <F7> :set spell! <CR>
 
+let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
+
 " No undercurls thanks
 hi SpellBad ctermfg=117 ctermbg=203 guifg=#8ac6f2 guibg=#e5786d
 hi SpellCap ctermfg=240 ctermbg=180 guifg=#585858 guibg=#cae682
