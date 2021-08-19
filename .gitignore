@@ -38,3 +38,4 @@ Temporary Items
 
 # vim mergetool
 .orig
+.zsh_history

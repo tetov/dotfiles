@@ -9,7 +9,7 @@ export XDG_RUNTIME_DIR=/run/user/$(id -u)
 export XDG_CONFIG_HOME=~/.config
 
 export DOTFILES=~/dotfiles
-export ZSH_DIR=~/.zsh
+export ZSH_DIR=~/.zsh.d
 
 _source_if_exists() {
     [[ -e "$1" ]] && source "$1"
@@ -134,7 +134,7 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-source "$ZSH_DIR/zinit-setup.zsh"
-
-source "$ZSH_DIR/aliases.zsh"
+for file in "$ZSH_DIR"/*.zsh; do
+    source "$file"
+done
 
