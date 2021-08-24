@@ -96,4 +96,7 @@ zinit light zsh-users/zsh-completions
 zinit ice wait lucid atinit'zpcompinit; zpcdreplay'
 zinit light zdharma/fast-syntax-highlighting
 
-##### END Zinit stuff #####
+# vi mode
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+
