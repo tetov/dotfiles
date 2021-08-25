@@ -4,17 +4,7 @@ zinit light-mode for \
     zinit-zsh/z-a-patch-dl \
     zinit-zsh/z-a-bin-gem-node
 
-# Install `fzf` binary and tmux helper script
-zinit light-mode lucid binary from"gh-r" for \
-    sbin"fzf; fzf-tmux" \
-        atdelete"rm -vf $ZPFX/man/man1/{fzf,fzf-tmux}.1" \
-        dl"https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux; \
-            https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh; \
-            https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh; \
-            https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1 -> $ZPFX/man/man1/fzf-tmux.1; \
-            https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -> $ZPFX/man/man1/fzf.1" \
-        multisrc"completion.zsh key-bindings.zsh" \
-        junegunn/fzf
+zinit pack"bgn-binary+keys" for fzf
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 # Use ctrl+o to open selected file(s) in vim
