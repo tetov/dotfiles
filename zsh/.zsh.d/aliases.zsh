@@ -68,3 +68,6 @@ if (( $+commands[git] )) ; then
 
 fi
 
+command -v makechrootpkg >/dev/null \
+    && [[ -v CHROOT ]] \
+    && alias mcpkg='makechrootpkg -c -r $CHROOT -l $(basename $(pwd)) -- PACKAGER=$PACKAGER'
