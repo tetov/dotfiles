@@ -70,4 +70,4 @@ fi
 
 command -v makechrootpkg >/dev/null \
     && [[ -v CHROOT ]] \
-    && alias mcpkg='makechrootpkg -c -r $CHROOT -l $(basename $(pwd)) -- PACKAGER=$PACKAGER'
+    && alias mcpkg='makechrootpkg -cu -r $CHROOT -l $(basename $(pwd)) -- PACKAGER=$PACKAGER'
