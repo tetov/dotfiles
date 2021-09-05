@@ -58,6 +58,10 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
 
+unset SSH_AGENT_PID
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+
 if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
   export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
@@ -72,13 +76,6 @@ if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
   start_gpgbridge --ssh --wsl2
 
   export BROWSER="${BROWSER:-wsl-open}"
-
-elif ! [[ -v SSH_CLIENT ]] ; then  # if this is not an SSH session
-    export GPG_TTY=$(tty)
-    unset SSH_AGENT_PID
-    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-      export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-    fi
 fi
 
 if [[ -v ROS_DIR ]] ; then
