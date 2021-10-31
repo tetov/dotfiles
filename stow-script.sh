@@ -5,7 +5,7 @@ setopt extended_glob  # needed for glob after --stow
 STOW_DIR="$HOME/dotfiles"  # Should be repo dir
 TARGET_DIR=$HOME
 
-$HOME/bin/stow \
+stow \
   --dir="$STOW_DIR" \
   --target="$TARGET_DIR" \
   --verbose \
