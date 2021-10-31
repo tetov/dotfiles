@@ -1,12 +1,13 @@
 if (( $+commands[exa] )) ; then
     alias ls="exa --group-directories-first"
+    alias ll="ls -l --group"
 else
     alias ls='ls -F --color=auto'
+    alias ll='ls -lh'
 fi
 
-alias ll='ls -lh'
-alias la='ls -a'
 alias l='ls'
+alias la='ls -a'
 
 alias mkdir='mkdir -pv'
 alias rmi='rm -i'
@@ -71,3 +72,8 @@ fi
 command -v makechrootpkg >/dev/null \
     && [[ -v CHROOT ]] \
     && alias mcpkg='makechrootpkg -cu -r $CHROOT -l $(basename $(pwd)) -- PACKAGER=$PACKAGER'
+
+if (( $+commands[gpg] )) ; then
+    alias clean_gpg_socks="rm $XDG_RUNTIME_DIR/gnupg/S.*"
+    alias restart_gpg="gpg-connect-agent reloadagent /bye"
+fi
