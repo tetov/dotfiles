@@ -17,6 +17,16 @@ _source_if_exists() {
 
 _source_if_exists ~/.local_env
 
+# ROS
+_source_if_exists $ROS_DIR/setup.zsh
+
+if [[ -v CATKIN_WS ]] ; then
+    _source_if_exists $CATKIN_WS/devel/setup.zsh
+    _source_if_exists $CATKIN_WS/devel_isolated/setup.zsh
+fi
+
+_source_if_exists /usr/share/nvm/init-nvm.sh
+
 # Path
 typeset -U path
 
@@ -30,7 +40,6 @@ _prepend_path_if_exists() {
 
 _prepend_path_if_exists /usr/lib/ccache
 _prepend_path_if_exists ~/.cargo/bin
-_prepend_path_if_exists ~/.fzf/bin
 _prepend_path_if_exists $DOTFILES/bin
 _prepend_path_if_exists ~/bin
 
@@ -78,28 +87,12 @@ if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
   export BROWSER="${BROWSER:-wsl-open}"
 fi
 
-if [[ -v ROS_DIR ]] ; then
-    # Entrypoints to ROS
-    source $ROS_DIR/setup.zsh
-    _source_if_exists $CATKIN_WS/devel/setup.zsh
-fi
-
-_source_if_exists /usr/share/nvm/init-nvm.sh
-
 # Syntax highlightening for less
 export PAGER="less"
 export LESS=" -R"
 if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
     export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 fi
-
-# to make sure yarn/node-gyp doesn't use appdata dir
-# https://paulochaves.dev/blog/updating-gatsby-with-sharp-dependency-errors-on-ubuntu-wsl
-unset APPDATA
-
-
-# Anaconda's CA bundle gets picket up by curl
-export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then

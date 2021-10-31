@@ -20,8 +20,6 @@ endif
 " Plug 'alvan/vim-closetag'                " Closes html and xml tags
 Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
 Plug 'godlygeek/tabular'                 " Lines up code
-Plug 'junegunn/fzf'                  " Quicker searching
-Plug 'junegunn/fzf.vim'                  " Quicker searching
 " Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
 Plug 'Konfekt/fastfold'                  " Apparently folds are slow?
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
@@ -31,17 +29,12 @@ Plug 'tpope/vim-commentary'              " Comment and uncomment
 Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
 Plug 'tpope/vim-sensible'                " Sensible standards
 Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-endwise'                 " Completes with end in ruby and sh
 Plug 'tpope/vim-sleuth'                  " Guess tab width
 Plug 'tpope/vim-surround'                " Operate on surrounding characters
 Plug 'ludovicchabant/vim-gutentags'      " autogenerate tags
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'samoshkin/vim-mergetool'           " Mergetool
-" Plug 'preservim/tagbar'
-" Plug 'jiangmiao/auto-pairs'
-Plug 'ConradIrwin/vim-bracketed-paste'   " Make vim aware of pastes
-" Plug 'tpope/vim-dispatch'
 Plug 'ervandew/supertab'
 
 
@@ -60,11 +53,9 @@ Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 
 " MOVEMENT
 Plug 'bkad/CamelCaseMotion'
-" Plug 'easymotion/vim-easymotion'         " double leader then movement
 
 " GIT
 Plug 'tpope/vim-fugitive'                " Git
-Plug 'tpope/vim-rhubarb'                 " Github plugin for fugitive
 Plug 'jreybert/vimagit'                  " Commit chunks and more
 
 " MARKDOWN ETC
@@ -76,9 +67,6 @@ Plug 'quentindecock/vim-cucumber-align-pipes' " Markdown tables
 Plug 'kevinoid/vim-jsonc'
 
 " Themes
-" Plug 'altercation/vim-colors-solarized'  " Color-scheme
-" Plug 'lifepillar/vim-solarized8'
-Plug 'itchyny/landscape.vim'
 Plug 'sickill/vim-monokai'
 
 call plug#end()
@@ -98,7 +86,6 @@ syntax enable               " enable syntax highlighting (previously syntax on).
 
 " gVIM
 set guioptions=g
-
 
 " TABS
 set tabstop=4               " number of visual spaces per TAB
@@ -132,6 +119,7 @@ let &colorcolumn=80
 set incsearch               " search as characters are entered
 set hlsearch                " highlight matches
 set ignorecase              " Make searches case-insensitive.
+
 " FOLDING
 set foldenable                    " enable folding
 set foldlevelstart=10             " open most folds by default
@@ -249,13 +237,6 @@ let g:camelcasemotion_key = '<leader>'
 " Settings for vim-stay, what to save between sessions
 set viewoptions=cursor,slash,unix
 
-" Snippets
-let g:UltiSnipsExpandTrigger = '<C-j>'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-let g:ultisnips_python_style="numpy"
-let g:ultisnips_python_quoting_style="double"
-"
 " SuperTab
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
@@ -269,16 +250,6 @@ let g:pandoc#folding#fdc=0
 au BufRead,BufNewFile *.md setlocal textwidth=80
 au BufRead,BufNewFile *.md setlocal formatoptions+=t
 
-" FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
-set rtp+=/usr/bin/fzf
-set rtp+=~/.fzf
-nmap ; :Buffers<CR>
-nmap <Leader>t :Tags<CR>
-nmap <Leader>f :Files<CR>
-nmap <Leader>a :Rg<CR>
-nmap <Leader>m :Marks<CR>
-nnoremap <C-p> :Files<Cr>
-
 " GutenTags
 let g:gutentags_file_list_command = {
    \ 'markers': {
@@ -286,9 +257,6 @@ let g:gutentags_file_list_command = {
        \ '.hg': 'hg files',
        \ },
    \ }
-" Tagbar
-nmap <F6> :TagbarToggle<CR>
-let g:tagbar_map_togglefold = "<SPACE>"
 
 " Python
 autocmd FileType python setlocal indentkeys-=<:>
