@@ -1,13 +1,13 @@
 if (( $+commands[exa] )) ; then
     alias ls="exa --group-directories-first"
-    alias ll="ls -l --group"
+    alias ll="ls -l --group --git"
 else
     alias ls='ls -F --color=auto'
     alias ll='ls -lh'
 fi
 
-alias l='ls'
 alias la='ls -a'
+alias l='ls'
 
 alias mkdir='mkdir -pv'
 alias rmi='rm -i'
