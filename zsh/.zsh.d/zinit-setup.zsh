@@ -15,11 +15,9 @@ PROMPT=" $PROMPT"
 # zstyle :prompt:pure:git:branch color white
 # zstyle :prompt:pure:git:stash show yes
 
-# z
 zinit ice wait blockf lucid
 zinit light rupa/z
 
-# multi word history search
 zinit ice wait lucid
 zinit load zdharma/history-search-multi-word
 
@@ -29,7 +27,6 @@ zinit light zsh-users/zsh-completions
 zinit ice wait lucid atinit'zpcompinit; zpcdreplay'
 zinit light zdharma/fast-syntax-highlighting
 
-# vi mode
 zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
 
