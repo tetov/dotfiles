@@ -19,6 +19,7 @@ PROMPT=" $PROMPT"
 zinit ice wait blockf lucid
 zinit light rupa/z
 
+# multi word history search
 zinit ice wait lucid
 zinit load zdharma/history-search-multi-word
 
