@@ -68,8 +68,13 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 gpgconf --create-socketdir
 
 unset SSH_AGENT_PID
-export GPG_TTY=$(tty)
+if [[ ! -v SSH_CLIENT ]] && [[ -v SSH_TTY ]]; then
+    export GPG_TTY=$(tty)
+fi
+
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+
+gpgconf --launch gpg-agent
 
 if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
   export LIBGL_ALWAYS_INDIRECT=0
