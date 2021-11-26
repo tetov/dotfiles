@@ -37,7 +37,7 @@ alias notlinked='find . -type f -links 1 \( \! -iname "*.jpg" \! -iname "*.nfo" 
 (( $+commands[bat] )) && alias cat="bat"
 
 # todo.txt
-if [[ -v $TODO_DIR && -e $TODO_DIR/todo.txt ]] ; then
+if [[ -v TODO_DIR && -e $TODO_DIR/todo.txt ]] ; then
     alias todo='vim $TODO_DIR/{todo,done}.txt'
 fi
 
