@@ -12,7 +12,7 @@ export DOTFILES=~/dotfiles
 export ZSH_DIR=~/.zsh.d
 
 _source_if_exists() {
-    [[ -e "$1" ]] && source "$1"
+    [[ -r "$1" ]] && source "$1"
 }
 
 _source_if_exists ~/.local_env
@@ -26,6 +26,7 @@ if [[ -v CATKIN_WS ]] ; then
 fi
 
 _source_if_exists /usr/share/nvm/init-nvm.sh
+_source_if_exists ~/.opam/opam-init/init.zsh
 
 # Path
 typeset -U path

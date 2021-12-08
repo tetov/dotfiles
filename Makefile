@@ -1,8 +1,8 @@
-# https://stackoverflow.com/a/18137056
+.DEFAULT_GOAL := all
 
 PKGS := $(shell find . -maxdepth 1 -type d ! -name "deps" ! -name "bin" ! -name ".*" -printf '%f\n')
 
-STOW_FLAGS := --verbose
+STOW_FLAGS := --verbose --no-folding
 
 $(PKGS):
 	stow $(STOW_FLAGS) --stow $@
