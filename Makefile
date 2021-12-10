@@ -5,7 +5,7 @@ PKGS := $(shell find . -maxdepth 1 -type d ! -name "deps" ! -name "bin" ! -name 
 STOW_FLAGS := --verbose --no-folding
 
 $(PKGS):
-	stow $(STOW_FLAGS) --stow $@
+	@stow $(STOW_FLAGS) --stow $@
 
 all: $(PKGS)
 
