@@ -1,0 +1,11 @@
+ignore = Path dotfiles
+ignore = Path .z
+ignore = Path .bash_history
+ignore = Path .zsh.d/*
+ignore = Path google-drive
+ignore = Path pCloudDrive
+ignore = Path bin
+ignore = Path Arduino
+ignore = Path build
+ignore = Path share
+
