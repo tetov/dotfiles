@@ -76,13 +76,10 @@ set background=dark
 colorscheme monokai
 
 set ffs=unix,dos,mac        " Use Unix as the standard file type
-set t_Co=256                " enable 256-color mode.
 set hidden
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
-
-syntax enable               " enable syntax highlighting (previously syntax on).
 
 " gVIM
 set guioptions=g
@@ -104,10 +101,8 @@ set showcmd                 " show command in bottom bar
 set cursorline              " highlight current line
 set cursorcolumn            " highlight current column
 filetype indent on          " load filetype-specific indent files
-set wildmenu                " visual autocomplete for command menu
 set lazyredraw              " redraw only when we need to.
 set showmatch               " highlight matching [{()}]
-set ruler                   " Always show info along bottom.
 set wrap                    " Wrap lines
 set textwidth=0             " No automatic breaks
 set linebreak               " Break long lines by word, not char
@@ -116,7 +111,6 @@ let g:EditorConfig_max_line_indicator = "none"
 let &colorcolumn=80
 
 " SEARCH
-set incsearch               " search as characters are entered
 set hlsearch                " highlight matches
 set ignorecase              " Make searches case-insensitive.
 
