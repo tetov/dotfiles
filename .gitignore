@@ -33,7 +33,8 @@ Temporary Items
 ### vim ###
 */.vim/*
 !*/.vim/colors/*
-!vimrc
+!*/.vim/vimrc
+!*/.vim/coc-settings.json
 .netrwhist
 
 # vim mergetool

@@ -42,6 +42,7 @@ Plug 'jreybert/vimagit'                  " Commit chunks and more
 " LSP etc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
+Plug 'kevinoid/vim-jsonc'
 
 " UI
 Plug 'itchyny/lightline.vim'             " Statusbar
