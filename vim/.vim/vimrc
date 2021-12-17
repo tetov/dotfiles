@@ -1,4 +1,15 @@
+" pre plugins
 set nocompatible " get rid of Vi compatibility mode. SET FIRST!
+let g:ale_disable_lsp = 1
+let g:coc_global_extensions = [
+\   'coc-css',
+\   'coc-html',
+\   'coc-git',
+\   'coc-json',
+\   'coc-sh',
+\   'coc-yaml',
+\   'coc-pyright',
+\]
 
 " Automatic installation vim-plug
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -8,20 +19,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 " vim-plug configuration
-
 call plug#begin('~/.vim/plugged')
 
-if has('python3')
-  Plug 'Vimjas/vim-python-pep8-indent'
-  Plug 'tmhedberg/simpylfold'              " Folding for Python
-endif
-
 " GENERAL
-" Plug 'alvan/vim-closetag'                " Closes html and xml tags
 Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
-Plug 'godlygeek/tabular'                 " Lines up code
-" Plug 'ntpeters/vim-better-whitespace'    " Highlights extraneous whitespace
-Plug 'Konfekt/fastfold'                  " Apparently folds are slow?
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
 Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
@@ -31,56 +32,44 @@ Plug 'tpope/vim-sensible'                " Sensible standards
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sleuth'                  " Guess tab width
 Plug 'tpope/vim-surround'                " Operate on surrounding characters
-Plug 'ludovicchabant/vim-gutentags'      " autogenerate tags
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'samoshkin/vim-mergetool'           " Mergetool
-Plug 'ervandew/supertab'
-
-
-" LINT and FIX
-Plug 'dense-analysis/ale'                          " Linter
-Plug 'thirtythreeforty/lessspace.vim'    " Removes excess whitespace from line edited
-
-" UI
-Plug 'airblade/vim-gitgutter'            " Shows diff line by line
-Plug 'itchyny/lightline.vim'             " Statusbar
-Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
-Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
-Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
-Plug 'christoomey/vim-tmux-navigator'    " Same bindings for vim and tmux for splits
-Plug 'maximbaz/lightline-ale'            " ALE status for lightline
-
-" MOVEMENT
-Plug 'bkad/CamelCaseMotion'
-
-" GIT
+Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'                " Git
 Plug 'jreybert/vimagit'                  " Commit chunks and more
+
+" LSP etc
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'dense-analysis/ale'
+
+" UI
+Plug 'itchyny/lightline.vim'             " Statusbar
+Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
+Plug 'maximbaz/lightline-ale'            " ALE status for lightline
+Plug 'airblade/vim-gitgutter'            " Shows diff line by line
+Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
+Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
+Plug 'christoomey/vim-tmux-navigator'    " Same bindings for vim and tmux for splits
+Plug 'itchyny/landscape.vim'
+     
+" MOVEMENT
+Plug 'bkad/CamelCaseMotion'
 
 " MARKDOWN ETC
 Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
 Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
 Plug 'ChesleyTan/wordCount.vim'          " Wordcount displayed in statusbar
 Plug 'quentindecock/vim-cucumber-align-pipes' " Markdown tables
-"
-Plug 'kevinoid/vim-jsonc'
-
-" Themes
-Plug 'sickill/vim-monokai'
 
 call plug#end()
 
-" Theme settings
-set background=dark
-colorscheme monokai
-
-set ffs=unix,dos,mac        " Use Unix as the standard file type
+" builtin opts
+set ffs=unix,dos,mac
 set hidden
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
-
 " gVIM
 set guioptions=g
 
@@ -124,24 +113,92 @@ let g:markdown_folding=1
 " space open/closes folds
 nnoremap <space> za
 
+" gitgutter
+highlight! link SignColumn LineNr
+let g:gitgutter_set_sign_backgrounds = 1
+
+" gundo
+nnoremap <F5> :GundoToggle<CR>
+
+" COC
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+
 " Leader key
 let mapleader = ","
 let maplocalleader = ","
 
 " edit vimrc
 nmap <leader>vr :vsp ~/.vim/vimrc <CR>
-
-" CLIPBOARD
-" https://vi.stackexchange.com/a/16114
-let s:clip = '/mnt/c/Windows/System32/clip.exe'
-if executable(s:clip)
-    augroup WSLYank
-        autocmd!
-        autocmd TextYankPost * call system('echo '.shellescape(join(v:event.regcontents, "\<CR>")).' | '.s:clip)
-    augroup END
-end
-
-noremap "p :exe 'norm a'.system('/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Clipboard')<CR>
 
 " SPELLCHECK
 set rtp+=/usr/share/vim/vimfiles/
@@ -222,9 +279,6 @@ cmap w!! w !sudo tee > /dev/null %
 
 " PLUGINS
 "
-" dispatch
-autocmd FileType python let b:dispatch = 'pytest -v %'
-
 " CamelCaseMotion
 let g:camelcasemotion_key = '<leader>'
 
@@ -243,14 +297,6 @@ let g:pandoc#folding#fdc=0
 
 au BufRead,BufNewFile *.md setlocal textwidth=80
 au BufRead,BufNewFile *.md setlocal formatoptions+=t
-
-" GutenTags
-let g:gutentags_file_list_command = {
-   \ 'markers': {
-       \ '.git': 'git ls-files',
-       \ '.hg': 'hg files',
-       \ },
-   \ }
 
 " Python
 autocmd FileType python setlocal indentkeys-=<:>
@@ -272,10 +318,6 @@ nmap ]A :ALELast
 nmap [A :ALEFirst
 nmap <F8> <Plug>(ale_fix)
 
-let g:ale_completion_enabled = 1
-set omnifunc=ale#completion#OmniFunc
-let g:ale_completion_autoimport = 1
-
 " Lightline
 set noshowmode  " don't show vim mode in cmd line
 
@@ -291,7 +333,7 @@ let g:lightline = {
 \           ['percent'],
 \           ['fileformat', 'fileencoding', 'filetype'],
 \           ['readonly', 'cocstatus', 'currentfunction'],
-\            ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok']
+\           ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok']
 \       ]
 \   },
 \   'component_function': {
@@ -322,6 +364,8 @@ let g:lightline#ale#indicator_infos = "\uf129"
 let g:lightline#ale#indicator_warnings = "\uf071"
 let g:lightline#ale#indicator_errors = "\uf05e"
 let g:lightline#ale#indicator_ok = "\uf00c"
+
+colorscheme landscape
 
 " local vimrc (project specific settings)
 set exrc
