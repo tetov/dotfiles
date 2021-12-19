@@ -42,6 +42,7 @@ _prepend_path_if_exists() {
 _prepend_path_if_exists /usr/lib/ccache
 _prepend_path_if_exists ~/.cargo/bin
 _prepend_path_if_exists $DOTFILES/bin
+_prepend_path_if_exists ~/.local/bin
 _prepend_path_if_exists ~/bin
 
 fpath+="$ZSH_DIR/funcs"
