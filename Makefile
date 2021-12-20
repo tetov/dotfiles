@@ -6,7 +6,7 @@ STOW_FLAGS := --verbose --no-folding
 
 PLUGIN_PATHS := '.zcomet/repos' '.tmux/plugins' '.vim/plugged'
 
-PATH_ADDITION := env PATH\=$$HOME/bin:$$HOME/.local/bin:$$PATH
+PATH_ADDITION := 'env PATH=$$HOME/bin:$$HOME/.local/bin:$$PATH'
 
 STOW := $(PATH_ADDITION) stow
 VCS:= $(PATH_ADDITION) vcs
