@@ -3,12 +3,26 @@ set nocompatible " get rid of Vi compatibility mode. SET FIRST!
 let g:ale_disable_lsp = 1
 let g:coc_global_extensions = [
 \   '@yaegassy/coc-ansible',
+\   'coc-pairs',
+\   'coc-clang-format-style-options',
+\   'coc-clangd',
 \   'coc-css',
-\   'coc-html',
+\   'coc-docker',
+\   'coc-fzf-preview',
 \   'coc-git',
+\   'coc-highlight',
+\   'coc-html',
 \   'coc-json',
-\   'coc-sh',
+\   'coc-lists',
+\   'coc-markdownlint',
+\   'coc-prettier',
+\   'coc-pydocstring',
 \   'coc-pyright',
+\   'coc-sh',
+\   'coc-svg',
+\   'coc-toml',
+\   'coc-vimlsp',
+\   'coc-xml',
 \   'coc-yaml',
 \]
 
@@ -23,48 +37,51 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " GENERAL
-Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
-Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
-Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
-Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
-Plug 'tpope/vim-commentary'              " Comment and uncomment
-Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
-Plug 'tpope/vim-sensible'                " Sensible standards
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-sleuth'                  " Guess tab width
-Plug 'tpope/vim-surround'                " Operate on surrounding characters
 Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
-Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
-Plug 'samoshkin/vim-mergetool'           " Mergetool
-Plug 'sjl/gundo.vim'
-Plug 'tpope/vim-fugitive'                " Git
+Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
 Plug 'jreybert/vimagit'                  " Commit chunks and more
 Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
+Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
+Plug 'samoshkin/vim-mergetool'           " Mergetool
+Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
+Plug 'sjl/gundo.vim'
+Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
+Plug 'tpope/vim-commentary'              " Comment and uncomment
+Plug 'tpope/vim-fugitive'                " Git
+Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
+Plug 'tpope/vim-sensible'                " Sensible standards
+Plug 'tpope/vim-sleuth'                  " Guess tab width
+Plug 'tpope/vim-surround'                " Operate on surrounding characters
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
+Plug 'wellle/tmux-complete.vim'
 
 " LSP etc
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 Plug 'kevinoid/vim-jsonc'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " UI
-Plug 'itchyny/lightline.vim'             " Statusbar
-Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
-Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 Plug 'airblade/vim-gitgutter'            " Shows diff line by line
-Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
-Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
 Plug 'christoomey/vim-tmux-navigator'    " Same bindings for vim and tmux for splits
 Plug 'itchyny/landscape.vim'
+Plug 'itchyny/lightline.vim'             " Statusbar
+Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
+Plug 'maximbaz/lightline-ale'            " ALE status for lightline
+Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
+Plug 'mhinz/vim-startify'
+Plug 'ryanoasis/vim-devicons'
+Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
      
 " MOVEMENT
 Plug 'bkad/CamelCaseMotion'
 
 " MARKDOWN ETC
-Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
-Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
 Plug 'ChesleyTan/wordCount.vim'          " Wordcount displayed in statusbar
 Plug 'quentindecock/vim-cucumber-align-pipes' " Markdown tables
+Plug 'vim-pandoc/vim-pandoc'             " Pandoc functionality in Vim and markdown functions
+Plug 'vim-pandoc/vim-pandoc-syntax'      " Pandoc markdown highlighting
 
 call plug#end()
 
@@ -215,16 +232,21 @@ if executable('rg')
   set grepprg='rg\ --vimgrep\ --smart-case\ --follow'
 endif
 
-nnoremap <silent> <Leader>b :Buffers<CR>
-nnoremap <silent> <Leader>f :Files<CR>
-nnoremap <silent> <Leader>r :Rg<CR>
-nnoremap <silent> <Leader>/ :BLines<CR>
-nnoremap <silent> <Leader>' :Marks<CR>
-nnoremap <silent> <Leader>g :Commits<CR>
-nnoremap <silent> <Leader>H :Helptags<CR>
-nnoremap <silent> <Leader>hh :History<CR>
-nnoremap <silent> <Leader>h: :History:<CR>
-nnoremap <silent> <Leader>h/ :History/<CR> 
+nnoremap <silent> <Leader>p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+nnoremap <silent> <Leader>gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
+nnoremap <silent> <Leader>ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
+nnoremap <silent> <Leader>b     :<C-u>CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent> <Leader>B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+nnoremap <silent> <Leader>o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
+nnoremap <silent> <Leader><C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
+nnoremap <silent> <Leader>g;    :<C-u>CocCommand fzf-preview.Changes<CR>
+nnoremap <silent> <Leader>/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <silent> <Leader>*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap          <Leader>gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+xnoremap          <Leader>gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> <Leader>t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
+nnoremap <silent> <Leader>q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent> <Leader>l     :<C-u>CocCommand fzf-preview.LocationList<CR>
 
 " gitgutter
 highlight! link SignColumn LineNr
@@ -391,6 +413,9 @@ let g:lightline#ale#indicator_infos = "\uf129"
 let g:lightline#ale#indicator_warnings = "\uf071"
 let g:lightline#ale#indicator_errors = "\uf05e"
 let g:lightline#ale#indicator_ok = "\uf00c"
+
+" startify
+let g:startify_bookmarks = [ {'c': '~/.vim/vimrc'}, '~/.zshrc' ]
 
 colorscheme landscape
 
