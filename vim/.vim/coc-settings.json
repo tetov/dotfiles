@@ -1,1 +1,12 @@
-{"diagnostic.displayByAle": true}
+{
+  "diagnostic.displayByAle": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml",
+    "yaml.ansible",
+    "python"
+  ]
+}
