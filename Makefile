@@ -6,14 +6,19 @@ STOW_FLAGS := --verbose --no-folding
 
 PLUGIN_PATHS := '.zcomet/repos' '.tmux/plugins' '.vim/plugged'
 
+PATH_ADDITION := env PATH=$$HOME/bin:$$HOME/.local/bin:$$PATH
+
+STOW := $(PATH_ADDITION) stow
+VCS:= $(PATH_ADDITION) vcs
+
 $(PKGS): plugin_managers
-	@stow $(STOW_FLAGS) --stow $@
+	@$(STOW) $(STOW_FLAGS) --stow $@
 
 plugin_managers:
-	vcs import < plugin_managers.repos
+	$(VCS) import < plugin_managers.repos
 
 $(PLUGIN_PATHS):
-	vcs pull $$HOME/$@
+	$(VCS) pull $$HOME/$@
 
 update_plugins: $(PLUGIN_PATHS)
 
@@ -22,7 +27,7 @@ stow: $(PKGS)
 all: stow update_plugins
 
 clean:
-	stow $(STOW_FLAGS) --delete $(PKGS)
+	$(STOW) $(STOW_FLAGS) --delete $(PKGS)
 
 test:
 
