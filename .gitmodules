@@ -2,8 +2,8 @@
 	path = deps/gpg-bridge-wsl2-ruby
 	url = https://github.com/mhyllander/gpg-bridge-wsl2-ruby.git
 [submodule "zsh/.zcomet/bin"]
-	path = zsh/.zcomet/bin
+	path = submodule_plugin_managers/.zcomet/bin
 	url = https://github.com/agkozak/zcomet
 [submodule "tmux/.tmux/plugins/tpm"]
-	path = tmux/.tmux/plugins/tpm
+	path = submodule_plugin_managers/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
