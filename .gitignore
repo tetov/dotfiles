@@ -38,8 +38,6 @@ Temporary Items
 !*/.vim/coc-settings.json
 
 !*/.vim/autoload/
-*/.vim/autoload/
-!*/.vim/autoload/plug.vim
 
 .netrwhist
 
