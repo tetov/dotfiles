@@ -31,12 +31,16 @@ Temporary Items
 */.lftp/transfer_log*
 
 ### vim ###
-*/.vim/*
-!*/.vim/colors/*
+*/.vim/**
+
+!*/.vim/colors/
 !*/.vim/vimrc
 !*/.vim/coc-settings.json
-*/.vim/autoload/*
+
+!*/.vim/autoload/
+*/.vim/autoload/
 !*/.vim/autoload/plug.vim
+
 .netrwhist
 
 # vim mergetool
