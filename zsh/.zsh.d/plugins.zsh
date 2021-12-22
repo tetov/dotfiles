@@ -30,5 +30,3 @@ zcomet snippet https://raw.githubusercontent.com/jreese/zsh-titles/master/titles
 zcomet load zdharma-continuum/fast-syntax-highlighting
 
 zcomet load jeffreytse/zsh-vi-mode
-
-

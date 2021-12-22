@@ -8,4 +8,3 @@ PYTHONVER=`python -c 'import sys; print(sys.version_info[0])'`
 if test PYTHONVER = "3"; then
   pip install mypy
 fi
-

@@ -8,4 +8,3 @@ ignore = Path bin
 ignore = Path Arduino
 ignore = Path build
 ignore = Path share
-

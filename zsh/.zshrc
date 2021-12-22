@@ -125,4 +125,3 @@ unset __conda_setup
 # Anaconda's CA bundle gets picket up by curl
 [[ -e /etc/ssl/certs/ca-certificates.crt ]] && CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 [[ -e /etc/ssl/certs/ca-bundle.crt ]] && CURL_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt
-

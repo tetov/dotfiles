@@ -13,4 +13,3 @@ if [[ -v CONDA_ROOT ]] ; then
     fi
     unset __conda_setup
 fi
-

@@ -8,14 +8,14 @@ STOW_FLAGS := --verbose --no-folding
 
 STOW := $(PATH_ADDITION) stow
 
-$(PKGS): 
+$(PKGS):
 	@$(STOW) --verbose --no-folding --stow $@
 
 submodule_plugin_managers: $(PKGS)
 	$(STOW) --verbose --stow $@
 	$(STOW) --verbose --restow --stow $@
 
-stow: $(PKGS) 
+stow: $(PKGS)
 
 # UPDATE PLUGIN MANAGERS notes: restart zsh, tmux and vim to
 # make sure everything is resourced
@@ -51,16 +51,16 @@ install_plugins:
 
 # note: tpm/bin/update_plugins only pulls
 # note: vim-plug's :PlugUpdate only pulls
-update_plugins: $(PLUGIN_PATHS) 
+update_plugins: $(PLUGIN_PATHS)
 	# prob some compinit stuff + plugins that are not repos
 	zsh -c \
-		"source ./submodule_plugin_managers/.zcomet/bin/zcomet.zsh && zcomet update"  
+		"source ./submodule_plugin_managers/.zcomet/bin/zcomet.zsh && zcomet update"
 
 # GENERAL
 install_pre_commit_hooks:
 	pre-commit install
 
-default: stow update_plugins install_pre_commit_hooks 
+default: stow update_plugins install_pre_commit_hooks
 
 all: update_plugin_managers default
 
