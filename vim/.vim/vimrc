@@ -8,7 +8,6 @@ let g:coc_global_extensions = [
 \   'coc-clangd',
 \   'coc-css',
 \   'coc-docker',
-\   'coc-fzf-preview',
 \   'coc-git',
 \   'coc-highlight',
 \   'coc-html',
@@ -41,6 +40,7 @@ Plug 'dbeniamine/todo.txt-vim'           " Todo-txt
 Plug 'editorconfig/editorconfig-vim'     " project specific editor settings
 Plug 'jreybert/vimagit'                  " Commit chunks and more
 Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'samoshkin/vim-mergetool'           " Mergetool
@@ -232,21 +232,21 @@ if executable('rg')
   set grepprg='rg\ --vimgrep\ --smart-case\ --follow'
 endif
 
-nnoremap <silent> <Leader>p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
-nnoremap <silent> <Leader>gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
-nnoremap <silent> <Leader>ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
-nnoremap <silent> <Leader>b     :<C-u>CocCommand fzf-preview.Buffers<CR>
-nnoremap <silent> <Leader>B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
-nnoremap <silent> <Leader>o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
-nnoremap <silent> <Leader><C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
-nnoremap <silent> <Leader>g;    :<C-u>CocCommand fzf-preview.Changes<CR>
-nnoremap <silent> <Leader>/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-nnoremap <silent> <Leader>*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
-nnoremap          <Leader>gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
-xnoremap          <Leader>gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
-nnoremap <silent> <Leader>t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
-nnoremap <silent> <Leader>q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
-nnoremap <silent> <Leader>l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>f :Rg<CR>
+nnoremap <silent> <Leader>/ :BLines<CR>
+nnoremap <silent> <Leader>' :Marks<CR>
+nnoremap <silent> <Leader>g :Commits<CR>
+nnoremap <silent> <Leader>H :Helptags<CR>
+nnoremap <silent> <Leader>hh :History<CR>
+nnoremap <silent> <Leader>h: :History:<CR>
+nnoremap <silent> <Leader>h/ :History/<CR> 
 
 " gitgutter
 highlight! link SignColumn LineNr
