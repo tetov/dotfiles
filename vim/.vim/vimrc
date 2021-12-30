@@ -45,7 +45,6 @@ Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
 Plug 'samoshkin/vim-mergetool'           " Mergetool
 Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
-Plug 'sjl/gundo.vim'
 Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
 Plug 'tpope/vim-commentary'              " Comment and uncomment
 Plug 'tpope/vim-fugitive'                " Git
@@ -56,11 +55,13 @@ Plug 'tpope/vim-surround'                " Operate on surrounding characters
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'wellle/tmux-complete.vim'
+Plug 'tpope/vim-dispatch'
 
 " LSP etc
 Plug 'dense-analysis/ale'
 Plug 'kevinoid/vim-jsonc'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'puremourning/vimspector', {'do': ':VimspectorInstall --all'}
 
 " UI
 Plug 'airblade/vim-gitgutter'            " Shows diff line by line
@@ -70,7 +71,6 @@ Plug 'itchyny/lightline.vim'             " Statusbar
 Plug 'jeffkreeftmeijer/vim-numbertoggle' " Relative numbers when it makes sense
 Plug 'maximbaz/lightline-ale'            " ALE status for lightline
 Plug 'mengelbrecht/lightline-bufferline' " Show list of buffers in lightline
-Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 Plug 'wincent/terminus'                  " Enhances vim + terminal integration eg cursor shapes etc
 
@@ -135,8 +135,9 @@ let g:markdown_folding=1
 let mapleader = ","
 let maplocalleader = ","
 
-" edit vimrc
-nmap <leader>vr :edit ~/.vim/vimrc <CR>
+" edit/source vimrc
+nmap <leader>ev :edit $MYVIMRC <CR>
+nmap <leader>es :so $MYVIMRC <CR>
 
 " space open/closes folds
 nnoremap <space> za
@@ -148,8 +149,6 @@ set rtp+=~/.vim/spell/
 set spell spl=sv,en " Select language
 set nospell " Turn it off at start
 nmap <F7> :set spell! <CR>
-
-let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
 
 " No undercurls thanks
 hi SpellBad ctermfg=117 ctermbg=203 guifg=#8ac6f2 guibg=#e5786d
@@ -227,6 +226,9 @@ cmap w!! w !sudo tee > /dev/null %
 
 " PLUGINS
 
+" vimspector
+let g:vimspector_enable_mappings = 'HUMAN'
+
 " fzf
 if executable('rg')
   set grepprg='rg\ --vimgrep\ --smart-case\ --follow'
@@ -251,9 +253,6 @@ nnoremap <silent> <Leader>h/ :History/<CR>
 " gitgutter
 highlight! link SignColumn LineNr
 let g:gitgutter_set_sign_backgrounds = 1
-
-" gundo
-nnoremap <F5> :GundoToggle<CR>
 
 " COC
 
@@ -413,9 +412,6 @@ let g:lightline#ale#indicator_infos = "\uf129"
 let g:lightline#ale#indicator_warnings = "\uf071"
 let g:lightline#ale#indicator_errors = "\uf05e"
 let g:lightline#ale#indicator_ok = "\uf00c"
-
-" startify
-let g:startify_bookmarks = [ {'c': '~/.vim/vimrc'}, '~/.zshrc' ]
 
 colorscheme landscape
 
