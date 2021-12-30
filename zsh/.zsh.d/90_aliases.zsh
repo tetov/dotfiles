@@ -34,7 +34,8 @@ fi
 alias notlinked='find . -type f -links 1 \( \! -iname "*.jpg" \! -iname "*.nfo" \! -iname "*.png" \! -iname "*.srt" \)'
 
 (( $+commands[rolldice] )) && alias r='rolldice -s '
-(( $+commands[bat] )) && alias cat="bat"
+
+alias z='cdr'
 
 # todo.txt
 if [[ -v TODO_DIR && -e $TODO_DIR/todo.txt ]] ; then
