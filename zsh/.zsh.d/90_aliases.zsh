@@ -35,8 +35,6 @@ alias notlinked='find . -type f -links 1 \( \! -iname "*.jpg" \! -iname "*.nfo" 
 
 (( $+commands[rolldice] )) && alias r='rolldice -s '
 
-alias z='cdr'
-
 # todo.txt
 if [[ -v TODO_DIR && -e $TODO_DIR/todo.txt ]] ; then
     alias todo='vim $TODO_DIR/{todo,done}.txt'
