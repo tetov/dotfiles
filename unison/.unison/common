@@ -9,3 +9,4 @@ ignore = Path Arduino
 ignore = Path build
 ignore = Path share
 ignore = Path Dropbox
+ignore = Path Applications

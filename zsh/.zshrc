@@ -121,6 +121,12 @@ PROMPT=" $PROMPT"
 # zstyle :prompt:pure:git:branch color white
 zstyle :prompt:pure:git:stash show yes
 
+export NVM_COMPLETION=true
+export NVM_LAZY_LOAD=false
+export NVM_AUTO_USE=true
+export NVM_DIR="$HOME/.nvm"
+zcomet load lukechilds/zsh-nvm
+
 zcomet load agkozak/zsh-z
 
 zcomet load ohmyzsh plugins/gitfast
