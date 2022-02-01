@@ -26,4 +26,3 @@ path+=~/.poetry/bin
 
 fpath+="$ZDOTDIR/funcs"
 fpath+="$ZDOTDIR/completions"
-
