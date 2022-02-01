@@ -2,6 +2,8 @@
 
 PATH_ADDITION := PATH=$$HOME/bin:$$HOME/.local/bin:$$PATH
 
+_ZDOTDIR := '$$XDG_CONFIG_HOME/zsh'
+
 # STOW PACKAGES
 PKGS := $(shell find . -maxdepth 1 -type d ! -name "deps" ! -name "bin" ! -name "submodule_plugin_managers" ! -name ".*" -printf '%f\n')
 STOW_FLAGS := --verbose --no-folding
@@ -19,7 +21,7 @@ stow: $(PKGS)
 
 # UPDATE PLUGIN MANAGERS notes: restart zsh, tmux and vim to
 # make sure everything is resourced
-SUBMODULE_PLUGIN_MANAGERS := submodule_plugin_managers/.tmux/plugins/tpm submodule_plugin_managers/.zcomet/bin
+SUBMODULE_PLUGIN_MANAGERS := submodule_plugin_managers/.tmux/plugins/tpm submodule_plugin_managers/.config/zsh/.zcomet/bin
 VIM_PLUG_LOCATIONS := vim/.vim/autoload/plug.vim nvim/.local/share/nvim/site/autoload/plug.vim
 
 $(SUBMODULE_PLUGIN_MANAGERS):
@@ -38,15 +40,14 @@ update_plugin_managers: $(SUBMODULE_PLUGIN_MANAGERS) $(VIM_PLUG_LOCATIONS)
 		|| echo Nothing to commit
 
 # UPDATE PLUGINS
-PLUGIN_PATHS := '.zcomet/repos' '.tmux/plugins' '.vim/plugged'
-VCS:= $(PATH_ADDITION) vcs
+PLUGIN_PATHS := '$(_ZDOTDIR)/.zcomet/repos' $$HOME/.tmux/plugins $$HOME/.vim/plugged
+VCS := $(PATH_ADDITION) vcs
 
 $(PLUGIN_PATHS): install_plugins
-	$(VCS) pull $$HOME/$@
+	$(VCS) pull $@
 
 install_plugins:
-	zsh -c "source zsh/.zshrc" # enough to install zcomet
-	submodule_plugin_managers/.tmux/plugins/tpm/bin/install_plugins
+	$$HOME/.tmux/plugins/tpm/bin/install_plugins
 	vim +PlugInstall +qall
 
 # note: tpm/bin/update_plugins only pulls
@@ -54,7 +55,7 @@ install_plugins:
 update_plugins: $(PLUGIN_PATHS)
 	# prob some compinit stuff + plugins that are not repos
 	zsh -c \
-		"source ./submodule_plugin_managers/.zcomet/bin/zcomet.zsh && zcomet update"
+		"source ./submodule_plugin_managers/.config/zsh/.zcomet/bin/zcomet.zsh && zcomet update"
 
 # GENERAL
 install_pre_commit_hooks:

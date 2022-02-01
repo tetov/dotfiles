@@ -1,15 +1,4 @@
-# Source general shell env
-export VISUAL=vim
-export EDITOR="$VISUAL"
-
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
-export XDG_CONFIG_HOME=~/.config
-
-export DOTFILES=~/dotfiles
-export ZSH_DIR=~/.zsh.d
+export ZSHRC_DIR=$ZDOTDIR/zshrc.d
 
 _source_if_exists() {
     [[ -r "$1" ]] && source "$1"
@@ -28,27 +17,8 @@ fi
 _source_if_exists /usr/share/nvm/init-nvm.sh
 _source_if_exists ~/.opam/opam-init/init.zsh
 
-# Path
-typeset -U path
-
-_append_path_if_exists() {
-    [[ -d "$1" ]] && path+="$1"
-}
-
-_prepend_path_if_exists() {
-    [[ -d "$1" ]] && path=("$1" $path)
-}
-
-_prepend_path_if_exists /usr/lib/ccache
-_prepend_path_if_exists ~/.cargo/bin
-_prepend_path_if_exists $DOTFILES/bin
-_prepend_path_if_exists ~/.local/bin
-_prepend_path_if_exists ~/bin
-
-fpath+="$ZSH_DIR/funcs"
-
 # history settings
-HISTFILE="$ZSH_DIR/.zsh_history"
+HISTFILE=$XDG_STATE_HOME/zsh/history
 HISTSIZE=50000
 SAVEHIST=10000
 
@@ -74,8 +44,6 @@ if [[ ! -v SSH_CLIENT ]] && [[ -v SSH_TTY ]]; then
     export GPG_TTY=$(tty)
 fi
 
-export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-
 gpgconf --launch gpg-agent
 
 if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
@@ -95,7 +63,6 @@ if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
 fi
 
 # Syntax highlightening for less
-export PAGER="less"
 export LESS=" -R"
 if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
     export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
@@ -112,6 +79,7 @@ source ~/.zcomet/bin/zcomet.zsh
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
 PURE_CMD_MAX_EXEC_TIME=60
+PURE_GIT_PULL=0
 # Make pure theme single line
 prompt_newline='%666v'
 PROMPT=" $PROMPT"
@@ -142,7 +110,7 @@ zcomet load jeffreytse/zsh-vi-mode
 
 zcomet compinit
 
-for file in "$ZSH_DIR"/*.zsh; do
+for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
 done
 
