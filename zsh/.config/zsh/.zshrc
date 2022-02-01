@@ -1,4 +1,4 @@
-export ZSHRC_DIR=$ZDOTDIR/zshrc.d
+ZSHRC_DIR=$ZDOTDIR/zshrc.d
 
 _source_if_exists() {
     [[ -r "$1" ]] && source "$1"
@@ -70,12 +70,14 @@ fi
 
 # ZCOMET
 
+zcomet_dir=$ZDOTDIR/.zcomet
+
 # Clone zcomet if necessary
-if [[ ! -f ~/.zcomet/bin/zcomet.zsh ]]; then
-  command git clone https://github.com/agkozak/zcomet.git ~/.zcomet/bin
+if [[ ! -f $zcomet_dir/bin/zcomet.zsh ]]; then
+  command git clone https://github.com/agkozak/zcomet.git $zcomet_dir/bin
 fi
 
-source ~/.zcomet/bin/zcomet.zsh
+source $zcomet_dir/bin/zcomet.zsh
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
 PURE_CMD_MAX_EXEC_TIME=60
