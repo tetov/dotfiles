@@ -170,10 +170,22 @@ nmap <C-e> :e#<CR>
 nmap <C-n> :bnext<CR>
 nmap <C-p> :bprev<CR>
 
-" BACKUP off
-set nobackup
-set nowritebackup
-set noswapfile
+" BACKUP
+set backup
+set swapfile
+set writebackup
+set undofile
+
+" append timestamp to backup files
+au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
+
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swp//
+set undodir=~/.vim/undo//
+
+silent execute '!mkdir -p "'.$HOME.'/.vim/backup"'
+silent execute '!mkdir -p "'.$HOME.'/.vim/swp"'
+silent execute '!mkdir -p "'.$HOME.'/.vim/undo"'
 
 " Built in fuzzy find from https://github.com/mcantor/no_plugins
 set path+=**
@@ -183,6 +195,7 @@ let g:netrw_banner=0        " disable annoying banner
 let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 let g:netrw_winsize = 25
+let g:netrw_dirhistmax=0    " no history file
 
 " Enter and backspaces moves through paragraphs in normal mode
 nnoremap <BS> {

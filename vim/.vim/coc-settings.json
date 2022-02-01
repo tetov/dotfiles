@@ -8,5 +8,6 @@
     "yaml",
     "yaml.ansible",
     "python"
-  ]
+  ],
+  "python.venvPath": "/var/tmp/tetov/.cache/pypoetry/virtualenvs"
 }
