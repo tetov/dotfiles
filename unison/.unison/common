@@ -4,6 +4,7 @@ ignore = Name .bash_history
 ignore = Name .zshrc
 ignore = Name .zshenv
 ignore = Name .zlogin
+ignore = Name .netrwhist
 ignore = BelowPath .config/zsh
 ignore = BelowPath google-drive
 ignore = BelowPath pCloudDrive
@@ -16,7 +17,18 @@ ignore = BelowPath Applications
 ignore = BelowPath go
 ignore = BelowPath rpmbuild
 ignore = BelowPath Standard\ Notes\ Backups
+ignore = BelowPath VirtualBox\ VMs
+
 ignorenot = Path .vim
 ignore = Path .vim/*
 ignorenot = BelowPath .vim/backup
+
+ignorenot = Path .local
+ignore = Path .local/*
+ignorenot = Path .local/share
+ignore = Path .local/share/*
+ignorenot = Path .local/share/nvim
+ignore = Path .local/share/nvim/*
+ignorenot = BelowPath .local/share/nvim/backup
+
 ignore = BelowPath .local/share/containers/storage
