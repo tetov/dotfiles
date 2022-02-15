@@ -40,14 +40,15 @@ update_plugin_managers: $(SUBMODULE_PLUGIN_MANAGERS) $(VIM_PLUG_LOCATIONS)
 		|| echo Nothing to commit
 
 # UPDATE PLUGINS
-PLUGIN_PATHS := '$(_ZDOTDIR)/.zcomet/repos' $$HOME/.tmux/plugins $$HOME/.vim/plugged
+TMUX_PLUGINS_PATH := $$HOME/.tmux/plugins
+PLUGIN_PATHS := $(TMUX_PLUGINS_PATH) $$HOME/.vim/plugged
 VCS := $(PATH_ADDITION) vcs
 
 $(PLUGIN_PATHS): install_plugins
 	$(VCS) pull $@
 
 install_plugins:
-	$$HOME/.tmux/plugins/tpm/bin/install_plugins
+	$(TMUX_PLUGINS_PATH)/tpm/bin/install_plugins
 	vim +PlugInstall +qall
 
 # note: tpm/bin/update_plugins only pulls
