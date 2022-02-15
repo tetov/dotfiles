@@ -95,11 +95,7 @@ export NVM_COMPLETION=true
 export NVM_LAZY_LOAD=false
 export NVM_AUTO_USE=true
 export NVM_DIR="$HOME/.nvm"
-zcomet load lukechilds/zsh-nvm
-
 zcomet load agkozak/zsh-z
-
-zcomet load ohmyzsh plugins/gitfast
 
 zcomet load zsh-users/zsh-completions
 
