@@ -3,7 +3,12 @@ export EDITOR=$VISUAL
 export PAGER=less
 
 export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+export LC_COLLATE=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export LC_MESSAGES=en_US.UTF-8
+export LC_MONETARY=sv_SE.UTF-8
+export LC_NUMERIC=sv_SE.UTF-8
+export LC_TIME=sv_SE.UTF-8
 
 export XDG_CONFIG_HOME
 export XDG_DATA_HOME=~/.local/share
