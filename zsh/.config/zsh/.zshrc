@@ -14,7 +14,6 @@ if [[ -v CATKIN_WS ]] ; then
     _source_if_exists $CATKIN_WS/devel_isolated/setup.zsh
 fi
 
-_source_if_exists /usr/share/nvm/init-nvm.sh
 _source_if_exists ~/.opam/opam-init/init.zsh
 
 # history settings
@@ -97,18 +96,20 @@ export NVM_AUTO_USE=true
 export NVM_DIR="$HOME/.nvm"
 zcomet load lukechilds/zsh-nvm
 
+# zcomet load jreese/zsh-titles
+zcomet load MikeDacre/tmux-zsh-vim-titles
+
+
 zcomet load agkozak/zsh-z
 
 zcomet load ohmyzsh plugins/gitfast
 
 zcomet load zsh-users/zsh-completions
 
-# update tmux title
-zcomet snippet https://raw.githubusercontent.com/jreese/zsh-titles/master/titles.plugin.zsh
-
 zcomet load zdharma-continuum/fast-syntax-highlighting
 
 zcomet load jeffreytse/zsh-vi-mode
+
 
 zcomet compinit
 

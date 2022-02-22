@@ -80,6 +80,7 @@ else
   Plug 'godlygeek/tabular'
   Plug 'vim-pandoc/vim-pandoc'
   Plug 'vim-pandoc/vim-pandoc-syntax'
+  Plug 'MikeDacre/tmux-zsh-vim-titles'
 
   if has('nvim')
     " only for nvim
