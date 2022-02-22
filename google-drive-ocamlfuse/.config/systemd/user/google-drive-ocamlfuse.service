@@ -1,11 +1,10 @@
 [Unit]
 Description=FUSE filesystem over Google Drive
-After=network-online.target
-Wants=network-online.target
+After=network.target
 
 [Service]
 Environment=DRIVE_FOLDER=%h/google-drive
-ExecStart=/usr/bin/google-drive-ocamlfuse "$DRIVE_FOLDER"
+ExecStart=%h/bin/try-connect-gdrive.sh
 ExecStop=/usr/bin/fusermount -u "$DRIVE_FOLDER"
 Restart=always
 Type=forking
