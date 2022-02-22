@@ -18,6 +18,8 @@ ignore = BelowPath go
 ignore = BelowPath rpmbuild
 ignore = BelowPath Standard\ Notes\ Backups
 ignore = BelowPath VirtualBox\ VMs
+ignore = BelowPath Nextcloud
+ignore = BelowPath .config
 
 ignorenot = Path .vim
 ignore = Path .vim/*
