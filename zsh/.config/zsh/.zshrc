@@ -99,7 +99,6 @@ zcomet load lukechilds/zsh-nvm
 # zcomet load jreese/zsh-titles
 zcomet load MikeDacre/tmux-zsh-vim-titles
 
-
 zcomet load agkozak/zsh-z
 
 zcomet load ohmyzsh plugins/gitfast
@@ -109,7 +108,6 @@ zcomet load zsh-users/zsh-completions
 zcomet load zdharma-continuum/fast-syntax-highlighting
 
 zcomet load jeffreytse/zsh-vi-mode
-
 
 zcomet compinit
 
