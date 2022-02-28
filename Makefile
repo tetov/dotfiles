@@ -49,6 +49,7 @@ $(PLUGIN_PATHS): install_plugins
 install_plugins:
 	$$HOME/.tmux/plugins/tpm/bin/install_plugins
 	vim +PlugInstall +qall
+	nvim +PlugInstall +qall
 
 # note: tpm/bin/update_plugins only pulls
 # note: vim-plug's :PlugUpdate only pulls
