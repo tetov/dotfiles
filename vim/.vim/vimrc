@@ -44,14 +44,32 @@ if exists('g:vscode')
   Plug 'asvetliakov/vim-easymotion', { 'as': 'vsc-easymotion' }
 else
   " for vim and nvim but not in vscode
+
+  " Plug 'dense-analysis/ale'
+  Plug 'ChesleyTan/wordCount.vim'
+  Plug 'MikeDacre/tmux-zsh-vim-titles'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'bkad/CamelCaseMotion'
+  Plug 'christoomey/vim-tmux-navigator'
   Plug 'dbeniamine/todo.txt-vim'
+  Plug 'easymotion/vim-easymotion'
   Plug 'editorconfig/editorconfig-vim'
+  Plug 'godlygeek/tabular'
+  Plug 'itchyny/lightline.vim'
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'
   Plug 'jreybert/vimagit'                  " Commit chunks and more
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
+  Plug 'kevinoid/vim-jsonc'
   Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
+  Plug 'maximbaz/lightline-ale'
+  Plug 'mengelbrecht/lightline-bufferline'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'puremourning/vimspector', {'do': ':VimspectorInstall --all'}
   Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
+  Plug 'quentindecock/vim-cucumber-align-pipes'
   Plug 'samoshkin/vim-mergetool'           " Mergetool
+  Plug 'sheerun/vim-wombat-scheme'
   Plug 'tpope/vim-commentary'              " Comment and uncomment
   Plug 'tpope/vim-fugitive'                " Git
   Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
@@ -60,27 +78,10 @@ else
   Plug 'tpope/vim-surround'                " Operate on surrounding characters
   Plug 'tpope/vim-unimpaired'
   Plug 'tpope/vim-vinegar'
-  Plug 'wellle/tmux-complete.vim'
-  Plug 'dense-analysis/ale'
-  Plug 'kevinoid/vim-jsonc'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'puremourning/vimspector', {'do': ':VimspectorInstall --all'}
-  Plug 'airblade/vim-gitgutter'
-  Plug 'christoomey/vim-tmux-navigator'
-  Plug 'itchyny/landscape.vim'
-  Plug 'itchyny/lightline.vim'
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'
-  Plug 'maximbaz/lightline-ale'
-  Plug 'mengelbrecht/lightline-bufferline'
-  Plug 'wincent/terminus'
-  Plug 'bkad/CamelCaseMotion'
-  Plug 'easymotion/vim-easymotion'
-  Plug 'ChesleyTan/wordCount.vim'
-  Plug 'quentindecock/vim-cucumber-align-pipes'
-  Plug 'godlygeek/tabular'
   Plug 'vim-pandoc/vim-pandoc'
   Plug 'vim-pandoc/vim-pandoc-syntax'
-  Plug 'MikeDacre/tmux-zsh-vim-titles'
+  Plug 'wellle/tmux-complete.vim'
+  Plug 'wincent/terminus'
 
   if has('nvim')
     " only for nvim
@@ -152,10 +153,13 @@ nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 vnoremap <CR> }
 
-colorscheme landscape
+colorscheme wombat
 
 " CamelCaseMotion
 let g:camelcasemotion_key = '<leader>'
+
+" Python
+autocmd FileType python setlocal indentkeys-=<:>
 
 if exists('g:vscode')
   xmap gc  <Plug>VSCodeCommentary
@@ -165,9 +169,6 @@ if exists('g:vscode')
 
 else
   set clipboard^=unnamed,unnamedplus
-
-  " Python
-  autocmd FileType python setlocal indentkeys-=<:>
 
   " folding
   set foldenable                    " enable folding
@@ -196,7 +197,6 @@ else
   hi SpellCap ctermfg=240 ctermbg=180 guifg=#585858 guibg=#cae682
   hi SpellRare ctermfg=203 ctermbg=117 guifg=#e5786d guibg=#8ac6f2
   hi SpellLocal ctermfg=252 ctermbg=235 guifg=#d0d0d0 guibg=#242424
-
 
   " Open last file edited
   nmap <C-e> :e#<CR>
@@ -245,17 +245,11 @@ else
 
   endif
 
-  " Remaps split movement to CTRL + hjkl
-  nnoremap <C-J> <C-W><C-J>
-  nnoremap <C-K> <C-W><C-K>
-  nnoremap <C-L> <C-W><C-L>
-  nnoremap <C-H> <C-W><C-H>
-
-  " Remaps split movement to CTRL + hjkl
-  nnoremap <C-J> <C-W><C-J>
-  nnoremap <C-K> <C-W><C-K>
-  nnoremap <C-L> <C-W><C-L>
-  nnoremap <C-H> <C-W><C-H>
+  " " Remaps split movement to CTRL + hjkl
+  " nnoremap <C-J> <C-W><C-J>
+  " nnoremap <C-K> <C-W><C-K>
+  " nnoremap <C-L> <C-W><C-L>
+  " nnoremap <C-H> <C-W><C-H>
 
   " Set tab to 2 spaces for some filetypes
   autocmd FileType html setlocal sw=2 sts=2
@@ -350,6 +344,11 @@ else
   inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                                 \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+  " Use `[g` and `]g` to navigate diagnostics
+  " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+  nmap <silent> [g <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
   " GoTo code navigation.
   nmap <silent> gd <Plug>(coc-definition)
   nmap <silent> gy <Plug>(coc-type-definition)
@@ -365,6 +364,9 @@ else
       execute '!' . &keywordprg . " " . expand('<cword>')
     endif
   endfunction
+
+  " Use K to show documentation in preview window.
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
 
   " Highlight the symbol and its references when holding the cursor.
   autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -428,6 +430,7 @@ else
   nmap [a :ALEPreviousWrap<CR>
   nmap ]A :ALELast
   nmap [A :ALEFirst
+
   nmap <F8> <Plug>(ale_fix)
 
   " Lightline
