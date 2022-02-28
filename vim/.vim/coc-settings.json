@@ -1,5 +1,5 @@
 {
-  "diagnostic.displayByAle": true,
+  // "diagnostic.displayByAle": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
     "markdown",
@@ -9,5 +9,10 @@
     "yaml.ansible",
     "python"
   ],
-  "python.venvPath": "/var/tmp/tetov/.cache/pypoetry/virtualenvs"
+  "python.venvPath": "/var/tmp/tetov/.cache/pypoetry/virtualenvs",
+  "suggest.preferCompleteThanJumpPlaceholder": true,
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.formatting.provider": "black"
 }
