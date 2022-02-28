@@ -1,20 +1,14 @@
 ZSHRC_DIR=$ZDOTDIR/zshrc.d
 
-_source_if_exists() {
-    [[ -r "$1" ]] && source "$1"
-}
-
-_source_if_exists ~/.local_env
-
 # ROS
-_source_if_exists $ROS_DIR/setup.zsh
+[[ -r "$ROS_DIR" ]] && . "$ROS_DIR/setup.zsh"
 
 if [[ -v CATKIN_WS ]] ; then
-    _source_if_exists $CATKIN_WS/devel/setup.zsh
-    _source_if_exists $CATKIN_WS/devel_isolated/setup.zsh
+    [[ -r "$CATKIN_WS/devel/setup.zsh" ]] && . "$CATKIN_WS/devel/setup.zsh"
+    [[ -r "$CATKIN_WS/devel_isolated/setup.zsh" ]] && . "$CATKIN_WS/devel_isolated/setup.zsh"
 fi
 
-_source_if_exists ~/.opam/opam-init/init.zsh
+[[ -r ~/.opam/opam-init/init.zsh ]] && . ~/.opam/opam-init/init.zsh
 
 # history settings
 HISTFILE=$XDG_STATE_HOME/zsh/history

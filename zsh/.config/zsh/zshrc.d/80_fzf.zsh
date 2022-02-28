@@ -4,8 +4,8 @@ export FZF_COMPLETION_TRIGGER='~~'
 # export FZF_DEFAULT_OPTS='-m --height 50% --border'
 
 function load_additional_zsh_files() {
-    _source_if_exists /usr/share/fzf/shell/key-bindings.zsh
-    _source_if_exists /usr/share/zsh/site-functions/fzf
+    [[ -r /usr/share/fzf/shell/key-bindings.zsh ]] && . /usr/share/fzf/shell/key-bindings.zsh
+    [[ -r /usr/share/zsh/site-functions/fzf ]] && . /usr/share/fzf/shell/key-bindings.zsh
 }
 
 # functions that runs after zsh-vi-mode...
