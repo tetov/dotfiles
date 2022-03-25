@@ -105,6 +105,8 @@ zcomet load zdharma-continuum/fast-syntax-highlighting
 
 zcomet load jeffreytse/zsh-vi-mode
 
+zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
+
 zcomet compinit
 
 for file in "$ZSHRC_DIR"/*.zsh; do
