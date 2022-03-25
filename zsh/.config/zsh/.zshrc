@@ -1,5 +1,7 @@
 ZSHRC_DIR=$ZDOTDIR/zshrc.d
 
+source ~/.local_env  # machine specific values
+
 # ROS
 [[ -r "$ROS_DIR" ]] && . "$ROS_DIR/setup.zsh"
 

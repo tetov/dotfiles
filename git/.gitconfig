@@ -1,78 +1,78 @@
 [user]
-  email = anton@tetov.se
-  name = Anton Tetov
-  signingkey = 2B4D0035AFF0F7DACE5B29D7337DDB574A8834DB
+	name = Anton Tetov
+	email = anton@tetov.se
+	signingkey = 2B4D0035AFF0F7DACE5B29D7337DDB574A8834DB
 
 # Parts of settings and comments from
 # https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
 [alias]
-  stash-all = stash save --include-untracked
-  # We wanna grab those pesky un-added files!
-  # https://git-scm.com/docs/git-stash
+	stash-all = stash save --include-untracked
+	# We wanna grab those pesky un-added files!
+	# https://git-scm.com/docs/git-stash
 
-  glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-  # No need for a GUI - a nice, colorful, graphical representation
-  # https://git-scm.com/docs/git-log
-  # via https://medium.com/@payload.dd/thanks-for-the-git-st-i-will-use-this-4da5839a21a4
+	glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	# No need for a GUI - a nice, colorful, graphical representation
+	# https://git-scm.com/docs/git-log
+	# via https://medium.com/@payload.dd/thanks-for-the-git-st-i-will-use-this-4da5839a21a4
 
-  d = difftool
+	d = difftool
 
-  # https://stackoverflow.com/a/21857717
-  branch-cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+	# https://stackoverflow.com/a/21857717
+	branch-cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
 
 [merge]
-  conflictstyle = diff3
-  # Standard diff is two sets of final changes. This introduces the original text before each side's changes.
-  # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
+	conflictstyle = diff3
+	# Standard diff is two sets of final changes. This introduces the original text before each side's changes.
+	# https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
 
-  tool = vim_mergetool
+	tool = vim_mergetool
 
 [mergetool "vim_mergetool"]
-  cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
-  trustExitCode = true
+	cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+	trustExitCode = true
 
 [commit]
-  gpgSign = true
-  # "other people can trust that the changes you've made really were made by you"
-  # https://help.github.com/articles/about-gpg/
-  # https://git-scm.com/docs/git-config#git-config-commitgpgSign
+	gpgSign = true
+	# "other people can trust that the changes you've made really were made by you"
+	# https://help.github.com/articles/about-gpg/
+	# https://git-scm.com/docs/git-config#git-config-commitgpgSign
 
 [push]
-  default = simple
-  # "push the current branch back to the branch whose changes are usually integrated into the current branch"
-  # "refuse to push if the upstream branch’s name is different from the local one"
-  # https://git-scm.com/docs/git-config#git-config-pushdefault
+	default = simple
+	# "push the current branch back to the branch whose changes are usually integrated into the current branch"
+	# "refuse to push if the upstream branch’s name is different from the local one"
+	# https://git-scm.com/docs/git-config#git-config-pushdefault
 
-  followTags = true
-  # Because I get sick of telling git to do it manually
-  # https://git-scm.com/docs/git-config#git-config-pushfollowTags
+	followTags = true
+	# Because I get sick of telling git to do it manually
+	# https://git-scm.com/docs/git-config#git-config-pushfollowTags
 
 [status]
-  showUntrackedFiles = all
-  # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
-  # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
+	showUntrackedFiles = all
+	# Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
+	# https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
 
 [diff]
-  tool = vimdiff
+	tool = vimdiff
 
 [difftool]
-  prompt = false
+	prompt = false
 
 [gpg]
-  program = gpg2
+	program = gpg2
 
 # To make zsh and vim plugins work
 [fetch]
-  fsckObjects = false
+	fsckObjects = false
 
 [recieve]
-  fsckObjects = false
+	fsckObjects = false
 
 [transfer]
-  fsckObjects = false
+	fsckObjects = false
 
 [pull]
-  rebase = true
+	rebase = true
 
 [init]
 	defaultBranch = main
@@ -90,3 +90,9 @@
 
 [core]
 	autocrlf = input
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
