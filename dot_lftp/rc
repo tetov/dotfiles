@@ -1,0 +1,28 @@
+set sftp:connect-program "ssh -a -x -i $HOME/.ssh/id_rsa"
+
+#mine
+set bmk:save-passwords
+set color:use-color true
+set color:dir-colors "rs=0:di=01;36:fi=01;32:ln=01;31:*.txt=01;35:*.html=00;35:"
+set sftp:connect-program "ssh -a -x -i ~/.ssh/id_rsa"
+
+set prompt "\[\e[1;30m\][\[\e[0;34m\]f\[\e[1m\]t\[\e[37m\]p\[\e[30m\]] \[\e[34m\]\u\[\e[0;34m\]\@\[\e[1m\]\h\[\e[1;30m\]:\[\e[1;34m\]\w\[\e[1;30m\]>\[\e[0m\] "
+alias ls command cls
+
+#Below taken from https://www.feralhosting.com/faq/view?question=28
+
+set pget:default-n 3
+set mirror:use-pget-n 3
+set mirror:parallel-transfer-count 2
+set mirror:parallel-directories true
+
+#Below taken straight from https://gist.github.com/fxthomas/1030591
+alias less more
+alias zless zmore
+alias bzless bzmore
+alias mirror "mirror -v"
+alias sync "mirror -R -v -n"
+alias reconnect "close; cache flush; cd ."
+alias edit "eval -f \"get $0 -o ~/.lftp/edit.tmp.$$ && shell \\\"cp -p ~/.lftp/edit.tmp.$$ ~/.lftp/edit.tmp.$$.orig && $EDITOR ~/.lftp/edit.tmp.$$ && test ~/.lftp/edit.tmp.$$ -nt ~/.lftp/edit.tmp.$$.orig\\\" && put ~/.lftp/edit.tmp.$$ -o $0; shell rm -f ~/.lftp/edit.tmp.$$*\""
+alias vim "eval -f \"get $0 -o ~/.lftp/edit.tmp.$$ && shell \\\"cp -p ~/.lftp/edit.tmp.$$ ~/.lftp/edit.tmp.$$.orig && $EDITOR ~/.lftp/edit.tmp.$$ && test ~/.lftp/edit.tmp.$$ -nt ~/.lftp/edit.tmp.$$.orig\\\" && put ~/.lftp/edit.tmp.$$ -o $0; shell rm -f ~/.lftp/edit.tmp.$$*\""
+alias upload "mirror -R"
