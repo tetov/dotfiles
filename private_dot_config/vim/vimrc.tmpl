@@ -1,0 +1,253 @@
+set nocompatible " get rid of Vi compatibility mode. SET FIRST!
+
+" builtin opts
+set ffs=unix,dos,mac
+set hidden
+set updatetime=300
+set shortmess+=c
+set signcolumn=yes
+" gVIM
+set guioptions=g
+
+" TABS
+set tabstop=4               " number of visual spaces per TAB
+set softtabstop=4           " number of spaces in tab when editing
+set shiftwidth=4
+set expandtab               " tabs are spaces
+
+set cindent                 " Automatic program indenting
+set cinkeys-=0#             " Comments don't fiddle with indenting
+set cino=                   " See :h cinoptions-values
+set copyindent              " Make autoindent use the same chars as prev line
+
+" General UI
+set number relativenumber   " Show relative number and normal number.
+set showcmd                 " show command in bottom bar
+set cursorline              " highlight current line
+set cursorcolumn            " highlight current column
+filetype indent on          " load filetype-specific indent files
+set lazyredraw              " redraw only when we need to.
+set showmatch               " highlight matching [{()}]
+set wrap                    " Wrap lines
+set textwidth=0             " No automatic breaks
+set linebreak               " Break long lines by word, not char
+set scrolloff=20            " Lines to keep visible below and above
+
+let g:EditorConfig_max_line_indicator = "none"  " needed for colorcolumn
+let &colorcolumn=80
+
+" Leader key
+let mapleader = ","
+let maplocalleader = ","
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" Enter and backspaces moves through paragraphs in normal mode
+nnoremap <BS> {
+onoremap <BS> {
+vnoremap <BS> {
+
+nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+vnoremap <CR> }
+
+" space open/closes folds
+nnoremap <space> za
+
+" edit/source vimrc
+nmap <leader>ev :edit $MYVIMRC <CR>
+nmap <leader>es :so $MYVIMRC <CR>
+
+" spell
+set rtp+=/usr/share/vim/vimfiles/
+set rtp+=~/.vim/spell/
+set spell spl=sv,en " Select language
+set nospell " Turn it off at start
+nmap <F7> :set spell! <CR>
+
+" No undercurls thanks
+hi SpellBad ctermfg=117 ctermbg=203 guifg=#8ac6f2 guibg=#e5786d
+hi SpellCap ctermfg=240 ctermbg=180 guifg=#585858 guibg=#cae682
+hi SpellRare ctermfg=203 ctermbg=117 guifg=#e5786d guibg=#8ac6f2
+hi SpellLocal ctermfg=252 ctermbg=235 guifg=#d0d0d0 guibg=#242424
+
+" Built in fuzzy find from https://github.com/mcantor/no_plugins
+set path+=**
+
+" Tweaks for netrw (file-browser) from https://github.com/mcantor/no_plugins
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_winsize = 25
+let g:netrw_dirhistmax=0    " no history file
+
+" Open splits to the right and below
+set splitbelow
+set splitright
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+" https://stackoverflow.com/a/7078429
+cmap w!! w !sudo tee > /dev/null %
+
+" XDG support
+
+" BACKUP
+set backup
+set swapfile
+set writebackup
+set undofile
+
+if empty($MYVIMRC) | let $MYVIMRC = expand('<sfile>:p') | endif
+
+if empty($XDG_CACHE_HOME)  | let $XDG_CACHE_HOME  = $HOME."/.cache"       | endif
+if empty($XDG_CONFIG_HOME) | let $XDG_CONFIG_HOME = $HOME."/.config"      | endif
+if empty($XDG_DATA_HOME)   | let $XDG_DATA_HOME   = $HOME."/.local/share" | endif
+
+set runtimepath^=$XDG_CONFIG_HOME/vim
+set runtimepath+=$XDG_DATA_HOME/vim
+set runtimepath+=$XDG_CONFIG_HOME/vim/after
+
+set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
+set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
+
+let g:netrw_home = $XDG_DATA_HOME."/vim"
+call mkdir($XDG_DATA_HOME."/vim/spell", 'p', 0700)
+set viewdir=$XDG_DATA_HOME/vim/view | call mkdir(&viewdir, 'p', 0700)
+
+set backupdir=$XDG_CACHE_HOME/vim/backup//  
+set directory=$XDG_CACHE_HOME/vim/swap//    
+
+if has('nvim') " Neovim has its own special location
+  set undodir=$XDG_CACHE_HOME/nvim/undo//
+else
+  set viminfofile=$XDG_CACHE_HOME/vim/viminfo
+  set undodir=$XDG_CACHE_HOME/vim/undo//      
+endif
+
+call mkdir(&backupdir, 'p', 0700)
+call mkdir(&directory, 'p', 0700)
+call mkdir(&undodir,   'p', 0700)
+
+" append timestamp to backup files
+au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
+" Python
+autocmd FileType python setlocal indentkeys-=<:>
+
+" Set tab to 2 spaces for some filetypes
+autocmd FileType html setlocal sw=2 sts=2
+autocmd FileType js setlocal sw=2 sts=2
+autocmd FileType jsx setlocal sw=2 sts=2
+autocmd FileType json setlocal sw=2 sts=2
+autocmd FileType yaml setlocal sw=2 sts=2
+autocmd FileType yaml.ansible setlocal sw=2 sts=2
+autocmd FileType toml setlocal sw=2 sts=2
+
+" Set filetype to yaml.ansible on inventory/hosts file
+augroup ansible_vim_fthosts
+    autocmd!
+    autocmd BufNewFile,BufRead hosts setfiletype yaml.ansible
+augroup END
+
+{{- if has .chezmoi.hostname .dev_hosts }}
+
+let g:ale_disable_lsp = 1
+let g:coc_global_extensions = [
+\   '@yaegassy/coc-ansible',
+\   'coc-pairs',
+\   'coc-clang-format-style-options',
+\   'coc-clangd',
+\   'coc-css',
+\   'coc-docker',
+\   'coc-git',
+\   'coc-highlight',
+\   'coc-html',
+\   'coc-json',
+\   'coc-lists',
+\   'coc-markdownlint',
+\   'coc-prettier',
+\   'coc-pydocstring',
+\   'coc-pyright',
+\   'coc-sh',
+\   'coc-svg',
+\   'coc-toml',
+\   'coc-tsserver',
+\   'coc-vimlsp',
+\   'coc-xml',
+\   'coc-yaml',
+\]
+
+" vim-plug configuration
+" let plugged_dir = has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged'
+let plugged_dir = $XDG_DATA_HOME . '/vim/plugged'
+
+call plug#begin(plugged_dir)
+
+if exists('g:vscode')
+  " Only for vscode
+  Plug 'asvetliakov/vim-easymotion', { 'as': 'vsc-easymotion' }
+else
+  " for vim and nvim but not in vscode
+
+  " Plug 'dense-analysis/ale'
+  Plug 'ChesleyTan/wordCount.vim'
+  Plug 'MikeDacre/tmux-zsh-vim-titles'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'bkad/CamelCaseMotion'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'dbeniamine/todo.txt-vim'
+  Plug 'easymotion/vim-easymotion'
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'godlygeek/tabular'
+  Plug 'itchyny/lightline.vim'
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'
+  Plug 'jreybert/vimagit'                  " Commit chunks and more
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
+  Plug 'kevinoid/vim-jsonc'
+  Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
+  Plug 'maximbaz/lightline-ale'
+  Plug 'mengelbrecht/lightline-bufferline'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'puremourning/vimspector', {'do': ':VimspectorInstall --all'}
+  Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
+  Plug 'quentindecock/vim-cucumber-align-pipes'
+  Plug 'samoshkin/vim-mergetool'           " Mergetool
+  Plug 'sheerun/vim-wombat-scheme'
+  Plug 'tpope/vim-commentary'              " Comment and uncomment
+  Plug 'tpope/vim-fugitive'                " Git
+  Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
+  Plug 'tpope/vim-sensible'                " Sensible standards
+  Plug 'tpope/vim-sleuth'                  " Guess tab width
+  Plug 'tpope/vim-surround'                " Operate on surrounding characters
+  Plug 'tpope/vim-unimpaired'
+  Plug 'tpope/vim-vinegar'
+  Plug 'vim-pandoc/vim-pandoc'
+  Plug 'vim-pandoc/vim-pandoc-syntax'
+  Plug 'wellle/tmux-complete.vim'
+  Plug 'wincent/terminus'
+
+  if has('nvim')
+    " only for nvim
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+  else
+    " only for vim
+    Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
+    Plug 'tpope/vim-dispatch'
+    Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
+
+  endif
+endif
+
+call plug#end()
+
+{{- end}}
+
+" local vimrc (project specific settings)
+set exrc
+" Disables unsafe commands in project vimrcs
+set secure
+
+" vim: set ft=vim

@@ -1,0 +1,13 @@
+[Unit]
+Description=FUSE filesystem over Google Drive
+After=network.target
+
+[Service]
+Environment=DRIVE_FOLDER=%h/google-drive
+ExecStart=%h/bin/try-connect-gdrive.sh
+ExecStop=/usr/bin/fusermount -u "$DRIVE_FOLDER"
+Restart=always
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
