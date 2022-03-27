@@ -1,5 +1,7 @@
 " COC
 
+let g:coc_config_home = $XDG_CONFIG_HOME . '/vim'
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.

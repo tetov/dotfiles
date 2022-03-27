@@ -1,15 +1,5 @@
 ZSHRC_DIR=$ZDOTDIR/zshrc.d
 
-source ~/.local_env  # machine specific values
-
-# ROS
-[[ -r "$ROS_DIR" ]] && . "$ROS_DIR/setup.zsh"
-
-if [[ -v CATKIN_WS ]] ; then
-    [[ -r "$CATKIN_WS/devel/setup.zsh" ]] && . "$CATKIN_WS/devel/setup.zsh"
-    [[ -r "$CATKIN_WS/devel_isolated/setup.zsh" ]] && . "$CATKIN_WS/devel_isolated/setup.zsh"
-fi
-
 [[ -r ~/.opam/opam-init/init.zsh ]] && . ~/.opam/opam-init/init.zsh
 
 # history settings
@@ -62,6 +52,8 @@ export LESS=" -R"
 if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
     export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 fi
+
+fpath+=($ZDOTDIR/{funcs,completions})
 
 # ZCOMET
 source $ZDOTDIR/.zcomet/bin/zcomet.zsh

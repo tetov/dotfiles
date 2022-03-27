@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh -eu
+
+[[ -v DISPLAY ]] && return  # Exit early if DISPLAY is already set
+
+if (( $# == 0 )) ; then  # No positional arguments given
+    screen=0.0
+else
+    screen=$1
+fi
+
+ip=$(ip route | awk '/^default via / {print $3}')
+
+export DISPLAY=$ip:$screen
