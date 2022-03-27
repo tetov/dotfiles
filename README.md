@@ -1,5 +1,13 @@
 # tetov/dotfiles
 
-My dotfiles. Install with stow, see [stow-script.sh](./stow-script.sh) for example usage.
+## Setup
 
-[More info about using dotfiles with stow](https://taihen.org/managing-dotfiles-with-gnu-stow/).
+```bash
+sh -c "$(curl -fsLS chezmoi.io/get)" -- init --apply tetov
+```
+
+## Update
+
+```bash
+chezmoi update
+```

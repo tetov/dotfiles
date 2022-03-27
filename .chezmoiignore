@@ -1,3 +1,6 @@
+README.md
+LICENSE
+
 {{- if not (has .chezmoi.hostname .dev_hosts)}}
 .config/vim/plugin
 {{- end }}

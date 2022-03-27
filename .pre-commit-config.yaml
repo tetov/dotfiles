@@ -1,6 +1,6 @@
 repos:
   # - repo: https://github.com/zricethezav/gitleaks
-  #   rev: v8.2.7
+  #   rev: v8.5.1
   #   hooks:
   #     - id: gitleaks
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -12,6 +12,6 @@ repos:
       - id: mixed-line-ending
       - id: check-yaml
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v2.6.0"
+    rev: "v2.6.1"
     hooks:
       - id: prettier
