@@ -1,8 +1,0 @@
-repositories:
-  ../.tmux/plugins/tpm:
-    type: git
-    url: https://github.com/tmux-plugins/tpm
-    version: master
-  ../.zcomet/bin:
-    type: git
-    url: https://github.com/agkozak/zcomet

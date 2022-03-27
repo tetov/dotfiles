@@ -1,7 +1,0 @@
-# Global gitignore
-# Set core.excludefiles = ~/.gitignore
-.vimrc
-tags
-tags.lock
-.ycm_extra_conf.py
-*.orig
