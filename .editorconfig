@@ -7,4 +7,3 @@ trim_trailing_whitespace = true
 
 [{Makefile, */.gitconfig}]
 indent_style = tab
-

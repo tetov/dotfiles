@@ -1,4 +1,4 @@
-if exists('g:vscode') 
+if exists('g:vscode')
   xmap gc  <Plug>VSCodeCommentary
   nmap gc  <Plug>VSCodeCommentary
   omap gc  <Plug>VSCodeCommentary

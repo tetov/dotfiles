@@ -6,4 +6,3 @@ do
     alias todo='$EDITOR $todo_dir/{todo,done}.txt'
     break
 done
-

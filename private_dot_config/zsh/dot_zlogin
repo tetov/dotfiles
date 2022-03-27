@@ -9,4 +9,3 @@ path+=${DOTFILES}/bin
 path+=~/.cargo/bin
 path+=~/.local/bin
 path+=~/.poetry/bin
-

@@ -25,14 +25,14 @@ let g:netrw_home = $XDG_DATA_HOME."/vim"
 call mkdir($XDG_DATA_HOME."/vim/spell", 'p', 0700)
 set viewdir=$XDG_DATA_HOME/vim/view | call mkdir(&viewdir, 'p', 0700)
 
-set backupdir=$XDG_CACHE_HOME/vim/backup//  
-set directory=$XDG_CACHE_HOME/vim/swap//    
+set backupdir=$XDG_CACHE_HOME/vim/backup//
+set directory=$XDG_CACHE_HOME/vim/swap//
 
 if has('nvim') " Neovim has its own special location
   set undodir=$XDG_CACHE_HOME/nvim/undo//
 else
   set viminfofile=$XDG_CACHE_HOME/vim/viminfo
-  set undodir=$XDG_CACHE_HOME/vim/undo//      
+  set undodir=$XDG_CACHE_HOME/vim/undo//
 endif
 
 call mkdir(&backupdir, 'p', 0700)
