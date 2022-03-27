@@ -64,15 +64,7 @@ if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
 fi
 
 # ZCOMET
-
-zcomet_dir=$ZDOTDIR/.zcomet
-
-# Clone zcomet if necessary
-if [[ ! -f $zcomet_dir/bin/zcomet.zsh ]]; then
-  command git clone https://github.com/agkozak/zcomet.git $zcomet_dir/bin
-fi
-
-source $zcomet_dir/bin/zcomet.zsh
+source $ZDOTDIR/.zcomet/bin/zcomet.zsh
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
 PURE_CMD_MAX_EXEC_TIME=60
