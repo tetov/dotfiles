@@ -21,16 +21,10 @@ ignore = BelowPath VirtualBox\ VMs
 ignore = BelowPath Nextcloud
 ignore = BelowPath .config
 
-ignorenot = Path .vim
-ignore = Path .vim/*
-ignorenot = BelowPath .vim/backup
-
-ignorenot = Path .local
-ignore = Path .local/*
-ignorenot = Path .local/share
-ignore = Path .local/share/*
-ignorenot = Path .local/share/nvim
-ignore = Path .local/share/nvim/*
-ignorenot = BelowPath .local/share/nvim/backup
+ignorenot = Path .cache
+ignore = Path .cache/*
+ignorenot = Path .cache/vim
+ignore = Path .cache/vim/*
+ignorenot = BelowPath .cache/vim/backups
 
 ignore = BelowPath .local/share/containers/storage
