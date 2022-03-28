@@ -196,8 +196,8 @@ vnoremap <CR> }
 nnoremap <space> za
 
 " edit/source vimrc
-nmap <leader>ev :edit $XDG_DATA_HOME/chezmoi/private_dot_config/vim/vimrc <CR>
-nmap <leader>es :so $XDG_DATA_HOME/chezmoi/private_dot_config/vim/vimrc <CR>
+" nmap <leader>ev :edit $MYVIMRC <CR>
+" nmap <leader>es :so $MYVIMRC <CR>
 
 " spell
 set spell spl=sv,en " Select language
@@ -245,6 +245,9 @@ augroup ansible_vim_fthosts
     autocmd!
     autocmd BufNewFile,BufRead hosts setfiletype yaml.ansible
 augroup END
+
+" autoapply chezmoi
+autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
 
 " local vimrc (project specific settings)
 set exrc
