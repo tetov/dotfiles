@@ -4,8 +4,8 @@ ignore = Name .bash_history
 ignore = Name .zshrc
 ignore = Name .zshenv
 ignore = Name .zlogin
+ignore = Name .login
 ignore = Name .netrwhist
-ignore = BelowPath .config/zsh
 ignore = BelowPath google-drive
 ignore = BelowPath pCloudDrive
 ignore = BelowPath bin
@@ -21,6 +21,6 @@ ignore = BelowPath VirtualBox\ VMs
 ignore = BelowPath Nextcloud
 ignore = BelowPath .config
 
-ignorenot = Path .vimbackup
+follow = Path .vimbackup
 
 ignore = BelowPath .local/share/containers/storage
