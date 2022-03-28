@@ -29,7 +29,7 @@ set backupdir=$HOME/editor-backup
 set directory=$XDG_CACHE_HOME/vim/swap//
 
 if has('nvim')
-  set undodir=$XDG_CACHE_HOME/nvim/undo// # undofile not compatible with vim
+  set undodir=$XDG_CACHE_HOME/nvim/undo// " undofile not compatible with vim
 else
   set viminfofile=$XDG_CACHE_HOME/vim/viminfo " Neovim has its own special location
   set undodir=$XDG_CACHE_HOME/vim/undo//
@@ -195,9 +195,10 @@ vnoremap <CR> }
 " space open/closes folds
 nnoremap <space> za
 
+let s:source_myvimrc = $XDG_DATA_HOME . "/chezmoi/private_dot_config/vim/vimrc"
 " edit/source vimrc
-nmap <leader>ev :edit $MYVIMRC <CR>
-nmap <leader>es :so $MYVIMRC <CR>
+nmap <leader>ev :edit source_myvimrc <CR>
+nmap <leader>es :so source_myvimrc <CR>
 
 " spell
 set spell spl=sv,en " Select language
