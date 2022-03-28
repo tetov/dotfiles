@@ -195,10 +195,10 @@ vnoremap <CR> }
 " space open/closes folds
 nnoremap <space> za
 
-let s:source_myvimrc = $XDG_DATA_HOME . "/chezmoi/private_dot_config/vim/vimrc"
+let s:source_myvimrc =
 " edit/source vimrc
-nmap <leader>ev :edit source_myvimrc <CR>
-nmap <leader>es :so source_myvimrc <CR>
+nmap <leader>ev :edit $XDG_DATA_HOME/chezmoi/private_dot_config/vim/vimrc <CR>
+nmap <leader>es :so $XDG_DATA_HOME/chezmoi/private_dot_config/vim/vimrc <CR>
 
 " spell
 set spell spl=sv,en " Select language
