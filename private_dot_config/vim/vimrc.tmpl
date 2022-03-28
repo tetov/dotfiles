@@ -246,7 +246,7 @@ augroup ansible_vim_fthosts
     autocmd BufNewFile,BufRead hosts setfiletype yaml.ansible
 augroup END
 
-" autoapply chezmoi test
+" autoapply chezmoi
 autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
 
 " local vimrc (project specific settings)
