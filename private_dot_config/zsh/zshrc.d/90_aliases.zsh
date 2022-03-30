@@ -69,6 +69,12 @@ if (( $+commands[git] )) ; then
 
 fi
 
+alias cm='chezmoi'
+
+cmcd() {
+    cd $(chezmoi source-path)
+}
+
 command -v makechrootpkg >/dev/null \
     && [[ -v CHROOT ]] \
     && alias mcpkg='makechrootpkg -cu -r $CHROOT -l $(basename $(pwd)) -- PACKAGER=$PACKAGER'
