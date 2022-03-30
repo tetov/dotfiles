@@ -4,6 +4,7 @@ ZSHRC_DIR=$ZDOTDIR/zshrc.d
 
 # history settings
 HISTFILE=$XDG_STATE_HOME/zsh/history
+mkdir -p $(dirname $HISTFILE)
 HISTSIZE=50000
 SAVEHIST=10000
 
