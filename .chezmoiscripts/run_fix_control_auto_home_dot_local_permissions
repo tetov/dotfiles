@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+[[ $(id -gn) == "regler" && $(dirname ~) == "/home" ]] && \
+    chmod 711 "$HOME/.local"
