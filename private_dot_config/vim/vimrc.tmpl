@@ -179,6 +179,12 @@ let &colorcolumn=80
 let mapleader = ","
 let maplocalleader = ","
 
+" navigate splits without C-W
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
