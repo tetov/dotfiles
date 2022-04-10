@@ -17,3 +17,8 @@
     type = "git-repo"
     url = "https://github.com/tmux-plugins/tpm"
     refreshPeriod = "168h"
+
+[".config/emacs"]
+    type = "git-repo"
+    url = "https://github.com/syl20bnr/spacemacs"
+    refreshPeriod = "168h"
