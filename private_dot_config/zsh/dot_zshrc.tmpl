@@ -36,14 +36,6 @@ if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
   export LIBGL_ALWAYS_INDIRECT=0
   autoload -U set_DISPLAY
   set_DISPLAY
-  _gpgbride_dir_win_wslpath="$WINHOME/.gpgbridge"
-  export SCRIPT_DIR_WSL="$_gpgbride_dir_win_wslpath/repo"
-  export PIDFILE_WSL="$HOME/.gpgbridge_wsl.pid"
-  export LOGFILE_WSL="$HOME/.gpgbridge_wsl.log"
-  export LOGFILE_WIN="$_gpgbride_dir_win_wslpath/gpgbridge_win.log"
-  export PIDFILE_WIN="$_gpgbride_dir_win_wslpath/gpgbridge_win.pid"
-  . $DOTFILES/deps/gpg-bridge-wsl2-ruby/gpgbridge_helper.sh
-  start_gpgbridge --ssh --wsl2
 
   export BROWSER="${BROWSER:-wsl-open}"
 fi
@@ -55,6 +47,10 @@ if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
 fi
 
 fpath+=($ZDOTDIR/{funcs,completions})
+
+unset RPROMPT
+
+{{- if has .chezmoi.hostname .dev_hosts }}
 
 # ZCOMET
 source $ZDOTDIR/.zcomet/bin/zcomet.zsh
@@ -93,6 +89,12 @@ zcomet load jeffreytse/zsh-vi-mode
 zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
 
 zcomet compinit
+
+{{- else }}
+
+PROMPT='%(?..%F{red}%?)%f %B%F{240}%~%f%b > '
+
+{{- end }}
 
 for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
