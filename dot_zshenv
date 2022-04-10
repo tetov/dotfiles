@@ -4,11 +4,11 @@
 ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
 # EDITOR & VISUAL
-if (( $+commands[nvim] )) ; then
+if [ command -v nvim 2>/dev/null ] ; then
   VISUAL=nvim
-elif (( $+commands[vim] ))  ; then
+elif [ command -v vim 2>/dev/null ] ; then
   VISUAL=vim
-elif (( $+commands[vim] )); then
+elif [ command -v vi 2>/dev/null ] ; then
   VISUAL=vi
 fi
 
@@ -35,7 +35,7 @@ XDG_STATE_HOME=$HOME/.local/state
 XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 # use gpg for ssh agent if not ssh connection
-if [[ ! -v SSH_TTY ]] ; then 
+if [[ ! -v SSH_TTY ]] ; then
   SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 

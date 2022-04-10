@@ -1,1 +1,1 @@
-dev_hosts = [ "tatlin" ]
+dev_hosts = [ "tatlin", "rachel" ]
