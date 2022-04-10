@@ -34,8 +34,10 @@ XDG_DATA_HOME=$HOME/.local/share
 XDG_STATE_HOME=$HOME/.local/state
 XDG_RUNTIME_DIR=/run/user/$(id -u)
 
-[[ -v SSH_TTY ]] && \  # not SSH session
+# use gpg for ssh agent if not ssh connection
+if [[ ! -v SSH_TTY ]] ; then 
   SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
 
 VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
 
