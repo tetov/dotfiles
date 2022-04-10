@@ -48,12 +48,13 @@ fi
 
 fpath+=($ZDOTDIR/{funcs,completions})
 
+PROMPT='%(?..%F{red}%?)%f %B%F{240}%~%f%b > '  {{/* gets overwritten by pure if dev_hosts  */}}
 unset RPROMPT
-
-{{- if has .chezmoi.hostname .dev_hosts }}
 
 # ZCOMET
 source $ZDOTDIR/.zcomet/bin/zcomet.zsh
+
+{{- if has .chezmoi.hostname .dev_hosts }}
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
 PURE_CMD_MAX_EXEC_TIME=60
@@ -73,28 +74,18 @@ export NVM_AUTO_USE=true
 export NVM_DIR="$HOME/.nvm"
 zcomet load lukechilds/zsh-nvm
 
-# zcomet load jreese/zsh-titles
-zcomet load MikeDacre/tmux-zsh-vim-titles
-
 zcomet load agkozak/zsh-z
-
 zcomet load ohmyzsh plugins/gitfast
-
-zcomet load zsh-users/zsh-completions
-
+zcomet load MikeDacre/tmux-zsh-vim-titles
 zcomet load zdharma-continuum/fast-syntax-highlighting
 
-zcomet load jeffreytse/zsh-vi-mode
+{{- end }}
 
+zcomet load zsh-users/zsh-completions
+zcomet load jeffreytse/zsh-vi-mode
 zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
 
 zcomet compinit
-
-{{- else }}
-
-PROMPT='%(?..%F{red}%?)%f %B%F{240}%~%f%b > '
-
-{{- end }}
 
 for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
