@@ -30,7 +30,6 @@ LC_PAPER=sv_SE.UTF-8
 LC_TELEPHONE=sv_SE.UTF-8
 LC_TIME=sv_SE.UTF-8
 
-XDG_CONFIG_HOME
 XDG_DATA_HOME=$HOME/.local/share
 XDG_STATE_HOME=$HOME/.local/state
 XDG_RUNTIME_DIR=/run/user/$(id -u)
