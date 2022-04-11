@@ -43,4 +43,4 @@ VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
 
 CUPS_USER=an6802jo@lu.se
 
-SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacs
+# SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacs
