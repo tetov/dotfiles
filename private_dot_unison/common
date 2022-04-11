@@ -21,6 +21,7 @@ ignore = BelowPath VirtualBox\ VMs
 ignore = BelowPath Nextcloud
 ignore = BelowPath .config
 ignore = BelowPath src
+ignore = BelowPath org.signal.Signal
 
 follow = Path .vimbackup
 ignorenot = BelowPath .vimbackup
