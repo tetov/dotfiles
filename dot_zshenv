@@ -4,11 +4,11 @@
 ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
 # EDITOR & VISUAL
-if [ command -v nvim 2>/dev/null ] ; then
+if command -v nvim 2>/dev/null ; then
   VISUAL=nvim
-elif [ command -v vim 2>/dev/null ] ; then
+elif command -v vim 2>/dev/null ; then
   VISUAL=vim
-elif [ command -v vi 2>/dev/null ] ; then
+elif command -v vi 2>/dev/null ; then
   VISUAL=vi
 fi
 
