@@ -89,6 +89,8 @@ zcomet compinit
 
 export SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacs
 
+command -v op >/dev/null && eval $(op signin)
+
 for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
 done
