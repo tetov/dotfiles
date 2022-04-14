@@ -1,6 +1,6 @@
 window:
   startup_mode: Maximized
-  decorations: full
+  decorations: none
 
 bell:
   duration: 250
