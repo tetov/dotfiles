@@ -556,10 +556,17 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (define-key evil-motion-state-map "Ö" 'evil-ex)
+  (define-key evil-motion-state-map "¤" 'evil-end-of-line)
+  (define-key evil-motion-state-map "g¤" 'evil-end-of-visual-line)
   (with-eval-after-load 'org
     (setq org-directory "~/Dropbox/org")
     (setq org-agenda-files '("~/Dropbox/org"))
     (setq org-default-notes-file "~/Dropbox/org/inbox.org")
+    (setq org-refile-targets '((org-agenda-files :maxlevel . 99)))
+    (setq org-outline-path-complete-in-steps nil)
+    (setq org-refile-allow-creating-parent-nodes 'confirm)
+    (setq org-refile-use-outline-path 'file)
     )
 )
 
