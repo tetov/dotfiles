@@ -20,5 +20,10 @@
 
 [".config/emacs"]
     type = "git-repo"
+    url = "https://github.com/plexus/chemacs2.git"
+    refreshPeriod = "168h"
+
+[".config/spacemacs"]
+    type = "git-repo"
     url = "https://github.com/syl20bnr/spacemacs"
     refreshPeriod = "168h"
