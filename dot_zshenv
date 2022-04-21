@@ -1,45 +1,12 @@
-: ${XDG_CONFIG_HOME:=$HOME/.config}
+emulate sh -c 'source ~/.profile'
 
 # Needs to be set here, so Zsh can find your other dotfiles.
 ZDOTDIR=$XDG_CONFIG_HOME/zsh
-
-# EDITOR & VISUAL
-if command -v nvim >/dev/null ; then
-  VISUAL=nvim
-elif command -v vim >/dev/null ; then
-  VISUAL=vim
-elif command -v vi >/dev/null ; then
-  VISUAL=vi
-fi
-
-EDITOR=$VISUAL
-
-PAGER=less
-
-LANG=en_US.UTF-8
-LC_ADDRESS=sv_SE.UTF-8
-LC_COLLATE=sv_SE.UTF-8
-LC_CTYPE=en_US.UTF-8
-LC_IDENTIFICATION=sv_SE.UTF-8
-LC_MEASUREMENT=sv_SE.UTF-8
-LC_MESSAGES=en_US.UTF-8
-LC_MONETARY=sv_SE.UTF-8
-LC_NAME=sv_SE.UTF-8
-LC_NUMERIC=sv_SE.UTF-8
-LC_PAPER=sv_SE.UTF-8
-LC_TELEPHONE=sv_SE.UTF-8
-LC_TIME=sv_SE.UTF-8
-
-XDG_DATA_HOME=$HOME/.local/share
-XDG_STATE_HOME=$HOME/.local/state
-XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 # use gpg for ssh agent if not ssh connection
 if [[ ! -v SSH_TTY ]] ; then
   SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
-
-VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
 
 CUPS_USER=an6802jo@lu.se
 
@@ -52,5 +19,3 @@ path+=${DOTFILES}/bin
 path+=~/.cargo/bin
 path+=~/.local/bin
 path+=~/.poetry/bin
-
-SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacs
