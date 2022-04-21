@@ -3,13 +3,6 @@ emulate sh -c 'source ~/.profile'
 # Needs to be set here, so Zsh can find your other dotfiles.
 ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
-# use gpg for ssh agent if not ssh connection
-if [[ ! -v SSH_TTY ]] ; then
-  SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-fi
-
-CUPS_USER=an6802jo@lu.se
-
 typeset -aU path
 
 path=(/usr/lib/ccache $path)
