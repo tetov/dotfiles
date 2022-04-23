@@ -1,0 +1,3 @@
+{{- if has .chezmoi.hostname .dev_hosts }}
+{{ .chezmoi.homeDir }}/.config/systemd/user/pull-org-repo.timer
+{{- end }}

@@ -1,1 +1,3 @@
-{{- if has .chezmoi.hostname .dev_hosts }}../google-drive-ocamlfuse.service{{- end }}
+{{- if has .chezmoi.hostname .dev_hosts }}
+{{ .chezmoi.homeDir }}/.config/systemd/user/google-drive-ocamlfuse.service
+{{- end }}
