@@ -1,0 +1,18 @@
+{{- $releasePath := joinPath .chezmoi.homeDir "/.config/firefox/profiles/default-release" -}}
+
+{{- $releaseId := "0" -}}
+
+{{- $releaseId = mozillaInstallHash "/usr/lib64/firefox" -}}
+
+[Profile0]
+Name=default-release
+IsRelative=0
+Path={{- $releasePath }}
+
+[General]
+StartWithLastProfile=1
+Version=2
+
+[Install{{- $releaseId -}}]
+Default={{- $releasePath }}
+Locked=1
