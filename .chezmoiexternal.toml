@@ -32,3 +32,13 @@
     type = "archive"
     url = "https://extensions.gnome.org/extension-data/pixel-saverdeadalnix.me.v26.shell-extension.zip"
     refreshPeriod = 0
+
+[".config/doomdir/lisp/sv-kalender.el"]
+    type = "file"
+    url = "http://bigwalter.net/daniel/elisp/sv-kalender.el"
+    refreshPeriod = "168h"
+
+[".config/doomdir/lisp/backup-each-save.el"]
+    type = "file"
+    url = "http://www.emacswiki.org/emacs/download/backup-each-save.el"
+    refreshPeriod = "168h"
