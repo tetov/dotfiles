@@ -1,2 +1,5 @@
-(("spacemacs" . ((user-emacs-directory . "~/.config/spacemacs")
-	         (env . (("SPACEMACSDIR" . "~/.config/spacemacsdir"))))))
+(("doom-emacs" . ((user-emacs-directory . "~/.config/doom-emacs")
+	            (env . (("DOOMDIR" . "~/.config/doomdir")))))
+ ("spacemacs" .  ((user-emacs-directory . "~/.config/spacemacs")
+	            (env . (("SPACEMACSDIR" . "~/.config/spacemacsdir")))))
+)
