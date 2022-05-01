@@ -1,5 +1,4 @@
-: ${XDG_CONFIG_HOME:=$HOME/.config}
-
+XDG_CONFIG_HOME=$HOME/.config
 XDG_DATA_HOME=$HOME/.local/share
 XDG_STATE_HOME=$HOME/.local/state
 XDG_RUNTIME_DIR=/run/user/$(id -u)
@@ -36,10 +35,12 @@ if [ -z "$SSH_TTY" ] ; then
   SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
-VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
+export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYGVIMRC'
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
 CUPS_USER=an6802jo@lu.se
 
 SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacsdir
+DOOMDIR=$XDG_CONFIG_HOME/doomdir
 
 # vim: set ft=sh ts=2
