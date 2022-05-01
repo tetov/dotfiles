@@ -114,7 +114,7 @@
 (load! "lisp/sv-kalender.el")
 
 ;; backup
-(setq backup-each-save-mirror-location "~/editor-backups"
+(setq backup-each-save-mirror-location "~/editor-backups/emacs"
       backup-each-save-remote-files t)
 (load! "lisp/backup-each-save.el")
 (add-hook 'after-save-hook 'backup-each-save)
