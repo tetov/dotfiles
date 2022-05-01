@@ -74,9 +74,12 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(define-key evil-motion-state-map "Ö" 'evil-ex
-            evil-motion-state-map "¤" 'evil-end-of-line
-            evil-motion-state-map "g¤" 'evil-end-of-visual-line)
+
+(setq doom-localleader-key ",")
+
+(define-key evil-motion-state-map "Ö" 'evil-ex)
+(define-key evil-motion-state-map "¤" 'evil-end-of-line)
+(define-key evil-motion-state-map "g¤" 'evil-end-of-visual-line)
 
 ;; org
 (after! org
@@ -91,18 +94,30 @@
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-use-outline-path 'file
         ;; roam
-        org-enable-roam-support t
         org-roam-directory (concat org-directory "/roam")
-        org-roam-db-location (concat org-roam-directory "/db/org-roam.db")))
+        org-roam-db-location (concat org-roam-directory "/db/org-roam.db")
+        org-roam-capture-templates
+          '(("m" "main" plain
+             "%?"
+             :if-new (file+head "main/${slug}.org"
+                                "#+title: ${title}\n")
+             :immediate-finish t
+             :unnarrowed t)
+          ("r" "reference" plain "%?"
+             :if-new
+             (file+head "reference/${title}.org" "#+title: ${title}\n")
+             :immediate-finish t
+             :unnarrowed t))))
 
 (after! org-agenda
   (setq org-agenda-include-diary t))
 (load! "lisp/sv-kalender.el")
 
 ;; backup
-(load! "lisp/backup-each-save.el")
 (setq backup-each-save-mirror-location "~/editor-backups"
       backup-each-save-remote-files t)
+(load! "lisp/backup-each-save.el")
+(add-hook 'after-save-hook 'backup-each-save)
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
