@@ -81,6 +81,15 @@
 (define-key evil-motion-state-map "¤" 'evil-end-of-line)
 (define-key evil-motion-state-map "g¤" 'evil-end-of-visual-line)
 
+;; :q should kill the current buffer rather than quitting emacs entirely
+(evil-ex-define-cmd "q" 'kill-this-buffer)
+;; Need to type out :quit to close emacs
+(evil-ex-define-cmd "quit" 'evil-quit)
+
+;; break lines automatically
+(setq-default fill-column 80)
+(add-hook 'markdown-mode-hook #'auto-fill-mode)
+
 ;; org
 (after! org
   (setq org-agenda-files (directory-files-recursively org-directory "^[[:alnum:]].*\\.org$")
@@ -93,29 +102,34 @@
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-use-outline-path 'file
-        org-startup-indented t)
-        org-insert-heading-respect-content t)
+        org-startup-indented t
+        org-insert-heading-respect-content t
 
-        org-capture-templates
-          `(
-            ("t" "Todo" entry (file+headline "" "Tasks")
-             "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))
+        ;; template
+        org-capture-templates `(
+                                ("t" "Todo" entry (file+headline "" "Tasks")
+                                 "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))))
 
-        ;; roam
-        org-roam-directory (concat org-directory "/roam")
+
+;; org-roam
+(after! org-roam
+
+  (setq org-roam-directory (concat org-directory "/roam")
         org-roam-db-location (concat org-roam-directory "/db/org-roam.db")
+
+        ;; roam template
         org-roam-capture-templates
-          '(("m" "main" plain
-             "%?"
-             :if-new (file+head "main/${slug}.org"
-                                "#+title: ${title}\n")
-             :immediate-finish t
-             :unnarrowed t)
+        '(("d" "default" plain
+           "%?"
+           :if-new (file+head "main/${slug}.org"
+                              "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
           ("r" "reference" plain "%?"
-             :if-new
-             (file+head "reference/${title}.org" "#+title: ${title}\n")
-             :immediate-finish t
-             :unnarrowed t))))
+           :if-new
+           (file+head "reference/${title}.org" "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t))))
 
 (after! org-agenda
   (setq org-agenda-include-diary t))
