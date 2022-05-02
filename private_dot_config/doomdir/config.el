@@ -77,19 +77,22 @@
 
 (setq doom-localleader-key ",")
 
-(define-key evil-motion-state-map "Ö" 'evil-ex)
-(define-key evil-motion-state-map "¤" 'evil-end-of-line)
-(define-key evil-motion-state-map "g¤" 'evil-end-of-visual-line)
+;; vimify
+(setq evil-respect-visual-line-mode t
+      evil-split-window-below t
+      evil-vsplit-window-right t)
+
+(evil-global-set-key 'motion "Ö" 'evil-ex)
+(evil-global-set-key 'motion "¤" 'evil-end-of-line)
+
+;; paragraphs
+(evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
+(evil-global-set-key 'motion (kbd "RET") 'evil-forward-paragraph)
 
 ;; :q should kill the current buffer rather than quitting emacs entirely
 (evil-ex-define-cmd "q" 'kill-this-buffer)
 ;; Need to type out :quit to close emacs
 (evil-ex-define-cmd "quit" 'evil-quit)
-
-;; more like my vim
-(setq evil-respect-visual-line-mode t
-       evil-split-window-below t
-        evil-vsplit-window-right t)
 
 ;; break lines automatically
 (setq-default fill-column 80)
