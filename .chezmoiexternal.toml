@@ -28,6 +28,11 @@
     url = "https://github.com/syl20bnr/spacemacs"
     refreshPeriod = "168h"
 
+[".config/doom-emacs"]
+    type = "git-repo"
+    url = "https://github.com/hlissner/doom-emacs"
+    refreshPeriod = "168h"
+
 [".local/share/gnome-shell/extensions/pixel-saver@deadalnix.me"]
     type = "archive"
     url = "https://extensions.gnome.org/extension-data/pixel-saverdeadalnix.me.v26.shell-extension.zip"
