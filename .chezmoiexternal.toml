@@ -31,7 +31,7 @@
 [".local/share/gnome-shell/extensions/pixel-saver@deadalnix.me"]
     type = "archive"
     url = "https://extensions.gnome.org/extension-data/pixel-saverdeadalnix.me.v26.shell-extension.zip"
-    refreshPeriod = 0
+    refreshPeriod = "168h"
 
 [".config/doomdir/lisp/sv-kalender.el"]
     type = "file"

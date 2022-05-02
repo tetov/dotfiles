@@ -565,7 +565,7 @@ before packages are loaded."
     (setq org-directory "~/src/org")
     (setq org-agenda-files (directory-files-recursively "~/src/org/" "^[[:alnum:]].*\\.org$"))
     (setq org-default-notes-file "~/src/org/refile.org")
-    (setq org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "|" "DONE" "CANCELED")))
+    (setq org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "|" "DONE" "CANC")))
     (setq org-startup-folded t)
     (setq org-enforce-todo-dependencies t)
     (setq org-enforce-todo-checkbox-dependencies t)
@@ -573,6 +573,15 @@ before packages are loaded."
     (setq org-outline-path-complete-in-steps nil)
     (setq org-refile-allow-creating-parent-nodes 'confirm)
     (setq org-refile-use-outline-path 'file)
+    (setq org-startup-indented t)
+    (setq org-insert-heading-respect-content t)
+
+    (setq org-capture-templates
+          `(
+            ("t" "Todo" entry (file+headline "" "Tasks")
+             "** TODO %^{Task Description}\nSCHEDULED: %t\n%U")
+            ))
+
     ;; roam
     ;; (setq org-enable-roam-support t)
     ;; (setq org-roam-directory (concat org-directory "/roam"))
