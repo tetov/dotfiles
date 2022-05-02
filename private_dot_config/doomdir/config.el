@@ -86,6 +86,11 @@
 ;; Need to type out :quit to close emacs
 (evil-ex-define-cmd "quit" 'evil-quit)
 
+;; more like my vim
+(setq evil-respect-visual-line-mode t
+       evil-split-window-below t
+        evil-vsplit-window-right t)
+
 ;; break lines automatically
 (setq-default fill-column 80)
 (add-hook 'markdown-mode-hook #'auto-fill-mode)
