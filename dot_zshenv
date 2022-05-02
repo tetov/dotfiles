@@ -1,7 +1,7 @@
+emulate sh -c 'source $HOME/.profile'
+
 # Needs to be set here, so Zsh can find your other dotfiles.
 ZDOTDIR=$XDG_CONFIG_HOME/zsh
-
-emulate sh -c 'source $HOME/.profile'
 
 typeset -aU path
 
