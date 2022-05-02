@@ -85,7 +85,7 @@
 (after! org
   (setq org-agenda-files (directory-files-recursively org-directory "^[[:alnum:]].*\\.org$")
         org-default-notes-file (concat org-directory "/refile.org")
-        org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "|" "DONE" "CANCELED"))
+        org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "WAIT" "|" "DONE" "CANC"))
         org-startup-folded t
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t
@@ -93,6 +93,14 @@
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-use-outline-path 'file
+        org-startup-indented t)
+        org-insert-heading-respect-content t)
+
+        org-capture-templates
+          `(
+            ("t" "Todo" entry (file+headline "" "Tasks")
+             "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))
+
         ;; roam
         org-roam-directory (concat org-directory "/roam")
         org-roam-db-location (concat org-roam-directory "/db/org-roam.db")
