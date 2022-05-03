@@ -1,48 +1,49 @@
-: ${XDG_CONFIG_HOME:=$HOME/.config}
+export XDG_CONFIG_HOME=$HOME/.config
 
-XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
-XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
-XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
+export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 
 # EDITOR & VISUAL
 if command -v nvim >/dev/null ; then
-  VISUAL=nvim
+  EDITOR=nvim
 elif command -v vim >/dev/null ; then
-  VISUAL=vim
+  EDITOR=vim
 elif command -v vi >/dev/null ; then
-  VISUAL=vi
+  EDITOR=vi
 fi
 
-EDITOR=$VISUAL
+export EDITOR=$VISUAL
+export VISUAL=emacs
 
-PAGER=less
+export PAGER=less
 
-LANG=en_US.UTF-8
-LC_ADDRESS=sv_SE.UTF-8
-LC_COLLATE=sv_SE.UTF-8
-LC_CTYPE=en_US.UTF-8
-LC_IDENTIFICATION=sv_SE.UTF-8
-LC_MEASUREMENT=sv_SE.UTF-8
-LC_MESSAGES=en_US.UTF-8
-LC_MONETARY=sv_SE.UTF-8
-LC_NAME=sv_SE.UTF-8
-LC_NUMERIC=sv_SE.UTF-8
-LC_PAPER=sv_SE.UTF-8
-LC_TELEPHONE=sv_SE.UTF-8
-LC_TIME=sv_SE.UTF-8
+export LANG=en_US.UTF-8
+export LC_ADDRESS=sv_SE.UTF-8
+export LC_COLLATE=sv_SE.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export LC_IDENTIFICATION=sv_SE.UTF-8
+export LC_MEASUREMENT=sv_SE.UTF-8
+export LC_MESSAGES=en_US.UTF-8
+export LC_MONETARY=sv_SE.UTF-8
+export LC_NAME=sv_SE.UTF-8
+export LC_NUMERIC=sv_SE.UTF-8
+export LC_PAPER=sv_SE.UTF-8
+export LC_TELEPHONE=sv_SE.UTF-8
+export LC_TIME=sv_SE.UTF-8
 
 # use gpg for ssh agent if not ssh connection
 if [ -z "$SSH_TTY" ] ; then
-  SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
-GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYGVIMRC'
-VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYGVIMRC'
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
-CUPS_USER=an6802jo@lu.se
+export CUPS_USER=an6802jo@lu.se
 
-SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacsdir
-DOOMDIR=$XDG_CONFIG_HOME/doomdir
+export SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacsdir
+export DOOMDIR=$XDG_CONFIG_HOME/doomdir
 
 # vim: set ft=sh ts=2
