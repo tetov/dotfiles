@@ -7,6 +7,7 @@ ignore = Name .zlogin
 ignore = Name .login
 ignore = Name .netrwhist
 ignore = BelowPath google-drive
+ignore = BelowPath gdrive
 ignore = BelowPath pCloudDrive
 ignore = BelowPath bin
 ignore = BelowPath Arduino
