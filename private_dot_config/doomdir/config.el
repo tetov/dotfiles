@@ -134,8 +134,13 @@
            :immediate-finish t
            :unnarrowed t)
           ("r" "reference" plain "%?"
-           :if-new
-           (file+head "reference/${title}.org" "#+title: ${title}\n")
+           :if-new (file+head "reference/${slug}.org"
+                              "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("p" "rp notes (Eat Flay Prowl)" plain "%?"
+           :if-new (file+head "rp/${slug}.org"
+                              "#+FILETAGS: :dnd5e:eat-flay-prowl:\n#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t))))
 
