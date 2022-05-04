@@ -565,7 +565,7 @@ before packages are loaded."
     (setq org-directory "~/src/org")
     (setq org-agenda-files (directory-files-recursively "~/src/org/" "^[[:alnum:]].*\\.org$"))
     (setq org-default-notes-file "~/src/org/refile.org")
-    (setq org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "|" "DONE" "CANC")))
+    (setq org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "WAIT" "|" "DONE" "CANC")))
     (setq org-startup-folded t)
     (setq org-enforce-todo-dependencies t)
     (setq org-enforce-todo-checkbox-dependencies t)
