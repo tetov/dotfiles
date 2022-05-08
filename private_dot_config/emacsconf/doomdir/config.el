@@ -146,15 +146,19 @@
            :immediate-finish t
            :unnarrowed t))))
 
+(require 'sv-kalender)
 (after! org-agenda
   (setq org-agenda-include-diary t))
-(require 'sv-kalender)
 
 ;; backup
+(require 'backup-each-save)
 (setq backup-each-save-mirror-location "~/editor-backups/emacs"
       backup-each-save-remote-files t)
-(require 'backup-each-save)
 (add-hook 'after-save-hook 'backup-each-save)
+
+;; pocket-reader
+(require 'org-pocket)
+(setq org-pocket-capture-file "~/src/org/refile.org")
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
