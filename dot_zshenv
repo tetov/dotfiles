@@ -12,4 +12,4 @@ path+=${DOTFILES}/bin
 path+=~/.cargo/bin
 path+=~/.local/bin
 path+=~/.poetry/bin
-path+=${XDG_CONFIG_HOME}/doom-emacs/bin
+path+=${XDG_CONFIG_HOME}/emacsconf/doom-emacs/bin
