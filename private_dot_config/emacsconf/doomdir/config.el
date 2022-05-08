@@ -75,6 +75,8 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(add-load-path! "../lisp")
+
 (setq doom-localleader-key ",")
 
 ;; vimify
@@ -146,12 +148,12 @@
 
 (after! org-agenda
   (setq org-agenda-include-diary t))
-(load! "../lisp/sv-kalender.el")
+(require 'sv-kalender)
 
 ;; backup
 (setq backup-each-save-mirror-location "~/editor-backups/emacs"
       backup-each-save-remote-files t)
-(load! "../lisp/backup-each-save.el")
+(require 'backup-each-save)
 (add-hook 'after-save-hook 'backup-each-save)
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
