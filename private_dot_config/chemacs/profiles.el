@@ -2,4 +2,4 @@
 	(("doom-emacs" . ((user-emacs-directory . (expand-file-name emacs-conf "doom-emacs"))
 		(env . (("DOOMDIR" . (expand-file-name emacs-conf "doomdir"))))))
 	 ("spacemacs" .  ((user-emacs-directory . (expand-file-name emacs-conf "spacemacs"))
-	    (env . (("SPACEMACSDIR" . (exapend-file-name emacs-conf "spacemacsdir"))))))))
+	    (env . (("SPACEMACSDIR" . (expand-file-name emacs-conf "spacemacsdir"))))))))
