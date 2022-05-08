@@ -157,10 +157,10 @@
 (add-hook 'after-save-hook 'backup-each-save)
 
 ;; pocket-reader
-(after! pocket-reader
 (add-load-path! "../lisp/org-pocket")
-(require 'org-pocket)
-(setq org-pocket-capture-file "~/src/org/refile.org"))
+(after! pocket-reader
+  (require 'org-pocket)
+  (setq org-pocket-capture-file "~/src/org/refile.org"))
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
