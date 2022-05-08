@@ -23,27 +23,22 @@
     url = "https://github.com/plexus/chemacs2.git"
     refreshPeriod = "168h"
 
-[".config/spacemacs"]
+[".config/emacsconf/spacemacs"]
     type = "git-repo"
     url = "https://github.com/syl20bnr/spacemacs"
     refreshPeriod = "168h"
 
-[".config/doom-emacs"]
+[".config/emacsconf/doom-emacs"]
     type = "git-repo"
     url = "https://github.com/hlissner/doom-emacs"
+    refreshPeriod = "168h"
+
+[".config/emacsconf/lisp"]
+    type = "git-repo"
+    url = "https://github.com/tetov/elisp"
     refreshPeriod = "168h"
 
 [".local/share/gnome-shell/extensions/pixel-saver@deadalnix.me"]
     type = "archive"
     url = "https://extensions.gnome.org/extension-data/pixel-saverdeadalnix.me.v26.shell-extension.zip"
-    refreshPeriod = "168h"
-
-[".config/doomdir/lisp/sv-kalender.el"]
-    type = "file"
-    url = "http://bigwalter.net/daniel/elisp/sv-kalender.el"
-    refreshPeriod = "168h"
-
-[".config/doomdir/lisp/backup-each-save.el"]
-    type = "file"
-    url = "http://www.emacswiki.org/emacs/download/backup-each-save.el"
     refreshPeriod = "168h"
