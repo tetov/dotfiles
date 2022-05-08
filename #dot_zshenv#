@@ -1,0 +1,15 @@
+emulate sh -c 'source $HOME/.profile'
+
+# Needs to be set here, so Zsh can find your other dotfiles.
+ZDOTDIR=$XDG_CONFIG_HOME/zsh
+
+typeset -aU path
+
+path=(/usr/lib/ccache $path)
+
+path+=~/bin
+path+=${DOTFILES}/bin
+path+=~/.cargo/bin
+path+=~/.local/bin
+path+=~/.poetry/bin
+path+=${XDG_CONFIG_HOME}/doom-emacs/bin
