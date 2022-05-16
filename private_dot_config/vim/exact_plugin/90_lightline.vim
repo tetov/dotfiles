@@ -18,7 +18,7 @@ if !exists('g:vscode')
   \       ]
   \   },
   \   'component_function': {
-  \       'gitbranch': 'fugitive#head',
+  \       'gitbranch': 'FugitiveHead',
   \       'venv': 'virtualenv#statusline',
   \   },
   \   'component_type': {
