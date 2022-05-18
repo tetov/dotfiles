@@ -82,7 +82,8 @@
 ;; vimify
 (setq evil-respect-visual-line-mode t
       evil-split-window-below t
-      evil-vsplit-window-right t)
+      evil-vsplit-window-right t
+      evil-want-fine-undo t)
 
 (evil-global-set-key 'motion "Ö" 'evil-ex)
 (evil-global-set-key 'motion "¤" 'evil-end-of-line)
