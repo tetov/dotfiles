@@ -22,5 +22,6 @@ ignore = BelowPath VirtualBox\ VMs
 ignore = BelowPath Nextcloud
 ignore = BelowPath .config
 ignore = BelowPath src
+ignore = BelowPath Zotero
 ignore = BelowPath org.signal.Signal
 ignore = BelowPath .local/share/containers/storage
