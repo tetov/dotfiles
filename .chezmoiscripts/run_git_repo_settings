@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-
-cd $(chezmoi source-path)
-
-git config --local commit.gpgsign false
-(( $+commands[pre-commit] )) && pre-commit install
-
-exit 0
