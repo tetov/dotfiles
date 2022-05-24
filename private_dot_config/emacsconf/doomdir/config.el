@@ -83,6 +83,7 @@
 (setq evil-respect-visual-line-mode t
       evil-split-window-below t
       evil-vsplit-window-right t
+      evil-want-Y-yank-to-eol t
       evil-want-fine-undo t)
 
 (evil-global-set-key 'motion "Ö" 'evil-ex)
