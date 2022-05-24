@@ -14,8 +14,15 @@ elif command -v vi >/dev/null ; then
   EDITOR=vi
 fi
 
-export EDITOR=$VISUAL
-export VISUAL=emacs
+if command -v emacsclient >/dev/null ; then
+  VISUAL="emacsclient -nc -a emacs"
+else
+  VISUAL=EDITOR
+fi
+
+export EDITOR
+export VISUAL
+export ALTERNATE_EDITOR=""
 
 export PAGER=less
 
