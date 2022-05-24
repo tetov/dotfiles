@@ -149,18 +149,21 @@
            :immediate-finish t
            :unnarrowed t))))
 
+(add-hook! 'org-mode-hook
+  (auto-fill-mode 1)
+  (set-fill-column 80))
+
 (require 'sv-kalender)
 (after! org-agenda
   (setq org-agenda-include-diary t))
 
 ;; backup
-(require 'backup-each-save)
+(use-package! backup-each-save)
 (setq backup-each-save-mirror-location "~/editor-backups/emacs"
       backup-each-save-remote-files t)
 (add-hook 'after-save-hook 'backup-each-save)
 
 ;; pocket-reader
-(add-load-path! "../lisp/org-pocket")
 (after! pocket-reader
   (require 'org-pocket)
   (setq org-pocket-capture-file "~/src/org/refile.org"))
