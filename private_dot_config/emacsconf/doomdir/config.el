@@ -90,12 +90,18 @@
 (evil-global-set-key 'motion "Ö" 'evil-ex)
 (evil-global-set-key 'motion "¤" 'evil-end-of-line)
 
+;; splits
+(evil-global-set-key 'normal "C-h" 'evil-window-left)
+(evil-global-set-key 'normal  "C-l" 'evil-window-right)
+(evil-global-set-key 'normal  "C-k" 'evil-window-up)
+(evil-global-set-key 'normal  "C-j" 'evil-window-down)
+
 ;; paragraphs
 (evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
 (evil-global-set-key 'motion (kbd "RET") 'evil-forward-paragraph)
 
 ;; :q should kill the current buffer rather than quitting emacs entirely
-(evil-ex-define-cmd "q" 'kill-this-buffer)
+(evil-ex-define-cmd "q" 'kill-this-buffer-and-window)
 ;; Need to type out :quit to close emacs
 (evil-ex-define-cmd "quit" 'evil-quit)
 
