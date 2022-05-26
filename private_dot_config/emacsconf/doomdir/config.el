@@ -101,7 +101,7 @@
 (evil-global-set-key 'motion (kbd "RET") 'evil-forward-paragraph)
 
 ;; :q should kill the current buffer rather than quitting emacs entirely
-(evil-ex-define-cmd "q" 'kill-this-buffer-and-window)
+(evil-ex-define-cmd "q" 'kill-buffer-and-window)
 ;; Need to type out :quit to close emacs
 (evil-ex-define-cmd "quit" 'evil-quit)
 
