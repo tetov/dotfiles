@@ -174,6 +174,11 @@
   (require 'org-pocket)
   (setq org-pocket-capture-file "~/src/org/refile.org"))
 
+;; completion
+(setq read-file-name-completion-ignore-case t
+      read-buffer-completion-ignore-case t
+      completion-ignore-case t)
+
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
