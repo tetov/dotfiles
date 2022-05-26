@@ -1,9 +1,3 @@
-if (( $+commands[nvim] )) ; then
-    alias v="nvim"
-else
-    alias v='vim'
-fi
-
 if (( $+commands[exa] )) ; then
     alias ls="exa --group-directories-first"
     alias ll="ls -l --group --git"
