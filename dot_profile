@@ -24,6 +24,9 @@ export EDITOR
 export VISUAL
 export ALTERNATE_EDITOR=""
 
+alias e="$EDITOR"
+alias v="$VISUAL"
+
 export PAGER=less
 
 export LANG=en_US.UTF-8
