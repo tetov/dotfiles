@@ -91,10 +91,10 @@
 (evil-global-set-key 'motion "¤" 'evil-end-of-line)
 
 ;; splits
-(evil-global-set-key 'normal "C-h" 'evil-window-left)
-(evil-global-set-key 'normal  "C-l" 'evil-window-right)
-(evil-global-set-key 'normal  "C-k" 'evil-window-up)
-(evil-global-set-key 'normal  "C-j" 'evil-window-down)
+(evil-global-set-key 'normal (kbd "C-h") 'evil-window-left)
+(evil-global-set-key 'normal (kbd "C-l") 'evil-window-right)
+(evil-global-set-key 'normal (kbd "C-k") 'evil-window-up)
+(evil-global-set-key 'normal (kbd "C-j") 'evil-window-down)
 
 ;; paragraphs
 (evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
