@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-if [[ $(id -gn) == "regler" && $(dirname ~) == "/home" ]] ; then
-    chmod 711 "$HOME/.local"
-fi

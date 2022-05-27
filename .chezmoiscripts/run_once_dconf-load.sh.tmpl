@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# dconf.ini hash: {{ include "dconf.ini" | sha256sum }}
-dconf load -f / < {{ joinPath .chezmoi.sourceDir "dconf.ini" | quote }}

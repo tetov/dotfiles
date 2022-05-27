@@ -42,3 +42,9 @@
     type = "archive"
     url = "https://extensions.gnome.org/extension-data/pixel-saverdeadalnix.me.v26.shell-extension.zip"
     refreshPeriod = "168h"
+
+["bin/gnome-shell-extension-installer"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/brunelli/gnome-shell-extension-installer/master/gnome-shell-extension-installer"
+    refreshPeriod = "168h"
+    executable = true
