@@ -1,5 +1,5 @@
 SYSTEM_SETUP_FILES=()
-SYSTEM_SETUP_FILES+=(/usr/lib64/ros/setup.zsh)
+# SYSTEM_SETUP_FILES+=(/usr/lib64/ros/setup.zsh)
 SYSTEM_SETUP_FILES+=(/opt/ros/{foxy,noetic,melodic}/setup.zsh)
 
 USER_SETUP_FILES=()
