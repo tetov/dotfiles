@@ -129,7 +129,6 @@
                                 ("t" "Todo" entry (file+headline "" "Tasks")
                                  "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))))
 
-
 ;; org-roam
 (after! org-roam
 
@@ -168,6 +167,10 @@
 (setq backup-each-save-mirror-location "~/editor-backups/emacs"
       backup-each-save-remote-files t)
 (add-hook 'after-save-hook 'backup-each-save)
+
+;; autosave on focus lost
+;; https://emacs.stackexchange.com/a/60971
+(add-function :after after-focus-change-function (lambda () (unless (frame-focus-state) (save-some-buffers t))))
 
 ;; pocket-reader
 (after! pocket-reader
