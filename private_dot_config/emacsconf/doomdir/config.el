@@ -164,7 +164,7 @@
 
 ;; backup
 (use-package! backup-each-save)
-(setq backup-each-save-mirror-location "~/editor-backups/emacs"
+(setq backup-each-save-mirror-location ( format "~/editor-backups/%s/emacs" (system-name))
       backup-each-save-remote-files t)
 (add-hook 'after-save-hook 'backup-each-save)
 
@@ -182,8 +182,8 @@
       read-buffer-completion-ignore-case t
       completion-ignore-case t)
 
-;; LSP
-(add-hook! (ansible-mode) 'lsp)
+;; Ansible
+(add-hook 'ansible-hook #'lsp!)
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
