@@ -182,6 +182,9 @@
       read-buffer-completion-ignore-case t
       completion-ignore-case t)
 
+;; LSP
+(add-hook! (ansible-mode) 'lsp)
+
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
