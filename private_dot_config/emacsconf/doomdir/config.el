@@ -108,26 +108,42 @@
 ;; break lines automatically
 (setq-default fill-column 80)
 (add-hook 'markdown-mode-hook #'auto-fill-mode)
+;;
+;; column highlight
+(custom-set-faces! '(vline :inherit hl-line))
+;; enable for some modes, disable for others,
+;; from https://stackoverflow.com/a/6839968
+(add-hook 'text-mode-hook #'vline-global-mode)
+(add-hook 'prog-mode-hook #'vline-global-mode)
+
+(defun my-inhibit-global-vline-mode ()
+  "Counter-act `global-vline-mode'."
+  (add-hook 'after-change-major-mode-hook
+            (lambda () (vline-global-mode 0))
+            :append :local))
+
+(add-hook 'vterm-mode-hook 'my-inhibit-global-vline-mode)
+(add-hook 'org-mode-hook 'my-inhibit-global-vline-mode)
 
 ;; org
 (after! org
-  (setq org-agenda-files (directory-files-recursively org-directory "^[[:alnum:]].*\\.org$")
-        org-default-notes-file (concat org-directory "/refile.org")
-        org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "WAIT" "|" "DONE" "CANC"))
-        org-startup-folded t
-        org-enforce-todo-dependencies t
-        org-enforce-todo-checkbox-dependencies t
-        org-refile-targets '((org-agenda-files :maxlevel . 5))
-        org-outline-path-complete-in-steps nil
-        org-refile-allow-creating-parent-nodes 'confirm
-        org-refile-use-outline-path 'file
-        org-startup-indented t
-        org-insert-heading-respect-content t
+        (setq org-agenda-files (directory-files-recursively org-directory "^[[:alnum:]].*\\.org$")
+              org-default-notes-file (concat org-directory "/refile.org")
+              org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "WAIT" "|" "DONE" "CANC"))
+              org-startup-folded t
+              org-enforce-todo-dependencies t
+              org-enforce-todo-checkbox-dependencies t
+              org-refile-targets '((org-agenda-files :maxlevel . 5))
+              org-outline-path-complete-in-steps nil
+              org-refile-allow-creating-parent-nodes 'confirm
+              org-refile-use-outline-path 'file
+              org-startup-indented t
+              org-insert-heading-respect-content t
 
-        ;; template
-        org-capture-templates `(
-                                ("t" "Todo" entry (file+headline "" "Tasks")
-                                 "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))))
+              ;; template
+              org-capture-templates `(
+                                      ("t" "Todo" entry (file+headline "" "Tasks")
+                                       "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))))
 
 ;; org-roam
 (after! org-roam
@@ -164,13 +180,14 @@
 
 ;; backup
 (use-package! backup-each-save)
-(setq backup-each-save-mirror-location ( format "~/editor-backups/%s/emacs" (system-name))
+(setq backup-each-save-mirror-location (format "~/editor-backups/%s/emacs" (system-name))
       backup-each-save-remote-files t)
 (add-hook 'after-save-hook 'backup-each-save)
 
 ;; autosave on focus lost
 ;; https://emacs.stackexchange.com/a/60971
-(add-function :after after-focus-change-function (lambda () (unless (frame-focus-state) (save-some-buffers t))))
+(add-function :after after-focus-change-function
+              (lambda () (unless (frame-focus-state) (save-some-buffers t))))
 
 ;; pocket-reader
 (after! pocket-reader
