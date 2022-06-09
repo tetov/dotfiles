@@ -84,7 +84,8 @@
       evil-split-window-below t
       evil-vsplit-window-right t
       evil-want-Y-yank-to-eol t
-      evil-want-fine-undo t)
+      evil-want-fine-undo t
+      evil-move-cursor-back nil)
 (evil-put-command-property 'evil-yank-line :motion 'evil-line)
 
 (evil-global-set-key 'motion "Ö" 'evil-ex)
