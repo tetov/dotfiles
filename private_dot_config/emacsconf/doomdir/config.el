@@ -186,7 +186,6 @@
 ;; ansible
 (add-hook 'ansible-hook #'lsp!)
 
-
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
