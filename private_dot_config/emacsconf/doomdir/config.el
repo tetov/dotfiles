@@ -84,20 +84,19 @@
       evil-split-window-below t
       evil-vsplit-window-right t
       evil-want-Y-yank-to-eol t
-      evil-want-fine-undo t
-      evil-move-cursor-back nil)
+      evil-want-fine-undo t)
 (evil-put-command-property 'evil-yank-line :motion 'evil-line)
 
 (evil-global-set-key 'motion "Ö" 'evil-ex)
 (evil-global-set-key 'motion "¤" 'evil-end-of-line)
 
-;; splits
+;;splits
 (evil-global-set-key 'normal (kbd "C-h") 'evil-window-left)
 (evil-global-set-key 'normal (kbd "C-l") 'evil-window-right)
 (evil-global-set-key 'normal (kbd "C-k") 'evil-window-up)
 (evil-global-set-key 'normal (kbd "C-j") 'evil-window-down)
 
-;; paragraphs
+;;paragraphs
 (evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
 (evil-global-set-key 'motion (kbd "RET") 'evil-forward-paragraph)
 
@@ -106,27 +105,11 @@
 ;; Need to type out :quit to close emacs
 (evil-ex-define-cmd "quit" 'evil-quit)
 
-;; break lines automatically
+;;break lines automatically
 (setq-default fill-column 80)
 (add-hook 'markdown-mode-hook #'auto-fill-mode)
-;;
-;; column highlight
-(custom-set-faces! '(vline :inherit hl-line))
-;; enable for some modes, disable for others,
-;; from https://stackoverflow.com/a/6839968
-(add-hook 'text-mode-hook #'vline-global-mode)
-(add-hook 'prog-mode-hook #'vline-global-mode)
 
-(defun my-inhibit-global-vline-mode ()
-  "Counter-act `global-vline-mode'."
-  (add-hook 'after-change-major-mode-hook
-            (lambda () (vline-global-mode 0))
-            :append :local))
-
-(add-hook 'vterm-mode-hook 'my-inhibit-global-vline-mode)
-(add-hook 'org-mode-hook 'my-inhibit-global-vline-mode)
-
-;; org
+;;org
 (after! org
         (setq org-agenda-files (directory-files-recursively org-directory "^[[:alnum:]].*\\.org$")
               org-default-notes-file (concat org-directory "/refile.org")
@@ -140,7 +123,6 @@
               org-refile-use-outline-path 'file
               org-startup-indented t
               org-insert-heading-respect-content t
-
               ;; template
               org-capture-templates `(
                                       ("t" "Todo" entry (file+headline "" "Tasks")
@@ -151,7 +133,6 @@
 
   (setq org-roam-directory (concat org-directory "/roam")
         org-roam-db-location (concat org-roam-directory "/db/org-roam.db")
-
         ;; roam template
         org-roam-capture-templates
         '(("d" "default" plain
@@ -179,9 +160,8 @@
 (after! org-agenda
   (setq org-agenda-include-diary t))
 
-;; backup
-(use-package! backup-each-save)
-(setq backup-each-save-mirror-location (format "~/editor-backups/%s/emacs" (system-name))
+;; backup (use-package! backup-each-save)
+(setq backup-each-save-mirror-location (format "~/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
       backup-each-save-remote-files t)
 (add-hook 'after-save-hook 'backup-each-save)
 
@@ -195,15 +175,12 @@
   (require 'org-pocket)
   (setq org-pocket-capture-file "~/src/org/refile.org"))
 
-;; completion
+;;completion
 (setq read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
       completion-ignore-case t)
 
-;; Ansible
-(add-hook 'ansible-hook #'lsp!)
-
-;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
+;;https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
     "Go to the matching paren/bracket, otherwise (or if ARG is not

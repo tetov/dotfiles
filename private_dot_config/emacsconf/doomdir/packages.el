@@ -11,7 +11,6 @@
 (package! atomic-chrome)
 (package! pocket-reader)
 (package! pocket-reader)
-(package! col-highlight)
 (package! backup-each-save)
 
 ;; To install a package directly from a remote git repo, you must specify a
