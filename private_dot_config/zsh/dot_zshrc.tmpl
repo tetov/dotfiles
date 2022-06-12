@@ -87,26 +87,12 @@ zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
 
 zcomet compinit
 
-export SPACEMACSDIR=$XDG_CONFIG_HOME/spacemacs
-
 for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
 done
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+# source ~/.zshrc if anaconda put one there
+[[ -e ~/.zshrc ]] && . ~/.zshrc
 
 # Anaconda's CA bundle gets picket up by curl
 [[ -e /etc/ssl/certs/ca-certificates.crt ]] && CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
