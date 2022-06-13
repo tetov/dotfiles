@@ -183,8 +183,16 @@
       read-buffer-completion-ignore-case t
       completion-ignore-case t)
 
+;; highlight indentation
+(setq highlight-indent-guides-method 'fill)
+(setq highlight-indent-guides-auto-even-face-perc 5)
+
 ;; ansible
 (add-hook 'ansible-hook #'lsp!)
+
+;; python
+;; use format-all, not lsp formatter
+(setq-hook! 'python-mode-hook +format-with-lsp nil)
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
