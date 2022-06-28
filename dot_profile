@@ -15,14 +15,16 @@ elif command -v vi >/dev/null ; then
 fi
 
 if command -v emacsclient >/dev/null ; then
-  VISUAL="emacsclient -nc -a emacs"
+  VISUAL="emacsclient"
 else
   VISUAL=EDITOR
 fi
 
+# start emacs daemon if none found
+export ALTERNATE_EDITOR=""
+
 export EDITOR
 export VISUAL
-export ALTERNATE_EDITOR=""
 
 alias e="$EDITOR"
 alias v="$VISUAL"
