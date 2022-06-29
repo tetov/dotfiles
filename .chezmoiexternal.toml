@@ -31,7 +31,7 @@
 [".config/emacsconf/doom-emacs"]
     type = "git-repo"
     url = "https://github.com/hlissner/doom-emacs"
-    refreshPeriod = "168h"
+    refreshPeriod = "0"  # use doom upgrade from script instead
 
 [".config/emacsconf/lisp"]
     type = "git-repo"
