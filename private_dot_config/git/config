@@ -90,6 +90,7 @@
 
 [core]
 	autocrlf = input
+	quotePath = false
 
 [filter "lfs"]
 	required = true
