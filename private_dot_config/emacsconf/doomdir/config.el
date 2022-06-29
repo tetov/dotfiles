@@ -125,10 +125,14 @@
         org-refile-use-outline-path 'file
         org-startup-indented t
         org-insert-heading-respect-content t
+        bibtex-completion-bibliography '("~/gdrive/zot.bib"))
         ;; template
         org-capture-templates `(
                                 ("t" "Todo" entry (file+headline "" "Tasks")
                                  "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))))
+(add-hook! 'org-mode-hook
+  (auto-fill-mode 1)
+  (set-fill-column 80))
 
 ;; org-roam
 (after! org-roam
@@ -154,9 +158,10 @@
            :immediate-finish t
            :unnarrowed t))))
 
-(add-hook! 'org-mode-hook
-  (auto-fill-mode 1)
-  (set-fill-column 80))
+(use-package! org-roam-bibtex
+  :after org-roam
+  :config
+  (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 (require 'sv-kalender)
 (after! org-agenda
@@ -185,7 +190,7 @@
 
 ;; highlight indentation
 (setq highlight-indent-guides-method 'fill)
-(setq highlight-indent-guides-auto-even-face-perc 5)
+;; (setq highlight-indent-guides-auto-even-face-perc 5)
 
 ;; ansible
 (add-hook 'ansible-hook #'lsp!)
