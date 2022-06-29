@@ -129,7 +129,7 @@
         ;; template
         org-capture-templates `(
                                 ("t" "Todo" entry (file+headline "" "Tasks")
-                                 "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))))
+                                 "** TODO %^{Task Description}\nSCHEDULED: %t\n%U")))
 (add-hook! 'org-mode-hook
   (auto-fill-mode 1)
   (set-fill-column 80))
