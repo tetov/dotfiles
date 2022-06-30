@@ -126,10 +126,10 @@
         org-startup-indented t
         org-insert-heading-respect-content t
         bibtex-completion-bibliography '("~/gdrive/zot.bib"))
-        ;; template
-        org-capture-templates `(
-                                ("t" "Todo" entry (file+headline "" "Tasks")
-                                 "** TODO %^{Task Description}\nSCHEDULED: %t\n%U")))
+  ;; template
+  org-capture-templates `(
+                          ("t" "Todo" entry (file+headline "" "Tasks")
+                           "** TODO %^{Task Description}\nSCHEDULED: %t\n%U")))
 (add-hook! 'org-mode-hook
   (auto-fill-mode 1)
   (set-fill-column 80))
@@ -166,6 +166,12 @@
 (require 'sv-kalender)
 (after! org-agenda
   (setq org-agenda-include-diary t))
+
+;; git auto commit mode
+(setq-default gac-debounce-interval 90
+              gac-automatically-add-new-files-p t
+              gac-automatically-push-p t
+              gac-silent-message-p t)
 
 ;; backup
 (use-package! backup-each-save)

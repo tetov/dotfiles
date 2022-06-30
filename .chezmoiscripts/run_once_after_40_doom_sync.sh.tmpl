@@ -1,22 +1,15 @@
 #!/bin/sh
 
-# runs only if master commit is changed
+# runs if master commit is changed
 # git hash for doom: {{ expandenv "$HOME/.config/emacsconf/doom-emacs/.git/refs/heads/master" | include}}
-
-DOOM_INSTALL_DIR=$HOME/.config/emacsconf/doom-emacs
-
-cd $DOOM_INSTALL_DIR
-
-if [ $(git symbolic-ref --short HEAD) != "master" ] ; then
-  echo "Not on branch master, exiting."
-  exit 1
-fi
-
-$DOOM_INSTALL_DIR/bin/doom sync
-#!/bin/sh
 
 # Run upgrade once a week
 # Weeks since epoch: {{ div (now | unixEpoch) 604800 }}
+
+# Run if emacs files changed
+{{- range (joinPath .chezmoi.sourceDir "private_dot_config/emacsconf/doomdir/*.el" | glob) }}
+# {{ . }}: {{ include . | sha256sum }}
+{{- end }}
 
 DOOM_INSTALL_DIR=$HOME/.config/emacsconf/doom-emacs
 
