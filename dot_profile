@@ -15,7 +15,7 @@ elif command -v vi >/dev/null ; then
 fi
 
 if command -v emacsclient >/dev/null ; then
-  VISUAL="emacsclient"
+  VISUAL="emacsclient -c"
 else
   VISUAL=EDITOR
 fi
