@@ -115,7 +115,7 @@
 (after! org
   (setq org-agenda-files (directory-files-recursively org-directory "^[[:alnum:]].*\\.org$")
         org-default-notes-file (concat org-directory "/refile.org")
-        org-todo-keywords '((sequence "TODO" "PROG" "NEXT" "WAIT" "|" "DONE" "CANC"))
+        org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "WAIT(w)" "|" "DONE(d!)" "CANC(c!)"))
         org-startup-folded t
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t
@@ -125,11 +125,10 @@
         org-refile-use-outline-path 'file
         org-startup-indented t
         org-insert-heading-respect-content t
-        bibtex-completion-bibliography '("~/gdrive/zot.bib"))
-  ;; template
-  org-capture-templates `(
-                          ("t" "Todo" entry (file+headline "" "Tasks")
-                           "** TODO %^{Task Description}\nSCHEDULED: %t\n%U")))
+        bibtex-completion-bibliography '("~/gdrive/zot.bib")
+        ;; template
+        org-capture-templates `(("t" "Todo" entry (file+headline "" "Att göra")
+                                 "** TODO %^{Task Description}\nSCHEDULED: %t\n%U"))))
 (add-hook! 'org-mode-hook
   (auto-fill-mode 1)
   (set-fill-column 80))
@@ -204,6 +203,26 @@
 ;; python
 ;; use format-all, not lsp formatter
 (setq-hook! 'python-mode-hook +format-with-lsp nil)
+
+;; spelling
+;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
+(with-eval-after-load 'ispell
+  ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
+  ;; dictionary' even though multiple dictionaries will be configured
+  ;; in next line.
+  (setenv "LANG" "en_US.UTF-8")
+  (setq ispell-dictionary "sv_SE,en_GB,en_US")
+  ;; ispell-set-spellchecker-params has to be called
+  ;; before ispell-hunspell-add-multi-dic will work
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "sv_SE,en_GB,en_US")
+  ;; For saving words to the personal dictionary, don't infer it from
+  ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
+  (setq ispell-personal-dictionary "~/.hunspell_personal")
+  ;; The personal dictionary file has to exist, otherwise hunspell will
+  ;; silently not use it.
+  (unless (file-exists-p ispell-personal-dictionary)
+    (write-region "" nil ispell-personal-dictionary nil 0)))
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
