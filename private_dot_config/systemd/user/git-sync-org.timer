@@ -1,9 +1,9 @@
 [Unit]
-Description=Run git pull on org dir periodically
+Description=git sync org dir periodically
 
 [Timer]
 OnStartupSec=5 m
-OnUnitInactiveSec=30 m
+OnUnitInactiveSec=10 m
 Persistent=true
 
 [Install]

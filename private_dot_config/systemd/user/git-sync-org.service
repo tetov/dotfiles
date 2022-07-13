@@ -5,4 +5,5 @@ AssertPathExists=%h/.ssh/org_repo_rsa
 [Service]
 Type=oneshot
 Environment=GIT_SSH_COMMAND="ssh -i %h/.ssh/org_repo_rsa"
-ExecStart=/usr/bin/git -C %h/src/org pull --ff-only git@github.com:tetov/org main
+WorkingDirectory=%h/src/org
+ExecStart=%h/bin/git-sync sync

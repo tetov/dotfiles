@@ -48,3 +48,9 @@
     url = "https://raw.githubusercontent.com/brunelli/gnome-shell-extension-installer/master/gnome-shell-extension-installer"
     refreshPeriod = "168h"
     executable = true
+
+["bin/git-sync"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/simonthum/git-sync/master/git-sync"
+    refreshPeriod = "168h"
+    executable = true

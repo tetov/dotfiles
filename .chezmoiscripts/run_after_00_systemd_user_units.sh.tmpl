@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 {{- if has .chezmoi.hostname .dev_hosts }}
 systemctl --user daemon-reload
 
@@ -10,12 +9,10 @@ if rclone listremotes | grep $RCLONE_REMOTE_NAME >/dev/null ; then
 
   mkdir -p $HOME/gdrive
   systemctl --user enable --now rclone@gdrive.service
-  systemctl --user start rclone@gdrive.service
 
 fi
 
-systemctl --user enable --now pull-org-repo.timer
-
+systemctl --user enable --now git-sync-org.timer
 systemctl --user enable --now emacs.service
 
 {{- end }}
