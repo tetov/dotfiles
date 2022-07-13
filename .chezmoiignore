@@ -6,3 +6,4 @@ LICENSE
 {{- end }}
 
 gnome_extension_sync.json
+doomdir_src

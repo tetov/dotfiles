@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Run if emacs files changed
-{{- range (joinPath .chezmoi.sourceDir "private_dot_config/emacsconf/doomdir/*.el" | glob) }}
+{{- range (joinPath .chezmoi.sourceDir "doomdir_src/*" | glob) }}
 # {{ . }}: {{ include . | sha256sum }}
 {{- end }}
 
