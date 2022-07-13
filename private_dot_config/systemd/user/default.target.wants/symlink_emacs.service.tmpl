@@ -1,0 +1,3 @@
+{{ if has .chezmoi.hostname .dev_hosts -}}
+/usr/lib/systemd/user/emacs.service
+{{- end }}
