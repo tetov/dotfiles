@@ -109,8 +109,7 @@
 
 ;; break lines automatically
 (setq-default fill-column 80)
-(add-hook 'markdown-mode-hook #'auto-fill-mode)
-
+(add-hook 'text-mode-hook 'auto-fill-mode)
 ;;org
 (after! org
   ;; files
@@ -133,6 +132,7 @@
                                  "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
                                 ("w" "org-protocol" entry (file org-default-notes-file)
                                  "* TODO Review %c\n%U\n" :immediate-finish t)))
+
   (defun bh/remove-empty-drawer-on-clock-out ()
     "Remove empty LOGBOOK drawers on clock out"
     (interactive)
@@ -140,16 +140,13 @@
       (beginning-of-line 0)
       (org-remove-empty-drawer-at "LOGBOOK" (point))))
 
-  (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
+  (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out)
 
   ;; todo setup
   (setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "WAIT(w)" "|" "DONE(d!)" "CANC(c!)")))
   (setq org-enforce-todo-dependencies t)
   (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-use-fast-todo-selection t)
-  (add-hook! 'org-mode-hook
-    (auto-fill-mode 1)
-    (set-fill-column 80))
 
   ;; clocks
   ;; Resume clocking task when emacs is restarted
@@ -160,8 +157,6 @@
   (setq org-clock-in-resume t)
   ;; Change tasks to NEXT when clocking in
   (setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
-  ;; Separate drawers for clocking and logs
-  (setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
   ;; Save clock data and state changes and notes in the LOGBOOK drawer
   (setq org-clock-into-drawer t)
   ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
@@ -221,7 +216,7 @@ as the default task."
       ;;
       (save-restriction
         (widen)
-                                        ; Find the tags on the current task
+        ; Find the tags on the current task
         (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
             (org-clock-in '(16))
           (bh/clock-in-organization-task-as-default)))))
@@ -277,7 +272,6 @@ as the default task."
 
   (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
-
                                         ; Tags with fast selection keys
   (setq org-tag-alist (quote ((:startgroup)
                               ("@work" . ?o)
@@ -287,8 +281,9 @@ as the default task."
                               )))
 
   ;; projects setup
-  ;;
-  ;;
+
+(add-to-list 'org-tags-exclude-from-inheritance "project")
+
   (defun bh/is-project-p ()
     "Any task with a todo keyword subtask"
     (save-restriction
@@ -383,12 +378,6 @@ Callers of this function already widen the buffer view."
 (after! org-agenda
   (setq org-agenda-include-diary t))
 
-;; git auto commit mode
-(setq-default gac-debounce-interval 90
-              gac-automatically-add-new-files-p t
-              gac-automatically-push-p t
-              gac-silent-message-p t)
-
 ;; backup
 (use-package! backup-each-save)
 (setq backup-each-save-mirror-location (format "~/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
@@ -412,7 +401,6 @@ Callers of this function already widen the buffer view."
 
 ;; highlight indentation
 (setq highlight-indent-guides-method 'fill)
-;; (setq highlight-indent-guides-auto-even-face-perc 5)
 
 ;; ansible
 (add-hook 'ansible-hook #'lsp!)
@@ -423,7 +411,7 @@ Callers of this function already widen the buffer view."
 
 ;; spelling
 ;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
-(with-eval-after-load 'ispell
+(after! ispell
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
   ;; dictionary' even though multiple dictionaries will be configured
   ;; in next line.
