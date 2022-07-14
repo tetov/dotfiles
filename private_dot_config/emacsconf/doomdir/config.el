@@ -111,9 +111,10 @@
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook 'auto-fill-mode)
 ;;org
-(after! org
+(require 'bh)
+(after! (org org-roam)
   ;; files
-  (setq org-agenda-files (directory-files-recursively org-directory "^[[:alnum:]].*\\.org$"))
+  (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
   (setq org-default-notes-file (concat org-directory "/refile.org"))
   ;; general
   (setq org-startup-folded t)
@@ -126,19 +127,15 @@
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
   (setq org-refile-use-outline-path 'file)
   (setq org-outline-path-complete-in-steps nil)
+
   ;; capture templates
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
   (setq org-capture-templates `(("t" "Todo" entry (file org-default-notes-file)
                                  "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
                                 ("w" "org-protocol" entry (file org-default-notes-file)
                                  "* TODO Review %c\n%U\n" :immediate-finish t)))
-
-  (defun bh/remove-empty-drawer-on-clock-out ()
-    "Remove empty LOGBOOK drawers on clock out"
-    (interactive)
-    (save-excursion
-      (beginning-of-line 0)
-      (org-remove-empty-drawer-at "LOGBOOK" (point))))
+  ;; create id's for all captures
+  (add-hook 'org-capture-mode-hook #'org-id-get-create)
 
   (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out)
 
@@ -172,107 +169,15 @@
   ;; Include current clocking task in clock reports
   (setq org-clock-report-include-clocking-task t)
 
-  (defun bh/clock-in-to-next (kw)
-    "Switch a task from TODO to NEXT when clocking in.
-Skips capture tasks, projects, and subprojects.
-Switch projects and subprojects from NEXT back to TODO"
-    (when (not (and (boundp 'org-capture-mode) org-capture-mode))
-      (cond
-       ((and (member (org-get-todo-state) (list "TODO"))
-             (bh/is-task-p))
-        "NEXT")
-       ((and (member (org-get-todo-state) (list "NEXT"))
-             (bh/is-project-p))
-        "TODO"))))
-
-  (defun bh/find-project-task ()
-    "Move point to the parent (project) task if any"
-    (save-restriction
-      (widen)
-      (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
-        (while (org-up-heading-safe)
-          (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
-            (setq parent-task (point))))
-        (goto-char parent-task)
-        parent-task)))
-
-  (defun bh/punch-in (arg)
-    "Start continuous clocking and set the default task to the
-selected task.  If no task is selected set the Organization task
-as the default task."
-    (interactive "p")
-    (setq bh/keep-clock-running t)
-    (if (equal major-mode 'org-agenda-mode)
-        ;;
-        ;; We're in the agenda
-        ;;
-        (let* ((marker (org-get-at-bol 'org-hd-marker))
-               (tags (org-with-point-at marker (org-get-tags-at))))
-          (if (and (eq arg 4) tags)
-              (org-agenda-clock-in '(16))
-            (bh/clock-in-organization-task-as-default)))
-      ;;
-      ;; We are not in the agenda
-      ;;
-      (save-restriction
-        (widen)
-        ; Find the tags on the current task
-        (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
-            (org-clock-in '(16))
-          (bh/clock-in-organization-task-as-default)))))
-
-  (defun bh/punch-out ()
-    (interactive)
-    (setq bh/keep-clock-running nil)
-    (when (org-clock-is-active)
-      (org-clock-out))
-    (org-agenda-remove-restriction-lock))
-
-  (defun bh/clock-in-default-task ()
-    (save-excursion
-      (org-with-point-at org-clock-default-task
-        (org-clock-in))))
-
-  (defun bh/clock-in-parent-task ()
-    "Move point to the parent (project) task if any and clock in"
-    (let ((parent-task))
-      (save-excursion
-        (save-restriction
-          (widen)
-          (while (and (not parent-task) (org-up-heading-safe))
-            (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
-              (setq parent-task (point))))
-          (if parent-task
-              (org-with-point-at parent-task
-                (org-clock-in))
-            (when bh/keep-clock-running
-              (bh/clock-in-default-task)))))))
-
   (defvar bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
 
-  (defun bh/clock-in-organization-task-as-default ()
-    (interactive)
-    (org-with-point-at (org-id-find bh/organization-task-id 'marker)
-      (org-clock-in '(16))))
-
-  (defun bh/clock-out-maybe ()
-    (when (and bh/keep-clock-running
-               (not org-clock-clocking-in)
-               (marker-buffer org-clock-default-task)
-               (not org-clock-resolving-clocks-due-to-idleness))
-      (bh/clock-in-parent-task)))
-
-  (add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append)
+  (add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
   ;;
   ;; refile tweaks
   ;; http://doc.norang.ca/org-mode.html#RefileSetup
-  (defun bh/verify-refile-target ()
-    "Exclude todo keywords with a done state from refile targets"
-    (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-
   (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
-                                        ; Tags with fast selection keys
+  ;; Tags with fast selection keys
   (setq org-tag-alist (quote ((:startgroup)
                               ("@work" . ?o)
                               ("@home" . ?H)
@@ -281,61 +186,7 @@ as the default task."
                               )))
 
   ;; projects setup
-
 (add-to-list 'org-tags-exclude-from-inheritance "project")
-
-  (defun bh/is-project-p ()
-    "Any task with a todo keyword subtask"
-    (save-restriction
-      (widen)
-      (let ((has-subtask)
-            (subtree-end (save-excursion (org-end-of-subtree t)))
-            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-        (save-excursion
-          (forward-line 1)
-          (while (and (not has-subtask)
-                      (< (point) subtree-end)
-                      (re-search-forward "^\*+ " subtree-end t))
-            (when (member (org-get-todo-state) org-todo-keywords-1)
-              (setq has-subtask t))))
-        (and is-a-task has-subtask))))
-
-  (defun bh/is-project-subtree-p ()
-    "Any task with a todo keyword that is in a project subtree.
-Callers of this function already widen the buffer view."
-    (let ((task (save-excursion (org-back-to-heading 'invisible-ok)
-                                (point))))
-      (save-excursion
-        (bh/find-project-task)
-        (if (equal (point) task)
-            nil
-          t))))
-
-  (defun bh/is-task-p ()
-    "Any task with a todo keyword and no subtask"
-    (save-restriction
-      (widen)
-      (let ((has-subtask)
-            (subtree-end (save-excursion (org-end-of-subtree t)))
-            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-        (save-excursion
-          (forward-line 1)
-          (while (and (not has-subtask)
-                      (< (point) subtree-end)
-                      (re-search-forward "^\*+ " subtree-end t))
-            (when (member (org-get-todo-state) org-todo-keywords-1)
-              (setq has-subtask t))))
-        (and is-a-task (not has-subtask)))))
-
-  (defun bh/is-subproject-p ()
-    "Any task which is a subtask of another project"
-    (let ((is-subproject)
-          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-      (save-excursion
-        (while (and (not is-subproject) (org-up-heading-safe))
-          (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
-            (setq is-subproject t))))
-      (and is-a-task is-subproject)))
 
   ;; archiving
   (setq org-archive-mark-done nil)
@@ -343,16 +194,12 @@ Callers of this function already widen the buffer view."
   ;; links
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-  )
-
 ;; org-roam
-(after! org-roam
-
-  (setq org-roam-directory (concat org-directory "/roam")
-        org-roam-db-location (concat org-roam-directory "/db/org-roam.db")
+  (setq org-roam-directory org-directory)
+  (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
         ;; roam template
-        org-roam-capture-templates
-        '(("d" "default" plain
+  (setq org-roam-capture-templates
+        '(("n" "note" plain
            "%?"
            :if-new (file+head "main/${slug}.org"
                               "#+title: ${title}\n")
@@ -367,7 +214,8 @@ Callers of this function already widen the buffer view."
            :if-new (file+head "rp/${slug}.org"
                               "#+FILETAGS: :dnd5e:eat-flay-prowl:\n#+title: ${title}\n")
            :immediate-finish t
-           :unnarrowed t))))
+           :unnarrowed t)))
+)
 
 (use-package! org-roam-bibtex
   :after org-roam
