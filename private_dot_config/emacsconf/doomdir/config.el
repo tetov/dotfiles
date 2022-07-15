@@ -1,3 +1,4 @@
+
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -93,10 +94,10 @@
 (evil-global-set-key 'motion "¤" 'evil-end-of-line)
 
 ;; splits
-(evil-global-set-key 'normal (kbd "C-h") 'evil-window-left)
-(evil-global-set-key 'normal (kbd "C-l") 'evil-window-right)
-(evil-global-set-key 'normal (kbd "C-k") 'evil-window-up)
-(evil-global-set-key 'normal (kbd "C-j") 'evil-window-down)
+;; (evil-global-set-key 'normal (kbd "C-h") 'evil-window-left)
+;; (evil-global-set-key 'normal (kbd "C-l") 'evil-window-right)
+;; (evil-global-set-key 'normal (kbd "C-k") 'evil-window-up)
+;; (evil-global-set-key 'normal (kbd "C-j") 'evil-window-down)
 
 ;; paragraphs
 (evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
@@ -110,6 +111,7 @@
 ;; break lines automatically
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook 'auto-fill-mode)
+
 ;;org
 (require 'bh)
 (after! (org org-roam)
@@ -130,10 +132,9 @@
 
   ;; capture templates
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
-  (setq org-capture-templates `(("t" "Todo" entry (file org-default-notes-file)
-                                 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-                                ("w" "org-protocol" entry (file org-default-notes-file)
-                                 "* TODO Review %c\n%U\n" :immediate-finish t)))
+  (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
+                                 "* TODO %?\n\%U\n"
+                                 :clock-in t :clock-resume t)))
   ;; create id's for all captures
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
 
@@ -144,6 +145,7 @@
   (setq org-enforce-todo-dependencies t)
   (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-use-fast-todo-selection t)
+  (setq org-log-state-notes-into-drawer t)
 
   ;; clocks
   ;; Resume clocking task when emacs is restarted
@@ -169,7 +171,7 @@
   ;; Include current clocking task in clock reports
   (setq org-clock-report-include-clocking-task t)
 
-  (defvar bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
+  (setq bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
 
   (add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
   ;;
@@ -186,7 +188,7 @@
                               )))
 
   ;; projects setup
-(add-to-list 'org-tags-exclude-from-inheritance "project")
+  (add-to-list 'org-tags-exclude-from-inheritance "project")
 
   ;; archiving
   (setq org-archive-mark-done nil)
@@ -194,28 +196,67 @@
   ;; links
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-;; org-roam
+  ;; org-roam
   (setq org-roam-directory org-directory)
   (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
-        ;; roam template
+  ;; roam template
   (setq org-roam-capture-templates
-        '(("n" "note" plain
-           "%?"
-           :if-new (file+head "main/${slug}.org"
-                              "#+title: ${title}\n")
+        '(("n" "note" plain "%?"
+           :if-new (file+head "notes/${slug}.org"
+                              ":PROPERTIES:
+:CATEGORY: note
+:END:
+#+title: ${title}
+%U")
+           :immediate-finish t
+           :unnarrowed t)
+          ("p" "(meta) project" plain  "%?"
+           :if-new (file+head "${slug}.org"
+                              ":PROPERTIES:
+:CATEGORY: project
+:END:
+#+title: ${title}
+%U")
+           :immediate-finish t
+           :unnarrowed t)
+          ("m" "meeting" plain  "%?"
+           :if-new (file+head "meetings/%<%Y%m%d%>-${slug}.org"
+                              ":PROPERTIES:
+:CATEGORY: meeting
+:END:
+#+title: ${title}
+%U")
            :immediate-finish t
            :unnarrowed t)
           ("r" "reference" plain "%?"
-           :if-new (file+head "reference/${slug}.org"
-                              "#+title: ${title}\n")
+           :if-new (file+head "refs/${slug}.org"
+                              ":PROPERTIES:
+:CATEGORY: reference
+:ROAM_REFS: %x
+:END:
+#+title: ${title}
+%U")
            :immediate-finish t
            :unnarrowed t)
-          ("p" "rp notes (Eat Flay Prowl)" plain "%?"
+          ("o" "rp notes (Eat Flay Prowl)" plain "%?"
            :if-new (file+head "rp/${slug}.org"
-                              "#+FILETAGS: :dnd5e:eat-flay-prowl:\n#+title: ${title}\n")
+                              ":PROPERTIES:
+:CATEGORY: rp
+:END:
+#+filetags: :dnd5e:eat-flay-prowl:
+#+title: ${title}
+%U")
            :immediate-finish t
            :unnarrowed t)))
-)
+
+(setq org-roam-capture-ref-templates '(("r" "ref" plain "%?" :target
+  (file+head "refs/${slug}.org" ":PROPERTIES:
+:CATEGORY: reference
+:END:
+#+title: ${title}
+%U")
+  :unnarrowed t))
+  ))
 
 (use-package! org-roam-bibtex
   :after org-roam
@@ -264,11 +305,13 @@
   ;; dictionary' even though multiple dictionaries will be configured
   ;; in next line.
   (setenv "LANG" "en_US.UTF-8")
-  (setq ispell-dictionary "sv_SE,en_GB,en_US")
+  (setq ispell-dictionary "sv_SE,en_GB")
   ;; ispell-set-spellchecker-params has to be called
   ;; before ispell-hunspell-add-multi-dic will work
   (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "sv_SE,en_GB,en_US")
+  (ispell-hunspell-add-multi-dic "sv_SE,en_GB")
+  (setq ispell-local-dictionary-alist
+        '(("sv_SE,en_GB", "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
   ;; For saving words to the personal dictionary, don't infer it from
   ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
   (setq ispell-personal-dictionary "~/.hunspell_personal")
