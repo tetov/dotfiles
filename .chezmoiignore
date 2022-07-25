@@ -3,6 +3,7 @@ LICENSE
 
 {{- if not (has .chezmoi.hostname .dev_hosts)}}
 .config/vim/plugin
+.sylpheed-2.0
 {{- end }}
 
 gnome_extension_sync.json
