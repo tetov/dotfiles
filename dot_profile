@@ -28,6 +28,7 @@ export VISUAL
 
 alias e="$EDITOR"
 alias v="$VISUAL"
+alias v="$VISUAL"
 
 export PAGER=less
 
@@ -59,3 +60,7 @@ export SPACEMACSDIR=$XDG_CONFIG_HOME/emacsconf/spacemacsdir
 export DOOMDIR=$XDG_CONFIG_HOME/emacsconf/doomdir
 
 # vim: set ft=sh ts=2
+
+# Local Variables:
+# mode: sh
+# End:
