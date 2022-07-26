@@ -320,6 +320,10 @@
   (unless (file-exists-p ispell-personal-dictionary)
     (write-region "" nil ispell-personal-dictionary nil 0)))
 
+;; mail
+(setq mail-user-agent 'mu4e-user-agent)
+(set-email-account! "protonmail" '(()) )
+
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
