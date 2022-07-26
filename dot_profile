@@ -28,7 +28,7 @@ export VISUAL
 
 alias e="$EDITOR"
 alias v="$VISUAL"
-echo "$VISUAL" | grep "emacsclient" && alias vq="$VISUAL -n"
+echo "$VISUAL" | grep -q "emacsclient" && alias vq="$VISUAL -n"
 
 export PAGER=less
 
