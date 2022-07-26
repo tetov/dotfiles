@@ -7,18 +7,18 @@ SSLVersion TLSv1.2
 SSLType STARTTLS
 CertificateFile ~/.config/protonmail/bridge/cert.pem
 
-IMAPStore tetov-remote
-Account tetov
+IMAPStore protonmail-remote
+Account protonmail
 
-MaildirStore tetov-local
+MaildirStore protonmail-local
 Path ~/.local/share/mail/protonmail/
 Inbox ~/.local/share/mail/protonmail/INBOX
 SubFolders Verbatim
 
-Channel tetov
-Far :tetov-remote:
-Near :tetov-local:
-Patterns * !"All Mail"
+Channel protonmail
+Far :protonmail-remote:
+Near :protonmail-local:
+Patterns *
 Create Both
 Expunge Both
 SyncState *
