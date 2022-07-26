@@ -1,0 +1,48 @@
+IMAPAccount protonmail
+Host 127.0.0.1
+Port 1143
+User anton@tetov.se
+PassCmd "op item get eh4sgfhh2dhyehbo2faxtlbxdy --field label=password-$HOSTNAME"
+SSLVersion TLSv1.2
+SSLType STARTTLS
+CertificateFile ~/.config/protonmail/bridge/cert.pem
+
+IMAPStore tetov-remote
+Account tetov
+
+MaildirStore tetov-local
+Path ~/.local/share/mail/protonmail/
+Inbox ~/.local/share/mail/protonmail/INBOX
+SubFolders Verbatim
+
+Channel tetov
+Far :tetov-remote:
+Near :tetov-local:
+Patterns * !"All Mail"
+Create Both
+Expunge Both
+SyncState *
+
+IMAPAccount lth
+Host imap.lu.se
+Port 993
+User an6802jo@lu.se
+PassCmd "op item get tu2huwrewbdlbcqf6ldwjiojoi --field label=password"
+SSLType IMAPS
+# SSLVersion TLSv1.2
+
+IMAPStore lth-remote
+Account lth
+
+MaildirStore lth-local
+Path ~/.local/share/mail/lth/
+Inbox ~/.local/share/mail/lth/INBOX
+SubFolders Verbatim
+
+Channel lth
+Far :lth-remote:
+Near :lth-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
