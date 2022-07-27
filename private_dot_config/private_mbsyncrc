@@ -19,7 +19,7 @@ Channel protonmail
 Far :protonmail-remote:
 Near :protonmail-local:
 Patterns *
-Patterns !'All Mail'
+Patterns '!All Mail'
 Create Both
 Expunge Both
 SyncState *
@@ -44,9 +44,9 @@ Channel lth
 Far :lth-remote:
 Near :lth-local:
 Patterns *
-Patterns !'Junk Email'
-Patterns !'RSS Subscriptions'
-Patterns !'Sync Issues'
+Patterns '!Conversation History'
+Patterns '!RSS Subscriptions'
+Patterns '!Sync Issues'
 Patterns !Calendar
 Patterns !Contacts
 Patterns !Journal
