@@ -59,6 +59,9 @@ export CUPS_USER=an6802jo@lu.se
 export SPACEMACSDIR=$XDG_CONFIG_HOME/emacsconf/spacemacsdir
 export DOOMDIR=$XDG_CONFIG_HOME/emacsconf/doomdir
 
+# queue dir for msmtp
+export QUEUEDIR=$XDG_DATA_HOME/mail/msmtpqueue
+
 # vim: set ft=sh ts=2
 
 # Local Variables:
