@@ -1,5 +1,5 @@
-{{ if has .chezmoi.hostname .dev_hosts }}
-#/bin/sh
+{{ if has .chezmoi.hostname .dev_hosts -}}
+#!/bin/sh
 
 # gnome_extension_sync.json hash: {{ include "gnome_extension_sync.json" | sha256sum }}
 dconf write /org/gnome/shell/extensions/extensions-sync/provider "'Local'"

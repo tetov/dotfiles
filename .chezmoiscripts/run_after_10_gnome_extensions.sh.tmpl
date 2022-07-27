@@ -1,5 +1,5 @@
-{{- if has .chezmoi.hostname .dev_hosts }}
-#/bin/sh
+{{ if has .chezmoi.hostname .dev_hosts -}}
+#!/bin/sh
 
 # install gnome-shell-extensions-sync, which installs extensions itself
 ~/bin/gnome-shell-extension-installer 1486
