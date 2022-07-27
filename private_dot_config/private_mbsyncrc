@@ -45,7 +45,9 @@ Near :lth-local:
 Patterns *
 Patterns !"Conversation History"
 Patterns !"RSS Subscriptions"
+Patterns !"Sync Issues"
 Patterns !"Sync Issues/*"
+Patterns !Calendar/
 Patterns !Calendar/*
 Patterns !Contacts
 Patterns !Journal
