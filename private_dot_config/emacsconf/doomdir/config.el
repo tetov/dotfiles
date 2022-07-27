@@ -321,8 +321,51 @@
     (write-region "" nil ispell-personal-dictionary nil 0)))
 
 ;; mail
-(setq mail-user-agent 'mu4e-user-agent)
-(set-email-account! "protonmail" '(()) )
+(set-email-account! "protonmail"
+  '((mu4e-sent-folder       . "/protonmail/Sent")
+    (mu4e-drafts-folder     . "/protonmail/Drafts")
+    (mu4e-trash-folder      . "/protonmail/Trash")
+    (mu4e-refile-folder     . "/protonmail/Archive")
+    (smtpmail-smtp-user     . "anton@tetov.se")
+    (mu4e-compose-signature . "--\nAnton Tetov Johansson"))
+  t)
+
+(setq default-lth-address "anton_tetov.johansson@abm.lth.se")
+(set-email-account! "lth"
+  '((mu4e-sent-folder        . "/lth/Sent Items")
+    (mu4e-drafts-folder      . "/lth/Drafts")
+    (mu4e-trash-folder       . "/lth/Trash")
+    (mu4e-refile-folder      . "/lth/Archive")
+    (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
+    (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se" "anton_tetov.johansson@control.lth.se" "anton.johansson@abm.lth.se" "anton.johansson@control.lth.se"))
+    (mu4e-compose-signature  . "--
+Best regards,
+Anton Tetov Johansson
+
+Project assistant
+Lund University - LTH
+Department of Architecture and Built Environment
+& Department of Automatic Control
+
+Phone no: +46 70-363 56 67
+
+https://abm.lth.se/
+https://control.lth.se/"))
+  nil)
+
+(after! mu4e
+;; mail box updated using systemd timer, so mail command is set to true
+;; mu4e still indexes again but that should be fine.
+(setq mu4e-get-mail-command "true")
+;;(setq mu4e-compose--org-msg-toggle-next nil)
+
+(setq sendmail-program "/usr/bin/msmtp"
+      send-mail-function #'smtpmail-send-it
+      message-sendmail-f-is-evil t
+      message-sendmail-extra-arguments '("--read-envelope-from")
+      message-send-mail-function #'message-send-mail-with-sendmail)
+
+(setq mu4e-headers-skip-duplicates t))
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens

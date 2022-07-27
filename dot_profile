@@ -62,6 +62,9 @@ export DOOMDIR=$XDG_CONFIG_HOME/emacsconf/doomdir
 # queue dir for msmtp
 export QUEUEDIR=$XDG_DATA_HOME/mail/msmtpqueue
 
+# onepassword/1password
+OP_BIOMETRIC_UNLOCK_ENABLED=true
+
 # vim: set ft=sh ts=2
 
 # Local Variables:

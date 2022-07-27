@@ -8,7 +8,7 @@ port 1025
 from anton@tetov.se
 auth on
 user anton@tetov.se
-passwordeval "op item get eh4sgfhh2dhyehbo2faxtlbxdy --field label=password-$HOSTNAME"
+passwordeval "secret-tool lookup protonmail_user anton@tetov.se"
 tls_trust_file ~/.config/protonmail/bridge/cert.pem
 
 account lth
@@ -17,6 +17,6 @@ port 587
 from anton_tetov.johansson@abm.lth.se
 auth on
 user an6802jo@lu.se
-passwordeval "op item get tu2huwrewbdlbcqf6ldwjiojoi --field label=password"
+passwordeval "secret-tool lookup org LTH smtp_user an6802jo@lu.se"
 
 account default : protonmail

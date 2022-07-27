@@ -2,7 +2,7 @@ IMAPAccount protonmail
 Host 127.0.0.1
 Port 1143
 User anton@tetov.se
-PassCmd "op item get eh4sgfhh2dhyehbo2faxtlbxdy --field label=password-$HOSTNAME"
+PassCmd "secret-tool lookup protonmail_user anton@tetov.se"
 SSLVersion TLSv1.2
 SSLType STARTTLS
 CertificateFile ~/.config/protonmail/bridge/cert.pem
@@ -27,7 +27,7 @@ IMAPAccount lth
 Host imap.lu.se
 Port 993
 User an6802jo@lu.se
-PassCmd "op item get tu2huwrewbdlbcqf6ldwjiojoi --field label=password"
+PassCmd "secret-tool lookup org LTH imap_user an6802jo@lu.se"
 SSLType IMAPS
 # SSLVersion TLSv1.2
 
