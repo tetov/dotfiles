@@ -1,0 +1,13 @@
+{{ if has .chezmoi.hostname .dev_hosts -}}
+#!/bin/zsh
+
+mu init --maildir=~/.local/share/mail \
+  --my-address=anton@tetov.{se,xyz}   \
+  --my-address={s,a,e,ln}@tetov.se    \
+  --my-address=tetov@{proton,pm}.me   \
+  --my-address=tetov@protonmail.com   \
+  --my-address=an6802jo@lu.se         \
+  --my-address=anton{,_tetov}.johansson@{abm,arch,control}.lth.se
+mu index
+
+{{- end }}
