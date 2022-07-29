@@ -18,7 +18,7 @@ SubFolders Verbatim
 Channel protonmail
 Far :protonmail-remote:
 Near :protonmail-local:
-Patterns * !"All Mail"
+Patterns * INBOX !"All Mail"
 Create Both
 Expunge Both
 SyncState *
@@ -42,7 +42,7 @@ SubFolders Verbatim
 Channel lth
 Far :lth-remote:
 Near :lth-local:
-Patterns % !"Conversation History" !"RSS Subscriptions" !"Sync Issues" !Calendar !Contacts !Journal !Notes !Outbox !Tasks
+Patterns % INBOX !"Conversation History" !"RSS Subscriptions" !"Sync Issues" !Calendar !Contacts !Journal !Notes !Outbox !Tasks
 Create Both
 Expunge Both
 SyncState *
