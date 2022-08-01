@@ -317,7 +317,7 @@
   (ispell-set-spellchecker-params)
   (ispell-hunspell-add-multi-dic "sv_SE,en_GB")
   (setq ispell-local-dictionary-alist
-        '(("sv_SE,en_GB", "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
+        '(("sv_SE,en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
   ;; For saving words to the personal dictionary, don't infer it from
   ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
   (setq ispell-personal-dictionary "~/.hunspell_personal")
@@ -363,6 +363,8 @@ https://control.lth.se/"))
   ;; mu4e still indexes again but that should be fine.
   (setq mu4e-get-mail-command "true")
   ;;(setq mu4e-compose--org-msg-toggle-next nil)
+
+  (setq +org-capture-emails-file "refile.org")
 
   (setq sendmail-program "/usr/bin/msmtp"
         send-mail-function #'smtpmail-send-it
