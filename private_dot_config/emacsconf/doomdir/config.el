@@ -78,6 +78,11 @@
 
 (add-load-path! "../lisp")
 
+
+;; open in new tab instead of same tab..
+(setq browse-url-new-window-flag t)
+(setq browse-url-firefox-new-window-is-tab t)
+
 (setq doom-localleader-key ",")
 
 ;; vimify
@@ -133,7 +138,9 @@
   ;; capture templates
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
-                                 "* TODO %?\n\%U\n"
+                                 "* TODO %?
+%U
+%a"
                                  :clock-in t :clock-resume t)))
   ;; create id's for all captures
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
@@ -249,14 +256,14 @@
            :immediate-finish t
            :unnarrowed t)))
 
-(setq org-roam-capture-ref-templates '(("r" "ref" plain "%?" :target
-  (file+head "refs/${slug}.org" ":PROPERTIES:
+  (setq org-roam-capture-ref-templates '(("r" "ref" plain "%?" :target
+                                          (file+head "refs/${slug}.org" ":PROPERTIES:
 :CATEGORY: reference
 :END:
 #+title: ${title}
 %U")
-  :unnarrowed t))
-  ))
+                                          :unnarrowed t))
+        ))
 
 (use-package! org-roam-bibtex
   :after org-roam
@@ -297,7 +304,6 @@
 ;; python
 ;; use format-all, not lsp formatter
 (setq-hook! 'python-mode-hook +format-with-lsp nil)
-
 ;; spelling
 ;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
 (after! ispell
@@ -310,8 +316,8 @@
   ;; before ispell-hunspell-add-multi-dic will work
   (ispell-set-spellchecker-params)
   (ispell-hunspell-add-multi-dic "sv_SE,en_GB")
-  (add-to-list ispell-local-dictionary-alist
-        '(("sv_SE,en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
+  (setq ispell-local-dictionary-alist
+        '(("sv_SE,en_GB", "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
   ;; For saving words to the personal dictionary, don't infer it from
   ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
   (setq ispell-personal-dictionary "~/.hunspell_personal")
@@ -322,24 +328,23 @@
 
 ;; mail
 (set-email-account! "protonmail"
-  '((mu4e-sent-folder       . "/protonmail/Sent")
-    (mu4e-drafts-folder     . "/protonmail/Drafts")
-    (mu4e-trash-folder      . "/protonmail/Trash")
-    (mu4e-refile-folder     . "/protonmail/Archive")
-    (smtpmail-smtp-user     . "anton@tetov.se")
-    (mu4e-compose-signature . "--\nAnton Tetov Johansson"))
-  t)
+                    '((mu4e-sent-folder       . "/protonmail/Sent")
+                      (mu4e-drafts-folder     . "/protonmail/Drafts")
+                      (mu4e-trash-folder      . "/protonmail/Trash")
+                      (mu4e-refile-folder     . "/protonmail/Archive")
+                      (smtpmail-smtp-user     . "anton@tetov.se")
+                      (mu4e-compose-signature . "Anton Tetov Johansson"))
+                    t)
 
 (setq default-lth-address "anton_tetov.johansson@abm.lth.se")
 (set-email-account! "lth"
-  '((mu4e-sent-folder        . "/lth/Sent Items")
-    (mu4e-drafts-folder      . "/lth/Drafts")
-    (mu4e-trash-folder       . "/lth/Trash")
-    (mu4e-refile-folder      . "/lth/Archive")
-    (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
-    (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se" "anton_tetov.johansson@control.lth.se" "anton.johansson@abm.lth.se" "anton.johansson@control.lth.se"))
-    (mu4e-compose-signature  . "--
-Best regards,
+                    '((mu4e-sent-folder        . "/lth/Sent Items")
+                      (mu4e-drafts-folder      . "/lth/Drafts")
+                      (mu4e-trash-folder       . "/lth/Trash")
+                      (mu4e-refile-folder      . "/lth/Archive")
+                      (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
+                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se" "anton_tetov.johansson@control.lth.se" "anton.johansson@abm.lth.se" "anton.johansson@control.lth.se"))
+                      (mu4e-compose-signature  . "Best regards,
 Anton Tetov Johansson
 
 Project assistant
@@ -351,21 +356,27 @@ Phone no: +46 70-363 56 67
 
 https://abm.lth.se/
 https://control.lth.se/"))
-  nil)
+                    nil)
 
 (after! mu4e
-;; mail box updated using systemd timer, so mail command is set to true
-;; mu4e still indexes again but that should be fine.
-(setq mu4e-get-mail-command "true")
-;;(setq mu4e-compose--org-msg-toggle-next nil)
+  ;; mail box updated using systemd timer, so mail command is set to true
+  ;; mu4e still indexes again but that should be fine.
+  (setq mu4e-get-mail-command "true")
+  ;;(setq mu4e-compose--org-msg-toggle-next nil)
 
-(setq sendmail-program "/usr/bin/msmtp"
-      send-mail-function #'smtpmail-send-it
-      message-sendmail-f-is-evil t
-      message-sendmail-extra-arguments '("--read-envelope-from")
-      message-send-mail-function #'message-send-mail-with-sendmail)
+  (setq sendmail-program "/usr/bin/msmtp"
+        send-mail-function #'smtpmail-send-it
+        message-sendmail-f-is-evil t
+        message-sendmail-extra-arguments '("--read-envelope-from")
+        message-send-mail-function #'message-send-mail-with-sendmail)
 
-(setq mu4e-headers-skip-duplicates t))
+     (add-to-list 'mu4e-bookmarks
+       ;; add bookmark for recent messages on the Mu mailing list.
+       '( :name "allinboxes"
+          :key  ?i
+          :query "maildir:/lth/INBOX OR maildir:/protonmail/INBOX"))
+  (setq message-citation-line-format "On %Y-%m-%d at %R %Z, %f wrote:")
+  (setq mu4e-headers-skip-duplicates t))
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
