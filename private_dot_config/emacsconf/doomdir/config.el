@@ -78,6 +78,8 @@
 
 (add-load-path! "../lisp")
 
+(map! "<f11>" #'org-agenda)
+(map! "<f12>" #'mu4e)
 
 ;; open in new tab instead of same tab..
 (setq browse-url-new-window-flag t)
@@ -270,9 +272,21 @@
   :config
   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
+;; agenda
 (require 'sv-kalender)
 (after! org-agenda
-  (setq org-agenda-include-diary t))
+  (setq org-agenda-include-diary t)
+  (setq org-agenda-dim-blocked-tasks nil)
+
+  ;; Compact the block agenda view
+
+  ;; keep agenda view alive
+  (setq org-agenda-sticky t)
+  (setq org-agenda-span 14)
+  (setq org-agenda-start-with-log-mode t)
+
+  (setq org-agenda-clock-consistency-checks :max-duration "7:00" :min-duration 0 :max-gap 5 :gap-ok-around
+        ("4:00" "13:00")))
 
 ;; backup
 (use-package! backup-each-save)
@@ -362,7 +376,9 @@ https://control.lth.se/"))
   ;; mail box updated using systemd timer, so mail command is set to true
   ;; mu4e still indexes again but that should be fine.
   (setq mu4e-get-mail-command "true")
-  ;;(setq mu4e-compose--org-msg-toggle-next nil)
+
+  ;; disable org-msg
+  (setq mu4e-compose--org-msg-toggle-next nil)
 
   (setq +org-capture-emails-file "refile.org")
 
@@ -372,13 +388,14 @@ https://control.lth.se/"))
         message-sendmail-extra-arguments '("--read-envelope-from")
         message-send-mail-function #'message-send-mail-with-sendmail)
 
-     (add-to-list 'mu4e-bookmarks
-       ;; add bookmark for recent messages on the Mu mailing list.
-       '( :name "allinboxes"
-          :key  ?i
-          :query "maildir:/lth/INBOX OR maildir:/protonmail/INBOX"))
+  (add-to-list 'mu4e-bookmarks
+               ;; add bookmark for recent messages on the Mu mailing list.
+               '( :name "allinboxes"
+                  :key  ?i
+                  :query "maildir:/lth/INBOX OR maildir:/protonmail/INBOX"))
   (setq message-citation-line-format "On %Y-%m-%d at %R %Z, %f wrote:")
-  (setq mu4e-headers-skip-duplicates t))
+  (setq mu4e-headers-skip-duplicates nil)
+  (setq mu4e-change-filenames-when-moving t))
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
