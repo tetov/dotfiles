@@ -42,7 +42,7 @@ SubFolders Verbatim
 Channel lth
 Far :lth-remote:
 Near :lth-local:
-Patterns % !"Conversation History" !"RSS Subscriptions" !"Sync Issues" !Calendar !Contacts !Journal !Notes !Outbox !Tasks
+Patterns % INBOX !"Conversation History" !"RSS Subscriptions" !"Sync Issues" !Calendar !Contacts !Journal !Notes !Outbox !Tasks
 Create Both
 Expunge Both
 SyncState *
