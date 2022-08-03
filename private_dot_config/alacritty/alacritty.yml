@@ -10,8 +10,7 @@ shell:
   args:
     - --login
     - -c
-    # -A makes new-session behave like attach-session if session-name exists
-    - "tmux new-session -A -s 'alacritty'"
+    - "tmux attach-session || tmux new-session"
 
 # Base16 Default Dark - alacritty color config
 # Chris Kempson (http://chriskempson.com)
