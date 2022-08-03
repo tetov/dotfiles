@@ -6,13 +6,12 @@ bell:
   duration: 250
 
 shell:
-  program: /usr/bin/tmux
+  program: /usr/bin/zsh
   args:
-    - new-session
-    - -A
-    - -D
-    - -s
-    - main
+    - --login
+    - -c
+    # -A makes new-session behave like attach-session if session-name exists
+    - "tmux new-session -A -s 'alacritty'"
 
 # Base16 Default Dark - alacritty color config
 # Chris Kempson (http://chriskempson.com)
