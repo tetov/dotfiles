@@ -140,17 +140,20 @@
   ;; capture templates
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
-                                 "* TODO %?
-%U
-%a"
-                                 :clock-in t :clock-resume t)))
+                                 "* TODO %?\%U\%a" :clock-in t :clock-resume t)
+                                ("m" "Meeting" entry (file org-default-notes-file)
+                                 "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+                                ("p" "Phone call" entry (file org-default-notes-file)
+                                 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)))
+
   ;; create id's for all captures
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
 
   (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out)
 
   ;; todo setup
-  (setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "WAIT(w)" "|" "DONE(d!)" "CANC(c!)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "|" "DONE(d!)")
+                            (sequence "WAIT(w@/!)" "|" "CANC(c@/!)" "MEETING" "PHONE")))
   (setq org-enforce-todo-dependencies t)
   (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-use-fast-todo-selection t)
@@ -285,8 +288,10 @@
   (setq org-agenda-span 14)
   (setq org-agenda-start-with-log-mode t)
 
-  (setq org-agenda-clock-consistency-checks :max-duration "7:00" :min-duration 0 :max-gap 5 :gap-ok-around
-        ("4:00" "13:00")))
+  (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
+                                              :min-duration 0
+                                              :max-gap 5
+                                              :gap-ok-around ("4:00" "13:00"))))
 
 ;; backup
 (use-package! backup-each-save)
