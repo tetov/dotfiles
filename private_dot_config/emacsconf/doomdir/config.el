@@ -400,7 +400,11 @@ https://control.lth.se/"))
                   :query "maildir:/lth/INBOX OR maildir:/protonmail/INBOX"))
   (setq message-citation-line-format "On %Y-%m-%d at %R %Z, %f wrote:")
   (setq mu4e-headers-skip-duplicates nil)
-  (setq mu4e-change-filenames-when-moving t))
+  (setq mu4e-change-filenames-when-moving t)
+
+  ;; ask for context when new message doesn't match context (i.e. new message)
+  (setq mu4e-compose-context-policy 'ask)
+  )
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
