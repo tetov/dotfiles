@@ -39,10 +39,19 @@ Path ~/.local/share/mail/lth/
 Inbox ~/.local/share/mail/lth/INBOX
 SubFolders Verbatim
 
-Channel lth
+Channel lth-often
 Far :lth-remote:
 Near :lth-local:
-Patterns INBOX Drafts "Sent Items" "Deleted Items" "Junk Email" Archive "dirs/*"
+Patterns INBOX Drafts "Sent Items" "Deleted Items" "Junk Email"
+Create Both
+SyncState *
+
+Channel lth-less-often
+Patterns Archive "dirs/*"
 Create Both
 Expunge Both
 SyncState *
+
+Group lth-all
+Channel lth-often
+Channel lth-less-often
