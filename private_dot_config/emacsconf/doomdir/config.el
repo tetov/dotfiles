@@ -140,7 +140,7 @@
   ;; capture templates
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
-                                 "* TODO %?\%U\%a" :clock-in t :clock-resume t)
+                                 "* TODO %?\n%U\n%a" :clock-in t :clock-resume t)
                                 ("m" "Meeting" entry (file org-default-notes-file)
                                  "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
                                 ("p" "Phone call" entry (file org-default-notes-file)
@@ -359,7 +359,7 @@
 (set-email-account! "lth"
                     '((mu4e-sent-folder        . "/lth/Sent Items")
                       (mu4e-drafts-folder      . "/lth/Drafts")
-                      (mu4e-trash-folder       . "/lth/Trash")
+                      (mu4e-trash-folder       . "/lth/Deleted Items")
                       (mu4e-refile-folder      . "/lth/Archive")
                       (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
                       (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se" "anton_tetov.johansson@control.lth.se" "anton.johansson@abm.lth.se" "anton.johansson@control.lth.se"))
