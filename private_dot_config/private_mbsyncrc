@@ -47,12 +47,13 @@ Channel lth-often
 Far :lth-remote:
 Near :lth-local:
 Patterns INBOX Drafts
+Expunge Both
 
 Channel lth-less-often
 Far :lth-remote:
 Near :lth-local:
 Patterns Archive "Sent Items" "Junk Email" "dirs/*" "Deleted Items"
-# Expunge Both
+Expunge Both
 
 Group lth-all
 Channel lth-often
