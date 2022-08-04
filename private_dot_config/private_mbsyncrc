@@ -47,6 +47,8 @@ Create Both
 SyncState *
 
 Channel lth-less-often
+Far :lth-remote:
+Near :lth-local:
 Patterns Archive "dirs/*"
 Create Both
 Expunge Both
