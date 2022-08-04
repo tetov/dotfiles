@@ -1,0 +1,6 @@
+[Unit]
+Description=Synchronise mailboxes in group %i
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/sync_emails.sh %i
