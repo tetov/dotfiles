@@ -3,9 +3,14 @@
 MBSYNCRC="$XDG_CONFIG_HOME/mbsyncrc"
 LOCK_FILE="$XDG_CACHE_HOME/mu/xapian/flintlock"
 
-CHANNELS="lth" # channel names separated with spaces
+if [ $# -ne 0 ] ; then  # if positional args
+    GROUPS_OR_CHANNELS="$*" # all positional args
+else
+    GROUPS_OR_CHANNELS="--all"
+fi
 
-mbsync --config "$MBSYNCRC" --verbose --full "$CHANNELS"
+# shellcheck disable=SC2086
+mbsync --config "$MBSYNCRC" --verbose $GROUPS_OR_CHANNELS
 
 # Run mu index, if that doesn't work (since mu4e has locked the database) run
 # mu4e-update-index
