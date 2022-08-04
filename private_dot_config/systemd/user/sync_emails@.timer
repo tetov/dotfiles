@@ -1,0 +1,9 @@
+[Unit]
+Description=Timer to synx mailboxes in group %i
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=2m
+
+[Install]
+WantedBy=timers.target
