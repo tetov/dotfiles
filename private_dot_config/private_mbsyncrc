@@ -57,3 +57,11 @@ Patterns Archive "Sent Items" "Junk Email" "dirs/*" "Deleted Items"
 Group lth-all
 Channel lth-often
 Channel lth-less-often
+
+Group often
+Channel lth-often
+# Channel personal-often
+
+Group less-often
+Channel lth-less-often
+# Channel personal-less-often
