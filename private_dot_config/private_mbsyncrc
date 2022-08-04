@@ -37,7 +37,6 @@ SSLType IMAPS
 
 IMAPStore lth-remote
 Account lth
-UseNamespace No
 
 MaildirStore lth-local
 Path ~/.local/share/mail/lth/
