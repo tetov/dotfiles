@@ -30,6 +30,7 @@ User an6802jo@lu.se
 PassCmd "secret-tool lookup org LTH imap_user an6802jo@lu.se"
 SSLType IMAPS
 # SSLVersion TLSv1.2
+PipelineDepth 1
 
 IMAPStore lth-remote
 Account lth
@@ -49,7 +50,7 @@ SyncState *
 Channel lth-less-often
 Far :lth-remote:
 Near :lth-local:
-Patterns Archive "dirs/*"
+Patterns Archive "Sent Items" "Junk Email" "dirs/*"
 Create Both
 Expunge Both
 SyncState *
