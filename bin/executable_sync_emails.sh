@@ -21,6 +21,8 @@ do
  sleep 5
 done
 
+echo "Aquired lock"
+
 # shellcheck disable=SC2086
 mbsync --config "$MBSYNCRC" --verbose $GROUPS_OR_CHANNELS
 
@@ -34,4 +36,4 @@ else
     emacsclient -e '(mu4e-update-index)'
 fi
 
-rm -f "$LOCKFILE" # unlock
+rm -f "$MBSYNC_LOCKFILE" # unlock
