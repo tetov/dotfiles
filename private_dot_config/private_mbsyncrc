@@ -42,7 +42,7 @@ SubFolders Verbatim
 Channel lth
 Far :lth-remote:
 Near :lth-local:
-Patterns INBOX Drafts "Sent Items" "Deleted Items" "Junk Email" Archive dirs
+Patterns INBOX Drafts "Sent Items" "Deleted Items" "Junk Email" Archive "dirs/*"
 Create Both
 Expunge Both
 SyncState *
