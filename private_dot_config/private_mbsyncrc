@@ -1,3 +1,9 @@
+# Global
+CopyArrivalDate yes
+Create Both
+Sync All
+SyncState *
+
 IMAPAccount protonmail
 Host 127.0.0.1
 Port 1143
@@ -19,9 +25,7 @@ Channel protonmail
 Far :protonmail-remote:
 Near :protonmail-local:
 Patterns * !"All Mail"
-Create Both
-Expunge Both
-SyncState *
+# Expunge Both
 
 IMAPAccount lth
 Host imap.lu.se
@@ -43,16 +47,12 @@ Channel lth-often
 Far :lth-remote:
 Near :lth-local:
 Patterns INBOX Drafts
-Create Both
-SyncState *
 
 Channel lth-less-often
 Far :lth-remote:
 Near :lth-local:
 Patterns Archive "Sent Items" "Junk Email" "dirs/*" "Deleted Items"
-Create Both
 # Expunge Both
-SyncState *
 
 Group lth-all
 Channel lth-often
