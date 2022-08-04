@@ -33,7 +33,7 @@ Port 993
 User an6802jo@lu.se
 PassCmd "secret-tool lookup org LTH imap_user an6802jo@lu.se"
 SSLType IMAPS
-# SSLVersion TLSv1.2
+PipelineDepth 1
 
 IMAPStore lth-remote
 Account lth
