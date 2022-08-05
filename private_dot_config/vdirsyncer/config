@@ -6,12 +6,12 @@ a = "fastmail_local"
 b = "fastmail_remote"
 collections = ["from a", "from b"]
 
-[storage local]
+[storage fastmail_local]
 type = "filesystem"
 path = "~/.local/sharer/contacts"
 fileext = ".vcf"
 
-[storage fastmail]
+[storage fastmail_remote]
 type = "carddav"
 url = "https://carddav.fastmail.com/"
 username = "tetov@fastmail.com"
