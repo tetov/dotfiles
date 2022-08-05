@@ -31,7 +31,7 @@ IMAPAccount lth
 Host imap.lu.se
 Port 993
 User an6802jo@lu.se
-PassCmd "secret-tool lookup org LTH imap_user an6802jo@lu.se"
+PassCmd "secret-tool lookup org LTH service email provider exchange2016 user an6802jo@lu.se"
 SSLType IMAPS
 PipelineDepth 1
 

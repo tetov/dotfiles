@@ -17,6 +17,6 @@ port 587
 from anton_tetov.johansson@abm.lth.se
 auth on
 user an6802jo@lu.se
-passwordeval "secret-tool lookup org LTH smtp_user an6802jo@lu.se"
+passwordeval "secret-tool lookup org LTH provider exchange2016 service email user an6802jo@lu.se"
 
 account default : protonmail

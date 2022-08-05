@@ -1,0 +1,18 @@
+[general]
+status_path = "~/.local/state/vdirsyncer/"
+
+[pair fastmail_pair]
+a = "fastmail_local"
+b = "fastmail_remote"
+collections = ["from a", "from b"]
+
+[storage local]
+type = "filesystem"
+path = "~/.local/sharer/contacts"
+fileext = ".vcf"
+
+[storage fastmail]
+type = "carddav"
+url = "https://carddav.fastmail.com/"
+username = "tetov@fastmail.com"
+password.fetch = ["command", "secret-tool", "lookup", "org", "privat", "provider", "fastmail", "service", "carddav", "user", "tetov@fastmail.com"]
