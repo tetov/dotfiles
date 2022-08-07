@@ -1,18 +1,34 @@
 [general]
 status_path = "~/.local/state/vdirsyncer/"
 
-[pair fastmail_pair]
-a = "fastmail_local"
-b = "fastmail_remote"
+[pair fastmail_card_pair]
+a = "fastmail_card_local"
+b = "fastmail_card_remote"
 collections = ["from a", "from b"]
 
-[storage fastmail_local]
+[storage fastmail_card_local]
 type = "filesystem"
-path = "~/.local/sharer/contacts"
+path = "~/.local/share/vdirsyncer/contacts"
 fileext = ".vcf"
 
-[storage fastmail_remote]
+[storage fastmail_card_remote]
 type = "carddav"
 url = "https://carddav.fastmail.com/"
 username = "tetov@fastmail.com"
-password.fetch = ["command", "secret-tool", "lookup", "org", "privat", "provider", "fastmail", "service", "carddav", "user", "tetov@fastmail.com"]
+password.fetch = ["command", "secret-tool", "lookup", "org", "privat", "provider", "fastmail", "service", "dav", "user", "tetov@fastmail.com"]
+
+[pair fastmail_cal_pair]
+a = "fastmail_cal_local"
+b = "fastmail_cal_remote"
+collections = ["from a", "from b"]
+
+[storage fastmail_cal_local]
+type = "filesystem"
+path = "~/.local/share/vdirsyncer/calendar"
+fileext = ".vcf"
+
+[storage fastmail_cal_remote]
+type = "caldav"
+url = "https://caldav.fastmail.com/"
+username = "tetov@fastmail.com"
+password.fetch = ["command", "secret-tool", "lookup", "org", "privat", "provider", "fastmail", "service", "dav", "user", "tetov@fastmail.com"]

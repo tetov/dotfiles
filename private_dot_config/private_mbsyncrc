@@ -4,28 +4,27 @@ Create Both
 Sync All
 SyncState *
 
-IMAPAccount protonmail
-Host 127.0.0.1
-Port 1143
-User anton@tetov.se
-PassCmd "secret-tool lookup protonmail_user anton@tetov.se"
+IMAPAccount fastmail
+Host imap.fastmail.com
+Port 993
+User tetov@fastmail.com
+PassCmd "secret-tool lookup org privat service mail provider fastmail user tetov@fastmail.com"
 SSLVersion TLSv1.2
-SSLType STARTTLS
-CertificateFile ~/.config/protonmail/bridge/cert.pem
+SSLType IMAPS
 
-IMAPStore protonmail-remote
-Account protonmail
+IMAPStore fastmail-remote
+Account fastmail
 
-MaildirStore protonmail-local
-Path ~/.local/share/mail/protonmail/
-Inbox ~/.local/share/mail/protonmail/INBOX
+MaildirStore fastmail-local
+Path ~/.local/share/mail/fastmail/
+Inbox ~/.local/share/mail/fastmail/INBOX
 SubFolders Verbatim
 
-Channel protonmail
-Far :protonmail-remote:
-Near :protonmail-local:
-Patterns * !"All Mail"
-# Expunge Both
+Channel fastmail
+Far :fastmail-remote:
+Near :fastmail-local:
+Patterns * INBOX
+Expunge Both
 
 IMAPAccount lth
 Host imap.lu.se

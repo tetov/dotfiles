@@ -1,22 +1,22 @@
 defaults
 tls on
-tls_starttls on
 
-account protonmail
-host 127.0.0.1
-port 1025
+account fastmail
+host smtp.fastmail.com
+port 465
 from anton@tetov.se
+tls_starttls off
 auth on
-user anton@tetov.se
-passwordeval "secret-tool lookup protonmail_user anton@tetov.se"
-tls_trust_file ~/.config/protonmail/bridge/cert.pem
+user tetov@fastmail.com
+passwordeval "secret-tool lookup org privat provider fastmail service mail user tetov@fastmail.com"
 
 account lth
 host smtps.lu.se
 port 587
 from anton_tetov.johansson@abm.lth.se
 auth on
+tls_starttls on
 user an6802jo@lu.se
 passwordeval "secret-tool lookup org LTH provider exchange2016 service email user an6802jo@lu.se"
 
-account default : protonmail
+account default : fastmail

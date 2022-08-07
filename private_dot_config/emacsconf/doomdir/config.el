@@ -78,7 +78,9 @@
 
 (add-load-path! "../lisp")
 
-(map! "<f11>" #'org-agenda)
+(map! :map (current-global-map) :map vterm-mode-map "<f9>" #'+vterm/toggle)
+(map! "<f11>" (lambda () "Open standard agenda view"
+                (interactive) (org-agenda nil "n")))
 (map! "<f12>" #'mu4e)
 
 ;; open in new tab instead of same tab..
@@ -118,6 +120,20 @@
 ;; break lines automatically
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook 'auto-fill-mode)
+
+;; completion
+(setq company-dabbrev-other-buffers 'all)
+;; file completion everywhere
+(set-company-backend! 'fundamental-mode 'company-files)
+;;
+;; vertico don't delete whole dir on backspace
+(defun my/vertico-directory-delete-char (&optional n)
+  "Delete N chars before point."
+  (interactive "p")
+  (backward-delete-char n))
+
+(after! vertico
+  (define-key vertico-map (kbd "<backspace>") #'my/vertico-directory-delete-char))
 
 ;;org
 (require 'bh)
@@ -345,12 +361,15 @@
   (unless (file-exists-p ispell-personal-dictionary)
     (write-region "" nil ispell-personal-dictionary nil 0)))
 
+;; contacts
+(setq vdirel-repository ( substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
+
 ;; mail
-(set-email-account! "protonmail"
-                    '((mu4e-sent-folder       . "/protonmail/Sent")
-                      (mu4e-drafts-folder     . "/protonmail/Drafts")
-                      (mu4e-trash-folder      . "/protonmail/Trash")
-                      (mu4e-refile-folder     . "/protonmail/Archive")
+(set-email-account! "fastmail"
+                    '((mu4e-sent-folder       . "/fastmail/Sent")
+                      (mu4e-drafts-folder     . "/fastmail/Drafts")
+                      (mu4e-trash-folder      . "/fastmail/Trash")
+                      (mu4e-refile-folder     . "/fastmail/Archive")
                       (smtpmail-smtp-user     . "anton@tetov.se")
                       (mu4e-compose-signature . "Anton Tetov Johansson"))
                     t)
@@ -362,7 +381,10 @@
                       (mu4e-trash-folder       . "/lth/Deleted Items")
                       (mu4e-refile-folder      . "/lth/Archive")
                       (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
-                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se" "anton_tetov.johansson@control.lth.se" "anton.johansson@abm.lth.se" "anton.johansson@control.lth.se"))
+                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
+                                                    "anton_tetov.johansson@control.lth.se"
+                                                    "anton.johansson@abm.lth.se"
+                                                    "anton.johansson@control.lth.se"))
                       (mu4e-compose-signature  . "Best regards,
 Anton Tetov Johansson
 
@@ -397,7 +419,7 @@ https://control.lth.se/"))
                ;; add bookmark for recent messages on the Mu mailing list.
                '( :name "allinboxes"
                   :key  ?i
-                  :query "maildir:/lth/INBOX OR maildir:/protonmail/INBOX"))
+                  :query "maildir:/lth/INBOX OR maildir:/fastmail/INBOX"))
   (setq message-citation-line-format "On %Y-%m-%d at %R %Z, %f wrote:")
   (setq mu4e-headers-skip-duplicates nil)
   (setq mu4e-change-filenames-when-moving t)
@@ -405,6 +427,10 @@ https://control.lth.se/"))
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq mu4e-compose-context-policy 'ask)
   )
+
+;; term
+(after! vterm
+  (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
