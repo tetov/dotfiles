@@ -2,8 +2,8 @@
 Description=git sync org dir periodically
 
 [Timer]
-OnStartupSec=5 m
-OnUnitInactiveSec=10 m
+OnStartupSec=5m
+OnUnitInactiveSec=10m
 Persistent=true
 
 [Install]
