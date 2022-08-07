@@ -20,10 +20,16 @@ Path ~/.local/share/mail/fastmail/
 Inbox ~/.local/share/mail/fastmail/INBOX
 SubFolders Verbatim
 
-Channel fastmail
+Channel fastmail-often
 Far :fastmail-remote:
 Near :fastmail-local:
-Patterns * INBOX
+Patterns INBOX Drafts
+Expunge Both
+
+Channel fastmail-less-often
+Far :fastmail-remote:
+Near :fastmail-local:
+Patterns * !INBOX !Drafts
 Expunge Both
 
 IMAPAccount lth
@@ -54,14 +60,18 @@ Near :lth-local:
 Patterns Archive "Sent Items" "Junk Email" "dirs/*" "Deleted Items"
 Expunge Both
 
+Group fastmail-all
+Channel fastmail-often
+Channel fastmail-less-often
+
 Group lth-all
 Channel lth-often
 Channel lth-less-often
 
 Group often
 Channel lth-often
-# Channel personal-often
+Channel fastmail-often
 
 Group less-often
 Channel lth-less-often
-# Channel personal-less-often
+Channel fastmail-less-often
