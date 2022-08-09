@@ -60,6 +60,12 @@ Near :lth-local:
 Patterns Archive "Sent Items" "Junk Email" "dirs/*" "Deleted Items"
 Expunge Both
 
+Group all
+Channel fastmail-often
+Channel fastmail-less-often
+Channel lth-often
+Channel lth-less-often
+
 Group fastmail-all
 Channel fastmail-often
 Channel fastmail-less-often
