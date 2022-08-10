@@ -78,7 +78,8 @@
 
 (add-load-path! "../lisp")
 
-(map! :map (current-global-map) :map vterm-mode-map "<f9>" #'+vterm/toggle)
+(map! "<f9>" #'+vterm/toggle)
+(map! :map vterm-mode-map "<f9>" #'+vterm/toggle)
 (map! "<f11>" (lambda () "Open standard agenda view"
                 (interactive) (org-agenda nil "n")))
 (map! "<f12>" #'mu4e)
