@@ -308,7 +308,24 @@
   (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
                                               :min-duration 0
                                               :max-gap 5
-                                              :gap-ok-around ("4:00" "13:00"))))
+                                              :gap-ok-around ("4:00" "13:00")))
+  (setq org-agenda-custom-commands
+        '(("d" "default" (
+                          (tags "REFILE" ((org-agenda-overriding-header "Tasks to refile")(org-tags-match-list-sublevels nil)))
+                          (agenda "" nil)
+                          (todo "-CANC"
+                                ((org-agenda-overriding-header "Stuck Projects")
+                                 (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+                                 (org-agenda-sorting-strategy
+                                  '(category-keep))))
+                          (todo "NEXT|PROG"
+                                ((org-agenda-overriding-header "Next or in progress")))
+                          (todo "WAIT"
+                                ((org-agenda-overriding-header "Waiting")))
+                          (todo "TODO"
+                                ((org-agenda-overriding-header "TODOs")
+                                 (org-agenda-skip-function 'bh/skip-projects-and-habits)
+                                 (org-agenda-sorting-strategy '(todo-state-down deadline-up scheduled-up)))))))))
 
 ;; backup
 (use-package! backup-each-save)
@@ -426,9 +443,12 @@ https://control.lth.se/"))
   (setq mu4e-change-filenames-when-moving t)
 
   ;; ask for context when new message doesn't match context (i.e. new message)
-  (setq mu4e-compose-context-policy 'ask)
-  )
-
+  (setq mu4e-compose-context-policy 'ask))
+(run-at-time
+ "5 sec" nil (lambda ()
+               (let ((current-prefix-arg '(4)))
+                 (call-interactively 'mu4e)
+                 (message nil))))
 ;; term
 (after! vterm
   (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
