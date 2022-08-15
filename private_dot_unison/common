@@ -27,4 +27,4 @@ ignore = BelowPath Zotero
 ignore = BelowPath org.signal.Signal
 ignore = BelowPath .local/share/containers/storage
 ignore = Name Nextcloud?
-ignore = BelowPath DOTBACKUP.*/.local/share/flatpak/
+ignore = BelowPath DOTBACKUP.*/.local/share/flatpak
