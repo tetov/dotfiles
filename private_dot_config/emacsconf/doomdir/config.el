@@ -453,6 +453,10 @@ https://control.lth.se/"))
 (after! vterm
   (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
 
+;; java
+(setq lsp-java-configuration-runtimes '[(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/" :default t)
+                                        (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/")])
+
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
