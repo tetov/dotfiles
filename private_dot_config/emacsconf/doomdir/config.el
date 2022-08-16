@@ -81,7 +81,7 @@
 (map! "<f9>" #'+vterm/toggle)
 (map! :map vterm-mode-map "<f9>" #'+vterm/toggle)
 (map! "<f11>" (lambda () "Open standard agenda view"
-                (interactive) (org-agenda nil "n")))
+                (interactive) (org-agenda nil "d")))
 (map! "<f12>" #'mu4e)
 
 ;; open in new tab instead of same tab..
@@ -302,35 +302,59 @@
 
   ;; keep agenda view alive
   (setq org-agenda-sticky t)
-  (setq org-agenda-span 14)
+  (setq org-agenda-span 7)
   (setq org-agenda-start-with-log-mode t)
 
   (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
                                               :min-duration 0
                                               :max-gap 5
                                               :gap-ok-around ("4:00" "13:00")))
+  ;; agenda views
+  (use-package! org-ql)
+  (org-ql-defpred is-project-p () "" :body (and (todo "TODO")
+                                                (descendants (todo))))
+  (org-ql-defpred is-stuck-project-p () "" :body (and (is-project-p)
+                                                      (not (descendants (todo "NEXT" "PROG")))))
   (setq org-agenda-custom-commands
-        '(("d" "default" (
-                          (tags "REFILE" ((org-agenda-overriding-header "Tasks to refile")(org-tags-match-list-sublevels nil)))
-                          (agenda "" nil)
-                          (todo "-CANC"
-                                ((org-agenda-overriding-header "Stuck Projects")
-                                 (org-agenda-skip-function 'bh/skip-non-stuck-projects)
-                                 (org-agenda-sorting-strategy
-                                  '(category-keep))))
-                          (todo "NEXT|PROG"
-                                ((org-agenda-overriding-header "Next or in progress")))
-                          (todo "WAIT"
-                                ((org-agenda-overriding-header "Waiting")))
-                          (todo "TODO"
-                                ((org-agenda-overriding-header "TODOs")
-                                 (org-agenda-skip-function 'bh/skip-projects-and-habits)
-                                 (org-agenda-sorting-strategy '(todo-state-down deadline-up scheduled-up)))))))))
+        '(("d" "default"
+           ((tags "REFILE"
+                  ((org-agenda-overriding-header "Tasks to refile")
+                   (org-tags-match-list-sublevels nil)))
+            (agenda "" nil)
+            (org-ql-block '(and (todo "TODO")
+                                (descendants (todo))
+                                (not (descendants (todo "PROG" "NEXT" "WAIT"))))
+                          ((org-ql-block-header "Stuck projects")))
+            (todo "NEXT|PROG"
+                  ((org-agenda-overriding-header "Next or in progress")
+                   (org-agenda-sorting-strategy '(todo-state-up category-up))))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "TODOs")
+                   (org-agenda-skip-function 'bh/skip-projects-and-habits)
+                   (org-agenda-sorting-strategy '(todo-state-down deadline-up scheduled-up))))
+
+            (org-ql-block '(and (todo "TODO") (descendants (todo))) ((org-ql-block-header "All projects")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting"))))))))
 
 ;; backup
+
+(defun backup-each-save-filter (filename)
+  (let ((ignored-filenames
+    	 '("^/tmp" "semantic.cache$" "\\.emacs-places$"
+    	   "\\.?recentf$" ".newsrc\\(\\.eld\\)?"))
+    	(matched-ignored-filename nil))
+    (mapc
+     (lambda (x)
+       (when (string-match x filename)
+    	 (setq matched-ignored-filename t)))
+     ignored-filenames)
+    (not matched-ignored-filename)))
+
 (use-package! backup-each-save)
 (setq backup-each-save-mirror-location (format "~/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
-      backup-each-save-remote-files t)
+      backup-each-save-remote-files t
+      backup-each-save-filter-function 'backup-each-save-filter)
 (add-hook 'after-save-hook 'backup-each-save)
 
 ;; autosave on focus lost
@@ -452,6 +476,10 @@ https://control.lth.se/"))
 ;; term
 (after! vterm
   (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
+
+;; java
+(setq lsp-java-configuration-runtimes '[(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/" :default t)
+                                        (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/")])
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
