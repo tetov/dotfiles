@@ -78,11 +78,27 @@
 
 (add-load-path! "../lisp")
 
+(map! "<f6>" #'org-capture-goto-last-stored)
+(map! "S-<f6>" #'org-refile-goto-last-stored)
+
+(map! "<f7>" #'org-roam-node-find)
+(map! "S-<f7>" #'org-roam-refile)
+(map! "C-<f7>" #'org-roam-buffer-toggle)
+
+(map! "<f8>" (lambda () "Start default org-capture"
+               (interactive nil) (org-capture nil "d" )))
+(map! "S-<f8>" #'org-refile)
+
 (map! "<f9>" #'+vterm/toggle)
 (map! :map vterm-mode-map "<f9>" #'+vterm/toggle)
+(map! "S-<f9>" #'+eshell/toggle)
+
+
 (map! "<f11>" (lambda () "Open standard agenda view"
                 (interactive) (org-agenda nil "d")))
-(map! "<f12>" #'mu4e)
+
+(map! "<f12>" #'mu4e-headers-search-bookmark)
+(map! "S-<f12>" #'+mu4e/compose)
 
 ;; open in new tab instead of same tab..
 (setq browse-url-new-window-flag t)
@@ -412,8 +428,9 @@
                       (mu4e-drafts-folder     . "/fastmail/Drafts")
                       (mu4e-trash-folder      . "/fastmail/Trash")
                       (mu4e-refile-folder     . "/fastmail/Archive")
-                      (smtpmail-smtp-user     . "anton@tetov.se")
-                      (mu4e-compose-signature . "Anton Tetov Johansson"))
+                      (smtpmail-smtp-user     . "tetov@fastmail.com")
+                      (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
+                      (mu4e-compose-signature . "Best regards\nAnton Tetov Johansson"))
                     t)
 
 (setq default-lth-address "anton_tetov.johansson@abm.lth.se")
@@ -476,6 +493,8 @@ https://control.lth.se/"))
 ;; term
 (after! vterm
   (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
+(after! eshell
+  (set-popup-rule! "*doom:eshell-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
 
 ;; java
 (setq lsp-java-configuration-runtimes '[(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/" :default t)
