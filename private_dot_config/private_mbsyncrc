@@ -11,6 +11,7 @@ User tetov@fastmail.com
 PassCmd "secret-tool lookup org privat service mail provider fastmail user tetov@fastmail.com"
 SSLVersion TLSv1.2
 SSLType IMAPS
+AuthMechs LOGIN
 
 IMAPStore fastmail-remote
 Account fastmail
