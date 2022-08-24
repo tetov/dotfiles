@@ -78,6 +78,9 @@
 
 (add-load-path! "../lisp")
 
+(defun tetov/open-my-agenda-view () "" (interactive nil) (org-agenda nil "d"))
+(defun tetov/org-capture-default () "Start default org-capture" (interactive nil) (org-capture nil "d"))
+
 (map! "<f6>" #'org-capture-goto-last-stored)
 (map! "S-<f6>" #'org-refile-goto-last-stored)
 
@@ -85,20 +88,31 @@
 (map! "S-<f7>" #'org-roam-refile)
 (map! "C-<f7>" #'org-roam-buffer-toggle)
 
-(map! "<f8>" (lambda () "Start default org-capture"
-               (interactive nil) (org-capture nil "d" )))
+(map! "<f8>" #'tetov/org-capture-default)
 (map! "S-<f8>" #'org-refile)
 
 (map! "<f9>" #'+vterm/toggle)
 (map! :map vterm-mode-map "<f9>" #'+vterm/toggle)
 (map! "S-<f9>" #'+eshell/toggle)
 
-
-(map! "<f11>" (lambda () "Open standard agenda view"
-                (interactive) (org-agenda nil "d")))
+(map! "<f11>" #'tetov/open-my-agenda-view)
 
 (map! "<f12>" #'mu4e-headers-search-bookmark)
 (map! "S-<f12>" #'+mu4e/compose)
+
+(map! :leader (:prefix-map ("m" . "mine")
+               (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
+               (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
+               (:desc "(e)-shell" "e" #'+eshell/toggle)
+               (:desc "roam (f)ind node" "f" #'org-roam-node-find)
+               (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
+               (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
+               (:desc "(M)ail menu" "m" #'mu4e-headers-search-bookmark)
+               (:desc "Compose (M)ail" "M" #'+mu4e/compose)
+               (:desc "roam (r)efile" "r" #'org-roam-refile)
+               (:desc "org (R)efile" "R" #'org-refile)
+               (:desc "(v)-term" "v" #'+vterm/toggle)
+               (:desc "org capture default" "X" #'tetov/org-capture-default)))
 
 ;; open in new tab instead of same tab..
 (setq browse-url-new-window-flag t)
@@ -485,6 +499,7 @@ https://control.lth.se/"))
 
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq mu4e-compose-context-policy 'ask))
+
 (run-at-time
  "5 sec" nil (lambda ()
                (let ((current-prefix-arg '(4)))
