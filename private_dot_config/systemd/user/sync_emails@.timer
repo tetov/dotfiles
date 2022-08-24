@@ -3,7 +3,8 @@ Description=Timer to synx mailboxes in group %i
 
 [Timer]
 OnBootSec=3m
-OnCalendar=*-*-* *:5/12:00
+OnUnitInactiveSec=5m
+OnCalendar=*-*-* *:20/3:00
 Persistent=true
 
 [Install]
