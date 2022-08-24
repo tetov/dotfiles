@@ -56,14 +56,13 @@ export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
 export CUPS_USER=an6802jo@lu.se
 
-export SPACEMACSDIR=$XDG_CONFIG_HOME/emacsconf/spacemacsdir
-export DOOMDIR=$XDG_CONFIG_HOME/emacsconf/doomdir
+export DOOMDIR=$XDG_CONFIG_HOME/doom
 
 # queue dir for msmtp
 export QUEUEDIR=$XDG_DATA_HOME/mail/msmtpqueue
 
 # onepassword/1password
-OP_BIOMETRIC_UNLOCK_ENABLED=true
+export OP_BIOMETRIC_UNLOCK_ENABLED=true
 
 # vim: set ft=sh ts=2
 
