@@ -1,5 +1,5 @@
 [Unit]
-Description=Timer to synx mailboxes in group %i
+Description=Timer to sync mailboxes in group %i
 
 [Timer]
 OnBootSec=3m
