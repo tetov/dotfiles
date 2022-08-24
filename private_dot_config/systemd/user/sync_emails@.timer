@@ -3,7 +3,7 @@ Description=Timer to synx mailboxes in group %i
 
 [Timer]
 OnBootSec=3m
-OnUnitActiveSec=8m
+OnCalendar=8m
 
 [Install]
 WantedBy=timers.target
