@@ -500,8 +500,7 @@ https://control.lth.se/"))
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq mu4e-compose-context-policy 'ask))
 
-(run-at-time
- "5 sec" nil (lambda ()
+(run-at-time "5 sec" nil (lambda ()
                (let ((current-prefix-arg '(4)))
                  (call-interactively 'mu4e)
                  (message nil))))
@@ -510,6 +509,10 @@ https://control.lth.se/"))
   (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
 (after! eshell
   (set-popup-rule! "*doom:eshell-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
+
+;;projectile
+(setq projectile-auto-discover t
+      projectile-project-search-path '(("~/src" . 1)))  ;; number means search depth
 
 ;; java
 (setq lsp-java-configuration-runtimes '[(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/" :default t)
