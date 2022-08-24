@@ -1,11 +1,11 @@
 #!/bin/sh
 
 # runs if master commit is changed
-# git hash for doom: {{ expandenv "$HOME/.config/emacsconf/doom-emacs/.git/refs/heads/master" | include}}
+# git hash for doom: {{ expandenv "$HOME/.config/emacs/.git/refs/heads/master" | include}}
 
 # Run upgrade once a week
 # Weeks since epoch: {{ div (now | unixEpoch) 604800 }}
 
-DOOM_INSTALL_DIR=$HOME/.config/emacsconf/doom-emacs
+DOOM_INSTALL_DIR=$HOME/.config/emacs
 
 "$DOOM_INSTALL_DIR/bin/doom" upgrade
