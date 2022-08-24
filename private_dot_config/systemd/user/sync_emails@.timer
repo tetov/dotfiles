@@ -3,7 +3,8 @@ Description=Timer to synx mailboxes in group %i
 
 [Timer]
 OnBootSec=3m
-OnCalendar=8m
+OnCalendar=5m
+Persistent=true # run immediately on suspend if suspended longer than 5 minutes
 
 [Install]
 WantedBy=timers.target
