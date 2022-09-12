@@ -166,6 +166,20 @@
 (after! vertico
   (define-key vertico-map (kbd "<backspace>") #'my/vertico-directory-delete-char))
 
+(defun my/count-characters-subtree ()
+  "Count characters in subtree.
+
+   Taken from https://stackoverflow.com/a/50958323"
+  (interactive nil)
+  (save-excursion
+    (org-mark-subtree) ;mark the whole subtre
+    (forward-line 1)   ;move past header
+    (exchange-point-and-mark) ;swap point and mark (ends of region)
+    (forward-line -1)  ;move backwards past the last line
+    (let ((nchars (- (point) (mark))))
+      (deactivate-mark) ;clear the region
+      (message "%d" nchars))))
+
 ;;org
 (require 'bh)
 (after! (org org-roam)
@@ -297,6 +311,16 @@
 %U")
            :immediate-finish t
            :unnarrowed t)
+("b" "bibliography reference" plain "%?"
+        :if-new (file+head "refs/${citekey}.org"
+                           ":PROPERTIES:
+:CATEGORY: reference
+:END:
+#+PROPERTY: type %^{entry-type}
+#+FILETAGS: %^{keywords}
+#+PROPERTY: authors %^{author}
+#+title: ${title}\n")
+        :unnarrowed t)
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
            :if-new (file+head "rp/${slug}.org"
                               ":PROPERTIES:
@@ -498,12 +522,14 @@ https://control.lth.se/"))
   (setq mu4e-change-filenames-when-moving t)
 
   ;; ask for context when new message doesn't match context (i.e. new message)
-  (setq mu4e-compose-context-policy 'ask))
+  (setq mu4e-compose-context-policy 'ask)
+  (setq mu4e-split-view 'vertical)
+  (setq mu4e-headers-visible-columns 80))
 
 (run-at-time "5 sec" nil (lambda ()
-               (let ((current-prefix-arg '(4)))
-                 (call-interactively 'mu4e)
-                 (message nil))))
+                           (let ((current-prefix-arg '(4)))
+                             (call-interactively 'mu4e)
+                             (message nil))))
 ;; term
 (after! vterm
   (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
@@ -515,9 +541,12 @@ https://control.lth.se/"))
       projectile-project-search-path '(("~/src" . 1)))  ;; number means search depth
 
 ;; java
-(setq lsp-java-configuration-runtimes '[(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/" :default t)
-                                        (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/")])
-
+(setq lsp-java-configuration-runtimes '[ ;;(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/")
+                                        (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/" :default t)])
+(after! dap-java
+ (dap-register-debug-template
+ "Java Run Configuration"
+ (list :vmArgs "--enable-preview")))
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
