@@ -99,3 +99,5 @@
 	process = git-lfs filter-process
 [diff "json"]
 	textconv = "cat \"$1\" | json_pp --json_opt=canonical,pretty"
+[diff "image"]
+	command = compare   png:- | montage -geometry +4+4  -  png:- | display -title  -
