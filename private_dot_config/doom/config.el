@@ -311,16 +311,16 @@
 %U")
            :immediate-finish t
            :unnarrowed t)
-("b" "bibliography reference" plain "%?"
-        :if-new (file+head "refs/${citekey}.org"
-                           ":PROPERTIES:
+          ("b" "bibliography reference" plain "%?"
+           :if-new (file+head "refs/${citekey}.org"
+                              ":PROPERTIES:
 :CATEGORY: reference
 :END:
 #+PROPERTY: type %^{entry-type}
 #+FILETAGS: %^{keywords}
 #+PROPERTY: authors %^{author}
 #+title: ${title}\n")
-        :unnarrowed t)
+           :unnarrowed t)
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
            :if-new (file+head "rp/${slug}.org"
                               ":PROPERTIES:
@@ -434,6 +434,7 @@
 
 ;; python
 ;; use format-all, not lsp formatter
+(after! python-mode (setq poetry-tracking-strategy 'projectile))
 (setq-hook! 'python-mode-hook +format-with-lsp nil)
 ;; spelling
 ;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
@@ -524,7 +525,10 @@ https://control.lth.se/"))
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq mu4e-compose-context-policy 'ask)
   (setq mu4e-split-view 'vertical)
-  (setq mu4e-headers-visible-columns 80))
+  (setq mu4e-headers-visible-columns 80)
+
+  (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
+  (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
 
 (run-at-time "5 sec" nil (lambda ()
                            (let ((current-prefix-arg '(4)))
@@ -544,9 +548,9 @@ https://control.lth.se/"))
 (setq lsp-java-configuration-runtimes '[ ;;(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/")
                                         (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/" :default t)])
 (after! dap-java
- (dap-register-debug-template
- "Java Run Configuration"
- (list :vmArgs "--enable-preview")))
+  (dap-register-debug-template
+   "Java Run Configuration"
+   (list :vmArgs "--enable-preview")))
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
