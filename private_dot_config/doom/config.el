@@ -81,25 +81,6 @@
 (defun tetov/open-my-agenda-view () "" (interactive nil) (org-agenda nil "d"))
 (defun tetov/org-capture-default () "Start default org-capture" (interactive nil) (org-capture nil "d"))
 
-(map! "<f6>" #'org-capture-goto-last-stored)
-(map! "S-<f6>" #'org-refile-goto-last-stored)
-
-(map! "<f7>" #'org-roam-node-find)
-(map! "S-<f7>" #'org-roam-refile)
-(map! "C-<f7>" #'org-roam-buffer-toggle)
-
-(map! "<f8>" #'tetov/org-capture-default)
-(map! "S-<f8>" #'org-refile)
-
-(map! "<f9>" #'+vterm/toggle)
-(map! :map vterm-mode-map "<f9>" #'+vterm/toggle)
-(map! "S-<f9>" #'+eshell/toggle)
-
-(map! "<f11>" #'tetov/open-my-agenda-view)
-
-(map! "<f12>" #'mu4e-headers-search-bookmark)
-(map! "S-<f12>" #'+mu4e/compose)
-
 (map! :leader (:prefix-map ("m" . "mine")
                (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
                (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
@@ -154,9 +135,7 @@
 
 ;; completion
 (setq company-dabbrev-other-buffers 'all)
-;; file completion everywhere
-(set-company-backend! 'fundamental-mode 'company-files)
-;;
+
 ;; vertico don't delete whole dir on backspace
 (defun my/vertico-directory-delete-char (&optional n)
   "Delete N chars before point."
@@ -269,6 +248,9 @@
   ;; links
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
+  ;; export
+  (setq org-export-with-broken-links 'mark)
+
   ;; org-roam
   (setq org-roam-directory org-directory)
   (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
@@ -292,10 +274,10 @@
 %U")
            :immediate-finish t
            :unnarrowed t)
-          ("m" "meeting" plain  "%?"
-           :if-new (file+head "meetings/%<%Y%m%d%>-${slug}.org"
+          ("w" "writing" plain  "%?"
+           :if-new (file+head "writing/${slug}.org"
                               ":PROPERTIES:
-:CATEGORY: meeting
+:CATEGORY: writing
 :END:
 #+title: ${title}
 %U")
