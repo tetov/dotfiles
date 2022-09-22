@@ -76,24 +76,22 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(add-load-path! "../lisp")
-
 (defun tetov/open-my-agenda-view () "" (interactive nil) (org-agenda nil "d"))
 (defun tetov/org-capture-default () "Start default org-capture" (interactive nil) (org-capture nil "d"))
 
 (map! :leader (:prefix-map ("m" . "mine")
-               (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
-               (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
-               (:desc "(e)-shell" "e" #'+eshell/toggle)
-               (:desc "roam (f)ind node" "f" #'org-roam-node-find)
-               (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
-               (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
-               (:desc "(M)ail menu" "m" #'mu4e-headers-search-bookmark)
-               (:desc "Compose (M)ail" "M" #'+mu4e/compose)
-               (:desc "roam (r)efile" "r" #'org-roam-refile)
-               (:desc "org (R)efile" "R" #'org-refile)
-               (:desc "(v)-term" "v" #'+vterm/toggle)
-               (:desc "org capture default" "X" #'tetov/org-capture-default)))
+                           (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
+                           (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
+                           (:desc "(e)-shell" "e" #'+eshell/toggle)
+                           (:desc "roam (f)ind node" "f" #'org-roam-node-find)
+                           (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
+                           (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
+                           (:desc "(M)ail menu" "m" #'mu4e-headers-search-bookmark)
+                           (:desc "Compose (M)ail" "M" #'+mu4e/compose)
+                           (:desc "roam (r)efile" "r" #'org-roam-refile)
+                           (:desc "org (R)efile" "R" #'org-refile)
+                           (:desc "(v)-term" "v" #'+vterm/toggle)
+                           (:desc "org capture default" "X" #'tetov/org-capture-default)))
 
 ;; open in new tab instead of same tab..
 (setq browse-url-new-window-flag t)
@@ -529,10 +527,46 @@ https://control.lth.se/"))
 ;; java
 (setq lsp-java-configuration-runtimes '[ ;;(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/")
                                         (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/" :default t)])
-(after! dap-java
-  (dap-register-debug-template
-   "Java Run Configuration"
-   (list :vmArgs "--enable-preview")))
+
+;; chezmoi
+(use-package! chezmoi)
+(after! chezmoi
+  (require 'chezmoi-company))
+(add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
+                                        (add-to-list 'company-backends 'chezmoi-company-backend)
+                                        (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
+(defun chezmoi--evil-insert-state-enter ()
+  "Run after evil-insert-state-entry."
+  (chezmoi-template-buffer-display nil (point))
+  (remove-hook 'after-change-functions #'chezmoi-template--after-change 1))
+
+(defun chezmoi--evil-insert-state-exit ()
+  "Run after evil-insert-state-exit."
+  (chezmoi-template-buffer-display nil)
+  (chezmoi-template-buffer-display t)
+  (add-hook 'after-change-functions #'chezmoi-template--after-change nil 1))
+
+(defun chezmoi-evil ()
+  (if chezmoi-mode
+      (progn
+        (add-hook 'evil-insert-state-entry-hook #'chezmoi--evil-insert-state-enter nil 1)
+        (add-hook 'evil-insert-state-exit-hook #'chezmoi--evil-insert-state-exit nil 1))
+    (progn
+      (remove-hook 'evil-insert-state-entry-hook #'chezmoi--evil-insert-state-enter 1)
+      (remove-hook 'evil-insert-state-exit-hook #'chezmoi--evil-insert-state-exit 1))))
+(add-hook 'chezmoi-mode-hook #'chezmoi-evil)
+
+(map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
+                           (:desc "chezmoi apply" "a" #'chezmoi-write)
+                           (:desc "chezmoi apply all" "A" #'chezmoi-write-files)
+                           (:desc "chezmoi magit status" "s" #'chezmoi-magit-status)
+                           (:desc "chezmoi diff" "d" #'chezmoi-diff)
+                           (:desc "chezmoi ediff" "e" #'chezmoi-ediff)
+                           (:desc "chezmoi find" "f" #'chezmoi-find)
+                           (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
+                           (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
+                           (:desc "chezmoi toggle mode" "c" #'chezmoi-mode)))
+
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
