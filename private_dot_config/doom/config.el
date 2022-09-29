@@ -146,6 +146,8 @@
 (defun my/count-characters-subtree ()
   "Count characters in subtree.
 
+   Useful for Vinnova project reports.
+
    Taken from https://stackoverflow.com/a/50958323"
   (interactive nil)
   (save-excursion
@@ -178,148 +180,148 @@
   ;; capture templates
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
-                                 "* TODO %?\n%U\n%a" :clock-in t :clock-resume t)
+                                 "* TODO %?\n%U\n" :clock-in t :clock-resume t)
                                 ("m" "Meeting" entry (file org-default-notes-file)
                                  "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-                                ("p" "Phone call" entry (file org-default-notes-file)
-                                 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)))
+                                ("e" "Email" entry (file org-default-notes-file)
+                                 "* TODO %:fromname: %a %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))"
+                                 :clock-in t :clock-resume t))))
+;; create id's for all captures
+(add-hook 'org-capture-mode-hook #'org-id-get-create)
 
-  ;; create id's for all captures
-  (add-hook 'org-capture-mode-hook #'org-id-get-create)
+(add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out)
 
-  (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out)
+;; todo setup
+(setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "|" "DONE(d!)")
+                          (sequence "WAIT(w@/!)" "|" "CANC(c@/!)" "MEETING" "PHONE")))
+(setq org-enforce-todo-dependencies t)
+(setq org-enforce-todo-checkbox-dependencies t)
+(setq org-use-fast-todo-selection t)
+(setq org-log-state-notes-into-drawer t)
 
-  ;; todo setup
-  (setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "|" "DONE(d!)")
-                            (sequence "WAIT(w@/!)" "|" "CANC(c@/!)" "MEETING" "PHONE")))
-  (setq org-enforce-todo-dependencies t)
-  (setq org-enforce-todo-checkbox-dependencies t)
-  (setq org-use-fast-todo-selection t)
-  (setq org-log-state-notes-into-drawer t)
+;; clocks
+;; Resume clocking task when emacs is restarted
+(org-clock-persistence-insinuate)
+;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+(setq org-clock-history-length 23)
+;; Resume clocking task on clock-in if the clock is open
+(setq org-clock-in-resume t)
+;; Change tasks to NEXT when clocking in
+(setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
+;; Save clock data and state changes and notes in the LOGBOOK drawer
+(setq org-clock-into-drawer t)
+;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+;; Clock out when moving task to a done state
+(setq org-clock-out-when-done t)
+;; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persist t)
+;; Do not prompt to resume an active clock
+(setq org-clock-persist-query-resume nil)
+;; Enable auto clock resolution for finding open clocks
+(setq org-clock-auto-clock-resolution (quote when-no-clock-is-running))
+;; Include current clocking task in clock reports
+(setq org-clock-report-include-clocking-task t)
 
-  ;; clocks
-  ;; Resume clocking task when emacs is restarted
-  (org-clock-persistence-insinuate)
-  ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
-  (setq org-clock-history-length 23)
-  ;; Resume clocking task on clock-in if the clock is open
-  (setq org-clock-in-resume t)
-  ;; Change tasks to NEXT when clocking in
-  (setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
-  ;; Save clock data and state changes and notes in the LOGBOOK drawer
-  (setq org-clock-into-drawer t)
-  ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
-  (setq org-clock-out-remove-zero-time-clocks t)
-  ;; Clock out when moving task to a done state
-  (setq org-clock-out-when-done t)
-  ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-  (setq org-clock-persist t)
-  ;; Do not prompt to resume an active clock
-  (setq org-clock-persist-query-resume nil)
-  ;; Enable auto clock resolution for finding open clocks
-  (setq org-clock-auto-clock-resolution (quote when-no-clock-is-running))
-  ;; Include current clocking task in clock reports
-  (setq org-clock-report-include-clocking-task t)
+(setq bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
 
-  (setq bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
+(add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
+;;
+;; refile tweaks
+;; http://doc.norang.ca/org-mode.html#RefileSetup
+(setq org-refile-target-verify-function 'bh/verify-refile-target)
 
-  (add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
-  ;;
-  ;; refile tweaks
-  ;; http://doc.norang.ca/org-mode.html#RefileSetup
-  (setq org-refile-target-verify-function 'bh/verify-refile-target)
+;; Tags with fast selection keys
+(setq org-tag-alist (quote ((:startgroup)
+                            ("@work" . ?o)
+                            ("@home" . ?H)
+                            (:endgroup)
+                            ("rp" . ?r)
+                            )))
 
-  ;; Tags with fast selection keys
-  (setq org-tag-alist (quote ((:startgroup)
-                              ("@work" . ?o)
-                              ("@home" . ?H)
-                              (:endgroup)
-                              ("rp" . ?r)
-                              )))
+;; projects setup
+(add-to-list 'org-tags-exclude-from-inheritance "project")
 
-  ;; projects setup
-  (add-to-list 'org-tags-exclude-from-inheritance "project")
+;; archiving
+(setq org-archive-mark-done nil)
 
-  ;; archiving
-  (setq org-archive-mark-done nil)
+;; links
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-  ;; links
-  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+;; export
+(setq org-export-with-broken-links 'mark)
 
-  ;; export
-  (setq org-export-with-broken-links 'mark)
-
-  ;; org-roam
-  (setq org-roam-directory org-directory)
-  (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
-  ;; roam template
-  (setq org-roam-capture-templates
-        '(("n" "note" plain "%?"
-           :if-new (file+head "notes/${slug}.org"
-                              ":PROPERTIES:
+;; org-roam
+(setq org-roam-directory org-directory)
+(setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
+;; roam template
+(setq org-roam-capture-templates
+      '(("n" "note" plain "%?"
+         :if-new (file+head "notes/${slug}.org"
+                            ":PROPERTIES:
 :CATEGORY: note
 :END:
 #+title: ${title}
 %U")
-           :immediate-finish t
-           :unnarrowed t)
-          ("p" "(meta) project" plain  "%?"
-           :if-new (file+head "${slug}.org"
-                              ":PROPERTIES:
+         :immediate-finish t
+         :unnarrowed t)
+        ("p" "(meta) project" plain  "%?"
+         :if-new (file+head "${slug}.org"
+                            ":PROPERTIES:
 :CATEGORY: project
 :END:
 #+title: ${title}
 %U")
-           :immediate-finish t
-           :unnarrowed t)
-          ("w" "writing" plain  "%?"
-           :if-new (file+head "writing/${slug}.org"
-                              ":PROPERTIES:
+         :immediate-finish t
+         :unnarrowed t)
+        ("w" "writing" plain  "%?"
+         :if-new (file+head "writing/${slug}.org"
+                            ":PROPERTIES:
 :CATEGORY: writing
 :END:
 #+title: ${title}
 %U")
-           :immediate-finish t
-           :unnarrowed t)
-          ("r" "reference" plain "%?"
-           :if-new (file+head "refs/${slug}.org"
-                              ":PROPERTIES:
+         :immediate-finish t
+         :unnarrowed t)
+        ("r" "reference" plain "%?"
+         :if-new (file+head "refs/${slug}.org"
+                            ":PROPERTIES:
 :CATEGORY: reference
 :ROAM_REFS: %x
 :END:
 #+title: ${title}
 %U")
-           :immediate-finish t
-           :unnarrowed t)
-          ("b" "bibliography reference" plain "%?"
-           :if-new (file+head "refs/${citekey}.org"
-                              ":PROPERTIES:
+         :immediate-finish t
+         :unnarrowed t)
+        ("b" "bibliography reference" plain "%?"
+         :if-new (file+head "refs/${citekey}.org"
+                            ":PROPERTIES:
 :CATEGORY: reference
 :END:
 #+PROPERTY: type %^{entry-type}
 #+FILETAGS: %^{keywords}
 #+PROPERTY: authors %^{author}
 #+title: ${title}\n")
-           :unnarrowed t)
-          ("o" "rp notes (Eat Flay Prowl)" plain "%?"
-           :if-new (file+head "rp/${slug}.org"
-                              ":PROPERTIES:
+         :unnarrowed t)
+        ("o" "rp notes (Eat Flay Prowl)" plain "%?"
+         :if-new (file+head "rp/${slug}.org"
+                            ":PROPERTIES:
 :CATEGORY: rp
 :END:
 #+filetags: :dnd5e:eat-flay-prowl:
 #+title: ${title}
 %U")
-           :immediate-finish t
-           :unnarrowed t)))
+         :immediate-finish t
+         :unnarrowed t)))
 
-  (setq org-roam-capture-ref-templates '(("r" "ref" plain "%?" :target
-                                          (file+head "refs/${slug}.org" ":PROPERTIES:
+(setq org-roam-capture-ref-templates '(("r" "ref" plain "%?" :target
+                                        (file+head "refs/${slug}.org" ":PROPERTIES:
 :CATEGORY: reference
 :END:
 #+title: ${title}
 %U")
-                                          :unnarrowed t))
-        ))
+                                        :unnarrowed t))
+      ))
 
 (use-package! org-roam-bibtex
   :after org-roam
@@ -538,8 +540,8 @@ https://control.lth.se/"))
 (after! chezmoi
   (require 'chezmoi-company))
 (add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
-                                        (add-to-list 'company-backends 'chezmoi-company-backend)
-                                        (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
+                                              (add-to-list 'company-backends 'chezmoi-company-backend)
+                                            (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
 (defun chezmoi--evil-insert-state-enter ()
   "Run after evil-insert-state-entry."
   (chezmoi-template-buffer-display nil (point))
