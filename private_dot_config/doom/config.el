@@ -386,7 +386,7 @@
     (not matched-ignored-filename)))
 
 (use-package! backup-each-save)
-(setq backup-each-save-mirror-location (format "~/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
+(setq backup-each-save-mirror-location (format "~/Nextcloud/Apps/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
       backup-each-save-remote-files t
       backup-each-save-filter-function 'backup-each-save-filter)
 (add-hook 'after-save-hook 'backup-each-save)
@@ -504,11 +504,16 @@ https://control.lth.se/"))
 
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq mu4e-compose-context-policy 'ask)
+
   (setq mu4e-split-view 'vertical)
   (setq mu4e-headers-visible-columns 80)
 
   (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
   (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
+
+;; don't autosave to try to reduce number of drafts synced.
+;; TODO: Check if it still saves to ~/editor-backups
+(add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
 
 (run-at-time "5 sec" nil (lambda ()
                            (let ((current-prefix-arg '(4)))
