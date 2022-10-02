@@ -39,11 +39,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type `relative)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/src/org/")
-
-
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -160,11 +155,15 @@
       (message "%d" nchars))))
 
 ;;org
+;; must be set before org loads!
+(setq org-directory "~/src/org/")
+
 (require 'bh)
 (after! (org org-roam)
   ;; files
   (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
   (setq org-default-notes-file (concat org-directory "/refile.org"))
+  (setq org-attach-id-dir (expand-file-name "~/Nextcloud/Apps/org-attach"))
   ;; general
   (setq org-startup-folded t)
   (setq org-refile-allow-creating-parent-nodes 'confirm)
@@ -189,7 +188,6 @@
 
   ;; create id's for all captures
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
-  (setq org-attach-id-directory (expand-file-name "~/Nextcloud/Apps/org-attach"))
 
   (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out)
 
@@ -452,21 +450,20 @@
                       (mu4e-trash-folder      . "/fastmail/Trash")
                       (mu4e-refile-folder     . "/fastmail/Archive")
                       (smtpmail-smtp-user     . "tetov@fastmail.com")
-                      (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
+                      ;; (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
                       (mu4e-compose-signature . "Best regards\nAnton Tetov Johansson"))
                     t)
 
-(setq default-lth-address "anton_tetov.johansson@abm.lth.se")
 (set-email-account! "lth"
                     '((mu4e-sent-folder        . "/lth/Sent Items")
                       (mu4e-drafts-folder      . "/lth/Drafts")
                       (mu4e-trash-folder       . "/lth/Deleted Items")
                       (mu4e-refile-folder      . "/lth/Archive")
                       (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
-                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
-                                                    "anton_tetov.johansson@control.lth.se"
-                                                    "anton.johansson@abm.lth.se"
-                                                    "anton.johansson@control.lth.se"))
+                      ;; (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
+                      ;;                               "anton_tetov.johansson@control.lth.se"
+                      ;;                               "anton.johansson@abm.lth.se"
+                      ;;                               "anton.johansson@control.lth.se"))
                       (mu4e-compose-signature  . "Best regards,
 Anton Tetov Johansson
 
@@ -509,9 +506,10 @@ https://control.lth.se/"))
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq mu4e-compose-context-policy 'ask)
 
-  (setq mu4e-split-view 'vertical)
-  (setq mu4e-headers-visible-columns 80)
+  ;; (setq mu4e-split-view 'vertical)
+  ;; (setq mu4e-headers-visible-columns 80)
 
+  (setq mu4e-attachment-dir (expand-file-name "~/Downloads"))
   (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
   (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
 
