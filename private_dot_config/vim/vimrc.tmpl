@@ -160,7 +160,9 @@ set copyindent              " Make autoindent use the same chars as prev line
 set number relativenumber   " Show relative number and normal number.
 set showcmd                 " show command in bottom bar
 set cursorline              " highlight current line
-set cursorcolumn            " highlight current column
+if !exists('g:vscode')
+  set cursorcolumn            " highlight current column
+endif
 filetype indent on          " load filetype-specific indent files
 set lazyredraw              " redraw only when we need to.
 set showmatch               " highlight matching [{()}]
