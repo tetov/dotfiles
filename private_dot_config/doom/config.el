@@ -416,8 +416,10 @@
 
 ;; python
 ;; use format-all, not lsp formatter
+(setq poetry-tracking-strategy 'projectile)
 (after! python-mode (setq poetry-tracking-strategy 'projectile))
 (setq-hook! 'python-mode-hook +format-with-lsp nil)
+(setq-hook! 'python-mode-hook poetry-tracking-strategy 'projectile)
 ;; spelling
 ;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
 (after! ispell
@@ -444,13 +446,20 @@
 (setq vdirel-repository ( substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
 
 ;; mail
+(defun tetov/mu4e-refile-folder-function (msg)
+  "Set the refile directory for message.
+
+   Refile with this function means moving msg from INBOX to Archive. If the msg
+   is not in INBOX leave it be (set refile dir to current dir it is in)."
+  (let ((maildir (mu4e-message-field msg :maildir)))
+       (string-replace "/INBOX" "/Archive" maildir)))
+
 (set-email-account! "fastmail"
                     '((mu4e-sent-folder       . "/fastmail/Sent")
                       (mu4e-drafts-folder     . "/fastmail/Drafts")
                       (mu4e-trash-folder      . "/fastmail/Trash")
-                      (mu4e-refile-folder     . "/fastmail/Archive")
                       (smtpmail-smtp-user     . "tetov@fastmail.com")
-                      ;; (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
+                      (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
                       (mu4e-compose-signature . "Best regards\nAnton Tetov Johansson"))
                     t)
 
@@ -458,12 +467,11 @@
                     '((mu4e-sent-folder        . "/lth/Sent Items")
                       (mu4e-drafts-folder      . "/lth/Drafts")
                       (mu4e-trash-folder       . "/lth/Deleted Items")
-                      (mu4e-refile-folder      . "/lth/Archive")
                       (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
-                      ;; (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
-                      ;;                               "anton_tetov.johansson@control.lth.se"
-                      ;;                               "anton.johansson@abm.lth.se"
-                      ;;                               "anton.johansson@control.lth.se"))
+                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
+                                                    "anton_tetov.johansson@control.lth.se"
+                                                    "anton.johansson@abm.lth.se"
+                                                    "anton.johansson@control.lth.se"))
                       (mu4e-compose-signature  . "Best regards,
 Anton Tetov Johansson
 
@@ -506,8 +514,18 @@ https://control.lth.se/"))
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq mu4e-compose-context-policy 'ask)
 
+  ;; refile func
+  (setq mu4e-refile-folder 'tetov/mu4e-refile-folder-function)
+
   ;; (setq mu4e-split-view 'vertical)
   ;; (setq mu4e-headers-visible-columns 80)
+  (setq mu4e-headers-fields
+        '((:account-stripe . 1)
+          (:human-date . 12)
+          (:flags . 6)
+          (:from-or-to . 25)
+          (:maildir . 20)
+          (:subject)))
 
   (setq mu4e-attachment-dir (expand-file-name "~/Downloads"))
   (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
