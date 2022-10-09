@@ -592,6 +592,14 @@ https://control.lth.se/"))
                            (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
                            (:desc "chezmoi toggle mode" "c" #'chezmoi-mode)))
 
+;; elfeed (RSS)
+(setq elfeed-use-curl t)
+(elfeed-set-timeout 36000)
+(setq elfeed-feeds '(("owncloud+https://tetov@cloud.tetov.se"
+                      :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
+(setq elfeed-protocol-enabled-protocols '(owncloud))
+(elfeed-protocol-enable)
+
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
   (defun zz/goto-match-paren (arg)
