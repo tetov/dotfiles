@@ -452,7 +452,7 @@
    Refile with this function means moving msg from INBOX to Archive. If the msg
    is not in INBOX leave it be (set refile dir to current dir it is in)."
   (let ((maildir (mu4e-message-field msg :maildir)))
-       (string-replace "/INBOX" "/Archive" maildir)))
+    (string-replace "/INBOX" "/Archive" maildir)))
 
 (set-email-account! "fastmail"
                     '((mu4e-sent-folder       . "/fastmail/Sent")
@@ -593,12 +593,13 @@ https://control.lth.se/"))
                            (:desc "chezmoi toggle mode" "c" #'chezmoi-mode)))
 
 ;; elfeed (RSS)
-(setq elfeed-use-curl t)
-(elfeed-set-timeout 36000)
-(setq elfeed-feeds '(("owncloud+https://tetov@cloud.tetov.se"
-                      :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
-(setq elfeed-protocol-enabled-protocols '(owncloud))
-(elfeed-protocol-enable)
+(after! (elfeed elfeed-protocol)
+  (setq elfeed-use-curl t)
+  (elfeed-set-timeout 36000)
+  (setq elfeed-feeds '(("owncloud+https://tetov@cloud.tetov.se"
+                        :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
+  (setq elfeed-protocol-enabled-protocols '(owncloud))
+  (elfeed-protocol-enable))
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
