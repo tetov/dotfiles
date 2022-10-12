@@ -546,7 +546,6 @@ https://control.lth.se/"))
   (set-popup-rule! "*doom:eshell-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
 
 (set-eshell-alias!
- ;; from  doomemacs/modules/term/eshell/config.el
  "q"  "exit"           ; built-in
  "f"  "find-file $1"
  "ff" "find-file-other-window $1"
@@ -578,10 +577,10 @@ https://control.lth.se/"))
  "gf" "g fetch $*"
  "gl" "g pull $*"
  "gp" "g push $*"
- "gr" "g push $*"
+ "gr" "g remote $*"
  "gst" "g status $*"
 
- "cm" "chezmoi $*)"
+ "cm" "chezmoi $*"
 
  "cmcd" "eshell/cd ${chezmoi source-path}")
 
