@@ -545,6 +545,46 @@ https://control.lth.se/"))
 (after! eshell
   (set-popup-rule! "*doom:eshell-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
 
+(set-eshell-alias!
+ ;; from  doomemacs/modules/term/eshell/config.el
+ "q"  "exit"           ; built-in
+ "f"  "find-file $1"
+ "ff" "find-file-other-window $1"
+ "d"  "dired $1"
+ "bd" "eshell-up $1"
+ "rg" "rg --color=always $*"
+ "l"  "ls -lh $*"
+ "ll" "ls -lah $*"
+ "git" "git --no-pager $*"
+ "gg" "magit-status"
+ "cdp" "cd-to-project"
+ "clear" "clear-scrollback" ; more sensible than default
+
+ ;; mine (adapted from zsh config)
+ ".." "cd .."
+
+ "_" "sudo $*"
+
+ "r" "rolldice -s $*"
+
+ "g" "git $*"
+ "ga" "g add $*"
+ "gb" "g branch $*"
+ "gc" "g commit -v $*"
+ "gcmsg" "gc -m \"$*\""
+ "gcd" "(if (doom-project-root) (eshell/cd-to-project) (eshell/echo \"Not in project directory.\"))"
+ "gco" "g checkout $*"
+ "gd" "g diff $*"
+ "gf" "g fetch $*"
+ "gl" "g pull $*"
+ "gp" "g push $*"
+ "gr" "g push $*"
+ "gst" "g status $*"
+
+ "cm" "chezmoi $*)"
+
+ "cmcd" "eshell/cd ${chezmoi source-path}")
+
 ;;projectile
 (setq projectile-auto-discover t
       projectile-project-search-path '(("~/src" . 1)))  ;; number means search depth
