@@ -371,7 +371,17 @@
 
             (org-ql-block '(and (todo "TODO") (descendants (todo))) ((org-ql-block-header "All projects")))
             (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting"))))))))
+                  ((org-agenda-overriding-header "Waiting")))))))
+  (after! ox-hugo
+    (setq org-hugo-export-with-toc nil)
+    (setq org-hugo-date-format "%Y-%m-%d")
+    (setq org-hugo-front-matter-format "yaml")
+    (setq org-hugo-goldmark t)
+    (setq org-hugo-section "posts")
+    (setq org-hugo-base-dir "~/src/web/xyz/content/posts")
+    (setq org-hugo-export-creator-string nil)
+    )
+  )
 
 ;; backup
 
@@ -455,7 +465,8 @@
     (string-replace "/INBOX" "/Archive" maildir)))
 
 (set-email-account! "fastmail"
-                    '((mu4e-sent-folder       . "/fastmail/Sent")
+                    '((user-mail-address      . "anton@tetov.se")
+                      (mu4e-sent-folder       . "/fastmail/Sent")
                       (mu4e-drafts-folder     . "/fastmail/Drafts")
                       (mu4e-trash-folder      . "/fastmail/Trash")
                       (smtpmail-smtp-user     . "tetov@fastmail.com")
@@ -464,7 +475,8 @@
                     t)
 
 (set-email-account! "lth"
-                    '((mu4e-sent-folder        . "/lth/Sent Items")
+                    '((user-mail-address       . "anton_tetov.johansson@abm.lth.se")
+                      (mu4e-sent-folder        . "/lth/Sent Items")
                       (mu4e-drafts-folder      . "/lth/Drafts")
                       (mu4e-trash-folder       . "/lth/Deleted Items")
                       (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
@@ -507,7 +519,8 @@ https://control.lth.se/"))
                '( :name "allinboxes"
                   :key  ?i
                   :query "maildir:/lth/INBOX OR maildir:/fastmail/INBOX"))
-  (setq message-citation-line-format "On %Y-%m-%d at %R %Z, %f wrote:")
+  (setq message-citation-line-format "On %Y-%m-%d at %R, %f wrote:"
+        message-citation-line-function  #'message-insert-formatted-citation-line)
   (setq mu4e-headers-skip-duplicates nil)
   (setq mu4e-change-filenames-when-moving t)
 
@@ -639,6 +652,7 @@ https://control.lth.se/"))
                         :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
   (setq elfeed-protocol-enabled-protocols '(owncloud))
   (elfeed-protocol-enable))
+
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
