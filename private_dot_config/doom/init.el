@@ -43,7 +43,7 @@
        neotree             ; a project drawer, like NERDTree for vim
        ophints             ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       tabs                ; a tab bar for Emacs
+       ;; tabs                ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
        vc-gutter           ; vcs diff in the fringe
@@ -81,7 +81,7 @@
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       (spell +flyspell +hunspell +everywhere) ; tasing you for misspelling mispelling
+       (spell +flyspell +hunspell) ; tasing you for misspelling mispelling
        grammar             ; tasing grammar mistake every you make
 
        :tools
@@ -104,7 +104,7 @@
        rgb                 ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
-       ;;tmux              ; an API for interacting with tmux
+       tmux              ; an API for interacting with tmux
        upload              ; map local to remote projects via ssh/ftp
 
        :os
@@ -152,7 +152,7 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +pandoc +pretty +roam2)               ; organize your plain life in plain text
+       (org +pandoc +pretty +roam2 +hugo)               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
