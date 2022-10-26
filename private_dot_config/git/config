@@ -98,6 +98,6 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 [diff "json"]
-	textconv = "cat \"$1\" | json_pp --json_opt=canonical,pretty"
+	textconv = "cat \"$1\" | json_pp --json_opt=canonical,pretty,relaxed"
 [diff "image"]
 	command = 'git-imgdiff'
