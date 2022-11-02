@@ -13,3 +13,4 @@ path+=~/.cargo/bin
 path+=~/.local/bin
 path+=~/.poetry/bin
 path+=${XDG_CONFIG_HOME}/emacs/bin
+path+=~/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
