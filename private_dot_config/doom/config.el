@@ -179,12 +179,17 @@
   ;; capture templates
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
-                                 "* TODO %?\n%U\n" :clock-in t :clock-resume t)
+                                 "* TODO %?\n%U\n"
+                                 :clock-in t
+                                 :clock-resume t)
                                 ("m" "Meeting" entry (file org-default-notes-file)
-                                 "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+                                 "* MEETING with %? :MEETING:\n%U\n"
+                                 :clock-in t
+                                 :clock-resume t)
                                 ("e" "Email" entry (file org-default-notes-file)
-                                 "* TODO %:fromname: %a %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))"
-                                 :clock-in t :clock-resume t)))
+                                 "* TODO %:fromname: %a %?\n%U\n"
+                                 :clock-in t
+                                 :clock-resume t)))
 
   ;; create id's for all captures
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
@@ -257,71 +262,29 @@
   ;; roam template
   (setq org-roam-capture-templates
         '(("n" "note" plain "%?"
-           :if-new (file+head "notes/${slug}.org"
-                              ":PROPERTIES:
-:CATEGORY: note
-:END:
-#+title: ${title}
-%U")
-           :immediate-finish t
-           :unnarrowed t)
-          ("p" "(meta) project" plain  "%?"
-           :if-new (file+head "${slug}.org"
-                              ":PROPERTIES:
-:CATEGORY: project
-:END:
-#+title: ${title}
-%U")
+           :target (file+head "notes/${slug}.org"
+                              "#+PROPERTY: CATEGORY note\n#+title: ${title}\n%U")
            :immediate-finish t
            :unnarrowed t)
           ("w" "writing" plain  "%?"
-           :if-new (file+head "writing/${slug}.org"
-                              ":PROPERTIES:
-:CATEGORY: writing
-:END:
-#+title: ${title}
-%U")
-           :immediate-finish t
-           :unnarrowed t)
-          ("r" "reference" plain "%?"
-           :if-new (file+head "refs/${slug}.org"
-                              ":PROPERTIES:
-:CATEGORY: reference
-:ROAM_REFS: %x
-:END:
-#+title: ${title}
-%U")
+           :target (file+head "writing/${slug}.org"
+                              "#+PROPERTY: CATEGORY writing\n#+title: ${title}\n%U")
            :immediate-finish t
            :unnarrowed t)
           ("b" "bibliography reference" plain "%?"
-           :if-new (file+head "refs/${citekey}.org"
-                              ":PROPERTIES:
-:CATEGORY: reference
-:END:
-#+PROPERTY: type %^{entry-type}
-#+FILETAGS: %^{keywords}
-#+PROPERTY: authors %^{author}
-#+title: ${title}\n")
+           :target (file+head "refs/${citekey}.org"
+                              "#+PROPERTY: CATEGORY reference\n#+PROPERTY: type %^{entry-type}\n#+PROPERTY: authors %^{author}\n#+FILETAGS: %^{keywords}\n#+title: ${title}")
            :unnarrowed t)
+          :immediate-finish t
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
-           :if-new (file+head "rp/${slug}.org"
-                              ":PROPERTIES:
-:CATEGORY: rp
-:END:
-#+filetags: :dnd5e:eat-flay-prowl:
-#+title: ${title}
-%U")
+           :target (file+head "rp/${slug}.org"
+                              "#+FILETAGS: :dnd5e:eat-flay-prowl:\n#+title: ${title}\n%U")
            :immediate-finish t
            :unnarrowed t)))
 
-  (setq org-roam-capture-ref-templates '(("r" "ref" plain "%?" :target
-                                          (file+head "refs/${slug}.org" ":PROPERTIES:
-:CATEGORY: reference
-:END:
-#+title: ${title}
-%U")
-                                          :unnarrowed t))
-        ))
+  (setq org-roam-capture-ref-templates '(("r" "org roam protocol ref" plain "%?"
+                                          :target (file+head "refs/${slug}.org" "${title}\n%U")
+                                          :unnarrowed t))))
 
 (use-package! org-roam-bibtex
   :after org-roam
