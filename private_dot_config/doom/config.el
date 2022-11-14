@@ -183,11 +183,11 @@
                                  :clock-in t
                                  :clock-resume t)
                                 ("m" "Meeting" entry (file org-default-notes-file)
-                                 "* MEETING with %? :MEETING:\n%U\n"
+                                 "* TODO with %? :MEETING:\n%U\n"
                                  :clock-in t
                                  :clock-resume t)
                                 ("e" "Email" entry (file org-default-notes-file)
-                                 "* TODO %:fromname: %a %?\n%U\n"
+                                 "* TODO %?\n%U\n%:fromname: %a"
                                  :clock-in t
                                  :clock-resume t)))
 
@@ -212,7 +212,7 @@
   ;; Resume clocking task on clock-in if the clock is open
   (setq org-clock-in-resume t)
   ;; Change tasks to NEXT when clocking in
-  (setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
+  (setq org-clock-in-switch-to-state 'bh/clock-in-to-prog)
   ;; Save clock data and state changes and notes in the LOGBOOK drawer
   (setq org-clock-into-drawer t)
   ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
@@ -274,8 +274,8 @@
           ("b" "bibliography reference" plain "%?"
            :target (file+head "refs/${citekey}.org"
                               "#+PROPERTY: CATEGORY reference\n#+PROPERTY: type %^{entry-type}\n#+PROPERTY: authors %^{author}\n#+FILETAGS: %^{keywords}\n#+title: ${title}")
-           :unnarrowed t)
-          :immediate-finish t
+           :unnarrowed t
+           :immediate-finish t)
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
            :target (file+head "rp/${slug}.org"
                               "#+FILETAGS: :dnd5e:eat-flay-prowl:\n#+title: ${title}\n%U")
