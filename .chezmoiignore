@@ -2,8 +2,11 @@ README.md
 LICENSE
 
 {{- if not (has .chezmoi.hostname .dev_hosts)}}
-.config/vim/plugin
-.sylpheed-2.0
+.ssh/
+!.ssh/authorized_keysd
+.gnupg/
+.config/systemd/user/default.target.wants/
+.config/systemd/user/timer.target.wants/
 {{- end }}
 
 gnome_extension_sync.json
