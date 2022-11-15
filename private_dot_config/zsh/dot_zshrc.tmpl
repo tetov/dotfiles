@@ -23,24 +23,6 @@ setopt always_to_end # always put cursor at end after completing
 
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
-# For gpg agent forwarding. (Dir gets deleted on log out)
-gpgconf --create-socketdir
-
-unset SSH_AGENT_PID
-if [[ ! -v SSH_CLIENT ]] && [[ -v SSH_TTY ]]; then
-    export GPG_TTY=$(tty)
-fi
-
-gpgconf --launch gpg-agent
-
-if [[ $(uname -r) =~ [Mm]icrosoft ]] ; then  # if this is WSL
-  export LIBGL_ALWAYS_INDIRECT=0
-  autoload -U set_DISPLAY
-  set_DISPLAY
-
-  export BROWSER="${BROWSER:-wsl-open}"
-fi
-
 # Syntax highlightening for less
 export LESS=" -R"
 if [[ -e /usr/bin/src-hilite-lesspipe.sh ]] ; then
