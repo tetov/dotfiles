@@ -130,15 +130,15 @@
 (setq company-dabbrev-other-buffers 'all)
 
 ;; vertico don't delete whole dir on backspace
-(defun my/vertico-directory-delete-char (&optional n)
+(defun tetov/vertico-directory-delete-char (&optional n)
   "Delete N chars before point."
   (interactive "p")
   (backward-delete-char n))
 
 (after! vertico
-  (define-key vertico-map (kbd "<backspace>") #'my/vertico-directory-delete-char))
+  (define-key vertico-map (kbd "<backspace>") #'tetov/vertico-directory-delete-char))
 
-(defun my/count-characters-subtree ()
+(defun tetov/count-characters-subtree ()
   "Count characters in subtree.
 
    Useful for Vinnova project reports.
@@ -159,6 +159,21 @@
 (setq org-directory "~/src/org/")
 
 (require 'bh)
+
+(defun tetov/clock-in-to-prog (KW)
+  "Switch a task from TODO to PROG when clocking in.
+Skips capture tasks, projects, and subprojects.
+Switch projects and subprojects from PROG back to TODO.
+Based on bh/clock-in-to-next."
+  (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+    (cond
+     ((and (member (org-get-todo-state) (list "TODO"))
+           (bh/is-task-p))
+      "PROG")
+     ((and (member (org-get-todo-state) (list "PROG"))
+           (bh/is-project-p))
+      "TODO"))))
+
 (after! (org org-roam)
   ;; files
   (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
@@ -212,7 +227,7 @@
   ;; Resume clocking task on clock-in if the clock is open
   (setq org-clock-in-resume t)
   ;; Change tasks to NEXT when clocking in
-  (setq org-clock-in-switch-to-state 'bh/clock-in-to-prog)
+  (setq org-clock-in-switch-to-state 'tetov/clock-in-to-prog)
   ;; Save clock data and state changes and notes in the LOGBOOK drawer
   (setq org-clock-into-drawer t)
   ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
