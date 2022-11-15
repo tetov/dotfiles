@@ -243,6 +243,18 @@ Based on bh/clock-in-to-next."
   ;; Include current clocking task in clock reports
   (setq org-clock-report-include-clocking-task t)
 
+  (setq org-clocktable-defaults '(:maxlevel 2
+                                  :lang "en"
+                                  :scope agenda
+                                  :block lastweek
+                                  :fileskip0 t
+                                  :match nil
+                                  :emphasize t
+                                  :link nil
+                                  :hidefiles t
+                                  :match "-rp"
+                                  :step day))
+
   (setq bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
 
   (add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
