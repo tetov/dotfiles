@@ -1,3 +1,4 @@
+{{ if has .chezmoi.hostname .dev_hosts -}}
 #!/bin/sh
 
 # Run if emacs files changed
@@ -8,3 +9,4 @@
 DOOM_INSTALL_DIR=$HOME/.config/emacs
 
 "$DOOM_INSTALL_DIR/bin/doom" sync
+{{- end }}

@@ -1,3 +1,4 @@
+{{ if has .chezmoi.hostname .dev_hosts -}}
 #!/bin/sh
 
 # runs if master commit is changed
@@ -9,3 +10,4 @@
 DOOM_INSTALL_DIR=$HOME/.config/emacs
 
 "$DOOM_INSTALL_DIR/bin/doom" upgrade
+{{- end }}
