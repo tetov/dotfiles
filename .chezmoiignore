@@ -1,15 +1,18 @@
 README.md
 LICENSE
 
-{{ if not (has .chezmoi.hostname .dev_hosts)}}
+{{ if has .chezmoi.hostname .dev_hosts }}
+
+# This masks gpg agent on non dev hosts
+.config/systemd/user/gpg-agent.socket
+
+{{ else }}
+
 .ssh/
 !.ssh/authorized_keys
-.gnupg/
 .config/systemd/user/default.target.wants/
 .config/systemd/user/timer.target.wants/
-{{ else }}
-# This mask gpg agent on non dev hosts
-.config/systemd/user/gpg-agent.socket
+
 {{ end }}
 
 gnome_extension_sync.json

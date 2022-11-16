@@ -55,7 +55,11 @@ if [ -z "$SSH_CLIENT" ] ; then
   gpgconf --launch gpg-agent
 fi
 
-export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+# only set if not already set, example: if using -A ssh creates
+# socket at /tmp/ssh-xxxxxx
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
 
 export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYGVIMRC'
 export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
