@@ -8,9 +8,8 @@ LICENSE
 .config/systemd/user/default.target.wants/
 .config/systemd/user/timer.target.wants/
 {{ else }}
-# These mask gpg agent(s) on non dev hosts
+# This mask gpg agent on non dev hosts
 .config/systemd/user/gpg-agent.socket
-.config/systemd/user/gpg-agent-.socket
 {{ end }}
 
 gnome_extension_sync.json
