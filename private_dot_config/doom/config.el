@@ -334,7 +334,7 @@ Based on bh/clock-in-to-next."
   (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
                                               :min-duration 0
                                               :max-gap 5
-                                              :gap-ok-around ("4:00" "13:00")))
+                                              :gap-ok-around ("4:00" "12:30")))
   ;; agenda views
   (use-package! org-ql)
   (org-ql-defpred is-project-p () "" :body (and (todo "TODO")
@@ -351,17 +351,21 @@ Based on bh/clock-in-to-next."
                                 (descendants (todo))
                                 (not (descendants (todo "PROG" "NEXT" "WAIT"))))
                           ((org-ql-block-header "Stuck projects")))
-            (todo "NEXT|PROG"
-                  ((org-agenda-overriding-header "Next or in progress")
+            (todo "PROG"
+                  ((org-agenda-overriding-header "In progress")
                    (org-agenda-sorting-strategy '(todo-state-up category-up))))
+            (org-ql-block '(and (todo "NEXT")
+                                (not (descendants (todo "PROG" "NEXT"))))
+                          ((org-ql-block-header "Next")))
             (todo "TODO"
                   ((org-agenda-overriding-header "TODOs")
                    (org-agenda-skip-function 'bh/skip-projects-and-habits)
                    (org-agenda-sorting-strategy '(todo-state-down deadline-up scheduled-up))))
-
-            (org-ql-block '(and (todo "TODO") (descendants (todo))) ((org-ql-block-header "All projects")))
             (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting")))))))
+                  ((org-agenda-overriding-header "Waiting")))
+            (org-ql-block '(and (todo "TODO")
+                                (descendants (todo)))
+                          ((org-ql-block-header "All projects")))))))
   (after! ox-hugo
     (setq org-hugo-export-with-toc nil)
     (setq org-hugo-date-format "%Y-%m-%d")
