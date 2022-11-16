@@ -46,13 +46,15 @@ export LC_PAPER=sv_SE.UTF-8
 export LC_TELEPHONE=sv_SE.UTF-8
 export LC_TIME=sv_SE.UTF-8
 
-test -z "$SSH_CLIENT" && export GPG_TTY=$(tty)
-
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
-gpgconf --launch gpg-agent
 
-# use gpg for ssh agent if not ssh connection
+# if not SSH connection
+if [ test -z "$SSH_CLIENT" ] ; then
+  export GPG_TTY=$(tty)
+  gpgconf --launch gpg-agent
+fi
+
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
 export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYGVIMRC'
