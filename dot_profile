@@ -46,7 +46,7 @@ export LC_PAPER=sv_SE.UTF-8
 export LC_TELEPHONE=sv_SE.UTF-8
 export LC_TIME=sv_SE.UTF-8
 
-export GPG_TTY=$(tty)
+test -z $SSH_CLIENT && export GPG_TTY=$(tty)
 
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
