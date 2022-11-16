@@ -50,7 +50,7 @@ export LC_TIME=sv_SE.UTF-8
 gpgconf --create-socketdir
 
 # if not SSH connection
-if [ test -z "$SSH_CLIENT" ] ; then
+if [ -z "$SSH_CLIENT" ] ; then
   export GPG_TTY=$(tty)
   gpgconf --launch gpg-agent
 fi
