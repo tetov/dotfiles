@@ -4,5 +4,3 @@ Description=Synchronise mailboxes in group %i
 [Service]
 Type=oneshot
 ExecStart=%h/bin/sync_emails.sh %i
-Environment=XDG_CONFIG_HOME="%h/.config"
-Environment=XDG_CACHE_HOME="%h/.cache"
