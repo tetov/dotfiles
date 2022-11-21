@@ -38,11 +38,6 @@ if [ -z "$SSH_CLIENT" ] ; then
   GPG_TTY=$(tty)
   export GPG_TTY
   gpgconf --launch gpg-agent
-fi
-
-# only set if not already set, example: if using -A ssh creates
-# socket at /tmp/ssh-xxxxxx
-if [ -z "$SSH_AUTH_SOCK" ] ; then
   SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
   export SSH_AUTH_SOCK
 fi
