@@ -21,6 +21,9 @@
   :recipe (:host github :repo "tetov/elisp"
            :files ("*.el")))
 
+(package! mu4e-folding
+  :recipe (:host github :repo "rougier/mu4e-folding"))
+
 ;; org-roam-bibtex
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
