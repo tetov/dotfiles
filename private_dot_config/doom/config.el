@@ -348,7 +348,7 @@ Based on bh/clock-in-to-next."
   (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
                                               :min-duration 0
                                               :max-gap 5
-                                              :gap-ok-around ("12:30" "18:00")))
+                                              :gap-ok-around ("12:30" "18:00" "04:00")))
 
   (org-ql-defpred project ()
     "Find tasks that are projects.
@@ -518,7 +518,12 @@ https://control.lth.se/"))
 
 (after! mu4e
   (require 'mu4e-folding)
-  ;; (require 'mu4e-fast-folding)
+
+  ;; don't autosave to try to reduce number of drafts synced.
+  ;; TODO: Check if it still saves to ~/editor-backups
+  (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
+
+  ;;
   ;; mail box updated using systemd timer, so mail command is set to true
   ;; mu4e still indexes again but that should be fine.
   (setq mu4e-get-mail-command "true")
@@ -563,10 +568,6 @@ https://control.lth.se/"))
   (setq mu4e-attachment-dir (expand-file-name "~/Downloads"))
   (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
   (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
-
-;; don't autosave to try to reduce number of drafts synced.
-;; TODO: Check if it still saves to ~/editor-backups
-(add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
 
 (run-at-time "5 sec" nil (lambda ()
                            (let ((current-prefix-arg '(4)))
@@ -627,11 +628,7 @@ https://control.lth.se/"))
 
 ;; chezmoi
 (use-package! chezmoi)
-(after! chezmoi
-  (require 'chezmoi-company))
-(add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
-                                              (add-to-list 'company-backends 'chezmoi-company-backend)
-                                            (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
+
 (defun chezmoi--evil-insert-state-enter ()
   "Run after evil-insert-state-entry."
   (chezmoi-template-buffer-display nil (point))
@@ -651,18 +648,26 @@ https://control.lth.se/"))
     (progn
       (remove-hook 'evil-insert-state-entry-hook #'chezmoi--evil-insert-state-enter 1)
       (remove-hook 'evil-insert-state-exit-hook #'chezmoi--evil-insert-state-exit 1))))
-(add-hook 'chezmoi-mode-hook #'chezmoi-evil)
 
-(map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
-                           (:desc "chezmoi apply" "a" #'chezmoi-write)
-                           (:desc "chezmoi apply all" "A" #'chezmoi-write-files)
-                           (:desc "chezmoi magit status" "s" #'chezmoi-magit-status)
-                           (:desc "chezmoi diff" "d" #'chezmoi-diff)
-                           (:desc "chezmoi ediff" "e" #'chezmoi-ediff)
-                           (:desc "chezmoi find" "f" #'chezmoi-find)
-                           (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
-                           (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
-                           (:desc "chezmoi toggle mode" "c" #'chezmoi-mode)))
+(after! chezmoi
+  (require 'chezmoi-company)
+  (add-hook 'chezmoi-mode-hook
+            #'(lambda ()
+                (if chezmoi-mode (add-to-list 'company-backends 'chezmoi-company-backend)
+                  (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
+
+  (add-hook 'chezmoi-mode-hook #'chezmoi-evil)
+
+  (map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
+                             (:desc "chezmoi apply" "a" #'chezmoi-write)
+                             (:desc "chezmoi apply all" "A" #'chezmoi-write-files)
+                             (:desc "chezmoi magit status" "s" #'chezmoi-magit-status)
+                             (:desc "chezmoi diff" "d" #'chezmoi-diff)
+                             (:desc "chezmoi ediff" "e" #'chezmoi-ediff)
+                             (:desc "chezmoi find" "f" #'chezmoi-find)
+                             (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
+                             (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
+                             (:desc "chezmoi toggle mode" "c" #'chezmoi-mode))))
 
 ;; elfeed (RSS)
 (after! (elfeed elfeed-protocol)
