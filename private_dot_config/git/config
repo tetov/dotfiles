@@ -1,10 +1,3 @@
-[user]
-	name = Anton Tetov
-	email = anton@tetov.se
-	signingkey = 2B4D0035AFF0F7DACE5B29D7337DDB574A8834DB
-
-# Parts of settings and comments from
-# https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
 [alias]
 	stash-all = stash save --include-untracked
 	# We wanna grab those pesky un-added files!
@@ -20,22 +13,59 @@
 	# https://stackoverflow.com/a/21857717
 	branch-cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
 
+[commit]
+	gpgSign = true
+
+[core]
+	autocrlf = input
+	quotePath = false
+
+[diff]
+	tool = ediff
+
+[diff "json"]
+	textconv = "cat \"$1\" | json_pp --json_opt=canonical,pretty,relaxed"
+
+[diff "image"]
+	command = 'git-imgdiff'
+
+[difftool "ediff"]
+	cmd = ~/bin/ediff.sh $LOCAL $REMOTE $MERGED
+
+[filter "kicad_project"]
+	clean = sed -E 's/^update=.*$/update=Date/'
+	smudge = cat
+
+[filter "kicad_sch"]
+	clean = "sed -E 's/#(PWR|FLG)[0-9]+/#\\1?/'"
+	smudge = cat
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+
+[gpg]
+	program = gpg2
+
+[init]
+	defaultBranch = main
+
 [merge]
 	conflictstyle = diff3
 	# Standard diff is two sets of final changes. This introduces the original text before each side's changes.
 	# https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
 
-	tool = vim_mergetool
+	tool = ediff
+
+[mergetool "ediff"]
+	cmd = ~/bin/ediff.sh $LOCAL $REMOTE $MERGED $BASE
+	trustExitCode = true
 
 [mergetool "vim_mergetool"]
 	cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
 	trustExitCode = true
-
-[commit]
-	gpgSign = true
-	# "other people can trust that the changes you've made really were made by you"
-	# https://help.github.com/articles/about-gpg/
-	# https://git-scm.com/docs/git-config#git-config-commitgpgSign
 
 [push]
 	default = simple
@@ -53,52 +83,19 @@
 	# Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
 	# https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
 
-[diff]
-	tool = vimdiff
-
-[difftool]
-	prompt = false
-
-[gpg]
-	program = gpg2
-
-# To make zsh and vim plugins work
-[fetch]
-	fsckObjects = false
+[pull]
+	rebase = true
 
 [recieve]
 	fsckObjects = false
 
-[transfer]
-	fsckObjects = false
-
-[pull]
-	rebase = true
-
-[init]
-	defaultBranch = main
-
 [submodule]
 	recurse = true
 
-[filter "kicad_project"]
-	clean = sed -E 's/^update=.*$/update=Date/'
-	smudge = cat
+[transfer]
+	fsckObjects = false
 
-[filter "kicad_sch"]
-	clean = "sed -E 's/#(PWR|FLG)[0-9]+/#\\1?/'"
-	smudge = cat
-
-[core]
-	autocrlf = input
-	quotePath = false
-
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-[diff "json"]
-	textconv = "cat \"$1\" | json_pp --json_opt=canonical,pretty,relaxed"
-[diff "image"]
-	command = 'git-imgdiff'
+[user]
+	name = Anton Tetov
+	email = anton@tetov.se
+	signingkey = 2B4D0035AFF0F7DACE5B29D7337DDB574A8834DB
