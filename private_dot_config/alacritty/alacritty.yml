@@ -3,7 +3,7 @@ window:
   decorations: none
 
 font:
-  size: 10.0
+  size: 11.0
 
 bell:
   duration: 250

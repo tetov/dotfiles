@@ -3,11 +3,6 @@
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     refreshPeriod = "168h"
 
-[".local/share/nvim/site/autoload/plug.vim"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    refreshPeriod = "168h"
-
 [".config/zsh/.zcomet/bin"]
     type = "git-repo"
     url = "https://github.com/agkozak/zcomet.git"
@@ -23,14 +18,25 @@
     url = "https://github.com/hlissner/doom-emacs"
     refreshPeriod = "0"  # use doom upgrade from script instead
 
+[".local/share/nvim/site/autoload/plug.vim"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    refreshPeriod = "168h"
+
+["bin/git-sync"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/simonthum/git-sync/master/git-sync"
+    refreshPeriod = "168h"
+    executable = true
+
 ["bin/gnome-shell-extension-installer"]
     type = "file"
     url = "https://raw.githubusercontent.com/brunelli/gnome-shell-extension-installer/master/gnome-shell-extension-installer"
     refreshPeriod = "168h"
     executable = true
 
-["bin/git-sync"]
+["bin/ediff.sh"]
     type = "file"
-    url = "https://raw.githubusercontent.com/simonthum/git-sync/master/git-sync"
+    url = "https://raw.githubusercontent.com/paulotome/emacstool/master/ediff.sh"
     refreshPeriod = "168h"
     executable = true
