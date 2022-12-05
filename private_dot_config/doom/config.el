@@ -158,26 +158,27 @@
 ;; must be set before org loads!
 (setq org-directory "~/src/org/")
 
-(require 'bh)
 
-(defun tetov/clock-in-to-prog (KW)
-  "Switch a task from TODO to PROG when clocking in.
+(after! org
+  (require 'bh)
+
+  (defun tetov/clock-in-to-prog (KW)
+    "Switch a task from TODO to PROG when clocking in.
 Skips capture tasks, projects, and subprojects.
 Switch projects and subprojects from PROG back to TODO.
 Based on bh/clock-in-to-next."
-  (when (not (and (boundp 'org-capture-mode) org-capture-mode))
-    (cond
-     ((and (member (org-get-todo-state) (list "TODO"))
-           (bh/is-task-p))
-      "PROG")
-     ((and (member (org-get-todo-state) (list "PROG"))
-           (bh/is-project-p))
-      "TODO"))))
+    (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+      (cond
+       ((and (member (org-get-todo-state) (list "TODO"))
+             (bh/is-task-p))
+        "PROG")
+       ((and (member (org-get-todo-state) (list "PROG"))
+             (bh/is-project-p))
+        "TODO"))))
 
-(after! org
   ;; files
   (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
-  (setq org-default-notes-file (concat org-directory "/refile.org"))
+  (setq org-default-notes-file (concat org-directory "refile.org"))
   (setq org-attach-id-dir (expand-file-name "~/Nextcloud/Apps/org-attach"))
   ;; general
   (setq org-startup-folded t)
@@ -261,7 +262,7 @@ Based on bh/clock-in-to-next."
   (setq bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
 
   (add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
-  ;;
+
   ;; refile tweaks
   ;; http://doc.norang.ca/org-mode.html#RefileSetup
   (setq org-refile-target-verify-function 'bh/verify-refile-target)
@@ -281,14 +282,75 @@ Based on bh/clock-in-to-next."
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
   ;; export
-  (setq org-export-with-broken-links 'mark)
+  (setq org-export-with-broken-links 'mark))
 
-  ;; org-roam
-  (setq org-roam-directory org-directory)
-  (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db")))
+(after! org-agenda
+  (require 'sv-kalender)
+  (use-package! org-ql)
 
-;; roam capture templates
+  (org-ql-defpred project ()
+    "Find tasks that are projects.
+
+     Tasks with subtasks and tasks categorised as project"
+    :body (or (category "project")
+              (and (todo "TODO")
+                   (descendants (todo)))))
+
+  (org-ql-defpred stuck ()
+    "Find projects that are stuck.
+
+    No NEXT or PROG task in subtree, nor a TODO with a scheduled/deadline
+    timestamp."
+    :body (and (project)
+               (not (descendants (todo "PROG" "WAIT" "NEXT")))))
+
+  (add-hook 'org-agenda-mode-hook 'org-agenda-show-clocking-issues)
+  (setq org-agenda-include-diary t)
+  (setq org-agenda-dim-blocked-tasks nil)
+
+  ;; Compact the block agenda view
+
+  ;; keep agenda view alive
+  (setq org-agenda-sticky t)
+  (setq org-agenda-span 7)
+  (setq org-agenda-start-with-log-mode t)
+
+  (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
+                                              :min-duration 0
+                                              :max-gap 5
+                                              :gap-ok-around ("4:00" "12:30")))
+
+  ;; agenda views
+  (setq org-agenda-custom-commands
+        `(("d" "default"
+           ((agenda "" nil)
+            (tags "REFILE"
+                  ((org-agenda-overriding-header "Tasks to refile")
+                   (org-tags-match-list-sublevels nil)))
+            (org-ql-block '(stuck)
+                          ((org-ql-block-header "Stuck projects")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting")))
+            (org-ql-block '(and (todo "PROG")
+                                (not (descendants (todo "PROG" "NEXT"))))
+                          ((org-ql-block-header "Current tasks")))
+            (org-ql-block '(and (todo "NEXT")
+                                (not (descendants (todo "PROG" "NEXT"))))
+                          ((org-ql-block-header "Next tasks")))
+            (org-ql-block '(and (todo)
+                                (not (done))
+                                (not (todo "PROG" "NEXT" "WAIT"))
+                                (not (project)))
+                          ((org-ql-block-header "Other TODOs")))
+            (org-ql-block '(project)
+                          ((org-ql-block-header "All projects")))))))
+  )
+;; org-roam
 (after! org-roam
+  (setq org-roam-directory org-directory)
+  (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
+
+  ;; roam capture templates
   (setq tetov/org-roam-ref-template "#+PROPERTY: CATEGORY reference\n${title}\n%U")
 
   (setq org-roam-capture-templates
@@ -326,71 +388,11 @@ Based on bh/clock-in-to-next."
                                           :target (file+head "refs/${slug}.org" ,tetov/org-roam-ref-template)
                                           :unnarrowed t))))
 
+
 (use-package! org-roam-bibtex
   :after org-roam
   :config
   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
-
-(after! org-agenda
-  (use-package! org-ql)
-  (require 'sv-kalender)
-
-  (add-hook 'org-agenda-finalize-hook 'org-agenda-show-clocking-issues)
-
-  (setq org-agenda-include-diary t)
-  (setq org-agenda-dim-blocked-tasks nil)
-
-  ;; keep agenda view alive
-  (setq org-agenda-sticky t)
-  (setq org-agenda-span 7)
-  (setq org-agenda-start-with-log-mode t)
-
-  (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
-                                              :min-duration 0
-                                              :max-gap 5
-                                              :gap-ok-around ("12:30" "18:00" "04:00")))
-
-  (org-ql-defpred project ()
-    "Find tasks that are projects.
-
-     Tasks with subtasks and tasks categorised as project"
-    :body (or (category "project")
-              (and (todo "TODO")
-                   (descendants (todo)))))
-
-  (org-ql-defpred stuck ()
-    "Find projects that are stuck.
-
-    No NEXT or PROG task in subtree, nor a TODO with a scheduled/deadline
-    timestamp."
-    :body (and (project)
-               (not (descendants (todo "PROG" "WAIT" "NEXT")))))
-
-  ;; agenda views
-
-  (setq org-agenda-custom-commands
-        `(("d" "default"
-           ((agenda "" nil)
-            (tags "REFILE"
-                  ((org-agenda-overriding-header "Tasks to refile")
-                   (org-tags-match-list-sublevels nil)))
-            (org-ql-block '(stuck)
-                          ((org-ql-block-header "Stuck projects")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting")))
-            (org-ql-block '(and (todo "PROG")
-                                (not (descendants (todo "PROG" "NEXT"))))
-                          ((org-ql-block-header "Current tasks")))
-            (org-ql-block '(and (todo "NEXT")
-                                (not (descendants (todo "PROG" "NEXT"))))
-                          ((org-ql-block-header "Next tasks")))
-            (org-ql-block '(and (todo)
-                                (not (done))
-                                (not (todo "PROG" "NEXT" "WAIT"))
-                                (not (project)))
-                          ((org-ql-block-header "Other TODOs")))
-            (org-ql-block '(project)
-                          ((org-ql-block-header "All projects"))))))))
 
 (after! ox-hugo
   (setq org-hugo-export-with-toc nil)
@@ -399,7 +401,8 @@ Based on bh/clock-in-to-next."
   (setq org-hugo-goldmark t)
   (setq org-hugo-section "posts")
   (setq org-hugo-base-dir "~/src/web/xyz/content/posts")
-  (setq org-hugo-export-creator-string nil))
+  (setq org-hugo-export-creator-string nil)
+  )
 
 ;; backup
 
@@ -471,7 +474,7 @@ Based on bh/clock-in-to-next."
     (write-region "" nil ispell-personal-dictionary nil 0)))
 
 ;; contacts
-(setq vdirel-repository (substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
+(setq vdirel-repository ( substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
 
 ;; mail
 (defun tetov/mu4e-refile-folder-function (msg)
@@ -518,12 +521,7 @@ https://control.lth.se/"))
 
 (after! mu4e
   (require 'mu4e-folding)
-
-  ;; don't autosave to try to reduce number of drafts synced.
-  ;; TODO: Check if it still saves to ~/editor-backups
-  (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
-
-  ;;
+  ;; (require 'mu4e-fast-folding)
   ;; mail box updated using systemd timer, so mail command is set to true
   ;; mu4e still indexes again but that should be fine.
   (setq mu4e-get-mail-command "true")
@@ -568,6 +566,10 @@ https://control.lth.se/"))
   (setq mu4e-attachment-dir (expand-file-name "~/Downloads"))
   (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
   (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
+
+;; don't autosave to try to reduce number of drafts synced.
+;; TODO: Check if it still saves to ~/editor-backups
+(add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
 
 (run-at-time "5 sec" nil (lambda ()
                            (let ((current-prefix-arg '(4)))
@@ -628,7 +630,11 @@ https://control.lth.se/"))
 
 ;; chezmoi
 (use-package! chezmoi)
-
+(after! chezmoi
+  (require 'chezmoi-company))
+(add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
+                                              (add-to-list 'company-backends 'chezmoi-company-backend)
+                                            (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
 (defun chezmoi--evil-insert-state-enter ()
   "Run after evil-insert-state-entry."
   (chezmoi-template-buffer-display nil (point))
@@ -648,26 +654,18 @@ https://control.lth.se/"))
     (progn
       (remove-hook 'evil-insert-state-entry-hook #'chezmoi--evil-insert-state-enter 1)
       (remove-hook 'evil-insert-state-exit-hook #'chezmoi--evil-insert-state-exit 1))))
+(add-hook 'chezmoi-mode-hook #'chezmoi-evil)
 
-(after! chezmoi
-  (require 'chezmoi-company)
-  (add-hook 'chezmoi-mode-hook
-            #'(lambda ()
-                (if chezmoi-mode (add-to-list 'company-backends 'chezmoi-company-backend)
-                  (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
-
-  (add-hook 'chezmoi-mode-hook #'chezmoi-evil)
-
-  (map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
-                             (:desc "chezmoi apply" "a" #'chezmoi-write)
-                             (:desc "chezmoi apply all" "A" #'chezmoi-write-files)
-                             (:desc "chezmoi magit status" "s" #'chezmoi-magit-status)
-                             (:desc "chezmoi diff" "d" #'chezmoi-diff)
-                             (:desc "chezmoi ediff" "e" #'chezmoi-ediff)
-                             (:desc "chezmoi find" "f" #'chezmoi-find)
-                             (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
-                             (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
-                             (:desc "chezmoi toggle mode" "c" #'chezmoi-mode))))
+(map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
+                           (:desc "chezmoi apply" "a" #'chezmoi-write)
+                           (:desc "chezmoi apply all" "A" #'chezmoi-write-files)
+                           (:desc "chezmoi magit status" "s" #'chezmoi-magit-status)
+                           (:desc "chezmoi diff" "d" #'chezmoi-diff)
+                           (:desc "chezmoi ediff" "e" #'chezmoi-ediff)
+                           (:desc "chezmoi find" "f" #'chezmoi-find)
+                           (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
+                           (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
+                           (:desc "chezmoi toggle mode" "c" #'chezmoi-mode)))
 
 ;; elfeed (RSS)
 (after! (elfeed elfeed-protocol)
@@ -677,7 +675,6 @@ https://control.lth.se/"))
                         :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
   (setq elfeed-protocol-enabled-protocols '(owncloud))
   (elfeed-protocol-enable))
-
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
 (after! smartparens
