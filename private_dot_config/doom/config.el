@@ -351,7 +351,7 @@ Based on bh/clock-in-to-next."
   (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
 
   ;; roam capture templates
-  (setq tetov/org-roam-ref-template "#+PROPERTY: CATEGORY reference\n${title}\n%U")
+  (setq tetov/org-roam-ref-template "#+PROPERTY: CATEGORY reference\n#+title: ${title}\n%U")
 
   (setq org-roam-capture-templates
         `(("n" "note" plain "%?"
