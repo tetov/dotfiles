@@ -404,8 +404,6 @@ Based on bh/clock-in-to-next."
   (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
 
   ;;;;;; roam capture templates
-  (setq tetov/org-roam-ref-template "#+PROPERTY: CATEGORY reference\n#+title: ${title}\n%U")
-
   (setq org-roam-capture-templates
         `(("n" "note" plain "%?"
            :target (file+head "notes/${slug}.org"
@@ -428,7 +426,7 @@ Based on bh/clock-in-to-next."
            :unnarrowed t
            :immediate-finish t)
           ("r" "org roam ref" plain "%?"
-           :target (file+head "refs/${slug}.org" ,tetov/org-roam-ref-template)
+           :target (file+head "refs/${slug}.org" "#+PROPERTY: CATEGORY reference\n#+title: ${title}\n%U")
            :immediate-finish
            :unnarrowed t)
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
@@ -438,7 +436,7 @@ Based on bh/clock-in-to-next."
            :unnarrowed t)))
 
   (setq org-roam-capture-ref-templates `(("r" "org roam protocol ref" plain "%?"
-                                          :target (file+head "refs/${slug}.org" ,tetov/org-roam-ref-template)
+                                          :target (file+head "refs/${slug}.org" "#+PROPERTY: CATEGORY reference\n#+title: ${title}\n%U")
                                           :unnarrowed t))))
 
 ;;;;; org-roam-bibtex
