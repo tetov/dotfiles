@@ -84,6 +84,7 @@
                            (:desc "Compose (M)ail" "M" #'+mu4e/compose)
                            (:desc "roam (r)efile" "r" #'org-roam-refile)
                            (:desc "org (R)efile" "R" #'org-refile)
+                           (:desc "org-(q)l views" "q" #'helm-org-ql-views)
                            (:desc "(v)-term" "v" #'+vterm/toggle)
                            (:desc "org capture default" "X" #'tetov/org-capture-default)))
 
@@ -105,7 +106,6 @@
 
 (evil-global-set-key 'motion "Ö" 'evil-ex)
 (evil-global-set-key 'motion "¤" 'evil-end-of-line)
-
 ;; splits
 ;; (evil-global-set-key 'normal (kbd "C-h") 'evil-window-left)
 ;; (evil-global-set-key 'normal (kbd "C-l") 'evil-window-right)
@@ -209,27 +209,26 @@
       (deactivate-mark) ;clear the region
       (message "%d" nchars))))
 
+(require 'bh)
+(defun tetov/clock-in-to-prog (KW)
+  "Switch a task from TODO to PROG when clocking in.
+Skips capture tasks, projects, and subprojects.
+Switch projects and subprojects from PROG back to TODO.
+Based on bh/clock-in-to-next."
+  (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+    (cond
+     ((and (member (org-get-todo-state) (list "TODO"))
+           (bh/is-task-p))
+      "PROG")
+     ((and (member (org-get-todo-state) (list "PROG"))
+           (bh/is-project-p))
+      "TODO"))))
+
 ;;;; org
 ;; must be set before org loads!
 (setq org-directory "~/src/org/")
 
-
 (after! org
-  (require 'bh)
-
-  (defun tetov/clock-in-to-prog (KW)
-    "Switch a task from TODO to PROG when clocking in.
-Skips capture tasks, projects, and subprojects.
-Switch projects and subprojects from PROG back to TODO.
-Based on bh/clock-in-to-next."
-    (when (not (and (boundp 'org-capture-mode) org-capture-mode))
-      (cond
-       ((and (member (org-get-todo-state) (list "TODO"))
-             (bh/is-task-p))
-        "PROG")
-       ((and (member (org-get-todo-state) (list "PROG"))
-             (bh/is-project-p))
-        "TODO"))))
 
   ;;;;; org files
   (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
@@ -335,18 +334,18 @@ Based on bh/clock-in-to-next."
   ;;;;;; projects setup
   (add-to-list 'org-tags-exclude-from-inheritance "project"))
 
+
 ;;;;; org-agenda
+(use-package! org-ql)
 (after! org-agenda
   (require 'sv-kalender)
-  (use-package! org-ql)
 
   (org-ql-defpred project ()
     "Find tasks that are projects.
 
      Tasks with subtasks and tasks categorised as project"
-    :body (or (category "project")
-              (and (todo "TODO")
-                   (descendants (todo)))))
+    :body (and (todo "TODO")
+               (descendants (todo))))
 
   (org-ql-defpred stuck ()
     "Find projects that are stuck.
@@ -354,7 +353,8 @@ Based on bh/clock-in-to-next."
     No NEXT or PROG task in subtree, nor a TODO with a scheduled/deadline
     timestamp."
     :body (and (project)
-               (not (descendants (todo "PROG" "WAIT" "NEXT")))))
+               (not (or (descendants (todo "PROG" "WAIT" "NEXT"))
+                        (descendants (planning))))))
 
   ;;;;; agenda settings
   ;; keep agenda view alive
@@ -379,28 +379,149 @@ Based on bh/clock-in-to-next."
             (tags "REFILE"
                   ((org-agenda-overriding-header "Tasks to refile")
                    (org-tags-match-list-sublevels nil)))
-            (org-ql-block '(stuck)
+            (org-ql-block '(and (project)
+                                (not (or (descendants (todo "PROG" "WAIT" "NEXT"))
+                                         (descendants (planning)))))
                           ((org-ql-block-header "Stuck projects")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting")))
             (org-ql-block '(and (todo "PROG")
                                 (not (descendants (todo "PROG" "NEXT"))))
                           ((org-ql-block-header "Current tasks")))
             (org-ql-block '(and (todo "NEXT")
                                 (not (descendants (todo "PROG" "NEXT"))))
                           ((org-ql-block-header "Next tasks")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting")))
+            (org-ql-block '(and (todo "TODO")
+                                (descendants (todo)))
+                          ((org-ql-block-header "All projects")))
             (org-ql-block '(and (todo)
-                                (not (done))
                                 (not (todo "PROG" "NEXT" "WAIT"))
-                                (not (project)))
-                          ((org-ql-block-header "Other TODOs")))
-            (org-ql-block '(project)
-                          ((org-ql-block-header "All projects"))))))))
+                                (not (and (todo "TODO")
+                                          (descendants (todo)))))
+                          ((org-ql-block-header "Other TODOs"))))))))
 
+;;;;; org-ql-views
+(setq org-super-agenda-header-map nil)
+(map! :localleader :map 'org-ql-view-map :desc "org-ql-view dispatcher" "q" #'org-ql-view-dispatch)
+;; (evil-define-key 'normal org-ql-view-map
+;;   "j" 'evil-next-line
+;;   "k" 'evil-previous-line)
+;; (evil-define-key 'normal org-super-agenda-header-map
+;;   "j" 'evil-next-line
+;;   "k" 'evil-previous-line)
+(customize-set-variable 'org-ql-views
+                        (list
+                         (cons "Overview: Agenda-like"
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(and (not (done))
+                                                  (or (habit)
+                                                      (deadline auto)
+                                                      (scheduled :to today)
+                                                      (ts-active :on today)))
+                                     :sort '(todo priority date)
+                                     :super-groups 'org-super-agenda-groups
+                                     :title "Agenda-like"))
+                         (cons "Overview: NEXT/PROG/WAIT"
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(todo "NEXT" "PROG" "WAIT")
+                                     :sort '(todo date priority)
+                                     :super-groups '((:todo "PROG") (:todo "NEXT") (:todo "WAIT"))
+                                     :title "Overview: NEXT/PROG/WAIT"))
+                         (cons "Calendar: Today"
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(ts-active :on today)
+                                     :title "Today"
+                                     :super-groups 'org-super-agenda-groups
+                                     :sort '(priority)))
+                         (cons "Calendar: This week"
+                               (lambda ()
+                                 "Show items with an active timestamp during this calendar week."
+                                 (interactive)
+                                 (let* ((ts (ts-now))
+                                        (beg-of-week (->> ts
+                                                          (ts-adjust 'day (- (ts-dow (ts-now))))
+                                                          (ts-apply :hour 0 :minute 0 :second 0)))
+                                        (end-of-week (->> ts
+                                                          (ts-adjust 'day (- 6 (ts-dow (ts-now))))
+                                                          (ts-apply :hour 23 :minute 59 :second 59))))
+                                   (org-ql-search (org-agenda-files)
+                                     `(ts-active :from ,beg-of-week
+                                       :to ,end-of-week)
+                                     :title "This week"
+                                     :super-groups 'org-super-agenda-groups
+                                     :sort '(priority)))))
+                         (cons "Calendar: Next week"
+                               (lambda ()
+                                 "Show items with an active timestamp during the next calendar week."
+                                 (interactive)
+                                 (let* ((ts (ts-adjust 'day 7 (ts-now)))
+                                        (beg-of-week (->> ts
+                                                          (ts-adjust 'day (- (ts-dow (ts-now))))
+                                                          (ts-apply :hour 0 :minute 0 :second 0)))
+                                        (end-of-week (->> ts
+                                                          (ts-adjust 'day (- 6 (ts-dow (ts-now))))
+                                                          (ts-apply :hour 23 :minute 59 :second 59))))
+                                   (org-ql-search (org-agenda-files)
+                                     `(ts-active :from ,beg-of-week
+                                       :to ,end-of-week)
+                                     :title "Next week"
+                                     :super-groups 'org-super-agenda-groups
+                                     :sort '(priority)))))
+                         (cons (propertize "Review: Stuck projects"
+                                           'help-echo "Projects with no tasks that are marked NEXT or PROG, and no TODOs with deadline/scheduled")
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(and
+                                              (project)
+                                              (not
+                                               (or
+                                                (descendants
+                                                 (todo "PROG" "WAIT" "NEXT"))
+                                                (descendants
+                                                 (planning)))))
+                                     :title (propertize "Review: Stuck projects"
+                                                        'help-echo "Projects with no tasks that are marked NEXT or PROG, and no TODOs with deadline/scheduled")
+                                     :sort '(todo priority date)
+                                     :super-groups '((:auto-parent t))))
+                         (cons "Review: Recently timestamped" #'org-ql-view-recent-items)
+                         (cons (propertize "Review: Stale tasks"
+                                           'help-echo "Tasks without a timestamp in the past 2 weeks")
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(and (todo)
+                                                  (not (todo "NEXT" "PROG" "WAIT"))
+                                                  (not (ts :from -14)))
+                                     :title (propertize "Review: Stale tasks"
+                                                        'help-echo "Tasks without a timestamp in the past 2 weeks")
+                                     :sort '(todo priority date)
+                                     :super-groups '((:auto-parent t))))
+                         (cons (propertize "Review: Dangling tasks"
+                                           'help-echo "Tasks whose ancestor is done")
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(and (todo)
+                                                  (ancestors (done)))
+                                     :title (propertize "Review: Dangling tasks"
+                                                        'help-echo "Tasks whose ancestor is done")
+                                     :sort '(todo priority date)
+                                     :super-groups '((:auto-parent t))))
+                         (cons "Review: All projects"
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(project)
+                                     :sort '(date)
+                                     :title "Review: All projects"))
+                         (cons (propertize "Review: All unmarked TODOs"
+                                           'help-echo "TODO is not project, not habit, not NEXT nor PROG but it might have a planning attribute.")
+                               (list :buffers-files #'org-agenda-files
+                                     :query '(and
+                                              (todo)
+                                              (not (habit))
+                                              (not (project))
+                                              (not (todo "PROG" "WAIT" "NEXT")))
+                                     :sort '(todo date)
+                                     :title (propertize "Review: All unmarked TODOs"
+                                                        'help-echo "TODO is not project, not habit, not NEXT nor PROG but it might have a planning attribute.")))))
 ;;;;; org-roam
+(setq org-roam-directory org-directory)
 (after! org-roam
   ;;;;;; files
-  (setq org-roam-directory org-directory)
   (setq org-roam-db-location (concat org-roam-directory "/db/org-roam.db"))
 
   ;;;;;; roam capture templates
