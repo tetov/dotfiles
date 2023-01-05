@@ -17,7 +17,10 @@ mbsync --config "$MBSYNCRC" --verbose $GROUPS_OR_CHANNELS
 if [ ! -e "$MU_LOCKFILE" ] ; then
     echo "Updating using mu"
     mu index
-else
+elif pgrep -x emacs > /dev/null ; then
     echo "Updating using mu4e"
     emacsclient -e '(mu4e-update-index)'
+else
+    echo "Lockfile exists but emacs is not running. Stale lockfile?"
+    exit 1
 fi
