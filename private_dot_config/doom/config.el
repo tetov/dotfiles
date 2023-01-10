@@ -80,7 +80,7 @@
                            (:desc "roam (f)ind node" "f" #'org-roam-node-find)
                            (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
                            (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
-                           (:desc "(M)ail menu" "m" #'mu4e-headers-search-bookmark)
+                           (:desc "(M)ail menu" "m" #'mu4e-search-bookmark)
                            (:desc "Compose (M)ail" "M" #'+mu4e/compose)
                            (:desc "roam (r)efile" "r" #'org-roam-refile)
                            (:desc "org (R)efile" "R" #'org-refile)
@@ -89,6 +89,7 @@
                            (:desc "org capture default" "X" #'tetov/org-capture-default)))
 
 ;; open in new tab instead of same tab..
+(setq browse-url-browser-function 'browse-url-firefox)
 (setq browse-url-new-window-flag t)
 (setq browse-url-firefox-new-window-is-tab t)
 
@@ -103,6 +104,9 @@
       evil-move-cursor-back nil)
 
 (evil-put-command-property 'evil-yank-line :motion 'evil-line)
+
+(evil-global-set-key 'normal (kbd "j") 'evil-next-visual-line)
+(evil-global-set-key 'normal (kbd "k") 'evil-previous-visual-line)
 
 (evil-global-set-key 'motion "Ö" 'evil-ex)
 (evil-global-set-key 'motion "¤" 'evil-end-of-line)
@@ -592,87 +596,90 @@ Based on bh/clock-in-to-next."
 (use-package! backup-each-save)
 (setq backup-each-save-mirror-location (format "~/Nextcloud/Apps/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
       backup-each-save-remote-files t
-      backup-each-save-filter-function 'backup-each-save-filter)
+      backup-each-save-filter-function 'backup-each-save-filter
+      backup-each-save-time-format "%Y_%m_%d_00_00_00")
 (add-hook 'after-save-hook 'backup-each-save)
 
 ;;;; autosave on focus lost
 ;; https://emacs.stackexchange.com/a/60971
-(add-function :after after-focus-change-function
-              (lambda () (unless (frame-focus-state) (save-some-buffers t))))
+;;(add-function :after after-focus-change-function
+;;              (lambda () (unless (frame-focus-state) (save-some-buffers t))))
+(add-hook! '(doom-switch-buffer-hook doom-switch-frame-hook doom-switch-window-hook)
+  (lambda () (save-some-buffers t)))
 
 ;;;; pocket-reader
-(after! pocket-reader
-  (require 'org-pocket)
-  (setq org-pocket-capture-file "~/src/org/refile.org"))
+  (after! pocket-reader
+    (require 'org-pocket)
+    (setq org-pocket-capture-file "~/src/org/refile.org"))
 
-;; highlight indentation
-(setq highlight-indent-guides-method 'fill)
+  ;; highlight indentation
+  (setq highlight-indent-guides-method 'fill)
 
-;; ansible
-(add-hook 'ansible-hook #'lsp!)
+  ;; ansible
+  (add-hook 'ansible-hook #'lsp!)
 
-;; python
-;; use format-all, not lsp formatter
-(setq poetry-tracking-strategy 'projectile)
-(after! python-mode (setq poetry-tracking-strategy 'projectile))
-(setq-hook! 'python-mode-hook +format-with-lsp nil)
-(setq-hook! 'python-mode-hook poetry-tracking-strategy 'projectile)
-;; spelling
-;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
-(after! ispell
-  ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
-  ;; dictionary' even though multiple dictionaries will be configured
-  ;; in next line.
-  (setenv "LANG" "en_US.UTF-8")
-  (setq ispell-dictionary "sv_SE,en_GB")
-  ;; ispell-set-spellchecker-params has to be called
-  ;; before ispell-hunspell-add-multi-dic will work
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "sv_SE,en_GB")
-  (setq ispell-local-dictionary-alist
-        '(("sv_SE,en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
-  ;; For saving words to the personal dictionary, don't infer it from
-  ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
-  (setq ispell-personal-dictionary "~/.hunspell_personal")
-  ;; The personal dictionary file has to exist, otherwise hunspell will
-  ;; silently not use it.
-  (unless (file-exists-p ispell-personal-dictionary)
-    (write-region "" nil ispell-personal-dictionary nil 0)))
+  ;; python
+  ;; use format-all, not lsp formatter
+  (setq poetry-tracking-strategy 'projectile)
+  (after! python-mode (setq poetry-tracking-strategy 'projectile))
+  (setq-hook! 'python-mode-hook +format-with-lsp nil)
+  (setq-hook! 'python-mode-hook poetry-tracking-strategy 'projectile)
+  ;; spelling
+  ;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
+  (after! ispell
+    ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
+    ;; dictionary' even though multiple dictionaries will be configured
+    ;; in next line.
+    (setenv "LANG" "en_US.UTF-8")
+    (setq ispell-dictionary "sv_SE,en_GB")
+    ;; ispell-set-spellchecker-params has to be called
+    ;; before ispell-hunspell-add-multi-dic will work
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "sv_SE,en_GB")
+    (setq ispell-local-dictionary-alist
+          '(("sv_SE,en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
+    ;; For saving words to the personal dictionary, don't infer it from
+    ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
+    (setq ispell-personal-dictionary "~/.hunspell_personal")
+    ;; The personal dictionary file has to exist, otherwise hunspell will
+    ;; silently not use it.
+    (unless (file-exists-p ispell-personal-dictionary)
+      (write-region "" nil ispell-personal-dictionary nil 0)))
 
-;; contacts
-(setq vdirel-repository (substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
+  ;; contacts
+  (setq vdirel-repository (substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
 
 ;;;; mail
 
-(defun tetov/mu4e-refile-folder-function (msg)
-  "Set the refile directory for message.
+  (defun tetov/mu4e-refile-folder-function (msg)
+    "Set the refile directory for message.
 
    Refile with this function means moving msg from INBOX to Archive. If the msg
    is not in INBOX leave it be (set refile dir to current dir it is in)."
-  (let ((maildir (mu4e-message-field msg :maildir)))
-    (string-replace "/INBOX" "/Archive" maildir)))
+    (let ((maildir (mu4e-message-field msg :maildir)))
+      (string-replace "/INBOX" "/Archive" maildir)))
 
-(set-email-account! "fastmail"
-                    '((user-mail-address      . "anton@tetov.se")
-                      (mu4e-sent-folder       . "/fastmail/Sent")
-                      (mu4e-drafts-folder     . "/fastmail/Drafts")
-                      (mu4e-trash-folder      . "/fastmail/Trash")
-                      (smtpmail-smtp-user     . "tetov@fastmail.com")
-                      (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
-                      (mu4e-compose-signature . "Best regards\nAnton Tetov Johansson"))
-                    t)
+  (set-email-account! "fastmail"
+                      '((user-mail-address      . "anton@tetov.se")
+                        (mu4e-sent-folder       . "/fastmail/Sent")
+                        (mu4e-drafts-folder     . "/fastmail/Drafts")
+                        (mu4e-trash-folder      . "/fastmail/Trash")
+                        (smtpmail-smtp-user     . "tetov@fastmail.com")
+                        (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
+                        (mu4e-compose-signature . "Best regards\nAnton Tetov Johansson"))
+                      t)
 
-(set-email-account! "lth"
-                    '((user-mail-address       . "anton_tetov.johansson@abm.lth.se")
-                      (mu4e-sent-folder        . "/lth/Sent Items")
-                      (mu4e-drafts-folder      . "/lth/Drafts")
-                      (mu4e-trash-folder       . "/lth/Deleted Items")
-                      (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
-                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
-                                                    "anton_tetov.johansson@control.lth.se"
-                                                    "anton.johansson@abm.lth.se"
-                                                    "anton.johansson@control.lth.se"))
-                      (mu4e-compose-signature  . "Best regards,
+  (set-email-account! "lth"
+                      '((user-mail-address       . "anton_tetov.johansson@abm.lth.se")
+                        (mu4e-sent-folder        . "/lth/Sent Items")
+                        (mu4e-drafts-folder      . "/lth/Drafts")
+                        (mu4e-trash-folder       . "/lth/Deleted Items")
+                        (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
+                        (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
+                                                      "anton_tetov.johansson@control.lth.se"
+                                                      "anton.johansson@abm.lth.se"
+                                                      "anton.johansson@control.lth.se"))
+                        (mu4e-compose-signature  . "Best regards,
 Anton Tetov Johansson
 
 Project assistant
@@ -684,154 +691,154 @@ Phone no: +46 70-363 56 67
 
 https://abm.lth.se/
 https://control.lth.se/"))
-                    nil)
+                      nil)
 
-(after! mu4e
-  (require 'mu4e-folding)
+  (after! mu4e
+    (require 'mu4e-folding)
 
 
   ;;;;; send/recieve email
 
-  ;; mail box updated using systemd timer, so mail command is set to true
-  ;; mu4e still indexes again but that should be fine.
-  (setq mu4e-get-mail-command "true")
-  (setq sendmail-program "/usr/bin/msmtp"
-        send-mail-function #'smtpmail-send-it
-        message-sendmail-f-is-evil t
-        message-sendmail-extra-arguments '("--read-envelope-from")
-        message-send-mail-function #'message-send-mail-with-sendmail)
+    ;; mail box updated using systemd timer, so mail command is set to true
+    ;; mu4e still indexes again but that should be fine.
+    (setq mu4e-get-mail-command "true")
+    (setq sendmail-program "/usr/bin/msmtp"
+          send-mail-function #'smtpmail-send-it
+          message-sendmail-f-is-evil t
+          message-sendmail-extra-arguments '("--read-envelope-from")
+          message-send-mail-function #'message-send-mail-with-sendmail)
 
   ;;;;; headers view options
 
-  (setq mu4e-headers-fields
-        '((:account-stripe . 1)
-          (:human-date . 12)
-          (:flags . 6)
-          (:from-or-to . 25)
-          (:maildir . 20)
-          (:subject)))
+    (setq mu4e-headers-fields
+          '((:account-stripe . 1)
+            (:human-date . 12)
+            (:flags . 6)
+            (:from-or-to . 25)
+            (:maildir . 20)
+            (:subject)))
 
   ;;;;; message view options
 
-  ;; make html mails more readable in dark mode
-  (setq shr-color-visible-luminance-min 80)
-  ;; make buttons to change between mail format types
-  (setq gnus-unbuttonized-mime-types nil)
-  ;; disable org-msg
-  (setq mu4e-compose--org-msg-toggle-next nil)
-  (setq mu4e-headers-skip-duplicates nil)
+    ;; make html mails more readable in dark mode
+    (setq shr-color-visible-luminance-min 80)
+    ;; make buttons to change between mail format types
+    (setq gnus-unbuttonized-mime-types nil)
+    ;; disable org-msg
+    (setq mu4e-compose--org-msg-toggle-next nil)
+    (setq mu4e-headers-skip-duplicates nil)
 
   ;;;;; compose view options
-  ;; don't autosave to try to reduce number of drafts synced.
-  ;; TODO: Check if it still saves to ~/editor-backups
-  (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
-  ;; ask for context when new message doesn't match context (i.e. new message)
-  (setq
-   mu4e-compose-in-new-frame t
-   mu4e-compose-context-policy 'ask
-   message-citation-line-format "On %Y-%m-%d at %R, %f wrote:"
-   message-citation-line-function  #'message-insert-formatted-citation-line)
+    ;; don't autosave to try to reduce number of drafts synced.
+    ;; TODO: Check if it still saves to ~/editor-backups
+    (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
+    ;; ask for context when new message doesn't match context (i.e. new message)
+    (setq
+     mu4e-compose-in-new-frame nil
+     mu4e-compose-context-policy 'ask
+     message-citation-line-format "On %Y-%m-%d at %R, %f wrote:"
+     message-citation-line-function  #'message-insert-formatted-citation-line)
 
   ;;;;; other options
 
-  (setq +org-capture-emails-file "refile.org")
+    (setq +org-capture-emails-file "refile.org")
 
-  (add-to-list 'mu4e-bookmarks
-               ;; add bookmark for recent messages on the Mu mailing list.
-               '( :name "allinboxes"
-                  :key  ?i
-                  :query "maildir:/lth/INBOX OR maildir:/fastmail/INBOX"))
-  (setq mu4e-change-filenames-when-moving t)
-
-
-  (setq mu4e-refile-folder 'tetov/mu4e-refile-folder-function)
+    (add-to-list 'mu4e-bookmarks
+                 ;; add bookmark for recent messages on the Mu mailing list.
+                 '( :name "allinboxes"
+                    :key  ?i
+                    :query "maildir:/lth/INBOX OR maildir:/fastmail/INBOX"))
+    (setq mu4e-change-filenames-when-moving t)
 
 
-  (setq mu4e-attachment-dir (expand-file-name "~/Downloads"))
-  (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
-  (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
+    (setq mu4e-refile-folder 'tetov/mu4e-refile-folder-function)
 
-(run-at-time "5 sec" nil (lambda ()
-                           (let ((current-prefix-arg '(4)))
-                             (call-interactively 'mu4e)
-                             (message nil))))
+
+    (setq mu4e-attachment-dir (expand-file-name "~/Downloads"))
+    (map! :localleader :map 'mu4e-view-mode-map :desc "Mark thread" "t" #'mu4e-view-mark-thread)
+    (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
+
+  (run-at-time "5 sec" nil (lambda ()
+                             (let ((current-prefix-arg '(4)))
+                               (call-interactively 'mu4e)
+                               (message nil))))
 ;;;; term
-(after! vterm
-  (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
-(after! eshell
-  (set-popup-rule! "*doom:eshell-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
+  (after! vterm
+    (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
+  (after! eshell
+    (set-popup-rule! "*doom:eshell-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
 
-(set-eshell-alias!
- "q"  "exit"           ; built-in
- "f"  "find-file $1"
- "ff" "find-file-other-window $1"
- "d"  "dired $1"
- "bd" "eshell-up $1"
- "rg" "rg --color=always $*"
- "l"  "ls -lh $*"
- "ll" "ls -lah $*"
- "git" "git --no-pager $*"
- "gg" "magit-status"
- "cdp" "cd-to-project"
- "clear" "clear-scrollback" ; more sensible than default
+  (set-eshell-alias!
+   "q"  "exit"           ; built-in
+   "f"  "find-file $1"
+   "ff" "find-file-other-window $1"
+   "d"  "dired $1"
+   "bd" "eshell-up $1"
+   "rg" "rg --color=always $*"
+   "l"  "ls -lh $*"
+   "ll" "ls -lah $*"
+   "git" "git --no-pager $*"
+   "gg" "magit-status"
+   "cdp" "cd-to-project"
+   "clear" "clear-scrollback" ; more sensible than default
 
- ;; mine (adapted from zsh config)
- ".." "cd .."
+   ;; mine (adapted from zsh config)
+   ".." "cd .."
 
- "_" "sudo $*"
+   "_" "sudo $*"
 
- "r" "rolldice -s $*"
+   "r" "rolldice -s $*"
 
- "g" "git $*"
- "ga" "g add $*"
- "gb" "g branch $*"
- "gc" "g commit -v $*"
- "gcmsg" "gc -m \"$*\""
- "gcd" "(if (doom-project-root) (eshell/cd-to-project) (eshell/echo \"Not in project directory.\"))"
- "gco" "g checkout $*"
- "gd" "g diff $*"
- "gf" "g fetch $*"
- "gl" "g pull $*"
- "gp" "g push $*"
- "gr" "g remote $*"
- "gst" "g status $*"
+   "g" "git $*"
+   "ga" "g add $*"
+   "gb" "g branch $*"
+   "gc" "g commit -v $*"
+   "gcmsg" "gc -m \"$*\""
+   "gcd" "(if (doom-project-root) (eshell/cd-to-project) (eshell/echo \"Not in project directory.\"))"
+   "gco" "g checkout $*"
+   "gd" "g diff $*"
+   "gf" "g fetch $*"
+   "gl" "g pull $*"
+   "gp" "g push $*"
+   "gr" "g remote $*"
+   "gst" "g status $*"
 
- "cm" "chezmoi $*"
+   "cm" "chezmoi $*"
 
- "cmcd" "eshell/cd ${chezmoi source-path}")
+   "cmcd" "eshell/cd ${chezmoi source-path}")
 
 ;;;; projectile
-(setq projectile-auto-discover t
-      projectile-project-search-path '(("~/src" . 1)))  ;; number means search depth
+  (setq projectile-auto-discover t
+        projectile-project-search-path '(("~/src" . 1)))  ;; number means search depth
 
 ;;;; java
-(setq lsp-java-configuration-runtimes '[ ;;(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/")
-                                        (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/" :default t)])
+  (setq lsp-java-configuration-runtimes '[ ;;(:name "JavaSE-11" :path "/usr/lib/jvm/java-11-openjdk/")
+                                          (:name "JavaSE-17" :path "/usr/lib/jvm/java-17-openjdk/" :default t)])
 
 ;;;; chezmoi
-(use-package! chezmoi)
-(after! chezmoi
-  (require 'chezmoi-company)
-  (add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
-                                                (add-to-list 'company-backends 'chezmoi-company-backend)
-                                              (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
+  (use-package! chezmoi)
+  (after! chezmoi
+    (require 'chezmoi-company)
+    (add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
+                                                  (add-to-list 'company-backends 'chezmoi-company-backend)
+                                                (setq company-backends (delete 'chezmoi-company-backend company-backends)))))
 
-  (map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
-                             (:desc "chezmoi apply" "a" #'chezmoi-write)
-                             (:desc "chezmoi apply all" "A" #'chezmoi-write-files)
-                             (:desc "chezmoi magit status" "s" #'chezmoi-magit-status)
-                             (:desc "chezmoi diff" "d" #'chezmoi-diff)
-                             (:desc "chezmoi ediff" "e" #'chezmoi-ediff)
-                             (:desc "chezmoi find" "f" #'chezmoi-find)
-                             (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
-                             (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
-                             (:desc "chezmoi toggle mode" "c" #'chezmoi-mode))))
+    (map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
+                               (:desc "chezmoi apply" "a" #'chezmoi-write)
+                               (:desc "chezmoi apply all" "A" #'chezmoi-write-files)
+                               (:desc "chezmoi magit status" "s" #'chezmoi-magit-status)
+                               (:desc "chezmoi diff" "d" #'chezmoi-diff)
+                               (:desc "chezmoi ediff" "e" #'chezmoi-ediff)
+                               (:desc "chezmoi find" "f" #'chezmoi-find)
+                               (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
+                               (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
+                               (:desc "chezmoi toggle mode" "c" #'chezmoi-mode))))
 
 ;;;; elfeed (RSS)
-(after! (elfeed elfeed-protocol)
-  (setq elfeed-use-curl t)
-  (elfeed-set-timeout 36000)
-  (setq elfeed-feeds '(("owncloud+https://tetov@cloud.tetov.se"
-                        :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
-  (setq elfeed-protocol-enabled-protocols '(owncloud))
-  (elfeed-protocol-enable))
+  (after! (elfeed elfeed-protocol)
+    (setq elfeed-use-curl t)
+    (elfeed-set-timeout 36000)
+    (setq elfeed-feeds '(("owncloud+https://tetov@cloud.tetov.se"
+                          :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
+    (setq elfeed-protocol-enabled-protocols '(owncloud))
+    (elfeed-protocol-enable))
