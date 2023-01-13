@@ -3,4 +3,4 @@ Description=Restart emacs daemon
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/systemctl --user restart
+ExecStart=/usr/bin/systemctl --user restart emacs.service
