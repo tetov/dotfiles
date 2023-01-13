@@ -1,0 +1,6 @@
+[Unit]
+Description=Restart emacs daemon
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl --user restart
