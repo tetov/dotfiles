@@ -597,7 +597,7 @@ Based on bh/clock-in-to-next."
 (setq backup-each-save-mirror-location (format "~/Nextcloud/Apps/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
       backup-each-save-remote-files t
       backup-each-save-filter-function 'backup-each-save-filter
-      backup-each-save-time-format "%Y_%m_%d_00_00_00")
+      backup-each-save-time-format "%Y_%m_%d_%H_00_00")
 (add-hook 'after-save-hook 'backup-each-save)
 
 ;;;; autosave on focus lost
