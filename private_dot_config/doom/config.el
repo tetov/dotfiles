@@ -607,12 +607,7 @@ Based on bh/clock-in-to-next."
       backup-each-save-time-format "%Y_%m_%d_%H_00_00")
 (add-hook 'after-save-hook 'backup-each-save)
 
-;;;; autosave on focus lost
-;; https://emacs.stackexchange.com/a/60971
-;;(add-function :after after-focus-change-function
-;;              (lambda () (unless (frame-focus-state) (save-some-buffers t))))
-(add-hook! '(doom-switch-buffer-hook doom-switch-frame-hook doom-switch-window-hook)
-  (lambda () (save-some-buffers t)))
+(auto-save-visited-mode 1)
 
 ;;;; pocket-reader
 (after! pocket-reader
