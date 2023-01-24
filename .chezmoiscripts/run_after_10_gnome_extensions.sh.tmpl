@@ -1,4 +1,4 @@
-{{ if has .chezmoi.hostname .dev_hosts -}}
+{{ if and .workstation (not (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
 #!/bin/sh
 
 # install gnome-shell-extensions-sync, which installs extensions itself

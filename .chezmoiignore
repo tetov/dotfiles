@@ -1,7 +1,7 @@
 README.md
 LICENSE
 
-{{ if has .chezmoi.hostname .dev_hosts }}
+{{ if .workstation }}
 
 # This masks gpg agent on non dev hosts
 .config/systemd/user/gpg-agent.socket

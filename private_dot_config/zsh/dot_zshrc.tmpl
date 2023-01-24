@@ -37,7 +37,7 @@ unset RPROMPT
 # ZCOMET
 source $ZDOTDIR/.zcomet/bin/zcomet.zsh
 
-{{- if has .chezmoi.hostname .dev_hosts }}
+{{ if .workstation -}}
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
 PURE_CMD_MAX_EXEC_TIME=60

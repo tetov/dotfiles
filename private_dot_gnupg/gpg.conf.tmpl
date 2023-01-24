@@ -59,6 +59,6 @@ keyserver hkps://keys.openpgp.org
 #verbose
 # Show expired subkeys
 #list-options show-unusable-subkeys
-{{ if not (has .chezmoi.hostname .dev_hosts) }}
+{{ if not .workstation }}
 no-autostart
 {{ end }}

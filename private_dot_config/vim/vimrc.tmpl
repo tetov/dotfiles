@@ -39,33 +39,7 @@ call mkdir(&undodir,   'p', 0700)
 " append timestamp to backup files
 au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
 
-{{- if has .chezmoi.hostname .dev_hosts }}
-
-let g:ale_disable_lsp = 1
-let g:coc_global_extensions = [
-\   '@yaegassy/coc-ansible',
-\   'coc-pairs',
-\   'coc-clang-format-style-options',
-\   'coc-clangd',
-\   'coc-css',
-\   'coc-docker',
-\   'coc-git',
-\   'coc-highlight',
-\   'coc-html',
-\   'coc-json',
-\   'coc-lists',
-\   'coc-markdownlint',
-\   'coc-prettier',
-\   'coc-pydocstring',
-\   'coc-pyright',
-\   'coc-sh',
-\   'coc-svg',
-\   'coc-toml',
-\   'coc-tsserver',
-\   'coc-vimlsp',
-\   'coc-xml',
-\   'coc-yaml',
-\]
+{{- if .workstation }}
 
 " vim-plug configuration
 " let plugged_dir = has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged'
@@ -81,7 +55,6 @@ else
 
   Plug 'alker0/chezmoi.vim'  " needs to load before other plugins, before filetype on, before syntax on/enable
 
-  " Plug 'dense-analysis/ale'
   Plug 'ChesleyTan/wordCount.vim'
   Plug 'MikeDacre/tmux-zsh-vim-titles'
   Plug 'airblade/vim-gitgutter'
@@ -98,10 +71,7 @@ else
   Plug 'junegunn/fzf.vim'
   Plug 'kevinoid/vim-jsonc'
   Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
-  Plug 'maximbaz/lightline-ale'
   Plug 'mengelbrecht/lightline-bufferline'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'puremourning/vimspector', {'do': ':VimspectorInstall --all'}
   Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
   Plug 'quentindecock/vim-cucumber-align-pipes'
   Plug 'samoshkin/vim-mergetool'           " Mergetool
@@ -122,7 +92,6 @@ else
   if has('nvim')
     " only for nvim
     Plug 'ryanoasis/vim-devicons'
-    Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
   else
     " only for vim
     Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
