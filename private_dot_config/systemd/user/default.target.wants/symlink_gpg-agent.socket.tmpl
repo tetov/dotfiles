@@ -1,0 +1,3 @@
+{{ if not (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+/dev/null
+{{ end }}
