@@ -343,7 +343,8 @@ Based on bh/clock-in-to-next."
   (add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
 
   ;;;;;; projects setup
-  (add-to-list 'org-tags-exclude-from-inheritance "project"))
+  (add-to-list 'org-tags-exclude-from-inheritance "project")
+  (add-to-list 'org-tags-exclude-from-inheritance "REFILE"))
 
 
 ;;;;; org-agenda
