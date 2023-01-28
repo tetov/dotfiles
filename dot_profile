@@ -42,6 +42,43 @@ if [ -z "$SSH_CLIENT" ] ; then
   export SSH_AUTH_SOCK
 fi
 
+# https://superuser.com/a/1644866
+_path_prepend() {
+    if [ -n "$2" ]; then
+        case ":$(eval "echo \$$1"):" in
+            *":$2:"*) :;;
+            *) eval "export $1=$2\${$1:+\":\$$1\"}" ;;
+        esac
+    else
+        case ":$PATH:" in
+            *":$1:"*) :;;
+            *) export PATH="$1${PATH:+":$PATH"}" ;;
+        esac
+    fi
+}
+
+# https://superuser.com/a/1644866
+_path_append() {
+    if [ -n "$2" ]; then
+        case ":$(eval "echo \$$1"):" in
+            *":$2:"*) :;;
+            *) eval "export $1=\${$1:+\"\$$1:\"}$2" ;;
+        esac
+    else
+        case ":$PATH:" in
+            *":$1:"*) :;;
+            *) export PATH="${PATH:+"$PATH:"}$1" ;;
+        esac
+    fi
+}
+
+_path_prepend "$XDG_CONFIG_HOME/emacs/bin"
+_path_prepend $HOME/.cargo/bin
+_path_prepend $HOME/.local/bin
+_path_prepend $HOME/.poetry/bin
+_path_prepend $HOME/bin
+_path_prepend /usr/lib/ccache
+
 # vim: set ft=sh ts=2
 
 # Local Variables:
