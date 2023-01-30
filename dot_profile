@@ -72,12 +72,13 @@ _path_append() {
     fi
 }
 
-_path_prepend "$XDG_CONFIG_HOME/emacs/bin"
 _path_prepend $HOME/.cargo/bin
 _path_prepend $HOME/.local/bin
-_path_prepend $HOME/.poetry/bin
-_path_prepend $HOME/bin
 _path_prepend /usr/lib/ccache
+_path_prepend $HOME/bin
+
+_path_append "$XDG_CONFIG_HOME/emacs/bin"
+_path_append "$HOME/.poetry/bin"
 
 # vim: set ft=sh ts=2
 
