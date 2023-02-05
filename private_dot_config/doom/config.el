@@ -602,7 +602,10 @@ Based on bh/clock-in-to-next."
     (not matched-ignored-filename)))
 
 (use-package! backup-each-save)
-(setq backup-each-save-mirror-location (format "~/Nextcloud/Apps/editor-backups/emacs/%s" (system-name)) ;; put files under hostname
+(setq backup-each-save-mirror-location (format "%s/emacs/%s"
+                                               (or (getenv "EDITOR_BACKUP_DIR")
+                                                   "~/Nextcloud/Apps/editor-backups")
+                                               (system-name)) ;; put files under hostname
       backup-each-save-remote-files t
       backup-each-save-filter-function 'backup-each-save-filter
       backup-each-save-time-format "%Y_%m_%d_%H_00_00")
