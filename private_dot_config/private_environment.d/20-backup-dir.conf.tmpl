@@ -1,1 +1,5 @@
+{{ if (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
 EDITOR_BACKUP_DIR=/mnt/c/Users/tetov/Nextcloud/Apps
+{{ else }}
+EDITOR_BACKUP_DIR=$HOME/Nextcloud/Apps
+{{- end }}
