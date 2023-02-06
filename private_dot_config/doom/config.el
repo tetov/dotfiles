@@ -186,7 +186,7 @@
 ;;;; fill
 ;; break lines automatically
 (setq-default fill-column 80)
-(add-hook 'text-mode-hook 'auto-fill-mode)
+(add-hook 'text-mode-hook #'auto-fill-mode)
 
 ;;;; completion
 (setq read-file-name-completion-ignore-case t
@@ -339,11 +339,12 @@ Based on bh/clock-in-to-next."
                                   :match "-rp"
                                   :step day))
 
-  (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out)
-  (add-hook 'org-clock-out-hook 'bh/clock-out-maybe)
+  (add-hook 'org-clock-out-hook #'bh/remove-empty-drawer-on-clock-out)
+  (add-hook 'org-clock-out-hook #'bh/clock-out-maybe)
 
   ;;;;;; projects setup
   (add-to-list 'org-tags-exclude-from-inheritance "project")
+  (add-to-list 'org-tags-exclude-from-inheritance "ATTACH")
   (add-to-list 'org-tags-exclude-from-inheritance "REFILE"))
 
 
@@ -376,9 +377,10 @@ Based on bh/clock-in-to-next."
   (setq org-agenda-dim-blocked-tasks nil)
   (setq org-agenda-span 7)
 
+
   ;;;;; agenda clock consistency
   (setq org-agenda-start-with-log-mode t)
-  (add-hook 'org-agenda-mode-hook 'org-agenda-show-clocking-issues)
+  (add-hook org-agenda-finalize-hook #'org-agenda-show-clocking-issues)
   (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
                                               :min-duration 0
                                               :max-gap 5
@@ -609,7 +611,7 @@ Based on bh/clock-in-to-next."
       backup-each-save-remote-files t
       backup-each-save-filter-function 'backup-each-save-filter
       backup-each-save-time-format "%Y_%m_%d_%H_00_00")
-(add-hook 'after-save-hook 'backup-each-save)
+(add-hook 'after-save-hook #'backup-each-save)
 
 (auto-save-visited-mode 1)
 

@@ -33,3 +33,8 @@
 
 ;; When using bibtex-completion via the `biblio` module
 (unpin! bibtex-completion helm-bibtex ivy-bibtex)
+
+;; org clock
+(package! org-clock-helpers
+  :recipe (:repo "mskorzhinskiy/org-clock-helpers"
+           :host github :branch "main"))
