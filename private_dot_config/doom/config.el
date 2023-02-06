@@ -341,7 +341,10 @@ Based on bh/clock-in-to-next."
 
   (add-hook 'org-clock-out-hook #'bh/remove-empty-drawer-on-clock-out)
   (add-hook 'org-clock-out-hook #'bh/clock-out-maybe)
-
+  (map! :map org-mode-map
+        :localleader
+        (:prefix ("c" . "clock")
+         :desc "Insert past clock" "p" #'org-insert-past-clock))
   ;;;;;; projects setup
   (add-to-list 'org-tags-exclude-from-inheritance "project")
   (add-to-list 'org-tags-exclude-from-inheritance "ATTACH")
@@ -380,7 +383,7 @@ Based on bh/clock-in-to-next."
 
   ;;;;; agenda clock consistency
   (setq org-agenda-start-with-log-mode t)
-  (add-hook org-agenda-finalize-hook #'org-agenda-show-clocking-issues)
+  (add-hook 'org-agenda-finalize-hook #'org-agenda-show-clocking-issues)
   (setq org-agenda-clock-consistency-checks '(:max-duration "7:00"
                                               :min-duration 0
                                               :max-gap 5
