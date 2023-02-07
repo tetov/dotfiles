@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Org-Protocol
+MimeType=x-scheme-handler/org-protocol
+Exec=emacsclient %u
+Icon=emacs
+Type=Application
+Terminal=false
+Categories=Development;TextEditor;
+StartupWMClass=Emacs
+Keywords=Text;Editor;org-protocol;
