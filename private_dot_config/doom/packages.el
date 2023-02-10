@@ -2,6 +2,17 @@
 ;;; $DOOMDIR/packages.el To install a package with Doom you must declare them here and run 'doom sync'
 ;; on the command line, then restart Emacs for the changes to take effect -- or
 ;; use 'M-x doom/reload'.
+(unpin! org-roam) ;; for orb and org-roam-ui
+(package! org-roam-ui)
+
+;; org-roam-bibtex
+(package! org-roam-bibtex
+  :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+
+;; When using org-roam via the `+roam` flag
+;; When using bibtex-completion via the `biblio` module
+(unpin! bibtex-completion helm-bibtex ivy-bibtex)
+
 
 (package! pocket-reader)
 (package! backup-each-save)
@@ -9,7 +20,6 @@
 (package! org-mime)
 (package! vdirel)
 (package! org-ql)
-(package! helm-org-ql)
 (package! org-wc)
 (package! chezmoi)
 (package! elfeed-protocol)
@@ -20,19 +30,6 @@
 (package! tetov-elisp
   :recipe (:host github :repo "tetov/elisp"
            :files ("*.el")))
-
-(package! mu4e-folding
-  :recipe (:host github :repo "rougier/mu4e-folding"))
-
-;; org-roam-bibtex
-(package! org-roam-bibtex
-  :recipe (:host github :repo "org-roam/org-roam-bibtex"))
-
-;; When using org-roam via the `+roam` flag
-(unpin! org-roam)
-
-;; When using bibtex-completion via the `biblio` module
-(unpin! bibtex-completion helm-bibtex ivy-bibtex)
 
 ;; org clock
 (package! org-clock-helpers

@@ -265,17 +265,13 @@ Based on bh/clock-in-to-next."
   ;;;;; capture
   ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
-                                 "* TODO %?\n%U\n"
-                                 :clock-in t
-                                 :clock-resume t)
+                                 "* TODO %?\n%U\n")
                                 ("m" "Meeting" entry (file org-default-notes-file)
                                  "* TODO with %? :MEETING:\n%U\n"
                                  :clock-in t
                                  :clock-resume t)
                                 ("e" "Email" entry (file org-default-notes-file)
-                                 "* TODO %?\n%U\n%:fromname: %a"
-                                 :clock-in t
-                                 :clock-resume t)))
+                                 "* TODO %?\n%U\n%:fromname: %a")))
 
   ;;;;; node ids
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
@@ -545,12 +541,17 @@ Based on bh/clock-in-to-next."
   (setq org-roam-capture-templates
         `(("n" "note" plain "%?"
            :target (file+head "notes/${slug}.org"
-                              "#+PROPERTY: CATEGORY note\n#+title: ${title}\n%U")
+                              ":PROPERTIES:
+:CATEGORY: note
+:END:
+#+title: ${title}
+%U")
            :immediate-finish t
            :unnarrowed t)
           ("p" "person" plain  "%?"
            :target (file+head "persons/${slug}.org"
-                              "#+PROPERTY: CATEGORY person\n#+title: ${title}\n%U")
+                              "#+PROPERTY: CATEGORY person
+#+title: ${title}\n%U")
            :immediate-finish t
            :unnarrowed t)
           ("w" "writing" plain  "%?"
@@ -560,22 +561,54 @@ Based on bh/clock-in-to-next."
            :unnarrowed t)
           ("b" "bibliography reference" plain "%?"
            :target (file+head "refs/${citekey}.org"
-                              "#+PROPERTY: CATEGORY reference\n#+PROPERTY: type %^{entry-type}\n#+PROPERTY: authors %^{author}\n#+FILETAGS: %^{keywords}\n#+title: ${title}")
+                              ":PROPERTIES:
+#+PROPERTY: CATEGORY reference\n#+PROPERTY: type %^{entry-type}\n#+PROPERTY: authors %^{author}\n#+FILETAGS: %^{keywords}\n#+title: ${title}")
            :unnarrowed t
            :immediate-finish t)
           ("r" "org roam ref" plain "%?"
-           :target (file+head "refs/${slug}.org" "#+PROPERTY: CATEGORY reference\n#+title: ${title}\n%U")
+           :target (file+head "refs/${slug}.org" ":PROPERTIES:
+:CATEGORY: reference
+:END:
+#+title: ${title}
+%U")
            :immediate-finish
            :unnarrowed t)
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
            :target (file+head "rp/${slug}.org"
-                              "#+FILETAGS: :dnd5e:eat-flay-prowl:privat:\n#+title: ${title}\n%U")
+                              ":PROPERTIES:
+:CATEGORY: rp
+:END:
+#+FILETAGS: :dnd5e:eat-flay-prowl:privat:
+#+title: ${title}
+%U")
            :immediate-finish t
            :unnarrowed t)))
 
-  (setq org-roam-capture-ref-templates `(("r" "org roam protocol ref" plain "%?"
-                                          :target (file+head "refs/${slug}.org" "#+PROPERTY: CATEGORY reference\n#+title: ${title}\n%U")
+  (setq org-roam-capture-ref-templates `(("l" "org roam protocol ref" plain "%?"
+                                          :target (file+head "refs/${slug}.org" ":PROPERTIES:
+:CATEGORY: reference
+:END:
+#+title: ${title}
+#+begin_quote
+${body}
+#+end_quote
+")
                                           :unnarrowed t))))
+
+;;;;; org-roam-ui
+(use-package! websocket
+    :after org-roam)
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 
 ;;;;; org-roam-bibtex
 (use-package! org-roam-bibtex
@@ -705,9 +738,6 @@ https://control.lth.se/"))
                     nil)
 
 (after! mu4e
-  (require 'mu4e-folding)
-
-
   ;;;;; send/recieve email
 
   ;; mail box updated using systemd timer, so mail command is set to true
