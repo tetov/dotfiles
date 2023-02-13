@@ -550,19 +550,32 @@ Based on bh/clock-in-to-next."
            :unnarrowed t)
           ("p" "person" plain  "%?"
            :target (file+head "persons/${slug}.org"
-                              "#+PROPERTY: CATEGORY person
-#+title: ${title}\n%U")
+                              ":PROPERTIES:
+:CATEGORY: person
+:END:
+#+title: ${title}
+%U")
            :immediate-finish t
            :unnarrowed t)
           ("w" "writing" plain  "%?"
            :target (file+head "writing/${slug}.org"
-                              "#+PROPERTY: CATEGORY writing\n#+title: ${title}\n%U")
+                              ":PROPERTIES:
+:CATEGORY: writing
+:END:
+#+title: ${title}
+%U")
+
            :immediate-finish t
            :unnarrowed t)
           ("b" "bibliography reference" plain "%?"
            :target (file+head "refs/${citekey}.org"
                               ":PROPERTIES:
-#+PROPERTY: CATEGORY reference\n#+PROPERTY: type %^{entry-type}\n#+PROPERTY: authors %^{author}\n#+FILETAGS: %^{keywords}\n#+title: ${title}")
+:CATEGORY: reference
+:type: %^{entry-type}
+:authors: %^{author}
+:END:
+#+FILETAGS: %^{keywords}
+#+title: ${title}")
            :unnarrowed t
            :immediate-finish t)
           ("r" "org roam ref" plain "%?"
