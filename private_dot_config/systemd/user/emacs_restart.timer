@@ -1,8 +1,0 @@
-[Unit]
-Description=Restart emacs daemon (see https://unix.stackexchange.com/q/728058/556340)
-
-[Timer]
-OnStartupSec=30
-
-[Install]
-WantedBy=timers.target
