@@ -29,3 +29,4 @@ ignore = BelowPath .local/share/containers/storage
 ignore = Name Nextcloud?
 ignore = BelowPath DOTBACKUP.*/.local/share/flatpak
 ignore = BelowPath Documents/Zoom
+ignore = BelowPath calib
