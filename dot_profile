@@ -17,14 +17,16 @@ elif [ "$0" = "zsh" ] ; then
   set +o nullglob
 fi
 
-set +o allexport
-
 if command -v emacsclient >/dev/null ; then
   VISUAL="emacsclient -c"
 fi
 
 # start emacs daemon if none found
 ALTERNATE_EDITOR=""
+
+set +o allexport
+
+test -n $DISPLAY && setxkbmap se us
 
 alias e="$EDITOR"
 alias v="$VISUAL"
