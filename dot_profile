@@ -26,7 +26,7 @@ ALTERNATE_EDITOR=""
 
 set +o allexport
 
-test -n $DISPLAY && setxkbmap se us
+test -n $DISPLAY && setxkbmap se
 
 alias e="$EDITOR"
 alias v="$VISUAL"
