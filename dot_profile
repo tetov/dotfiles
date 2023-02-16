@@ -17,18 +17,20 @@ elif [ "$0" = "zsh" ] ; then
   set +o nullglob
 fi
 
-set +o allexport
-
 if command -v emacsclient >/dev/null ; then
-  export VISUAL="emacsclient -c"
+  VISUAL="emacsclient -c"
 fi
 
 # start emacs daemon if none found
-export ALTERNATE_EDITOR=""
+ALTERNATE_EDITOR="vim"
+
+set +o allexport
 
 alias e="$EDITOR"
 alias v="$VISUAL"
 echo "$VISUAL" | grep -q "emacsclient" && alias vq="$VISUAL -n"
+
+test -n $DISPLAY && setxkbmap se us
 
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
