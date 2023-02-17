@@ -271,7 +271,17 @@ Based on bh/clock-in-to-next."
                                  :clock-in t
                                  :clock-resume t)
                                 ("e" "Email" entry (file org-default-notes-file)
-                                 "* TODO %?\n%U\n%:fromname: %a")))
+                                 "* TODO %? :EMAIL:
+:PROPERTIES:
+:from: %:from
+:to: %:to
+:subject: %:subject
+:maildir-at-capture: %:maildir
+:message-id: %:message-id
+:received: %:date
+:END:
+%U
+%:fromname: %a")))
 
   ;;;;; node ids
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
@@ -722,7 +732,7 @@ ${body}
                       (mu4e-drafts-folder     . "/fastmail/Drafts")
                       (mu4e-trash-folder      . "/fastmail/Trash")
                       (smtpmail-smtp-user     . "tetov@fastmail.com")
-                      (+mu4e-personal-addresses . '("anton@tetov.se" "tetov@fastmail.com"))
+                      (+mu4e-personal-addresses . '("anton@tetov.se"))
                       (mu4e-compose-signature . "Best regards\nAnton Tetov Johansson"))
                     t)
 
@@ -732,10 +742,7 @@ ${body}
                       (mu4e-drafts-folder      . "/lth/Drafts")
                       (mu4e-trash-folder       . "/lth/Deleted Items")
                       (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
-                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"
-                                                    "anton_tetov.johansson@control.lth.se"
-                                                    "anton.johansson@abm.lth.se"
-                                                    "anton.johansson@control.lth.se"))
+                      (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"))
                       (mu4e-compose-signature  . "Best regards,
 Anton Tetov Johansson
 
@@ -788,7 +795,7 @@ https://control.lth.se/"))
   (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq
-   mu4e-compose-in-new-frame nil
+   mu4e-compose-in-new-frame t
    mu4e-compose-context-policy 'ask
    message-citation-line-format "On %Y-%m-%d at %R, %f wrote:"
    message-citation-line-function  #'message-insert-formatted-citation-line)
