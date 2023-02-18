@@ -354,8 +354,8 @@ Based on bh/clock-in-to-next."
   ;;;;;; projects setup
   (add-to-list 'org-tags-exclude-from-inheritance "project")
   (add-to-list 'org-tags-exclude-from-inheritance "ATTACH")
-  (add-to-list 'org-tags-exclude-from-inheritance "REFILE"))
-
+  (add-to-list 'org-tags-exclude-from-inheritance "REFILE")
+  (add-to-list 'org-tags-exclude-from-inheritance "EMAIL"))
 
 ;;;;; org-agenda
 (use-package! org-ql)
