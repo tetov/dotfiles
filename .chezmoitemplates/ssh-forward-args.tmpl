@@ -2,7 +2,7 @@
 {{- $local_gpg_extra_socket := output "gpgconf" "--list-dirs" "agent-extra-socket" | trim -}}
 {{- $remote_uid1 := get . "remote_uid" | default 1000 }}
     ForwardX11 yes
-    RemoteForward /run/user/{{ .}}/gnupg/S.gpg-agent.ssh {{ .local_gpg_ssh_socket }}
+    RemoteForward /run/user/{{ get . "remote_uid" | default 1000 }}/gnupg/S.gpg-agent.ssh {{ default (get . "local_gpg_ssh_socket") (output "gpgconf" "--list-dirs" "agent-ssh-socket" | trim)}}
 {{ if get . "gpg_agent" | default false }}
-    RemoteForward /run/user/{{ . }}/gnupg/S.gpg-agent {{ .local_gpg_extra_socket }}
+    RemoteForward /run/user/{{ .remote_uid }}/gnupg/S.gpg-agent {{ default (get . "local_gpg_extra_socket") (output "gpgconf" "--list-dirs" "agent-ssh-socket" | trim)}}
 {{ end}}
