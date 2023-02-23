@@ -785,8 +785,6 @@ https://control.lth.se/"))
   (setq shr-color-visible-luminance-min 80)
   ;; make buttons to change between mail format types
   (setq gnus-unbuttonized-mime-types nil)
-  ;; disable org-msg
-  (setq mu4e-compose--org-msg-toggle-next nil)
   (setq mu4e-headers-skip-duplicates nil)
 
   ;;;;; compose view options
