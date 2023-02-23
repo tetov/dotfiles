@@ -1,3 +1,8 @@
-    ForwardAgent yes
+{{- $local_gpg_ssh_socket := output "gpgconf" "--list-dirs" "agent-ssh-socket" | trim -}}
+{{- $local_gpg_extra_socket := output "gpgconf" "--list-dirs" "agent-extra-socket" | trim -}}
+{{- $remote_uid1 := get . "remote_uid" | default 1000 }}
     ForwardX11 yes
-    RemoteForward /run/user/{{ .remote_uid }}/gnupg/S.gpg-agent.ssh {{ .local_gpg_socket }}
+    RemoteForward /run/user/{{ .}}/gnupg/S.gpg-agent.ssh {{ .local_gpg_ssh_socket }}
+{{ if get . "gpg_agent" | default false }}
+    RemoteForward /run/user/{{ . }}/gnupg/S.gpg-agent {{ .local_gpg_extra_socket }}
+{{ end}}
