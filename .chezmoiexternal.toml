@@ -1,3 +1,18 @@
+[".config/bash"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/mrzool/bash-sensible/master/sensible.bash"
+    refreshPeriod = "168h"
+
+[".config/emacs"]
+    type = "git-repo"
+    url = "https://github.com/hlissner/doom-emacs"
+    refreshPeriod = "0"  # use doom upgrade from script instead
+
+[".config/tmux/plugins/tpm"]
+    type = "git-repo"
+    url = "https://github.com/tmux-plugins/tpm"
+    refreshPeriod = "168h"
+
 [".config/vim/autoload/plug.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -8,20 +23,16 @@
     url = "https://github.com/agkozak/zcomet.git"
     refreshPeriod = "168h"
 
-[".config/tmux/plugins/tpm"]
-    type = "git-repo"
-    url = "https://github.com/tmux-plugins/tpm"
-    refreshPeriod = "168h"
-
-[".config/emacs"]
-    type = "git-repo"
-    url = "https://github.com/hlissner/doom-emacs"
-    refreshPeriod = "0"  # use doom upgrade from script instead
-
 [".local/share/nvim/site/autoload/plug.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     refreshPeriod = "168h"
+
+["bin/ediff.sh"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/paulotome/emacstool/master/ediff.sh"
+    refreshPeriod = "168h"
+    executable = true
 
 ["bin/git-sync"]
     type = "file"
@@ -32,11 +43,5 @@
 ["bin/gnome-shell-extension-installer"]
     type = "file"
     url = "https://raw.githubusercontent.com/brunelli/gnome-shell-extension-installer/master/gnome-shell-extension-installer"
-    refreshPeriod = "168h"
-    executable = true
-
-["bin/ediff.sh"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/paulotome/emacstool/master/ediff.sh"
     refreshPeriod = "168h"
     executable = true

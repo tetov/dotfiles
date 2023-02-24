@@ -1,77 +1,75 @@
 set -o allexport
 
 # if nothing matches the glob should expand to null
-if [ "$0" = "bash" ] ; then
+if [ "$0" = "bash" ]; then
   shopt -s nullglob
-elif [ "$0" = "zsh" ] ; then
+elif [ "$0" = "zsh" ]; then
   set -o nullglob
 fi
 
-for f in "$HOME/.config/environment.d"/*.conf ; do
+for f in "$HOME/.config/environment.d"/*.conf; do
   . "$f"
 done
 
-if [ "$0" = "bash" ] ; then
+if [ "$0" = "bash" ]; then
   shopt -u nullglob
-elif [ "$0" = "zsh" ] ; then
+elif [ "$0" = "zsh" ]; then
   set +o nullglob
 fi
 
-if command -v emacsclient >/dev/null ; then
-  VISUAL="emacsclient -c"
+if command -v emacsclient >/dev/null; then
+  VISUAL="emacsclient"
 fi
 
 # start emacs daemon if none found
 ALTERNATE_EDITOR=""
 
-set +o allexport
-
-test -n $DISPLAY && setxkbmap se us >/dev/null
-
-alias e="$EDITOR"
-alias v="$VISUAL"
-echo "$VISUAL" | grep -q "emacsclient" && alias vq="$VISUAL -n"
-
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
 
 # if not SSH connection
-if [ -z "$SSH_CLIENT" ] ; then
+if [ -z "$SSH_CLIENT" ]; then
   GPG_TTY=$(tty)
-  export GPG_TTY
   gpgconf --launch gpg-agent
   SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-  export SSH_AUTH_SOCK
 fi
+
+set +o allexport
+
+test -n $DISPLAY && setxkbmap se us >/dev/null
+
+alias v=vim
+alias e=emacsclient
+alias en='emacsclient -n'
 
 # https://superuser.com/a/1644866
 _path_prepend() {
-    if [ -n "$2" ]; then
-        case ":$(eval "echo \$$1"):" in
-            *":$2:"*) :;;
-            *) eval "export $1=$2\${$1:+\":\$$1\"}" ;;
-        esac
-    else
-        case ":$PATH:" in
-            *":$1:"*) :;;
-            *) export PATH="$1${PATH:+":$PATH"}" ;;
-        esac
-    fi
+  if [ -n "$2" ]; then
+    case ":$(eval "echo \$$1"):" in
+      *":$2:"*) : ;;
+      *) eval "export $1=$2\${$1:+\":\$$1\"}" ;;
+    esac
+  else
+    case ":$PATH:" in
+      *":$1:"*) : ;;
+      *) export PATH="$1${PATH:+":$PATH"}" ;;
+    esac
+  fi
 }
 
 # https://superuser.com/a/1644866
 _path_append() {
-    if [ -n "$2" ]; then
-        case ":$(eval "echo \$$1"):" in
-            *":$2:"*) :;;
-            *) eval "export $1=\${$1:+\"\$$1:\"}$2" ;;
-        esac
-    else
-        case ":$PATH:" in
-            *":$1:"*) :;;
-            *) export PATH="${PATH:+"$PATH:"}$1" ;;
-        esac
-    fi
+  if [ -n "$2" ]; then
+    case ":$(eval "echo \$$1"):" in
+      *":$2:"*) : ;;
+      *) eval "export $1=\${$1:+\"\$$1:\"}$2" ;;
+    esac
+  else
+    case ":$PATH:" in
+      *":$1:"*) : ;;
+      *) export PATH="${PATH:+"$PATH:"}$1" ;;
+    esac
+  fi
 }
 
 _path_prepend $HOME/.cargo/bin

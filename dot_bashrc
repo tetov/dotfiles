@@ -1,0 +1,15 @@
+if [ -f ~/.profile ]; then
+    . ~/.profile
+fi
+
+# https://github.com/mrzool/bash-sensible
+# Downloaded using .chezmoiexternal
+if [ -f "$XDG_CONFIG_HOME/bash/sensible.bash" ]; then
+    . "$XDG_CONFIG_HOME/bash/sensible.bash"
+fi
+
+# vim: set ft=sh ts=2
+
+# Local Variables:
+# mode: sh
+# End:
