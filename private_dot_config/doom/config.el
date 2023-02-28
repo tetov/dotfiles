@@ -767,7 +767,8 @@ https://control.lth.se/"))
         send-mail-function #'smtpmail-send-it
         message-sendmail-f-is-evil t
         message-sendmail-extra-arguments '("--read-envelope-from")
-        message-send-mail-function #'message-send-mail-with-sendmail)
+        message-send-mail-function #'message-send-mail-with-sendmail
+        +mu4e-compose-org-msg-toggle-next nil)
 
   ;;;;; headers view options
 
