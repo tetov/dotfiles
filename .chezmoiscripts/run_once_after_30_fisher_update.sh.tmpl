@@ -1,0 +1,10 @@
+#!/usr/bin/sh
+
+# ~/.cache/fisher.fish hash: {{ include "~/.cache/fisher.fish" | sha256sum }}
+
+# Run upgrade once a week
+# Weeks since epoch: {{ div (now | unixEpoch) 604800 }}
+
+if command -v fish > /dev/null ; then
+    fish -c "source $XDG_CACHE_HOME/fisher.fish && fisher update"
+fi

@@ -1,15 +1,28 @@
-if [ -f ~/.profile ]; then
-    . ~/.profile
+# https://wiki.archlinux.org/title/Fish#Modify_.bashrc_to_drop_into_fish
+if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" ]]
+then
+  exec fish
 fi
+
+if [ -f ~/.profile ]; then
+  . ~/.profile
+fi
+
+# && -z ${BASH_EXECUTION_STRING} ]]
 
 # https://github.com/mrzool/bash-sensible
 # Downloaded using .chezmoiexternal
 if [ -f "$XDG_CONFIG_HOME/bash/sensible.bash" ]; then
-    . "$XDG_CONFIG_HOME/bash/sensible.bash"
+  . "$XDG_CONFIG_HOME/bash/sensible.bash"
 fi
+
+# created using https://scriptim.github.io/bash-prompt-generator/
+# username@hostname ~/bin $
+PS1='\[\e[0;38;5;33m\]\u\[\e[0m\]@\[\e[0m\]\h \[\e[0;38;5;35m\]\w \[\e[0m\]\$ \[\e[0m\]'
 
 # vim: set ft=sh ts=2
 
 # Local Variables:
-# mode: sh
+# mode: shell-script
+# sh-shell: bash
 # End:

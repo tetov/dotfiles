@@ -45,3 +45,8 @@
     url = "https://raw.githubusercontent.com/brunelli/gnome-shell-extension-installer/master/gnome-shell-extension-installer"
     refreshPeriod = "168h"
     executable = true
+
+[".cache/fisher.fish"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/jorgebucaran/fisher/HEAD/functions/fisher.fish"
+    checksum.sha256 = "de29752ebb0490eb924ac4c0ad62109ad0efccfb734ae9c7c2e12c5f444017ed"

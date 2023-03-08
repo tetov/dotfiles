@@ -1,5 +1,5 @@
-{{ if .workstation -}}
 #!/bin/sh
+{{ if .workstation -}}
 
 # runs if master commit is changed
 # git hash for doom: {{ expandenv "$HOME/.config/emacs/.git/refs/heads/master" | include}}
