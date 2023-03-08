@@ -1,4 +1,4 @@
-[".config/bash"]
+[".config/bash/sensible.bash"]
     type = "file"
     url = "https://raw.githubusercontent.com/mrzool/bash-sensible/master/sensible.bash"
     refreshPeriod = "168h"
