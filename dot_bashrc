@@ -9,8 +9,6 @@ if [ -f ~/.profile ]; then
   . ~/.profile
 fi
 
-# && -z ${BASH_EXECUTION_STRING} ]]
-
 # https://github.com/mrzool/bash-sensible
 # Downloaded using .chezmoiexternal
 if [ -f "$XDG_CONFIG_HOME/bash/sensible.bash" ]; then
