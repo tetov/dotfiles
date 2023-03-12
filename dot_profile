@@ -26,12 +26,12 @@ ALTERNATE_EDITOR=""
 
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
+SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
 # if not SSH connection
 if [ -z "$SSH_CLIENT" ]; then
   GPG_TTY=$(tty)
   gpgconf --launch gpg-agent
-  SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
 set +o allexport
