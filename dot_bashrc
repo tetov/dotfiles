@@ -1,9 +1,9 @@
 # https://wiki.archlinux.org/title/Fish#Modify_.bashrc_to_drop_into_fish
 _parent_proc=$(ps --no-header --pid=$PPID --format=comm)
-if [[ $_parent_proc != "fish" && -z ${BASH_EXECUTION_STRING} ]]
-then
-  exec fish
-fi
+command -v fish >/dev/null && \
+  test "$_parent_proc" != "fish" && \
+  test -z "${BASH_EXECUTION_STRING}" && \
+  fish
 
 if [ -f ~/.profile ]; then
   . ~/.profile
