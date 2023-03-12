@@ -1,7 +1,10 @@
 {{ if .workstation -}}
-#!/bin/zsh
+#!/bin/bash
 
-mu init --maildir=~/.local/share/mail            \
+MAILDIRDIR=$HOME/.local/share/mail
+
+mkdir -p $MAILDIRDIR
+mu init --maildir=$MAILDIRDIR                    \
   --my-address=anton@tetov.{se,xyz}              \
   --my-address={s,a,e,ln}@tetov.se               \
   --my-address=tetov@{proton,pm}.me              \
