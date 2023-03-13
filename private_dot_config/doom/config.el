@@ -848,9 +848,13 @@ https://control.lth.se/"))
                              (message nil))))
 ;;;; term
 (after! vterm
-  (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
+  (set-popup-rule! "*doom:vterm-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right)
+  (setq vterm-kill-buffer-on-exit t
+        vterm-always-compile-module t))
 (after! eshell
   (set-popup-rule! "*doom:eshell-popup:" :size 0.35 :vslot -4 :select t :quit nil :ttl 0 :side 'right))
+
+
 
 (set-eshell-alias!
  "q"  "exit"           ; built-in
