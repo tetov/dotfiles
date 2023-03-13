@@ -1,10 +1,7 @@
 {{ if .workstation -}}
-#!/bin/bash
+#!/bin/sh
 
-MAILDIRDIR=$HOME/.local/share/mail
-
-mkdir -p $MAILDIRDIR
-mu init --maildir=$MAILDIRDIR                    \
+mu init --maildir="${XDG_DATA_HOME:?}"/mail        \
   --my-address=anton@tetov.{se,xyz}              \
   --my-address={s,a,e,ln}@tetov.se               \
   --my-address=tetov@{proton,pm}.me              \

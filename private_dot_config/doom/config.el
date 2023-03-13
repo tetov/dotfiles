@@ -620,18 +620,18 @@ ${body}
 
 ;;;;; org-roam-ui
 (use-package! websocket
-    :after org-roam)
+  :after org-roam)
 (use-package! org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 ;;;;; org-roam-bibtex
 (use-package! org-roam-bibtex
@@ -758,6 +758,29 @@ https://control.lth.se/"))
                     nil)
 
 (after! mu4e
+  (use-package! mu4e-folding)
+  (add-hook 'mu4e-headers-mode-hook 'mu4e-folding-mode)
+  (setq mu4e-folding-default-view 'folded)
+  (set-face-attribute 'mu4e-folding-root-folded-face nil :weight 'ultra-bold :background "gray20")
+  (set-face-attribute 'mu4e-folding-root-unfolded-face nil :weight 'ultra-bold :background "gray20")
+  (set-face-attribute 'mu4e-folding-child-unfolded-face nil :background "gray20")
+  (set-face-attribute 'mu4e-folding-child-folded-face nil :background "gray20")
+
+  (define-key mu4e-headers-mode-map "zo" 'mu4e-folding-toggle-at-point)
+  (define-key mu4e-headers-mode-map (kbd "<tab>")     'mu4e-folding-toggle-at-point)
+
+  (define-key mu4e-headers-mode-map "zc" 'mu4e-folding-fold-at-point)
+  (define-key mu4e-headers-mode-map (kbd "<left>")    'mu4e-folding-fold-at-point)
+
+  (define-key mu4e-headers-mode-map "zm" 'mu4e-folding-fold-all)
+  (define-key mu4e-headers-mode-map (kbd "<S-left>")  'mu4e-folding-fold-all)
+
+  (define-key mu4e-headers-mode-map "zo" 'mu4e-folding-unfold-at-point)
+  (define-key mu4e-headers-mode-map (kbd "<right>")   'mu4e-folding-unfold-at-point)
+
+  (define-key mu4e-headers-mode-map "zr" 'mu4e-folding-unfold-all)
+  (define-key mu4e-headers-mode-map (kbd "<S-right>") 'mu4e-folding-unfold-all)
+
   ;;;;; send/recieve email
 
   ;; mail box updated using systemd timer, so mail command is set to true

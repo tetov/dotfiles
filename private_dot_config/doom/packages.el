@@ -27,6 +27,9 @@
 (package! org-pocket
   :recipe (:host github :repo "alphapapa/org-pocket"))
 
+(package! mu4e-folding
+  :recipe (:host github :repo "rougier/mu4e-folding"))
+
 (package! tetov-elisp
   :recipe (:host github :repo "tetov/elisp"
            :files ("*.el")))
