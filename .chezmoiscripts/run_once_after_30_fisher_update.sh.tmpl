@@ -5,6 +5,8 @@
 # Run upgrade once a week
 # Weeks since epoch: {{ div (now | unixEpoch) 604800 }}
 
+. "${XDG_CONFIG_HOME:-$HOME/.config}"/tetov/.config/environment.d/*.conf
+
 if command -v fish > /dev/null ; then
     fish -c "source $XDG_CACHE_HOME/fisher.fish && fisher update"
 fi

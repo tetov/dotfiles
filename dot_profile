@@ -1,20 +1,24 @@
 set -o allexport
 
 # if nothing matches the glob should expand to null
-if [ "$0" = "bash" ]; then
+if [ "$0" = "bash" || "$0" = "sh" ]; then
   shopt -s nullglob
 elif [ "$0" = "zsh" ]; then
   set -o nullglob
+elif [ "$0" = "dash" ]; then
+  set -o noglob
 fi
 
 for f in "$HOME/.config/environment.d"/*.conf; do
   . "$f"
 done
 
-if [ "$0" = "bash" ]; then
+if [ "$0" = "bash" || "$0" = "sh" ]; then
   shopt -u nullglob
 elif [ "$0" = "zsh" ]; then
   set +o nullglob
+elif [ "$0" = "dash" ]; then
+  set +o noglob
 fi
 
 if command -v emacsclient >/dev/null; then
