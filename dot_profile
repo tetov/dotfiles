@@ -1,7 +1,7 @@
 set -o allexport
 
 # if nothing matches the glob should expand to null
-if [ "$0" = "bash" || "$0" = "sh" ]; then
+if [ "$0" = "bash" -o "$0" = "sh" ]; then
   shopt -s nullglob
 elif [ "$0" = "zsh" ]; then
   set -o nullglob
@@ -13,7 +13,7 @@ for f in "$HOME/.config/environment.d"/*.conf; do
   . "$f"
 done
 
-if [ "$0" = "bash" || "$0" = "sh" ]; then
+if [ "$0" = "bash" -o "$0" = "sh" ]; then
   shopt -u nullglob
 elif [ "$0" = "zsh" ]; then
   set +o nullglob
