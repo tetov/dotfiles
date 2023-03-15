@@ -1,9 +1,14 @@
+# don't source bashrc if non-interactive
+# .bashrc is sourced for all ssh terminals even if non-interactive
+# https://unix.stackexchange.com/a/257613
+[ -z $PS1 ] && return
+
 # https://wiki.archlinux.org/title/Fish#Modify_.bashrc_to_drop_into_fish
 _parent_proc=$(ps --no-header --pid=$PPID --format=comm)
-command -v fish >/dev/null && \
-  test "$_parent_proc" != "fish" && \
+command -v zsh >/dev/null && \
+  test "$_parent_proc" != "zsh" && \
   test -z "${BASH_EXECUTION_STRING}" && \
-  fish
+  zsh
 
 if [ -f ~/.profile ]; then
   . ~/.profile
