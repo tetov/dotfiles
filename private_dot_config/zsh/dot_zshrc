@@ -56,7 +56,7 @@ zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
 zcomet load jeffreytse/zsh-vi-mode
 
 zcomet load zsh-users/zsh-completions
-zcomet load jeffreytse/zsh-vi-mode
+zcomet load zsh-users/zsh-autosuggestions
 
 zcomet compinit
 
