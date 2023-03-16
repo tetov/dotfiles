@@ -27,8 +27,6 @@ export LESS=" -R"
 
 fpath+=($ZDOTDIR/{funcs,completions})
 
-
-PROMPT='%(?..%F{red}%?)%f %B%F{240}%~%f%b > '  {{/* gets overwritten by pure if dev_hosts  */}}
 unset RPROMPT
 
 # ZCOMET
@@ -54,9 +52,11 @@ zcomet load xlshiz/gitfast-zsh-plugin
 zcomet load MikeDacre/tmux-zsh-vim-titles
 zcomet load zdharma-continuum/fast-syntax-highlighting
 
+zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
+zcomet load jeffreytse/zsh-vi-mode
+
 zcomet load zsh-users/zsh-completions
 zcomet load jeffreytse/zsh-vi-mode
-zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
 
 zcomet compinit
 
