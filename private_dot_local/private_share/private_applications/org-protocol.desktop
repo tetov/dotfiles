@@ -8,3 +8,4 @@ Terminal=false
 Categories=Development;TextEditor;
 StartupWMClass=Emacs
 Keywords=Text;Editor;org-protocol;
+Hidden=True

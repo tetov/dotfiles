@@ -2,11 +2,9 @@
 #!/bin/sh
 
 # Run if emacs files changed
-{{- range (joinPath .chezmoi.sourceDir "private_dot_config/doom/*.el" | glob) }}
+{{- range (expandenv "$DOOMDIR/*.el" | glob) }}
 # {{ . }}: {{ include . | sha256sum }}
 {{- end }}
 
-DOOM_INSTALL_DIR=$HOME/.config/emacs
-
-"$DOOM_INSTALL_DIR/bin/doom" sync
+{{ expandenv "$XDG_CONFIG_HOME/bin/doom" }} sync
 {{- end }}

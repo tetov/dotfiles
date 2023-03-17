@@ -44,7 +44,6 @@ let plugged_dir = $XDG_DATA_HOME . '/vim/plugged'
 
 call plug#begin(plugged_dir)
 
-Plug 'alker0/chezmoi.vim'  " needs to load before other plugins, before filetype on, before syntax on/enable
 Plug 'ChesleyTan/wordCount.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'editorconfig/editorconfig-vim'
@@ -182,9 +181,6 @@ augroup ansible_vim_fthosts
     autocmd!
     autocmd BufNewFile,BufRead hosts setfiletype yaml.ansible
 augroup END
-
-" autoapply chezmoi
-autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
 
 if exists('g:vscode')
   xmap gc  <Plug>VSCodeCommentary
