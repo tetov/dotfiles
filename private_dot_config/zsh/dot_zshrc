@@ -29,8 +29,10 @@ fpath+=($ZDOTDIR/{funcs,completions})
 
 unset RPROMPT
 
+
 # ZCOMET
-source $ZDOTDIR/.zcomet/bin/zcomet.zsh
+zstyle ':zcomet:*' home-dir "$XDG_CACHE_HOME/zcomet"
+source $XDG_CACHE_HOME/zcomet/bin/zcomet.zsh
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
 PURE_CMD_MAX_EXEC_TIME=60
