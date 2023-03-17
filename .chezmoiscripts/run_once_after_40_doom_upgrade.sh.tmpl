@@ -1,14 +1,14 @@
 {{ if .workstation -}}
 #!/bin/sh
 
-{{ emacsDir := expandenv "$XDG_CONFIG_HOME/emacs" }}
+{{ $emacsDir := expandenv "$XDG_CONFIG_HOME/emacs" }}
 
 # runs if master commit is changed
-# git hash for doom: {{ joinPath .emacsDir ".git/refs/heads/master" | include}}
+# git hash for doom: {{ joinPath $emacsDir ".git/refs/heads/master" | include}}
 
 # Run upgrade once a week
 # Weeks since epoch: {{ div (now | unixEpoch) 604800 }}
 
-{{ .emacsDir }}/bin/doom upgrade
+{{ $emacsDir }}/bin/doom upgrade
 
 {{- end }}

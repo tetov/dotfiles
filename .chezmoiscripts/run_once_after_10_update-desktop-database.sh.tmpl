@@ -1,9 +1,9 @@
 #!/bin/sh
 
-{{ applicationsDir := expandenv "$XDG_DATA_HOME/applications" }}
+{{ $applicationsDir := expandenv "$XDG_DATA_HOME/applications" }}
 
-{{- range (joinPath .applicationsDir "/*.desktop" | glob) }}
+{{- range (joinPath $applicationsDir "/*.desktop" | glob) }}
 # {{ . }}: {{ include . | sha256sum }}
 {{- end }}
 
-update-desktop-database {{ .applicationsDir }}
+update-desktop-database {{ $applicationsDir }}

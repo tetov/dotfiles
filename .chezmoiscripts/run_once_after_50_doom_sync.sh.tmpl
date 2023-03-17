@@ -6,5 +6,5 @@
 # {{ . }}: {{ include . | sha256sum }}
 {{- end }}
 
-{{ expandenv "$XDG_CONFIG_HOME/bin/doom" }} sync
+{{ expandenv "$XDG_CONFIG_HOME/emacs/bin/doom" }} sync
 {{- end }}

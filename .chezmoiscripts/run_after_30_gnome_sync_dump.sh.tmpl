@@ -1,4 +1,4 @@
-{{ if .workstation -}}
+{{ if and .workstation (not (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
 #!/bin/sh
 
 dconf write /org/gnome/shell/extensions/extensions-sync/provider "'Local'"
