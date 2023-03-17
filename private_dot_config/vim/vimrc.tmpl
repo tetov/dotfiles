@@ -186,6 +186,13 @@ augroup END
 " autoapply chezmoi
 autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
 
+if exists('g:vscode')
+  xmap gc  <Plug>VSCodeCommentary
+  nmap gc  <Plug>VSCodeCommentary
+  omap gc  <Plug>VSCodeCommentary
+  nmap gcc <Plug>VSCodeCommentaryLine
+endif
+
 " local vimrc (project specific settings)
 set exrc
 " Disables unsafe commands in project vimrcs
