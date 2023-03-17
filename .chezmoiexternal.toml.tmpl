@@ -3,11 +3,6 @@
     url = "https://raw.githubusercontent.com/mrzool/bash-sensible/master/sensible.bash"
     refreshPeriod = "168h"
 
-[".config/emacs"]
-    type = "git-repo"
-    url = "https://github.com/hlissner/doom-emacs"
-    refreshPeriod = "0"  # use doom upgrade from script instead
-
 [".config/tmux/plugins/tpm"]
     type = "git-repo"
     url = "https://github.com/tmux-plugins/tpm"
@@ -46,7 +41,13 @@
     refreshPeriod = "168h"
     executable = true
 
-[".cache/fisher.fish"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/jorgebucaran/fisher/HEAD/functions/fisher.fish"
-    checksum.sha256 = "de29752ebb0490eb924ac4c0ad62109ad0efccfb734ae9c7c2e12c5f444017ed"
+{{ if .workstation }}
+[".config/emacs"]
+    type = "git-repo"
+    url = "https://github.com/hlissner/doom-emacs"
+    refreshPeriod = "0"  # use doom upgrade from script instead
+{{ endif }}
+
+# Local Variables:
+# mode: conf-toml
+# End:

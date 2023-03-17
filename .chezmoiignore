@@ -6,8 +6,6 @@ LICENSE
 !.ssh/authorized_keys
 .config/systemd/user/default.target.wants/
 .config/systemd/user/timer.target.wants/
-.config/emacs
-.config/doom
 {{ end }}
 
 gnome_extension_sync.json
