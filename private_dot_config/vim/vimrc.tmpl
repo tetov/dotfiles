@@ -39,71 +39,26 @@ call mkdir(&undodir,   'p', 0700)
 " append timestamp to backup files
 au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
 
-{{- if .workstation }}
-
 " vim-plug configuration
-" let plugged_dir = has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged'
 let plugged_dir = $XDG_DATA_HOME . '/vim/plugged'
 
 call plug#begin(plugged_dir)
 
-if exists('g:vscode')
-  " Only for vscode
-  Plug 'asvetliakov/vim-easymotion', { 'as': 'vsc-easymotion' }
-else
-  " for vim and nvim but not in vscode
-
-  Plug 'alker0/chezmoi.vim'  " needs to load before other plugins, before filetype on, before syntax on/enable
-
-  Plug 'ChesleyTan/wordCount.vim'
-  Plug 'MikeDacre/tmux-zsh-vim-titles'
-  Plug 'airblade/vim-gitgutter'
-  Plug 'bkad/CamelCaseMotion'
-  Plug 'christoomey/vim-tmux-navigator'
-  Plug 'dbeniamine/todo.txt-vim'
-  Plug 'easymotion/vim-easymotion'
-  Plug 'editorconfig/editorconfig-vim'
-  Plug 'godlygeek/tabular'
-  Plug 'itchyny/lightline.vim'
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'
-  Plug 'jreybert/vimagit'                  " Commit chunks and more
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-  Plug 'kevinoid/vim-jsonc'
-  Plug 'kopischke/vim-stay'                " Remembers cursor locations in buffers
-  Plug 'mengelbrecht/lightline-bufferline'
-  Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
-  Plug 'quentindecock/vim-cucumber-align-pipes'
-  Plug 'samoshkin/vim-mergetool'           " Mergetool
-  Plug 'sheerun/vim-wombat-scheme'
-  Plug 'tpope/vim-commentary'              " Comment and uncomment
-  Plug 'tpope/vim-fugitive'                " Git
-  Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
-  Plug 'tpope/vim-sensible'                " Sensible standards
-  Plug 'tpope/vim-sleuth'                  " Guess tab width
-  Plug 'tpope/vim-surround'                " Operate on surrounding characters
-  Plug 'tpope/vim-unimpaired'
-  Plug 'tpope/vim-vinegar'
-  Plug 'vim-pandoc/vim-pandoc'
-  Plug 'vim-pandoc/vim-pandoc-syntax'
-  Plug 'wellle/tmux-complete.vim'
-  Plug 'wincent/terminus'
-
-  if has('nvim')
-    " only for nvim
-    Plug 'ryanoasis/vim-devicons'
-  else
-    " only for vim
-    Plug 'sheerun/vim-polyglot'              " Lots of more syntax highlighting
-    Plug 'tpope/vim-dispatch'
-    Plug 'tmux-plugins/vim-tmux-focus-events' " For shared vim tmux clipboard
-
-  endif
-endif
+Plug 'alker0/chezmoi.vim'  " needs to load before other plugins, before filetype on, before syntax on/enable
+Plug 'ChesleyTan/wordCount.vim'
+Plug 'bkad/CamelCaseMotion'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
+Plug 'sheerun/vim-wombat-scheme'
+Plug 'tpope/vim-commentary'              " Comment and uncomment
+Plug 'tpope/vim-fugitive'                " Git
+Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
+Plug 'tpope/vim-sensible'                " Sensible standards
+Plug 'tpope/vim-sleuth'                  " Guess tab width
+Plug 'tpope/vim-surround'                " Operate on surrounding characters
+Plug 'tpope/vim-unimpaired'
 
 call plug#end()
-
-{{- end}}
 
 " builtin opts
 set ffs=unix,dos,mac
@@ -182,7 +137,7 @@ vnoremap ¤ $
 " nmap <leader>es :so $MYVIMRC <CR>
 
 " spell
-set spell spl=sv,en " Select language
+set spell spl=en " Select language
 set nospell " Turn it off at start
 nmap <F7> :set spell! <CR>
 
