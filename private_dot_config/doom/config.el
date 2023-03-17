@@ -746,16 +746,15 @@ ${body}
                       (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"))
                       (mu4e-compose-signature  . "Best regards,
 Anton Tetov Johansson
+PhD student in Architecture & Construction Robotics
 
-Project assistant
+Department of Architecture & Built Environment
 Lund University - LTH
-Department of Architecture and Built Environment
-& Department of Automatic Control
 
 Phone no: +46 70-363 56 67
 
 https://abm.lth.se/
-https://control.lth.se/"))
+https://tetov.se/"))
                     nil)
 
 (after! mu4e
