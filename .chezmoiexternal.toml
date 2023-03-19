@@ -1,24 +1,26 @@
-[".config/bash/sensible.bash"]
+{{ $xdgDataHome :=  env "XDG_DATA_HOME" | replace (print (env "HOME") "/") "" }}
+{{ $xdgConfigHome :=  env "XDG_CONFIG_HOME" | replace (print (env "HOME") "/") "" }}
+["{{ $xdgDataHome }}/bash/sensible.bash"]
     type = "file"
     url = "https://raw.githubusercontent.com/mrzool/bash-sensible/master/sensible.bash"
     refreshPeriod = "168h"
 
-[".config/tmux/plugins/tpm"]
+["{{ $xdgDataHome }}/tmux/plugins/tpm"]
     type = "git-repo"
     url = "https://github.com/tmux-plugins/tpm"
     refreshPeriod = "168h"
 
-[".config/vim/autoload/plug.vim"]
+["{{ $xdgConfigHome}}/vim/autoload/plug.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     refreshPeriod = "168h"
 
-[".cache/zcomet/bin"]
+["{{ $xdgDataHome }}/zsh/zcomet/bin"]
     type = "git-repo"
     url = "https://github.com/agkozak/zcomet.git"
     refreshPeriod = "168h"
 
-[".local/share/nvim/site/autoload/plug.vim"]
+["{{ $xdgDataHome }}/nvim/site/autoload/plug.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     refreshPeriod = "168h"
@@ -42,7 +44,7 @@
     executable = true
 
 {{ if .workstation }}
-[".config/emacs"]
+["{{ $xdgConfigHome }}/emacs"]
     type = "git-repo"
     url = "https://github.com/hlissner/doom-emacs"
     refreshPeriod = "0"  # use doom upgrade from script instead
