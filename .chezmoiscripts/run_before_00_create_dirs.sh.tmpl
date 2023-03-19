@@ -1,5 +1,7 @@
 #!/bin/sh
 
-mkdir -p {{ env "XDG_DATA_HOME" }}/share/{vim,nvim,tmux,zsh}
-mkdir -p {{ env "XDG_DATA_HOME" }}/share/mail/{lth,fastmail}
+mkdir -p {{ env "XDG_DATA_HOME" }}/vim/plugged
+mkdir -p {{ env "XDG_DATA_HOME" }}/tmux/plugins
+mkdir -p {{ env "XDG_DATA_HOME" }}/zsh/zcomet
+mkdir -p {{ env "XDG_DATA_HOME" }}/mail/{lth,fastmail}
 chmod 700 {{ env "XDG_DATA_HOME" }}/share/mail

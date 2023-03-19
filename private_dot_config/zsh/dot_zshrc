@@ -31,8 +31,10 @@ unset RPROMPT
 
 
 # ZCOMET
-zstyle ':zcomet:*' home-dir "$XDG_DATA_HOME/zsh/zcomet"
-source $XDG_CACHE_HOME/zcomet/bin/zcomet.zsh
+_zcomet_home_dir="$XDG_DATA_HOME/zsh/zcomet"
+zstyle ':zcomet:*' home-dir $_zcomet_home_dir
+. $_zcomet_home_dir
+unset _zcomet_home_dir
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
 PURE_CMD_MAX_EXEC_TIME=60
