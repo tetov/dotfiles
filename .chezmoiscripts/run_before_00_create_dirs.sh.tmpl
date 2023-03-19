@@ -1,7 +1,11 @@
 #!/bin/sh
 
+# These dirs are created here so chezmoiexternal.toml
+# doesn't break symlinks when it encounters missing folders
 mkdir -p {{ env "XDG_DATA_HOME" }}/vim/plugged
+mkdir -p {{ env "XDG_DATA_HOME" }}/nvim/site/autoload
 mkdir -p {{ env "XDG_DATA_HOME" }}/zsh/zcomet
 mkdir -p {{ env "XDG_DATA_HOME" }}/tmux/plugins
+
 mkdir -p {{ env "XDG_DATA_HOME" }}/mail/{lth,fastmail}
 chmod 700 {{ env "XDG_DATA_HOME" }}/mail

@@ -1,3 +1,5 @@
+# The parent dirs for these might need to be created in chezmoi before script
+# So chezmoiexternal doesn't break symlinks when it encounters missing folders
 {{ $xdgDataHome :=  env "XDG_DATA_HOME" | replace (print (env "HOME") "/") "" }}
 {{ $xdgConfigHome :=  env "XDG_CONFIG_HOME" | replace (print (env "HOME") "/") "" }}
 ["{{ $xdgDataHome }}/bash/sensible.bash"]
