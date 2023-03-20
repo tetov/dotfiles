@@ -22,6 +22,7 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 fpath+=($ZDOTDIR/{funcs,completions})
 
 ZSHRC_DIR=$ZDOTDIR/zshrc.d
+
 for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
 done
