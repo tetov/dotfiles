@@ -135,6 +135,11 @@ vnoremap ¤ $
 " nmap <leader>ev :edit $MYVIMRC <CR>
 " nmap <leader>es :so $MYVIMRC <CR>
 
+" clipboard
+set clipboard+=unnamed
+set paste
+set go+=a " Visual selection automatically copied to the clipboard
+
 " spell
 set spell spl=en " Select language
 set nospell " Turn it off at start
