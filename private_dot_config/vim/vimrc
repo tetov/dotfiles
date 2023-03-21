@@ -136,7 +136,7 @@ vnoremap ¤ $
 " nmap <leader>es :so $MYVIMRC <CR>
 
 " clipboard
-set clipboard+=unnamed
+set clipboard+=unnamedplus
 set paste
 set go+=a " Visual selection automatically copied to the clipboard
 
