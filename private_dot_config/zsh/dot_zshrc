@@ -33,7 +33,7 @@ unset RPROMPT
 # ZCOMET
 _zcomet_home_dir="$XDG_DATA_HOME/zsh/zcomet"
 zstyle ':zcomet:*' home-dir $_zcomet_home_dir
-. $_zcomet_home_dir
+. $_zcomet_home_dir/bin/zcomet.zsh
 unset _zcomet_home_dir
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
