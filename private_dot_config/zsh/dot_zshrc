@@ -30,7 +30,9 @@ fpath+=($ZDOTDIR/{funcs,completions})
 unset RPROMPT
 
 
-# ZCOMET
+# ZIM
+ZCOMET
+ZIM_HOME=~/.zim
 _zcomet_home_dir="$XDG_DATA_HOME/zsh/zcomet"
 zstyle ':zcomet:*' home-dir $_zcomet_home_dir
 . $_zcomet_home_dir/bin/zcomet.zsh
