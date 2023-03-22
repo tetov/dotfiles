@@ -17,10 +17,11 @@
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     refreshPeriod = "168h"
 
-["{{ $xdgDataHome }}/zsh/zcomet/bin"]
-    type = "git-repo"
-    url = "https://github.com/agkozak/zcomet.git"
+["{{ $xdgDataHome }}/zsh/zim/zimfw.zsh"]
+    type = "file"
+    url = "https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh"
     refreshPeriod = "168h"
+    executable = true
 
 ["{{ $xdgDataHome }}/nvim/site/autoload/plug.vim"]
     type = "file"
@@ -29,7 +30,7 @@
 
 ["{{ $xdgDataHome }}/lscolors.sh"]
     type = "file"
-    url = "https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh"
+    url = "https://raw.githubusercontent.com/trapd00r/LS_COLORS/master/lscolors.sh"
     refreshPeriod = "168h"
 
 ["bin/ediff.sh"]

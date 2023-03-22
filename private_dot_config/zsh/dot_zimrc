@@ -1,7 +1,6 @@
 zmodule jeffreytse/zsh-vi-mode
 
 zmodule agkozak/zsh-z
-
 zmodule lukechilds/zsh-nvm
 
 zmodule sindresorhus/pure --source async.zsh

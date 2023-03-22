@@ -7,8 +7,8 @@ TPM_PLUGIN_UPGRADE_SCRIPT={{ expandenv "$XDG_CONFIG_HOME/tmux/plugins/tpm/bin/up
 
 [ -e "$TPM_PLUGIN_UPGRADE_SCRIPT" ] && "$TPM_PLUGIN_UPGRADE_SCRIPT" all
 
-ZCOMET_SCRIPT={{ expandenv "$XDG_CONFIG_HOME/zsh/.zcomet/bin/zcomet.zsh" }}
+ZIM_SCRIPT={{ expandenv "$XDG_DATA_HOME/zsh/zim/zimfw.zsh" }}
 
-if [ -e "$ZCOMET_SCRIPT" ] ; then
-    zsh -c "source $ZCOMET_SCRIPT && zcomet update"
+if [ -e "$ZIM_SCRIPT" ] ; then
+    zsh -c ". $ZIM_SCRIPT update -v"
 fi
