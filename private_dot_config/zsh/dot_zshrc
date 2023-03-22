@@ -1,6 +1,4 @@
 # -*- mode: sh -*-
-ZSHRC_DIR=$ZDOTDIR/zshrc.d
-
 # history settings
 HISTFILE=$XDG_STATE_HOME/zsh/history
 mkdir -p $(dirname $HISTFILE)
@@ -21,36 +19,9 @@ setopt always_to_end # always put cursor at end after completing
 
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
-# Syntax highlightening for less
-export LESS=" -R"
-[ -e /usr/bin/src-hilite-lesspipe.sh ] && export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
-
 fpath+=($ZDOTDIR/{funcs,completions})
 
-# ZIM
-ZIM_HOME=$XDG_DATA_HOME/zsh/zim
-# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
-if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
-  source ${ZIM_HOME}/zimfw.zsh init -q
-fi
-
-zcomet load sindresorhus/pure async.zsh pure.zsh
-zcomet load lukechilds/zsh-nvm
-
-zcomet load agkozak/zsh-z
-# zcomet load ohmyzsh plugins/gitfast
-zcomet load xlshiz/gitfast-zsh-plugin
-zcomet load MikeDacre/tmux-zsh-vim-titles
-zcomet load zdharma-continuum/fast-syntax-highlighting
-
-zcomet snippet https://github.com/trapd00r/LS_COLORS/blob/master/lscolors.sh
-zcomet load jeffreytse/zsh-vi-mode
-
-zcomet load zsh-users/zsh-completions
-zcomet load zsh-users/zsh-autosuggestions
-
-zcomet compinit
-
+ZSHRC_DIR=$ZDOTDIR/zshrc.d
 for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
 done

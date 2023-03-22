@@ -1,0 +1,13 @@
+zmodule jeffreytse/zsh-vi-mode
+
+zmodule agkozak/zsh-z
+
+zmodule lukechilds/zsh-nvm
+
+zmodule sindresorhus/pure --source async.zsh
+zmodule sindresorhus/pure
+
+zmodule zsh-users/zsh-completions --fpath src
+zmodule completion
+zmodule zsh-users/zsh-syntax-highlighting
+zmodule zsh-users/zsh-autosuggestions
