@@ -27,29 +27,14 @@ export LESS=" -R"
 
 fpath+=($ZDOTDIR/{funcs,completions})
 
-unset RPROMPT
-
-
 # ZIM
-ZCOMET
-ZIM_HOME=~/.zim
-_zcomet_home_dir="$XDG_DATA_HOME/zsh/zcomet"
-zstyle ':zcomet:*' home-dir $_zcomet_home_dir
-. $_zcomet_home_dir/bin/zcomet.zsh
-unset _zcomet_home_dir
+ZIM_HOME=$XDG_DATA_HOME/zsh/zim
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  source ${ZIM_HOME}/zimfw.zsh init -q
+fi
 
 zcomet load sindresorhus/pure async.zsh pure.zsh
-PURE_CMD_MAX_EXEC_TIME=60
-PURE_GIT_PULL=0
-# Make pure theme single line
-prompt_newline='%666v'
-PROMPT=" $PROMPT"
-
-# zstyle :prompt:pure:user color green
-# zstyle :prompt:pure:host color green
-# zstyle :prompt:pure:git:branch color white
-zstyle :prompt:pure:git:stash show yes
-
 zcomet load lukechilds/zsh-nvm
 
 zcomet load agkozak/zsh-z
