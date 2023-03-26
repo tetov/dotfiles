@@ -84,7 +84,7 @@
                            (:desc "Compose (M)ail" "M" #'+mu4e/compose)
                            (:desc "roam (r)efile" "r" #'org-roam-refile)
                            (:desc "org (R)efile" "R" #'org-refile)
-                           (:desc "org-(q)l views" "q" #'helm-org-ql-views)
+                           (:desc "org-(q)l views" "q" #'org-ql-view)
                            (:desc "(v)-term" "v" #'+vterm/toggle)
                            (:desc "org capture default" "X" #'tetov/org-capture-default)))
 
@@ -240,11 +240,12 @@ Based on bh/clock-in-to-next."
 (setq org-directory "~/src/org/")
 
 (after! org
-
+  (setq tetov/nextcloud-dir (if (string-match "-[Mm]icrosoft" operating-system-release) "/mnt/c/Users/tetov/Nextcloud" (expand-file-name "~/Nextcloud")))
+  (setq tetov/nextcloud-apps-dir (concat tetov/nextcloud-dir "/Apps"))
   ;;;;; org files
   (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
   (setq org-default-notes-file (concat org-directory "refile.org"))
-  (setq org-attach-id-dir (expand-file-name "~/Nextcloud/Apps/org-attach"))
+  (setq org-attach-id-dir (concat tetov/nextcloud-apps-dir "/org-attach"))
 
   ;;;;; general
   (setq org-startup-folded t)
@@ -252,7 +253,7 @@ Based on bh/clock-in-to-next."
   (setq org-insert-heading-respect-content t)
 
   ;;;;; references
-  (setq bibtex-completion-bibliography '("~/gdrive/zot.bib"))
+  (setq bibtex-completion-bibliography (concat tetov/nextcloud-apps-dir "/zotero.bib"))
 
   ;;;;; refile
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
@@ -267,9 +268,9 @@ Based on bh/clock-in-to-next."
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
                                  "* TODO %?\n%U\n")
                                 ("m" "Meeting" entry (file org-default-notes-file)
-                                 "* TODO with %? :MEETING:\n%U\n"
+                                 "* TODO %u Möte %? :MEETING:\n%U\n"
                                  :clock-in t
-                                 :clock-resume t)
+                                 :clock-keep t)
                                 ("e" "Email" entry (file org-default-notes-file)
                                  "* TODO %? :EMAIL:
 :PROPERTIES:
@@ -355,7 +356,9 @@ Based on bh/clock-in-to-next."
   (add-to-list 'org-tags-exclude-from-inheritance "project")
   (add-to-list 'org-tags-exclude-from-inheritance "ATTACH")
   (add-to-list 'org-tags-exclude-from-inheritance "REFILE")
-  (add-to-list 'org-tags-exclude-from-inheritance "EMAIL"))
+  (add-to-list 'org-tags-exclude-from-inheritance "EMAIL")
+
+  )
 
 ;;;;; org-agenda
 (use-package! org-ql)
@@ -632,7 +635,7 @@ ${body}
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow nil
         org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+        org-roam-ui-open-on-start nil))
 
 ;;;;; org-roam-bibtex
 (use-package! org-roam-bibtex
@@ -640,7 +643,26 @@ ${body}
   :config
   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
-;;;;; ox-hugo
+;;;;; org-export
+(require 'org-element)
+
+(defun tetov/remove-id-links (backend)
+  "Remove 'id' type links from the current buffer before export to BACKEND."
+  (org-element-map
+      (org-element-parse-buffer)
+      'link
+    (lambda (link)
+      (when (string= (org-element-property :type link) "id")
+        (let ((post-blank (org-element-property :post-blank link))
+              (content (car (org-element-contents link))))
+          (org-element-insert-before content link)
+          (org-element-insert-before (string-pad "" post-blank) link) ;; add space if there is one in link elem
+          (org-element-extract-element link))))))
+
+(after! 'org-export
+  (add-hook 'org-export-before-processing-functions 'tetov/remove-id-links))
+
+;;;;;; ox-hugo
 (after! ox-hugo
   (setq org-hugo-export-with-toc nil
         org-hugo-date-format "%Y-%m-%d"
@@ -666,7 +688,7 @@ ${body}
 (use-package! backup-each-save)
 (setq backup-each-save-mirror-location (format "%s/emacs/%s"
                                                (or (getenv "EDITOR_BACKUP_DIR")
-                                                   "~/Nextcloud/Apps/editor-backups")
+                                                   (concat tetov/nextcloud-apps-dir "/editor-backups"))
                                                (system-name)) ;; put files under hostname
       backup-each-save-remote-files t
       backup-each-save-filter-function 'backup-each-save-filter
