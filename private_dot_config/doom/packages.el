@@ -13,16 +13,16 @@
 ;; When using bibtex-completion via the `biblio` module
 (unpin! bibtex-completion helm-bibtex ivy-bibtex)
 
-
-(package! pocket-reader)
 (package! backup-each-save)
-(package! org-ref)
-(package! org-mime)
-(package! vdirel)
-(package! org-ql)
-(package! org-wc)
+(package! burly)
 (package! chezmoi)
 (package! elfeed-protocol)
+(package! org-mime)
+(package! org-ql)
+(package! org-ref)
+(package! org-wc)
+(package! pocket-reader)
+(package! vdirel)
 
 (package! org-pocket
   :recipe (:host github :repo "alphapapa/org-pocket"))
