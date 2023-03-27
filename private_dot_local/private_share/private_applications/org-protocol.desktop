@@ -7,4 +7,4 @@ Type=Application
 Terminal=false
 Categories=Development;TextEditor;
 Keywords=Text;Editor;org-protocol;
-Hidden=True
+Hidden=true
