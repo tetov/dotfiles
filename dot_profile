@@ -36,7 +36,7 @@ fi
 
 set +o allexport
 
-test -n $DISPLAY && setxkbmap se us >/dev/null
+#test -n $DISPLAY && setxkbmap se us >/dev/null
 
 alias v=vim
 alias e=emacsclient
