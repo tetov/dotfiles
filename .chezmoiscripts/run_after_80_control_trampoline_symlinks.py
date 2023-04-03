@@ -17,9 +17,13 @@ def exit_if_not_regler_managed():
         print("regler group doesn't exist")
         sys.exit(0)
 
+def exit_if_local_home():
+    if Path.home().parts[1] == "local":
+        sys.exit(0)
 
 if __name__ == "__main__":
     exit_if_not_regler_managed()
+    exit_if_local_home()
 
     symlink_dirs = [
         ".local/share/vim",
