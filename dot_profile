@@ -16,7 +16,6 @@ if [ "$0" = "bash" -o "$0" = "sh" ]; then
 elif [ "$0" = "zsh" ]; then
   set +o nullglob
 fi
-
 if command -v emacsclient >/dev/null; then
   VISUAL="emacsclient"
 fi
@@ -79,6 +78,8 @@ _path_prepend $HOME/bin
 
 _path_append "$XDG_CONFIG_HOME/emacs/bin"
 _path_append "$HOME/.poetry/bin"
+
+_path_append "$HOME/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin"
 
 # vim: set ft=sh ts=2
 
