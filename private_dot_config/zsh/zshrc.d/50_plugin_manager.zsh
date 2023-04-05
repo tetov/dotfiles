@@ -1,5 +1,5 @@
 # ZIM
-ZIM_HOME=$XDG_DATA_HOME/zsh/zim
+ZIM_HOME=$XDG_CACHE_HOME/zsh/zim
 zstyle ':zim' disable-version-check yes
 zstyle ':zim:completion' dumpfile ${ZIM_HOME}/zcompdump
 zstyle ':completion::complete:*' cache-path ${XDG_CACHE_HOME}/zsh/zcompcache
