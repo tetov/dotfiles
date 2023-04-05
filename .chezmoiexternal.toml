@@ -2,13 +2,13 @@
 # So chezmoiexternal doesn't break symlinks when it encounters missing folders
 {{ $xdgDataHome :=  env "XDG_DATA_HOME" | replace (print (env "HOME") "/") "" }}
 {{ $xdgConfigHome :=  env "XDG_CONFIG_HOME" | replace (print (env "HOME") "/") "" }}
-{{ $xdgConfigHome :=  env "XDG_CACHE_HOME" | replace (print (env "HOME") "/") "" }}
+{{ $xdgCacheHome :=  env "XDG_CACHE_HOME" | replace (print (env "HOME") "/") "" }}
 ["{{ $xdgDataHome }}/bash/sensible.bash"]
     type = "file"
     url = "https://raw.githubusercontent.com/mrzool/bash-sensible/master/sensible.bash"
     refreshPeriod = "168h"
 
-["{{ $xdgDataHome }}/tmux/plugins/tpm"]
+["{{ $xdgCacheHome }}/tmux/plugins/tpm"]
     type = "git-repo"
     url = "https://github.com/tmux-plugins/tpm"
     refreshPeriod = "168h"
