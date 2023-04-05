@@ -18,7 +18,7 @@
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     refreshPeriod = "168h"
 
-["{{ $xdgDataHome }}/zsh/zim/zimfw.zsh"]
+["{{ $xdgCacheHome }}/zsh/zim/zimfw.zsh"]
     type = "file"
     url = "https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh"
     refreshPeriod = "168h"
