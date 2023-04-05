@@ -40,7 +40,7 @@ call mkdir(&undodir,   'p', 0700)
 au BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
 
 " vim-plug configuration
-let plugged_dir = $XDG_DATA_HOME . '/vim/plugged'
+let plugged_dir = $XDG_CACHE_HOME . '/vim/plugged'
 
 call plug#begin(plugged_dir)
 
