@@ -1,6 +1,6 @@
 window:
   startup_mode: Maximized
-  decorations: none
+  decorations: full
 
 font:
   size: 11.0
@@ -13,7 +13,7 @@ shell:
   args:
     - --login
     - -c
-    - "tmux attach-session || tmux new-session"
+    - "tmux new-session -A -s alacritty" # attach if it already exists
 
 # Base16 Default Dark - alacritty color config
 # Chris Kempson (http://chriskempson.com)
