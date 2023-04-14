@@ -11,7 +11,7 @@
 
 ;; When using org-roam via the `+roam` flag
 ;; When using bibtex-completion via the `biblio` module
-(unpin! bibtex-completion helm-bibtex ivy-bibtex)
+(unpin! bibtex-completion)
 
 (package! backup-each-save)
 (package! burly)
@@ -22,6 +22,7 @@
 (package! org-ref)
 (package! org-wc)
 (package! pocket-reader)
+(package! scad-mode)
 (package! vdirel)
 
 (package! org-pocket
