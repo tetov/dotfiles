@@ -21,6 +21,6 @@ elif pgrep -x emacs > /dev/null ; then
     echo "Updating using mu4e"
     emacsclient -e '(mu4e-update-index)'
 else
-    echo "Lockfile exists but emacs is not running. Stale lockfile?"
+    echo "Lockfile exists but emacs is not running. Stale lockfile? (fix by running rm $MU_LOCKFILE)"
     exit 1
 fi
