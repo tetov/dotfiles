@@ -19,11 +19,12 @@ setopt always_to_end # always put cursor at end after completing
 setopt auto_cd # cd by typing directory name if it's not a command
 setopt AUTO_NAME_DIRS # alias directories by assigning them to a variable
 
-srcdir=~/src
-orgdir=~/src/org
-cmdir=$XDG_DATA_HOME/chezmoi
-miodir=/home/mio
-configdir=~/.config
+# makes these available as ~src, ~org and so on.
+hash -d src=~/src
+hash -d org=~/src/org
+hash -d cmc=$XDG_DATA_HOME/chezmoi
+hash -d mio=/home/mio
+hash -d conf=~/.config
 
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
