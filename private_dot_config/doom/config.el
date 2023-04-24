@@ -120,10 +120,16 @@
 (evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
 (evil-global-set-key 'motion (kbd "RET") 'evil-forward-paragraph)
 
+;; check the mappings by inspecting evil-ex-commands (SPC h v)
+
 ;; :q should kill the current buffer rather than quitting emacs entirely
-(evil-ex-define-cmd "q" 'kill-buffer-and-window)
+(evil-ex-define-cmd "q" 'doom-kill-buffer-and-window)
+(evil-ex-define-cmd "quitall" 'doom-kill-buffer-and-window)
+(evil-ex-define-cmd "wqall" 'evil-save-and-close)
 ;; Need to type out :quit to close emacs
 (evil-ex-define-cmd "quit" 'evil-quit)
+
+(evil-ex-define-cmd "mu[4e]" 'mu4e-search-bookmark)
 
 (evil-global-set-key 'motion (kbd "[e") 'flycheck-previous-error)
 
