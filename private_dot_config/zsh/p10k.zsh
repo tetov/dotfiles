@@ -31,7 +31,6 @@
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     status                  # exit code of the last command
-    os_icon               # os identifier
     context                 # user@hostname
     dir                     # current directory
     vcs                     # git status
@@ -99,8 +98,8 @@
     taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
     # cpu_arch              # CPU architecture
     # time                  # current time
-    ip                    # ip address and bandwidth usage for a specified network interface
-    public_ip             # public IP address
+    # ip                    # ip address and bandwidth usage for a specified network interface
+    # public_ip             # public IP address
     # proxy                 # system-wide http/https/ftp proxy
     battery               # internal battery
     # wifi                  # wifi speed
