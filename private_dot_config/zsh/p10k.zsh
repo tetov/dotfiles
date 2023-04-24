@@ -981,7 +981,7 @@
   # $(nodenv version-name) == $(nodenv global).
   typeset -g POWERLEVEL9K_NODENV_PROMPT_ALWAYS_SHOW=false
   # If set to false, hide node version if it's equal to "system".
-  typeset -g POWERLEVEL9K_NODENV_SHOW_SYSTEM=true
+  typeset -g POWERLEVEL9K_NODENV_SHOW_SYSTEM=false
   # Custom icon.
   # typeset -g POWERLEVEL9K_NODENV_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
