@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
 
-"$HOME/bin/git-sync" "$(chezmoi source-path)"
-systemctl --user start git-sync.service
+set -x
+set -e
+
+systemctl --user start git_sync@src-org.service
+systemctl --user start git_sync@x2elocal-share-chezmoi.service
+systemctl --user start sync_emails@all.service
