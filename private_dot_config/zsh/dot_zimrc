@@ -3,11 +3,7 @@ zmodule jeffreytse/zsh-vi-mode --if 'test ! -v INSIDE_EMACS'
 zmodule agkozak/zsh-z
 zmodule lukechilds/zsh-nvm
 
-# zmodule sindresorhus/pure --source async.zsh
-# zmodule sindresorhus/pure
-
-zmodule spaceship-prompt/spaceship-prompt --name spaceship --no-submodules
-zmodule spaceship-prompt/spaceship-vi-mode
+zmodule sindresorhus/pure --source async.zsh --source pure.zsh
 
 zmodule zsh-users/zsh-completions --fpath src
 zmodule completion
