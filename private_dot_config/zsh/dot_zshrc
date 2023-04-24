@@ -13,9 +13,17 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history dat
 
-setopt auto_cd # cd by typing directory name if it's not a command
 setopt complete_in_word # complete where cursor is
 setopt always_to_end # always put cursor at end after completing
+
+setopt auto_cd # cd by typing directory name if it's not a command
+setopt AUTO_NAME_DIRS # alias directories by assigning them to a variable
+
+srcdir=~/src
+orgdir=~/src/org
+cmdir=$XDG_DATA_HOME/chezmoi
+miodir=/home/mio
+configdir=~/.config
 
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
