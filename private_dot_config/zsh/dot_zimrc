@@ -6,7 +6,7 @@ zmodule lukechilds/zsh-nvm
 # zmodule sindresorhus/pure --source async.zsh
 # zmodule sindresorhus/pure
 
-zmodule dfurnes/purer
+zmodule spaceship-prompt/spaceship-prompt --name spaceship --no-submodules
 
 zmodule zsh-users/zsh-completions --fpath src
 zmodule completion
