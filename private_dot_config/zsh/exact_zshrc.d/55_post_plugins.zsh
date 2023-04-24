@@ -1,1 +1,1 @@
-PROMPT='%(?.%F{magenta}.%F{red}❯%F{magenta})❯%f '
+# PROMPT='%(?.%F{magenta}.%F{red}❯%F{magenta})❯%f '
