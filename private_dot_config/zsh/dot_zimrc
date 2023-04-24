@@ -3,7 +3,8 @@ zmodule jeffreytse/zsh-vi-mode --if 'test ! -v INSIDE_EMACS'
 zmodule agkozak/zsh-z
 zmodule lukechilds/zsh-nvm
 
-zmodule sindresorhus/pure --source async.zsh --source pure.zsh
+#zmodule sindresorhus/pure --source async.zsh --source pure.zsh
+zmodule romkatv/powerlevel10k --use degit
 
 zmodule zsh-users/zsh-completions --fpath src
 zmodule completion
