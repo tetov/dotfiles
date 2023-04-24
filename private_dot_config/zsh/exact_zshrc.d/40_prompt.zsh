@@ -1,1 +1,1 @@
-export SPACESHIP_PROMPT_SEPARATE_LINE=false
+export SPACESHIP_CONFIG="$XDG_CONFIG_HOME/zsh/spaceship.zsh"
