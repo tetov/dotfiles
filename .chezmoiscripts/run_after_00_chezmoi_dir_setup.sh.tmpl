@@ -4,7 +4,7 @@ cd $(chezmoi source-path)
 
 git config --local commit.gpgsign false
 git config --local core.sshCommand \
-    "ssh -o 'IdentitiesOnly=yes' -i ~/.ssh/\\x2elocal-share-chezmoi_rsa"
+    "ssh -o 'IdentitiesOnly=yes' -i '~/.ssh/\x2elocal-share-chezmoi_rsa'"
 
 git config --local --bool branch.main.sync true
 git config --local --bool branch.main.syncNewFiles true
