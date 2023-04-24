@@ -29,8 +29,8 @@ gpgconf --create-socketdir
 if [ -z "$SSH_CLIENT" ]; then
   # one way to check if vnc connection, assuming :0 is never used for vnc
   # server..
-  # either there's no DISPLAY but if there is it should not be :0
-  if [ -z "$DISPLAY" -o "$DISPLAY" != ":0" ] ; then
+  # either there's no DISPLAY but if there is it should be :0
+  if [ -z "$DISPLAY" -o "$DISPLAY" = ":0" ] ; then
     GPG_TTY=$(tty)
     gpgconf --launch gpg-agent
   fi
