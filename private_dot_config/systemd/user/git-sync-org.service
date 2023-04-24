@@ -1,9 +1,9 @@
 [Unit]
-Description=Uses git to autosync %i
-AssertPathExists=%h/.ssh/%i_rsa
+Description=Pulls org files
+AssertPathExists=%h/.ssh/org_repo_rsa
 
 [Service]
 Type=oneshot
-Environment=GIT_SSH_COMMAND="ssh -i %h/.ssh/%i_rsa"
-WorkingDirectory=%h/%I
+Environment=GIT_SSH_COMMAND="ssh -i %h/.ssh/org_repo_rsa"
+WorkingDirectory=%h/src/org
 ExecStart=%h/bin/git-sync sync

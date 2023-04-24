@@ -1,0 +1,10 @@
+[Unit]
+Description=git sync dir periodically
+
+[Timer]
+OnStartupSec=2m
+OnUnitInactiveSec=10m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
