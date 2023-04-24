@@ -25,13 +25,21 @@ ALTERNATE_EDITOR=""
 
 # For gpg agent forwarding. (Dir gets deleted on log out)
 gpgconf --create-socketdir
-SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-
 # if not SSH connection
 if [ -z "$SSH_CLIENT" ]; then
-  GPG_TTY=$(tty)
-  gpgconf --launch gpg-agent
+  # one way to check if vnc connection, assuming :0 is never used for vnc
+  # server..
+  # either there's no DISPLAY but if there is it should not be :0
+  if [ -z "$DISPLAY" -o "$DISPLAY" != ":0" ] ; then
+    GPG_TTY=$(tty)
+    gpgconf --launch gpg-agent
+  fi
 fi
+
+agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
+
+test -n "$agent_ssh_socket" &&
+  SSH_AUTH_SOCK="$agent_ssh_socket"
 
 set +o allexport
 
