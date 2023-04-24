@@ -4,6 +4,5 @@ AssertPathExists=%h/.ssh/%i_rsa
 
 [Service]
 Type=oneshot
-Environment=GIT_SSH_COMMAND="ssh -i %h/.ssh/%i_rsa"
 WorkingDirectory=%h/%I
 ExecStart=%h/bin/git-sync sync
