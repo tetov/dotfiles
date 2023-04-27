@@ -1,8 +1,9 @@
 # The parent dirs for these might need to be created in chezmoi before script
 # So chezmoiexternal doesn't break symlinks when it encounters missing folders
-{{ $xdgDataHome :=  env "XDG_DATA_HOME" | replace (print (env "HOME") "/") "" }}
-{{ $xdgConfigHome :=  env "XDG_CONFIG_HOME" | replace (print (env "HOME") "/") "" }}
-{{ $xdgCacheHome :=  env "XDG_CACHE_HOME" | replace (print (env "HOME") "/") "" }}
+{{ $xdgCacheHome := default ".cache" (env "XDG_CACHE_HOME" | replace (print (env "HOME") "/") "") }}
+{{ $xdgConfigHome := default ".config" (env "XDG_CONFIG_HOME" | replace (print (env "HOME") "/") "") }}
+{{ $xdgDataHome := default ".local/share" (env "XDG_DATA_HOME" | replace (print (env "HOME") "/") "") }}
+
 ["{{ $xdgDataHome }}/bash/sensible.bash"]
     type = "file"
     url = "https://raw.githubusercontent.com/mrzool/bash-sensible/master/sensible.bash"
@@ -13,7 +14,7 @@
     url = "https://github.com/tmux-plugins/tpm"
     refreshPeriod = "168h"
 
-["{{ $xdgConfigHome}}/vim/autoload/plug.vim"]
+["{{ $xdgConfigHome }}/vim/autoload/plug.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     refreshPeriod = "168h"

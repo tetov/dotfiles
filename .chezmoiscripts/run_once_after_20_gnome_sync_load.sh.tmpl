@@ -1,4 +1,4 @@
-{{ if and .workstation (not (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
+{{ if and .workstation (eq (env "XDG_SESSION_DESKTOP") "gnome") (not (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
 #!/bin/sh
 
 # gnome_extension_sync.json hash: {{ include "gnome_extension_sync.json" | sha256sum }}

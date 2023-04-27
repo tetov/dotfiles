@@ -1,6 +1,7 @@
 #!/bin/sh
 
-{{ $applicationsDir := expandenv "$XDG_DATA_HOME/applications" }}
+{{ $xdgDataHome := default (expandenv "$HOME/.local/share") (env "XDG_DATA_HOME") }}
+{{ $applicationsDir := print $xdgDataHome "/applications"}}
 
 {{- range (joinPath $applicationsDir "/*.desktop" | glob) }}
 # {{ . }}: {{ include . | sha256sum }}
