@@ -122,12 +122,12 @@
 
 ;; check the mappings by inspecting evil-ex-commands (SPC h v)
 
+;; Need to type out :quit to close frame
+(evil-ex-define-cmd "quit" ' suspend-frame)
 ;; :q should kill the current buffer rather than quitting emacs entirely
-(evil-ex-define-cmd "q" 'doom-kill-buffer-and-window)
-(evil-ex-define-cmd "quitall" 'doom-kill-buffer-and-window)
-(evil-ex-define-cmd "wqall" 'evil-save-and-close)
-;; Need to type out :quit to close emacs
-(evil-ex-define-cmd "quit" 'evil-quit)
+(evil-ex-define-cmd "q" 'kill-buffer-and-window)
+(evil-ex-define-cmd "quitall" 'kill-some-buffers)
+(evil-ex-define-cmd "wqall" ' evil-save-and-close)
 
 (evil-ex-define-cmd "mu[4e]" 'mu4e-search-bookmark)
 
@@ -314,6 +314,8 @@ Based on bh/clock-in-to-next."
                               )))
 
   ;;;;;; clocks
+  (require 'org-clock-convenience)
+
   ;; Resume clocking task when emacs is restarted
   (org-clock-persistence-insinuate)
   ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
@@ -949,6 +951,21 @@ https://tetov.se/"))
                              (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
                              (:desc "chezmoi toggle mode" "c" #'chezmoi-mode))))
 
+;;;; calendars
+(after! calfw
+    (add-hook 'diary-mark-entries-hook 'diary-mark-included-diary-files))
+(setq excorporate-configuration '("an6802jo@lu.se" . "https://webmail.lu.se/EWS/Exchange.asmx"))
+(setq excorporate-calendar-show-day-function #'exco-calfw-show-day)
+(setq org-agenda-include-diary t)
+
+(defun tetov/calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-source "Purple")  ; org-agenda source
+    (cfw:cal-create-source "Orange") ; diary source
+    (cfw:ical-create-source "fastmail" "https://user.fm/calendar/v1-0050f401d195144175dfb6668854525b/varn%C3%A4rhur.ics" "IndianRed"))))
 ;;;; elfeed (RSS)
 (after! (elfeed elfeed-protocol)
   (setq elfeed-use-curl t)
