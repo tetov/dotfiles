@@ -58,4 +58,9 @@
     type = "git-repo"
     url = "https://github.com/hlissner/doom-emacs"
     refreshPeriod = "0"  # use doom upgrade from script instead
+
+["{{ $xdgDataHome }}/fonts"]
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/InconsolataGo.zip"
+    type = "archive"
+    refreshPeriod = "0"
 {{ end }}

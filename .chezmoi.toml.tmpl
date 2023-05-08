@@ -1,7 +1,8 @@
+{{ $xdgConfigHome := default (expandenv "$HOME/.config") (env "XDG_CONFIG_HOME" ) -}}
 encryption = "age"
 
 [age]
-	identity = "key.txt"
+	identity = "{{ $xdgConfigHome }}/chezmoi/key.txt"
 	recipient = "age1j04sg30dcpwrsg42gns2pl2992lu3dzs3enyy9h6xxecm30hxd6q4nkrjv"
 
 [git]
