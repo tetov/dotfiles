@@ -32,6 +32,8 @@ fpath+=($ZDOTDIR/{funcs,completions})
 
 ZSHRC_DIR=$ZDOTDIR/zshrc.d
 
+(( ${+commands[op]} )) && eval $(op signin)
+
 for file in "$ZSHRC_DIR"/*.zsh; do
     source "$file"
 done
