@@ -36,8 +36,6 @@ if [ -z "$SSH_CLIENT" ]; then
   fi
 fi
 
-command -v op && eval $(op signin)
-
 agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
 
 test -n "$agent_ssh_socket" &&
