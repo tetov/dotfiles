@@ -845,6 +845,7 @@ https://tetov.se/"))
   ;; don't autosave to try to reduce number of drafts synced.
   ;; TODO: Check if it still saves to ~/editor-backups
   (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
+  (add-hook 'git-commit-setup-hook #'(lambda () (auto-save-mode -1)))
   ;; ask for context when new message doesn't match context (i.e. new message)
   (setq
    mu4e-compose-in-new-frame t
