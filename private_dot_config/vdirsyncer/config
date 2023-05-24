@@ -15,7 +15,7 @@ fileext = ".vcf"
 type = "carddav"
 url = "https://carddav.fastmail.com/"
 username = "tetov@fastmail.com"
-password.fetch = ["command", "secret-tool", "lookup", "org", "privat", "provider", "fastmail", "service", "dav", "user", "tetov@fastmail.com"]
+password = {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
 
 [pair fastmail_cal_pair]
 a = "fastmail_cal_local"
@@ -31,4 +31,4 @@ fileext = ".vcf"
 type = "caldav"
 url = "https://caldav.fastmail.com/"
 username = "tetov@fastmail.com"
-password.fetch = ["command", "secret-tool", "lookup", "org", "privat", "provider", "fastmail", "service", "dav", "user", "tetov@fastmail.com"]
+password = {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
