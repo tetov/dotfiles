@@ -968,9 +968,10 @@ https://tetov.se/"))
     (cfw:cal-create-source "Orange") ; diary source
     (cfw:ical-create-source "fastmail" "https://user.fm/calendar/v1-0050f401d195144175dfb6668854525b/varn%C3%A4rhur.ics" "IndianRed"))))
 ;;;; elfeed (RSS)
-(after! elfeed-protocol
+(after! (elfeed elfeed-protocol)
   (setq elfeed-use-curl t)
   (elfeed-set-timeout 36000)
-  (setq elfeed-feeds '("owncloud+https://tetov@cloud.tetov.se"))
+  (setq elfeed-feeds '(("owncloud+https://tetov@cloud.tetov.se"
+                        :password (shell-command-to-string "echo -n `secret-tool lookup org privat provider nextcloud service rss user tetov`"))))
   (setq elfeed-protocol-enabled-protocols '(owncloud))
   (elfeed-protocol-enable))
