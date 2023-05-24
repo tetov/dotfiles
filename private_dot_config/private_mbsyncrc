@@ -8,7 +8,7 @@ IMAPAccount fastmail
 Host imap.fastmail.com
 Port 993
 User tetov@fastmail.com
-PassCmd "secret-tool lookup org privat service mail provider fastmail user tetov@fastmail.com"
+Pass {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
 SSLVersion TLSv1.2
 SSLType IMAPS
 AuthMechs LOGIN
@@ -37,7 +37,7 @@ IMAPAccount lth
 Host imap.lu.se
 Port 993
 User an6802jo@lu.se
-PassCmd "secret-tool lookup org LTH service email provider exchange2016 user an6802jo@lu.se"
+Pass {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/tu2huwrewbdlbcqf6ldwjiojoi/password" }}
 SSLType IMAPS
 PipelineDepth 1
 
