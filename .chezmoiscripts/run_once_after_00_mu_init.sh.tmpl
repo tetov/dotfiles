@@ -1,7 +1,11 @@
 {{ if .workstation -}}
 #!/bin/sh
 
-mu init --maildir={{ expandenv "$XDG_DATA_HOME/mail" }} \
+MAILDIR_DIR={{ expandenv "$XDG_DATA_HOME/mail" }}
+
+mkdir -p "$MAILDIR_DIR"
+
+mu init --maildir="$MAILDIR_DIR"						\
   --my-address=anton@tetov.{se,xyz}                     \
   --my-address={s,a,e,ln}@tetov.se                      \
   --my-address=tetov@{proton,pm}.me                     \
