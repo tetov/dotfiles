@@ -3,7 +3,7 @@
 
 MAILDIR_DIR={{ expandenv "$XDG_DATA_HOME/mail" }}
 
-mkdir -p "$MAILDIR_DIR"
+mkdir -p "$MAILDIR_DIR"/{lth,fastmail}
 
 mu init --maildir="$MAILDIR_DIR"						\
   --my-address=anton@tetov.{se,xyz}                     \
