@@ -8,7 +8,7 @@ from anton@tetov.se
 tls_starttls off
 auth on
 user tetov@fastmail.com
-passwordeval "secret-tool lookup org privat provider fastmail service mail user tetov@fastmail.com"
+password {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
 
 account lth
 host smtps.lu.se
@@ -17,6 +17,6 @@ from anton_tetov.johansson@abm.lth.se
 auth on
 tls_starttls on
 user an6802jo@lu.se
-passwordeval "secret-tool lookup org LTH provider exchange2016 service email user an6802jo@lu.se"
+password {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/tu2huwrewbdlbcqf6ldwjiojoi/password" }}
 
 account default : fastmail
