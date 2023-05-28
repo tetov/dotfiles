@@ -6,15 +6,15 @@
 (package! org-roam-ui)
 
 ;; org-roam-bibtex
-(package! org-roam-bibtex
-  :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+;; (package! org-roam-bibtex
+;;   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 
 ;; When using org-roam via the `+roam` flag
 ;; When using bibtex-completion via the `biblio` module
-(unpin! bibtex-completion)
+;; (unpin! bibtex-completion)
 
 (package! backup-each-save)
-(package! burly)
+;; (package! burly)
 (package! chezmoi)
 (package! elfeed-protocol)
 (package! excorporate)
@@ -23,12 +23,12 @@
 (package! org-ql)
 (package! org-ref)
 (package! org-wc)
-(package! pocket-reader)
-(package! scad-mode)
-(package! vdirel)
+;; (package! pocket-reader)
+;; (package! scad-mode)
+;; (package! vdirel)
 
-(package! org-pocket
-  :recipe (:host github :repo "alphapapa/org-pocket"))
+;; (package! org-pocket
+;;   :recipe (:host github :repo "alphapapa/org-pocket"))
 
 (package! mu4e-folding
   :recipe (:host github :repo "rougier/mu4e-folding"))
