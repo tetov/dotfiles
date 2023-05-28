@@ -95,7 +95,6 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
                               (file-name-concat tetov/win-user-dir "Nextcloud")
                             (expand-file-name "~/Nextcloud")))
 (setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
-(setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
 (setq org-directory (expand-file-name "~/src/org"))
 
 ;;;; prefix map (SPC-m)
