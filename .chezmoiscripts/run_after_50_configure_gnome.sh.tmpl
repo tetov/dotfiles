@@ -1,0 +1,44 @@
+{{ if .workstation  -}}
+#/usr/bin/sh
+set -euf
+gsettings set org.gnome.desktop.calendar show-weekdate true
+
+gsettings set org.gnome.desktop.input-sources per-window false
+gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'se+us'), ('xkb', 'se')]"
+gsettings set org.gnome.desktop.input-sources xkb-options "['grp:win_space_toggle', 'caps:ctrl_modifier']"
+
+gsettings set org.gnome.desktop.interface clock-show-weekday true
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface show-battery-percentage true
+gsettings set org.gnome.desktop.interface toolkit-accessibility false
+
+gsettings set org.gnome.desktop.peripherals.keyboard numlock-state true
+gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state false
+gsettings set org.gnome.desktop.peripherals.touchpad edge-scrolling-enabled false
+gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
+gsettings set org.gnome.desktop.peripherals.touchpad two-finger-scrolling-enabled true
+
+gsettings set org.gnome.desktop.sound allow-volume-above-100-percent true
+
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Shift><Super>exclam']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Shift><Super>at']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Shift><Super>numbersign']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Shift><Super>dollar']"
+gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "['<Shift><Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']",
+
+gsettings set org.gnome.mutter attach-modal-dialogs false
+gsettings set org.gnome.mutter workspaces-only-on-primary true
+
+gsettings set org.gnome.settings-daemon.plugins.media-keys control-center "['<Super>c']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys email "['<Super>t']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys search "['<Alt>space']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>f']"
+{{- end }}
