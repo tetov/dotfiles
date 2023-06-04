@@ -70,15 +70,28 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;;;; funcs outside of after! blocks
-(defun tetov/open-my-agenda-view () "" (interactive nil) (org-agenda nil "d"))
-(defun tetov/org-capture-default () "Start default org-capture" (interactive nil) (org-capture nil "d"))
+
+;;;; passwords
+(use-package! auth-source-1password)
+(auth-source-1password-enable)
 
 (defun tetov/is-wsl-p ()
   "Check if running in WSL.
 Or to be more precise: gnu/linux and Microsoft is in kernel name."
   (and (eq system-type 'gnu/linux)
        (string-match-p "[Mm]icrosoft" (shell-command-to-string "uname -a"))))
+
+;;;; directory setup
+(setq tetov/win-user-dir "/mnt/c/Users/tetov")
+(setq tetov/nextcloud-dir (if (tetov/is-wsl-p)
+                              (file-name-concat tetov/win-user-dir "Nextcloud")
+                            (expand-file-name "~/Nextcloud")))
+(setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
+(setq org-directory (expand-file-name "~/src/org"))
+
+;;;; funcs outside of after! blocks
+(defun tetov/open-my-agenda-view () "" (interactive nil) (org-agenda nil "d"))
+(defun tetov/org-capture-default () "Start default org-capture" (interactive nil) (org-capture nil "d"))
 
 (defun tetov/calendar ()
   (interactive)
@@ -89,13 +102,81 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
     (cfw:cal-create-source "Orange") ; diary source
     (cfw:ical-create-source "fastmail" "https://user.fm/calendar/v1-0050f401d195144175dfb6668854525b/varn%C3%A4rhur.ics" "IndianRed"))))
 
-;;;; directory setup
-(setq tetov/win-user-dir "/mnt/c/Users/tetov")
-(setq tetov/nextcloud-dir (if (tetov/is-wsl-p)
-                              (file-name-concat tetov/win-user-dir "Nextcloud")
-                            (expand-file-name "~/Nextcloud")))
-(setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
-(setq org-directory (expand-file-name "~/src/org"))
+(require 'org-element)
+
+(defun tetov/remove-org-id-links-export-hook (backend)
+  "Remove 'id' type links from the current buffer before export to BACKEND."
+  (tetov/remove-org-id-links-in-buffer))
+(defun tetov/remove-id-links-gpt4 ()
+  "Remove 'id' type links from the current buffer."
+  (interactive)
+  (let ((parsed-org (org-element-parse-buffer)))
+    (org-element-map parsed-org 'link
+      (lambda (link)
+        (when (string= (org-element-property :type link) "id")
+          (let* ((post-blank (org-element-property :post-blank link))
+                 (content (org-element-interpret-data (org-element-contents link)))
+                 (replacement (concat content (string-pad "" post-blank))))
+            (debug) ;; Add a breakpoint here
+            (org-element-insert-before link replacement)
+            (org-element-extract-element link)))))))
+
+(defun tetov/remove-id-links-gpt3 ()
+  "Remove 'id' type links from the current buffer."
+  (interactive)
+  (let ((parsed-org (org-element-parse-buffer)))
+    (org-element-map parsed-org 'link
+      (lambda (link)
+        (when (string= (org-element-property :type link) "id")
+          (let* ((post-blank (org-element-property :post-blank link))
+                 (content (org-element-interpret-data (org-element-contents link)))
+                 (replacement (concat content (string-pad "" post-blank))))
+            (org-element-insert-before link replacement)
+            (org-element-extract-element link)))))))
+
+(defun tetov/remove-id-links-gpt2 ()
+  "Remove 'id' type links from the current buffer."
+  (interactive)
+  (let ((parsed-org (org-element-parse-buffer)))
+    (org-element-map parsed-org 'link
+      (lambda (link)
+        (when (string= (org-element-property :type link) "id")
+          (let ((content (org-element-interpret-data (org-element-contents link))))
+            (org-element-put-property-and-value link :type nil)
+            (org-element-put-property link :value content)
+            (org-element-put-property-and-value link :begin nil)
+            (org-element-put-property-and-value link :end nil)
+            (org-element-put-property-and-value link :post-blank nil)))))))
+
+
+
+(defun tetov/remove-id-links-gpt ()
+  "Remove 'id' type links from the current buffer."
+  (interactive)
+  (org-element-map (org-element-parse-buffer) 'link
+    (lambda (link)
+      (when (string= (org-element-property :type link) "id")
+        (let ((post-blank (org-element-property :post-blank link))
+              (content (org-element-interpret-data (org-element-contents link))))
+          (org-element-insert-before content link)
+          (message "content %S" content)
+          (org-element-insert-before (string-pad "" post-blank) link)
+          (delete-region (org-element-property :begin link) (org-element-property :end link)))))))
+
+(defun tetov/remove-org-id-links-in-buffer ()
+  "Remove 'id' type links from the current buffer."
+  (interactive)
+  (org-element-map
+      (org-element-parse-buffer)
+      'link
+    (lambda (link)
+      (when (string= (org-element-property :type link) "id")
+        (let ((post-blank (org-element-property :post-blank link))
+              (content (car (org-element-contents link))))
+          (message "\n\n\n\n\ncontent %S" content)
+          (org-element-set-element link content)
+          (org-element-insert-before (string-pad "" post-blank) content) ;; add space if there is one in link elem
+          )))))
 
 ;;;; prefix map (SPC-m)
 (map! :leader (:prefix-map ("m" . "mine")
@@ -674,20 +755,6 @@ ${body}
   ;;   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 ;;;;; org-export
-  (require 'org-element)
-
-  (defun tetov/remove-id-links (backend)
-    "Remove 'id' type links from the current buffer before export to BACKEND."
-    (org-element-map
-        (org-element-parse-buffer)
-        'link
-      (lambda (link)
-        (when (string= (org-element-property :type link) "id")
-          (let ((post-blank (org-element-property :post-blank link))
-                (content (car (org-element-contents link))))
-            (org-element-insert-before content link)
-            (org-element-insert-before (string-pad "" post-blank) link) ;; add space if there is one in link elem
-            (org-element-extract-element link))))))
 
   (setq org-export-initial-scope 'subtree
         org-export-with-title t
@@ -698,8 +765,7 @@ ${body}
         org-export-with-todo-keywords nil
         org-export-with-timestamps nil
         org-export-with-tags nil)
-  (add-hook 'org-export-before-processing-functions 'tetov/remove-id-links)
-
+  (add-hook 'org-export-before-processing-functions'tetov/remove-id-links)
 ;;;;;; latex
   (setq org-latex-default-class "article"
         org-latex-compiler "xelatex"
@@ -1008,3 +1074,9 @@ https://tetov.se/"))
 (setq org-pocket-capture-file "~/src/org/refile.org")
 (after! pocket-reader
   (require 'org-pocket))
+
+;;;; ai
+(use-package! gptel
+ :config
+ (setq!)
+ (setq! gptel-api-key (auth-source-pick-first-password :host "openai_passkey" :user "password")))

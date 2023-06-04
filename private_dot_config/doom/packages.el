@@ -18,6 +18,7 @@
 (package! chezmoi)
 (package! elfeed-protocol)
 (package! excorporate)
+(package! gptel)
 (package! org-mime)
 (package! org-clock-convenience)
 (package! org-ql)
@@ -41,3 +42,6 @@
 (package! org-clock-helpers
   :recipe (:repo "mskorzhinskiy/org-clock-helpers"
            :host github :branch "main"))
+
+(package! auth-source-1password
+  :recipe (:host github :repo "dlobraico/auth-source-1password"))
