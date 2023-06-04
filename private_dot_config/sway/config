@@ -66,6 +66,21 @@ output * bg $XDG_DATA_HOME/backgrounds/lili-kovac-JonGFaeFPgg-unsplash.jpg fill
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
+input * {
+    xkb_layout "se,se"
+    xkb_variant "us,"
+    xkb_numlock enabled
+    xkb_options ctrl:nocaps
+    xkb_options grp:win_space_toggle
+}
+
+input type:touchpad {
+    tap enabled
+    tap_button_map lrm
+    natural_scroll enabled
+    click_method clickfinger
+}
+
 ### Key bindings
 #
 # Basics:
