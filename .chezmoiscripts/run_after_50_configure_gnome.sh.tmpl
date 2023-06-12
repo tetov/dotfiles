@@ -36,13 +36,17 @@ gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift
 
 gsettings set org.gnome.desktop.wm.preferences num-workspaces 4
 
-gsettings set org.gnome.mutter attach-modal-dialogs false
-gsettings set org.gnome.mutter dynamic-workspaces false
-gsettings set org.gnome.mutter workspaces-only-on-primary true
+if [ $(gsettings list-schemas | grep org.gnome.mutter) ] ; then
+    gsettings set org.gnome.mutter attach-modal-dialogs false
+    gsettings set org.gnome.mutter dynamic-workspaces false
+    gsettings set org.gnome.mutter workspaces-only-on-primary true
+fi
 
-gsettings set org.gnome.settings-daemon.plugins.media-keys control-center "['<Super>c']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys email "['<Super>t']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys search "['<Alt>space']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>f']"
+if [ $(gsettings list-schemas | grep org.gnome.settings-daemon.plugins.media-keys) ] ; then
+    gsettings set org.gnome.settings-daemon.plugins.media-keys control-center "['<Super>c']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys email "['<Super>t']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys search "['<Alt>space']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>f']"
+fi
 {{- end }}
