@@ -2,10 +2,8 @@ README.md
 LICENSE
 
 {{ if not .workstation }}
-.ssh/
-!.ssh/authorized_keys
 .config/systemd/user/default.target.wants/
 .config/systemd/user/timer.target.wants/
 {{ end }}
 
-gnome_extension_sync.json
+gpg.pub.asc
