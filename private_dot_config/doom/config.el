@@ -83,7 +83,12 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
                               (file-name-concat tetov/win-user-dir "Nextcloud")
                             (expand-file-name "~/Nextcloud")))
 (setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
-(setq org-directory (expand-file-name "~/src/org"))
+
+;;;;; org files
+(setq org-directory (file-name-concat tetov/nextcloud-apps-dir "org"))
+(setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
+(setq org-default-notes-file (file-name-concat org-directory "refile.org"))
+(setq org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach"))
 
 ;;;; funcs outside of after! blocks
 (defun tetov/open-my-agenda-view () "" (interactive nil) (org-agenda nil "d"))
@@ -289,11 +294,6 @@ Based on bh/clock-in-to-next."
              (bh/is-project-p))
         "TODO"))))
 
-
-;;;;; org files
-  (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
-  (setq org-default-notes-file (file-name-concat org-directory "refile.org"))
-  (setq org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach"))
 
 ;;;;; general
   (setq org-startup-folded t
