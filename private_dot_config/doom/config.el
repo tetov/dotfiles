@@ -70,6 +70,8 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; own files
+(add-load-path! ".")
 
 (defun tetov/is-wsl-p ()
   "Check if running in WSL.
@@ -236,7 +238,6 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
-
 (after! org
   (require 'org-element)
 
@@ -300,6 +301,19 @@ Based on bh/clock-in-to-next."
         org-startup-indented t
         org-insert-heading-respect-content t)
 
+;;;; tags
+  (add-to-list 'org-tags-exclude-from-inheritance "project")
+  (add-to-list 'org-tags-exclude-from-inheritance "ATTACH")
+  (add-to-list 'org-tags-exclude-from-inheritance "REFILE")
+  (add-to-list 'org-tags-exclude-from-inheritance "EMAIL")
+
+;;;;; crypt
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-crypt-key "anton@tetov.se")
+  (setq org-crypt-disable-auto-save t)
+  (add-to-list 'org-tags-exclude-from-inheritance "crypt")
+
 ;;;;; references
   (setq bibtex-completion-bibliography (file-name-concat tetov/nextcloud-apps-dir "zotero.bib"))
 
@@ -336,9 +350,6 @@ Based on bh/clock-in-to-next."
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-;;;;; export
-  (setq org-export-with-broken-links 'mark)
-
 ;;;;; todo setup
   (setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "|" "DONE(d!)")
                             (sequence "WAIT(w@/!)" "|" "CANC(c@/!)" "MEETING" "PHONE"))
@@ -347,6 +358,8 @@ Based on bh/clock-in-to-next."
         org-use-fast-todo-selection t
         org-log-state-notes-into-drawer t)
 
+;;;;;; projects setup
+
   (setq bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
 
   ;; Tags with fast selection keys
@@ -354,8 +367,7 @@ Based on bh/clock-in-to-next."
                               ("@work" . ?o)
                               ("@home" . ?H)
                               (:endgroup)
-                              ("rp" . ?r)
-                              )))
+                              ("rp" . ?r))))
 
 ;;;;;; clocks
   (require 'org-clock-convenience)
@@ -397,12 +409,6 @@ Based on bh/clock-in-to-next."
                                   :hidefiles t
                                   :match "-rp"
                                   :step day))
-
-  (add-to-list 'org-tags-exclude-from-inheritance "project")
-  (add-to-list 'org-tags-exclude-from-inheritance "ATTACH")
-  (add-to-list 'org-tags-exclude-from-inheritance "REFILE")
-  (add-to-list 'org-tags-exclude-from-inheritance "EMAIL")
-;;;;;; projects setup
 
   (map! :map org-mode-map
         :localleader
@@ -697,15 +703,18 @@ ${body}
 
 ;;;;; org-export
 
+;;;;; export
+
   (setq org-export-initial-scope 'subtree
-        org-export-with-title t
-        org-export-with-toc nil
         org-export-with-author nil
+        org-export-with-broken-links 'mark
         org-export-with-date nil
         org-export-with-email nil
-        org-export-with-todo-keywords nil
+        org-export-with-tags nil
         org-export-with-timestamps nil
-        org-export-with-tags nil)
+        org-export-with-title t
+        org-export-with-toc nil
+        org-export-with-todo-keywords nil)
   ;; (add-hook 'org-export-before-processing-functions'tetov/remove-id-links)
 ;;;;;; latex
   (setq org-latex-default-class "article"
@@ -727,30 +736,15 @@ ${body}
         org-hugo-base-dir "~/src/web/xyz/content/posts"))
 
 ;;;; backup
-(defun backup-each-save-filter (filename)
-  (let ((ignored-filenames
-         '("^/tmp" "semantic.cache$" "\\.emacs-places$"
-           "\\.?recentf$" ".newsrc\\(\\.eld\\)?"))
-        (matched-ignored-filename nil))
-    (mapc
-     (lambda (x)
-       (when (string-match x filename)
-    	 (setq matched-ignored-filename t)))
-     ignored-filenames)
-    (not matched-ignored-filename)))
-
-(setq backup-each-save-mirror-location (format "%s/emacs/%s"
-                                               (or (getenv "EDITOR_BACKUP_DIR")
-                                                   (file-name-concat tetov/nextcloud-apps-dir "editor-backups"))
-                                               (system-name)) ;; put files under hostname
-      backup-each-save-remote-files t
-      backup-each-save-filter-function 'backup-each-save-filter
-      backup-each-save-time-format "%Y_%m_%d_%H_00_00")
+(require 'editor-backup)
+(setq backup-each-save-mirror-location (tetov/editor-backup-setup-dir tetov/nextcloud-apps-dir))
+(setq backup-each-save-remote-files t)
+(setq backup-each-save-filter-function 'tetov/backup-each-save-filter)
+(setq backup-each-save-time-format "%Y_%m_%d_%H_00_00") ;; save to same file for 1 hour
 (add-hook 'after-save-hook #'backup-each-save)
 (use-package! backup-each-save)
 
 (auto-save-visited-mode 1)
-
 ;;;; coding
 ;;;;; lsp
 (after! lsp
@@ -836,13 +830,7 @@ https://abm.lth.se/
 https://tetov.se/"))
                     nil)
 
-;; don't autosave to try to reduce number of drafts synced.
-;; TODO: Check if it still saves to ~/editor-backups
-(add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
-(add-hook 'git-commit-setup-hook #'(lambda () (auto-save-mode -1)))
-
 (after! mu4e
-
 ;;;;;; send/recieve email
   ;; mail box updated using systemd timer, so mail command is set to true
   ;; mu4e still indexes again but that should be fine.
@@ -919,10 +907,10 @@ https://tetov.se/"))
   (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
 
 ;;;;;; start automatically
-;; (run-at-time "5 sec" nil (lambda ()
-;;                            (let ((current-prefix-arg '(4)))
-;;                              (call-interactively 'mu4e)
-;;                              (message nil))))
+(run-at-time "5 sec" nil (lambda ()
+                           (let ((current-prefix-arg '(4)))
+                             (call-interactively 'mu4e)
+                             (message nil))))
 
 ;;;;; contacts
 (setq vdirel-repository (substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
@@ -982,9 +970,10 @@ https://tetov.se/"))
 (use-package! chezmoi)
 (after! chezmoi
   (require 'chezmoi-company)
-  (add-hook 'chezmoi-mode-hook #'(lambda () (if chezmoi-mode
-                                                (add-to-list 'company-backends 'chezmoi-company-backend)
-                                              (setq company-backends (delete 'chezmoi-company-backend company-backends))))))
+  (add-hook 'chezmoi-mode-hook
+            #'(lambda () (if chezmoi-mode
+                             (add-to-list 'company-backends 'chezmoi-company-backend)
+                           (setq company-backends (delete 'chezmoi-company-backend company-backends))))))
 
 (map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
                            (:desc "chezmoi apply" "a" #'chezmoi-write)
