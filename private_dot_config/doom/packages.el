@@ -33,11 +33,10 @@
 (package! mu4e-folding
   :recipe (:host github :repo "rougier/mu4e-folding"))
 
-(package! tetov-elisp
-  :recipe (:host github :repo "tetov/elisp"
-           :files ("*.el")))
-
 ;; org clock
 (package! org-clock-helpers
   :recipe (:repo "mskorzhinskiy/org-clock-helpers"
            :host github :branch "main"))
+
+(package! tetov
+  :recipe (:host sourcehut :repo "tetov/tetov.el" :files ("src/*.el")))
