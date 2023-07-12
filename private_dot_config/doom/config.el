@@ -71,17 +71,13 @@
 ;; they are implemented.
 
 ;; own files
-(add-load-path! ".")
+(require 'tetov)
 
-(defun tetov/is-wsl-p ()
-  "Check if running in WSL.
-Or to be more precise: gnu/linux and Microsoft is in kernel name."
-  (and (eq system-type 'gnu/linux)
-       (string-match-p "[Mm]icrosoft" (shell-command-to-string "uname -a"))))
+(setq tetov/keys-file (expand-file-name "./keys.json"))
 
 ;;;; directory setup
 (setq tetov/win-user-dir "/mnt/c/Users/tetov")
-(setq tetov/nextcloud-dir (if (tetov/is-wsl-p)
+(setq tetov/nextcloud-dir (if (tetov-is-wsl-p)
                               (file-name-concat tetov/win-user-dir "Nextcloud")
                             (expand-file-name "~/Nextcloud")))
 (setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
@@ -90,6 +86,7 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
 (setq org-directory (file-name-concat tetov/nextcloud-apps-dir "org"))
 (setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
 (setq org-default-notes-file (file-name-concat org-directory "refile.org"))
+(setq +org-capture-notes-file org-default-notes-file)
 (setq org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach"))
 
 ;;;; funcs outside of after! blocks
@@ -103,7 +100,7 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
    (list
     (cfw:org-create-source "Purple") ; org-agenda source
     (cfw:cal-create-source "Orange") ; diary source
-    (cfw:ical-create-source "fastmail" "https://user.fm/calendar/v1-0050f401d195144175dfb6668854525b/varn%C3%A4rhur.ics" "IndianRed"))))
+    (cfw:ical-create-source "fastmail" (tetov-get-json-value tetov/keys-file "fastmail_calendar_url" "value") "IndianRed"))))
 
 ;;;; prefix map (SPC-m)
 (map! :leader (:prefix-map ("m" . "mine")
@@ -129,12 +126,12 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
 
 ;; configure for wsl
 ;; https://hungyi.net/posts/browse-emacs-urls-wsl/
-(when (tetov/is-wsl-p)
+(when (tetov-is-wsl-p)
   (setq browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
         browse-url-generic-args     '("/c" "start")))
 
 ;; set browse-url-browser-function
-(setq browse-url-browser-function (if (tetov/is-wsl-p)
+(setq browse-url-browser-function (if (tetov-is-wsl-p)
                                       'browse-url-generic
                                     'browse-url-firefox))
 
@@ -260,26 +257,6 @@ Or to be more precise: gnu/linux and Microsoft is in kernel name."
               (org-element-insert-before link replacement)
               (org-element-extract-element link)))))))
 
-  (defun tetov/count-characters-subtree ()
-    "Count characters in subtree.
-
-   Useful for Vinnova project reports.
-
-   Taken from https://stackoverflow.com/a/50958323"
-    (interactive nil)
-    (save-excursion
-      (org-mark-subtree) ;mark the whole subtre
-      (forward-line 1)   ;move past header
-      (defun tetov/vertico-directory-delete-char (&optional n)
-        "Delete N chars before point."
-        (interactive "p")
-        (backward-delete-char n))
-      (exchange-point-and-mark) ;swap point and mark (ends of region)
-      ;;  (define-key vertico-map (kbd "<backspace>") #'tetov/vertico-directory-delete-char))
-      )
-    (deactivate-mark) ;clear the region
-    (message "%d" nchars))
-
   (require 'bh)
   (defun tetov/clock-in-to-prog (KW)
     "Switch a task from TODO to PROG when clocking in.
@@ -294,7 +271,6 @@ Based on bh/clock-in-to-next."
        ((and (member (org-get-todo-state) (list "PROG"))
              (bh/is-project-p))
         "TODO"))))
-
 
 ;;;;; general
   (setq org-startup-folded t
@@ -736,10 +712,10 @@ ${body}
         org-hugo-base-dir "~/src/web/xyz/content/posts"))
 
 ;;;; backup
-(require 'editor-backup)
-(setq backup-each-save-mirror-location (tetov/editor-backup-setup-dir tetov/nextcloud-apps-dir))
+(require 'tetov-editor-backup)
+(setq backup-each-save-mirror-location (tetov-editor-backup-setup-dir tetov/nextcloud-apps-dir))
 (setq backup-each-save-remote-files t)
-(setq backup-each-save-filter-function 'tetov/backup-each-save-filter)
+(setq backup-each-save-filter-function 'tetov-editor-backup-each-save-filter)
 (setq backup-each-save-time-format "%Y_%m_%d_%H_00_00") ;; save to same file for 1 hour
 (add-hook 'after-save-hook #'backup-each-save)
 (use-package! backup-each-save)
@@ -866,10 +842,10 @@ https://tetov.se/"))
         mu4e-refile-folder 'tetov/mu4e-refile-folder-function
 
         mu4e-change-filenames-when-moving t
-        mu4e-attachment-dir (if (tetov/is-wsl-p)
+        mu4e-attachment-dir (if (tetov-is-wsl-p)
                                 (file-name-concat tetov/win-user-dir "Downloads")
                               (expand-file-name "~/Downloads"))
-        +org-capture-emails-file "refile.org")
+        +org-capture-emails-file org-default-notes-file)
 
 ;;;;;; folding
   (setq mu4e-folding-default-view 'folded)
@@ -995,6 +971,6 @@ https://tetov.se/"))
   (elfeed-protocol-enable))
 
 ;;;; pocket-reader
-(setq org-pocket-capture-file "~/src/org/refile.org")
+(setq org-pocket-capture-file org-default-notes-file)
 (after! pocket-reader
   (require 'org-pocket))
