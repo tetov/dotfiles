@@ -7,7 +7,7 @@
 {{ if stat $doomExecutable }}
 
 # runs if master commit is changed
-# git hash for doom: {{ $doomHeadRefPath | include) }}
+# git hash for doom: {{ $doomHeadRefPath | include }}
 
 # Run upgrade once a week
 # Weeks since epoch: {{ div (now | unixEpoch) 604800 }}

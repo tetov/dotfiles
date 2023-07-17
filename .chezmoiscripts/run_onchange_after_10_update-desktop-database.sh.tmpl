@@ -1,4 +1,4 @@
-{{ if lookPath "update-desktop-database" }}
+{{ if lookPath "update-desktop-database" -}}
 #!{{ .usrPrefix }}/bin/sh
 
 {{ $xdgDataHome := default (expandenv "$HOME/.local/share") (env "XDG_DATA_HOME") }}
@@ -9,3 +9,4 @@
 {{- end }}
 
 update-desktop-database {{ $applicationsDir }}
+{{ end }}
