@@ -2,8 +2,8 @@
 encryption = "age"
 
 [age]
-	identity = "{{ $xdgConfigHome }}/chezmoi/key.txt"
-	recipient = "age1j04sg30dcpwrsg42gns2pl2992lu3dzs3enyy9h6xxecm30hxd6q4nkrjv"
+    identity = "{{ $xdgConfigHome }}/chezmoi/key.txt"
+    recipient = "age1j04sg30dcpwrsg42gns2pl2992lu3dzs3enyy9h6xxecm30hxd6q4nkrjv"
 
 [git]
     autoCommit = true
@@ -11,3 +11,4 @@ encryption = "age"
 
 [data]
     workstation = false
+    usrPrefix = "{{ default "/usr" (env "PREFIX") }}" # special on termux

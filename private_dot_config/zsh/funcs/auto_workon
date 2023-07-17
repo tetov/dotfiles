@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh -eu
+#!/bin/zsh -eu
 # Inspiration and code snippets from:
 # https://gist.github.com/BGBRWR/82e66547d7013f3ae687eb792b6b7e20
 # https://stackoverflow.com/a/45444758

@@ -1,5 +1,5 @@
 {{ if .workstation -}}
-#!/bin/sh
+#!{{ .usrPrefix }}/bin/sh
 
 MAILDIR_DIR={{ expandenv "$XDG_DATA_HOME/mail" }}
 

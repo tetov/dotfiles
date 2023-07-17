@@ -1,6 +1,6 @@
-#!/usr/bin/sh
+#!{{ .usrPrefix }}/bin/sh
 
-cd $(chezmoi source-path)
+cd "$(chezmoi source-path)"
 
 git config --local commit.gpgsign false
 git config --local core.sshCommand \
@@ -9,6 +9,4 @@ git config --local core.sshCommand \
 git config --local --bool branch.main.sync true
 git config --local --bool branch.main.syncNewFiles true
 
-{{ if .workstation }}
 command -v pre-commit >/dev/null && pre-commit install
-{{ end }}

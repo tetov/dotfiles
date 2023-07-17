@@ -1,5 +1,5 @@
-{{ if .workstation -}}
-#!/bin/sh
+{{ if and (env "DOOMDIR") (stat (expandenv "$DOOMDIR")) -}}
+#!{{ .usrPrefix }}/bin/sh
 
 # Run if emacs files changed
 {{- range (expandenv "$DOOMDIR/*.el" | glob) }}

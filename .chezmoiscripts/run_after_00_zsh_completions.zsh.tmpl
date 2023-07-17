@@ -1,5 +1,5 @@
-{{ if .workstation -}}
-#!/usr/bin/zsh
+{{ if lookPath "zsh" -}}
+#!{{ .usrPrefix }}/bin/zsh
 
 {{ $completionsDir := expandenv "$XDG_CONFIG_HOME/zsh/completions" }}
 

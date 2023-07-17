@@ -1,4 +1,4 @@
-#!/bin/sh
+#!{{ .usrPrefix }}/bin/sh
 
 # gpg.pub.asc hash: {{ include "gpg.pub.asc" | sha256sum }}
 gpg --quiet --import {{ joinPath .chezmoi.sourceDir "gpg.pub.asc" | quote }}
