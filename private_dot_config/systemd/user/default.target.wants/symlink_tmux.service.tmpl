@@ -1,3 +1,3 @@
-{{ if .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
+{{ if not (get .chezmoi.kernel "osrelease" | lower | contains "microsoft") -}}
 ../tmux.service
 {{- end}}
