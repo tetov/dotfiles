@@ -1,3 +1,4 @@
+{{ if .setupMailCalendarContacts }}
 defaults
 tls on
 
@@ -8,7 +9,7 @@ from anton@tetov.se
 tls_starttls off
 auth on
 user tetov@fastmail.com
-password {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
+password {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_mail.value }}
 
 account lth
 host smtps.lu.se
@@ -17,6 +18,7 @@ from anton_tetov.johansson@abm.lth.se
 auth on
 tls_starttls on
 user an6802jo@lu.se
-password {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/tu2huwrewbdlbcqf6ldwjiojoi/password" }}
+password {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).lth_mail.value }}
 
 account default : fastmail
+{{- end }}

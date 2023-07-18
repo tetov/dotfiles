@@ -1,9 +1,9 @@
 README.md
 LICENSE
 
-{{ if not .workstation }}
-.config/systemd/user/default.target.wants/
-.config/systemd/user/timer.target.wants/
+{{ if not (lookPath "op") }}
+.config/chezmoi/key.txt
+.config/chezmoi/secrets.json
 {{ end }}
 
 gpg.pub.asc

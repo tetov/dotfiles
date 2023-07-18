@@ -1,4 +1,6 @@
+{{ if lookPath "systemctl" -}}
 #!{{ .usrPrefix }}/bin/sh
 
 systemctl --user daemon-reload
 systemctl --user daemon-reexec
+{{- end }}

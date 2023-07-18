@@ -1,3 +1,4 @@
+{{ if .setupMailCalendarContacts -}}
 # Global
 CopyArrivalDate yes
 Create Both
@@ -8,7 +9,7 @@ IMAPAccount fastmail
 Host imap.fastmail.com
 Port 993
 User tetov@fastmail.com
-Pass {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
+Pass {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_mail.value }}
 SSLVersion TLSv1.2
 SSLType IMAPS
 AuthMechs LOGIN
@@ -37,7 +38,7 @@ IMAPAccount lth
 Host imap.lu.se
 Port 993
 User an6802jo@lu.se
-Pass {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/tu2huwrewbdlbcqf6ldwjiojoi/password" }}
+Pass {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).lth_mail.value }}
 SSLType IMAPS
 PipelineDepth 1
 
@@ -82,3 +83,4 @@ Channel fastmail-often
 Group less-often
 Channel lth-less-often
 Channel fastmail-less-often
+{{- end }}

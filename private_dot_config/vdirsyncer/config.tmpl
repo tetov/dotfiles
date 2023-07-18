@@ -1,3 +1,4 @@
+{{ if .setupMailCalendarContacts -}}
 [general]
 status_path = "~/.local/state/vdirsyncer/"
 
@@ -15,7 +16,7 @@ fileext = ".vcf"
 type = "carddav"
 url = "https://carddav.fastmail.com/"
 username = "tetov@fastmail.com"
-password = {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
+password = {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_pim.value }}
 
 [pair fastmail_cal_pair]
 a = "fastmail_cal_local"
@@ -31,4 +32,5 @@ fileext = ".vcf"
 type = "caldav"
 url = "https://caldav.fastmail.com/"
 username = "tetov@fastmail.com"
-password = {{ onepasswordRead "op://rejc2pnsh5lf56x6wsxegmydoy/fpbrakjsxo5ry3ubnhayv7xzka/chezmoi" }}
+password = {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_pim.value }}
+{{- end }}
