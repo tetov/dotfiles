@@ -73,7 +73,7 @@
 ;; own files
 (require 'tetov)
 
-(setq tetov/keys-file (expand-file-name "./keys.json"))
+(setq tetov/secrets-file (expand-file-name "$XDG_CONFIG_HOME/chezmoi/secrets.json"))
 
 ;;;; directory setup
 (setq tetov/win-user-dir "/mnt/c/Users/tetov")
@@ -130,15 +130,18 @@
   (setq browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
         browse-url-generic-args     '("/c" "start")))
 
+;; termux / android
+(when (tetov-is-android-p)
+  (setq browse-url-generic-program "termux-open-url"))
+
 ;; set browse-url-browser-function
-(setq browse-url-browser-function (if (tetov-is-wsl-p)
+(setq browse-url-browser-function (if (or (tetov-is-wsl-p) (tetov-is-android-p))
                                       'browse-url-generic
                                     'browse-url-firefox))
 
 (setq doom-localleader-key ",")
 ;; highlight indentation
 (setq highlight-indent-guides-method 'fill)
-
 
 ;;;; vimify
 (setq evil-respect-visual-line-mode t
@@ -883,10 +886,11 @@ https://tetov.se/"))
   (map! :localleader :map 'mu4e-headers-mode-map :desc "Mark thread" "t" #'mu4e-headers-mark-thread))
 
 ;;;;;; start automatically
-(run-at-time "5 sec" nil (lambda ()
-                           (let ((current-prefix-arg '(4)))
-                             (call-interactively 'mu4e)
-                             (message nil))))
+(unless (tetov-is-android-p)
+  (run-at-time "5 sec" nil (lambda ()
+                             (let ((current-prefix-arg '(4)))
+                               (call-interactively 'mu4e)
+                               (message nil)))))
 
 ;;;;; contacts
 (setq vdirel-repository (substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
