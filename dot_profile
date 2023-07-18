@@ -36,10 +36,14 @@ if [ -z "$SSH_CLIENT" ]; then
   fi
 fi
 
-agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
+if [ "$(uname -o)" = "Android" ] ;  then
+  eval $(okc-ssh-agent)
+else
+  agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
 
-test -n "$agent_ssh_socket" &&
-  SSH_AUTH_SOCK="$agent_ssh_socket"
+  test -n "$agent_ssh_socket" &&
+    SSH_AUTH_SOCK="$agent_ssh_socket"
+fi
 
 set +o allexport
 
