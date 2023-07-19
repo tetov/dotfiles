@@ -41,7 +41,7 @@ if [ "$(uname -o)" = "Android" ] ;  then
 else
   agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
 
-  test -n "$agent_ssh_socket" &&
+  test -n "$agent_ssh_socket" && \
     SSH_AUTH_SOCK="$agent_ssh_socket"
 fi
 
@@ -52,6 +52,7 @@ set +o allexport
 alias v=vim
 alias e=emacsclient
 alias en='emacsclient -n'
+alias et='emacsclient --tty'
 
 # https://superuser.com/a/1644866
 _path_prepend() {

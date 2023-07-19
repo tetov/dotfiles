@@ -61,4 +61,9 @@
 ["{{ $xdgDataHome }}/fonts"]
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/InconsolataGo.zip"
     type = "archive"
+    refreshPeriod = "168h"
+
+[".shortcuts/icons/emacsclient.sh.png"]
+    type = "file"
+    url = "https://git.savannah.gnu.org/cgit/emacs.git/plain/etc/images/icons/hicolor/128x128/apps/emacs.png"
     refreshPeriod = "0"
