@@ -47,7 +47,11 @@
 	process = git-lfs filter-process
 
 [gpg]
+{{- if eq .chezmoi.os "android" }}
+	program = okc-gpg
+{{- else }}
 	program = gpg2
+{{ end }}
 
 [init]
 	defaultBranch = main

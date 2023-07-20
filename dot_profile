@@ -1,5 +1,4 @@
-set -o allexport
-
+# source ~/.config/environment.d/*.conf
 # if nothing matches the glob should expand to null
 if [ "$0" = "bash" -o "$0" = "sh" ]; then
   shopt -s nullglob
@@ -16,43 +15,6 @@ if [ "$0" = "bash" -o "$0" = "sh" ]; then
 elif [ "$0" = "zsh" ]; then
   set +o nullglob
 fi
-if command -v emacsclient >/dev/null; then
-  VISUAL="emacsclient"
-fi
-
-# start emacs daemon if none found
-ALTERNATE_EDITOR=""
-
-# For gpg agent forwarding. (Dir gets deleted on log out)
-gpgconf --create-socketdir
-# if not SSH connection
-if [ -z "$SSH_CLIENT" ]; then
-  # one way to check if vnc connection, assuming :0 is never used for vnc
-  # server..
-  # either there's no DISPLAY but if there is it should be :0
-  if [ -z "$DISPLAY" -o "$DISPLAY" = ":0" ] ; then
-    GPG_TTY=$(tty)
-    gpgconf --launch gpg-agent
-  fi
-fi
-
-if [ "$(uname -o)" = "Android" ] ;  then
-  eval $(okc-ssh-agent)
-else
-  agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
-
-  test -n "$agent_ssh_socket" && \
-    SSH_AUTH_SOCK="$agent_ssh_socket"
-fi
-
-set +o allexport
-
-#test -n $DISPLAY && setxkbmap se us >/dev/null
-
-alias v=vim
-alias e=emacsclient
-alias en='emacsclient -n'
-alias et='emacsclient --tty'
 
 # https://superuser.com/a/1644866
 _path_prepend() {
@@ -93,6 +55,40 @@ _path_append "$XDG_CONFIG_HOME/emacs/bin"
 _path_append "$HOME/.poetry/bin"
 
 _path_append "$HOME/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin"
+
+# return if non-interactive
+[ -z "$PS1" ] && return
+
+if command -v emacsclient >/dev/null; then
+  export VISUAL="emacsclient"
+fi
+
+if [ "$(uname -o)" = "Android" ] ;  then
+  eval $(okc-ssh-agent)
+else
+  # For gpg agent forwarding. (Dir gets deleted on log out)
+  gpgconf --create-socketdir
+  # if not SSH connection
+  if [ -z "$SSH_CLIENT" ]; then
+    # one way to check if vnc connection, assuming :0 is never used for vnc
+    # server..
+    # either there's no DISPLAY but if there is it should be :0
+    if [ -z "$DISPLAY" -o "$DISPLAY" = ":0" ] ; then
+      export GPG_TTY=$(tty)
+      gpgconf --launch gpg-agent
+    fi
+  fi
+
+  agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
+
+  test -n "$agent_ssh_socket" && \
+    export SSH_AUTH_SOCK="$agent_ssh_socket"
+fi
+
+alias v=vim
+alias e=emacsclient
+alias en='emacsclient -n'
+alias et='emacsclient --tty'
 
 # vim: set ft=sh ts=2
 
