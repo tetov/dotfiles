@@ -586,6 +586,9 @@ Based on bh/clock-in-to-next."
 ;;;;;; files
   (setq org-roam-directory org-directory)
   (setq org-roam-db-location (file-name-concat org-roam-directory "db/org-roam.db"))
+  (when (tetov-is-android-p)
+    ;; fix display issue on phone (wrong width in mini-buffer)
+    (setq org-roam-node-display-template "${title}"))
 
 ;;;;;; roam capture templates
   (setq org-roam-capture-templates
