@@ -82,13 +82,6 @@
                             (expand-file-name "~/Nextcloud")))
 (setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
 
-;;;;; org files
-(setq org-directory (file-name-concat tetov/nextcloud-apps-dir "org"))
-(setq org-agenda-files (directory-files org-directory nil (rx ".org" eos)))
-(setq org-default-notes-file (file-name-concat org-directory "refile.org"))
-(setq +org-capture-notes-file org-default-notes-file)
-(setq org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach"))
-
 ;;;; funcs outside of after! blocks
 (defun tetov/open-my-agenda-view () "" (interactive nil) (org-agenda nil "d"))
 (defun tetov/org-capture-default () "Start default org-capture" (interactive nil) (org-capture nil "d"))
@@ -144,42 +137,43 @@
 (setq highlight-indent-guides-method 'fill)
 
 ;;;; vimify
-(setq evil-respect-visual-line-mode t
-      evil-split-window-below t
-      evil-vsplit-window-right t
-      evil-want-Y-yank-to-eol t
-      evil-want-fine-undo t
-      evil-move-cursor-back nil)
+(after! evil
+  (setq evil-respect-visual-line-mode t
+        evil-split-window-below t
+        evil-vsplit-window-right t
+        evil-want-Y-yank-to-eol t
+        evil-want-fine-undo t
+        evil-move-cursor-back nil)
 
-(evil-put-command-property 'evil-yank-line :motion 'evil-line)
+  (evil-put-command-property 'evil-yank-line :motion 'evil-line)
 
-(evil-global-set-key 'normal (kbd "j") 'evil-next-visual-line)
-(evil-global-set-key 'normal (kbd "k") 'evil-previous-visual-line)
+  (evil-global-set-key 'normal (kbd "j") 'evil-next-visual-line)
+  (evil-global-set-key 'normal (kbd "k") 'evil-previous-visual-line)
 
-(evil-global-set-key 'motion "Ö" 'evil-ex)
-(evil-global-set-key 'motion "¤" 'evil-end-of-line)
-;; splits
-;; (evil-global-set-key 'normal (kbd "C-h") 'evil-window-left)
-;; (evil-global-set-key 'normal (kbd "C-l") 'evil-window-right)
-;; (evil-global-set-key 'normal (kbd "C-k") 'evil-window-up)
-;; (evil-global-set-key 'normal (kbd "C-j") 'evil-window-down)
+  (evil-global-set-key 'motion "Ö" 'evil-ex)
+  (evil-global-set-key 'motion "¤" 'evil-end-of-line)
+  ;; splits
+  ;; (evil-global-set-key 'normal (kbd "C-h") 'evil-window-left)
+  ;; (evil-global-set-key 'normal (kbd "C-l") 'evil-window-right)
+  ;; (evil-global-set-key 'normal (kbd "C-k") 'evil-window-up)
+  ;; (evil-global-set-key 'normal (kbd "C-j") 'evil-window-down)
 
-;; paragraphs
-(evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
-(evil-global-set-key 'motion (kbd "RET") 'evil-forward-paragraph)
+  ;; paragraphs
+  (evil-global-set-key 'motion (kbd "<backspace>") 'evil-backward-paragraph)
+  (evil-global-set-key 'motion (kbd "RET") 'evil-forward-paragraph)
 
-;; check the mappings by inspecting evil-ex-commands (SPC h v)
+  ;; check the mappings by inspecting evil-ex-commands (SPC h v)
 
-;; Need to type out :quit to close frame
-(evil-ex-define-cmd "quit" ' suspend-frame)
-;; :q should kill the current buffer rather than quitting emacs entirely
-(evil-ex-define-cmd "q" 'kill-buffer-and-window)
-(evil-ex-define-cmd "quitall" 'kill-some-buffers)
-(evil-ex-define-cmd "wqall" ' evil-save-and-close)
+  ;; Need to type out :quit to close frame
+  (evil-ex-define-cmd "quit" ' suspend-frame)
+  ;; :q should kill the current buffer rather than quitting emacs entirely
+  (evil-ex-define-cmd "q" 'kill-buffer-and-window)
+  (evil-ex-define-cmd "quitall" 'kill-some-buffers)
+  (evil-ex-define-cmd "wqall" ' evil-save-and-close)
 
-(evil-ex-define-cmd "mu[4e]" 'mu4e-search-bookmark)
+  (evil-ex-define-cmd "mu[4e]" 'mu4e-search-bookmark)
 
-(evil-global-set-key 'motion (kbd "[e") 'flycheck-previous-error)
+  (evil-global-set-key 'motion (kbd "[e") 'flycheck-previous-error))
 
 
 ;; https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/
@@ -238,8 +232,27 @@
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
+;;; org
+
+;;;;; org file locations (before after!)
+(setq org-directory (file-name-concat tetov/nextcloud-apps-dir "org")
+      org-agenda-files (directory-files org-directory nil (rx ".org" eos))
+      org-default-notes-file (file-name-concat org-directory "refile.org")
+      +org-capture-notes-file org-default-notes-file
+      org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach")
+      org-id-locations-file (file-name-concat org-directory ".orgids")
+;;;;;; roam files
+      org-roam-directory org-directory
+      org-roam-db-location (file-name-concat org-roam-directory "db/org-roam.db")
+;;;; references
+      bibtex-completion-bibliography (file-name-concat tetov/nextcloud-apps-dir "zotero.bib"))
+
 (after! org
   (require 'org-element)
+  (require 'bh)
+  (require 'org-crypt)
+  (require 'org-clock-convenience)
+  (require 'sv-kalender)
 
   (defun tetov/remove-org-id-links-export-hook (backend)
     "Remove 'id' type links from the current buffer before export to BACKEND."
@@ -260,7 +273,8 @@
               (org-element-insert-before link replacement)
               (org-element-extract-element link)))))))
 
-  (require 'bh)
+  ;; (add-hook 'org-export-before-processing-functions'tetov/remove-id-links)
+
   (defun tetov/clock-in-to-prog (KW)
     "Switch a task from TODO to PROG when clocking in.
 Skips capture tasks, projects, and subprojects.
@@ -275,7 +289,7 @@ Based on bh/clock-in-to-next."
              (bh/is-project-p))
         "TODO"))))
 
-;;;;; general
+;;;; general
   (setq org-startup-folded t
         org-startup-indented t
         org-insert-heading-respect-content t)
@@ -286,26 +300,81 @@ Based on bh/clock-in-to-next."
   (add-to-list 'org-tags-exclude-from-inheritance "REFILE")
   (add-to-list 'org-tags-exclude-from-inheritance "EMAIL")
 
-;;;;; crypt
-  (require 'org-crypt)
+;;;; crypt (in after!)
+;;;; crypt (before after!)
+  (setq org-crypt-key "anton@tetov.se"
+        org-crypt-disable-auto-save t)
+
   (org-crypt-use-before-save-magic)
-  (setq org-crypt-key "anton@tetov.se")
-  (setq org-crypt-disable-auto-save t)
   (add-to-list 'org-tags-exclude-from-inheritance "crypt")
 
-;;;;; references
-  (setq bibtex-completion-bibliography (file-name-concat tetov/nextcloud-apps-dir "zotero.bib"))
-
-;;;;; refile
+;;;; refile
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5))
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm
-        ;; http://doc.norang.ca/org-mode.html#RefileSetup
-        org-refile-target-verify-function 'bh/verify-refile-target)
+        org-refile-target-verify-function #'bh/verify-refile-target
+;;;; org id
+        org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+  (add-hook 'org-capture-mode-hook #'org-id-get-create)
 
-;;;;; capture
-  ;; http://doc.norang.ca/org-mode.html#CaptureTemplates
+;;;; projects setup
+  (setq   bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17"
+
+;;;; Tags with fast selection keys
+          org-tag-alist (quote ((:startgroup)
+                                ("@work" . ?o)
+                                ("@home" . ?H)
+                                (:endgroup)
+                                ("rp" . ?r)))
+
+;;;; clocks (before after!)
+          ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+          org-clock-history-length 23
+          ;; Resume clocking task on clock-in if the clock is open
+          org-clock-in-resume t
+          ;; Change tasks to NEXT when clocking in
+          org-clock-in-switch-to-state 'tetov/clock-in-to-prog
+          ;; Save clock data and state changes and notes in the LOGBOOK drawer
+          org-clock-into-drawer t
+          ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+          org-clock-out-remove-zero-time-clocks t
+          ;; Clock out when moving task to a done state
+          org-clock-out-when-done t
+          ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+          org-clock-persist t
+          ;; Do not prompt to resume an active clock
+          org-clock-persist-query-resume nil
+          ;; Enable auto clock resolution for finding open clocks
+          org-clock-auto-clock-resolution 'when-no-clock-is-running
+          ;; Include current clocking task in clock reports
+          org-clock-report-include-clocking-task t
+          ;; don't ask if clock out when closing emacs (since it's probably just a restart)
+          org-clock-ask-before-exiting nil
+          org-clocktable-defaults '(:maxlevel 2
+                                    :lang "en"
+                                    :scope agenda
+                                    :block lastweek
+                                    :fileskip0 t
+                                    :match nil
+                                    :emphasize t
+                                    :link nil
+                                    :hidefiles t
+                                    :match "-rp"
+                                    :step day))
+
+
+  ;; Resume clocking task when emacs is restarted
+  (org-clock-persistence-insinuate)
+  (map! :map org-mode-map
+        :localleader
+        (:prefix ("c" . "clock")
+         :desc "Insert past clock" "p" #'org-insert-past-clock))
+
+  (add-hook 'org-clock-out-hook #'bh/remove-empty-drawer-on-clock-out)
+  (add-hook 'org-clock-out-hook #'bh/clock-out-maybe)
+
+;;;; capture
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
                                  "* TODO %?\n%U\n")
                                 ("m" "Meeting" entry (file org-default-notes-file)
@@ -325,79 +394,8 @@ Based on bh/clock-in-to-next."
 %U
 %:fromname: %a")))
 
-;;;;; node ids
-  (add-hook 'org-capture-mode-hook #'org-id-get-create)
-  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-
-;;;;; todo setup
-  (setq org-todo-keywords '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "|" "DONE(d!)")
-                            (sequence "WAIT(w@/!)" "|" "CANC(c@/!)" "MEETING" "PHONE"))
-        org-enforce-todo-dependencies t
-        org-enforce-todo-checkbox-dependencies t
-        org-use-fast-todo-selection t
-        org-log-state-notes-into-drawer t)
-
-;;;;;; projects setup
-
-  (setq bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17")
-
-  ;; Tags with fast selection keys
-  (setq org-tag-alist (quote ((:startgroup)
-                              ("@work" . ?o)
-                              ("@home" . ?H)
-                              (:endgroup)
-                              ("rp" . ?r))))
-
-;;;;;; clocks
-  (require 'org-clock-convenience)
-
-  ;; Resume clocking task when emacs is restarted
-  (org-clock-persistence-insinuate)
-  ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
-  (setq org-clock-history-length 23
-        ;; Resume clocking task on clock-in if the clock is open
-        org-clock-in-resume t
-        ;; Change tasks to NEXT when clocking in
-        org-clock-in-switch-to-state 'tetov/clock-in-to-prog
-        ;; Save clock data and state changes and notes in the LOGBOOK drawer
-        org-clock-into-drawer t
-        ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
-        org-clock-out-remove-zero-time-clocks t
-        ;; Clock out when moving task to a done state
-        org-clock-out-when-done t
-        ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-        org-clock-persist t
-        ;; Do not prompt to resume an active clock
-        org-clock-persist-query-resume nil
-        ;; Enable auto clock resolution for finding open clocks
-        org-clock-auto-clock-resolution 'when-no-clock-is-running
-        ;; Include current clocking task in clock reports
-        org-clock-report-include-clocking-task t
-
-        ;; don't ask if clock out when closing emacs (since it's probably just a restart)
-        org-clock-ask-before-exiting nil
-
-        org-clocktable-defaults '(:maxlevel 2
-                                  :lang "en"
-                                  :scope agenda
-                                  :block lastweek
-                                  :fileskip0 t
-                                  :match nil
-                                  :emphasize t
-                                  :link nil
-                                  :hidefiles t
-                                  :match "-rp"
-                                  :step day))
-
-  (map! :map org-mode-map
-        :localleader
-        (:prefix ("c" . "clock")
-         :desc "Insert past clock" "p" #'org-insert-past-clock))
-
-  (add-hook 'org-clock-out-hook #'bh/remove-empty-drawer-on-clock-out)
-  (add-hook 'org-clock-out-hook #'bh/clock-out-maybe)
-
 ;;;;; org-agenda
+  (add-hook 'org-agenda-finalize-hook #'org-agenda-show-clocking-issues)
   (setq org-agenda-include-diary t
 
         org-agenda-sticky t ;; keep agenda view alive
@@ -412,8 +410,6 @@ Based on bh/clock-in-to-next."
                                               :min-duration 0
                                               :max-gap 5
                                               :gap-ok-around ("4:00" "12:30")))
-
-  (add-hook 'org-agenda-finalize-hook #'org-agenda-show-clocking-issues)
 
 ;;;;; agenda views
   (setq org-agenda-custom-commands
@@ -443,7 +439,6 @@ Based on bh/clock-in-to-next."
                                           (descendants (todo)))))
                           ((org-ql-block-header "Other TODOs")))))))
 
-  (require 'sv-kalender)
 
 ;;;;; setup org-ql
   (use-package! org-ql)
@@ -583,9 +578,6 @@ Based on bh/clock-in-to-next."
                                        :title (propertize "Review: All unmarked TODOs"
                                                           'help-echo "TODO is not project, not habit, not NEXT nor PROG but it might have a planning attribute.")))))
 ;;;;; org-roam
-;;;;;; files
-  (setq org-roam-directory org-directory)
-  (setq org-roam-db-location (file-name-concat org-roam-directory "db/org-roam.db"))
   (when (tetov-is-android-p)
     ;; fix display issue on phone (wrong width in mini-buffer)
     (setq org-roam-node-display-template "${title}"))
@@ -661,32 +653,7 @@ ${body}
 ")
                                           :unnarrowed t)))
 
-;;;;; org-roam-ui
-  (use-package! websocket
-    :after org-roam)
-
-  (use-package! org-roam-ui
-    :after org-roam ;; or :after org
-    ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-    ;;         a hookable mode anymore, you're advised to pick something yourself
-    ;;         if you don't care about startup time, use
-    :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow nil
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start nil))
-
-;;;;; org-roam-bibtex
-  ;; (use-package! org-roam-bibtex
-  ;;   :after org-roam
-  ;;   :config
-  ;;   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
-
-;;;;; org-export
-
-;;;;; export
-
+;;;;;; org export
   (setq org-export-initial-scope 'subtree
         org-export-with-author nil
         org-export-with-broken-links 'mark
@@ -696,35 +663,57 @@ ${body}
         org-export-with-timestamps nil
         org-export-with-title t
         org-export-with-toc nil
-        org-export-with-todo-keywords nil)
-  ;; (add-hook 'org-export-before-processing-functions'tetov/remove-id-links)
+        org-export-with-todo-keywords nil
+
 ;;;;;; latex
-  (setq org-latex-default-class "article"
+        org-latex-default-class "article"
         org-latex-compiler "xelatex"
         org-latex-pdf-process
-        '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+        '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f")
 
 ;;;;;; ox-pandoc
-  (setq org-pandoc-options '((standalone . t))
+        org-pandoc-options '((standalone . t))
         org-pandoc-options-for-latex-pdf `((standalone . t)
                                            (pdf-engine . "xelatex")
-                                           (template . ,(substitute-in-file-name "$DOOMDIR/ox_pandoc_latex_template.tex"))))
+                                           (template . ,(substitute-in-file-name "$DOOMDIR/ox_pandoc_latex_template.tex")))
 ;;;;;; ox-hugo
-  (setq org-hugo-export-with-toc nil
+        org-hugo-export-with-toc nil
         org-hugo-date-format "%Y-%m-%d"
         org-hugo-front-matter-format "yaml"
         org-hugo-goldmark t
         org-hugo-section "posts"
         org-hugo-base-dir "~/src/web/xyz/content/posts"))
+;;;;; org-roam-ui
+(use-package! websocket
+  :after org-roam)
+
+(use-package! org-roam-ui
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  :hook (after-init . org-roam-ui-mode)
+  :config (setq org-roam-ui-sync-theme t
+                org-roam-ui-follow nil
+                org-roam-ui-update-on-save t
+                org-roam-ui-open-on-start nil))
+
+;;;;; org-roam-bibtex
+;; (use-package! org-roam-bibtex
+;;   :after org-roam
+;;   :config
+;;   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 ;;;; backup
-(require 'tetov-editor-backup)
-(setq backup-each-save-mirror-location (tetov-editor-backup-setup-dir tetov/nextcloud-apps-dir))
-(setq backup-each-save-remote-files t)
-(setq backup-each-save-filter-function 'tetov-editor-backup-each-save-filter)
-(setq backup-each-save-time-format "%Y_%m_%d_%H_00_00") ;; save to same file for 1 hour
+(use-package! backup-each-save
+  :config (progn
+            (require 'tetov-editor-backup)
+            (setq backup-each-save-mirror-location (tetov-editor-backup-setup-dir tetov/nextcloud-apps-dir)
+                  backup-each-save-remote-files t
+                  backup-each-save-filter-function 'tetov-editor-backup-each-save-filter
+                  ;; save to same file for 1 hour
+                  backup-each-save-time-format "%Y_%m_%d_%H_00_00")))
 (add-hook 'after-save-hook #'backup-each-save)
-(use-package! backup-each-save)
 
 (auto-save-visited-mode 1)
 ;;;; coding
@@ -752,24 +741,31 @@ ${body}
 ;;;;; spelling
 ;; based on https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html
 (after! ispell
-  ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
-  ;; dictionary' even though multiple dictionaries will be configured
-  ;; in next line.
-  (setenv "LANG" "en_US.UTF-8")
-  (setq ispell-dictionary "sv_SE,en_GB")
-  (setq ispell-local-dictionary-alist
-        '(("sv_SE,en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "sv_SE,en_GB") nil utf-8)))
-  ;; For saving words to the personal dictionary, don't infer it from
-  ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
-  (setq ispell-personal-dictionary "~/.hunspell_personal")
-  ;; The personal dictionary file has to exist, otherwise hunspell will
-  ;; silently not use it.
-  (unless (file-exists-p ispell-personal-dictionary)
-    (write-region "" nil ispell-personal-dictionary nil 0))
-  ;; ispell-set-spellchecker-params has to be called
-  ;; before ispell-hunspell-add-multi-dic will work
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "sv_SE,en_GB"))
+  (let* ((default-dict "en_US")
+         (extra-dict "sv_SE")
+         (use-multi-dict (member extra-dict (ispell-valid-dictionary-list))))
+    (progn
+      ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
+      ;; dictionary' even though multiple dictionaries will be configured
+      ;; in next line.
+      (setenv "LANG" (format "%s.UTF-8" default-dict))
+      (setq ispell-dictionary (if use-multi-dict
+                                  (format "%s,%s" extra-dict default-dict)
+                                default-dict)
+            ispell-local-dictionary-alist
+            `((,ispell-dictionary "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" ,ispell-dictionary) nil utf-8))
+            ;; For saving words to the personal dictionary, don't infer it from
+            ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
+            ispell-personal-dictionary "~/.hunspell_personal")
+      ;; The personal dictionary file has to exist, otherwise hunspell will
+      ;; silently not use it.
+      (unless (file-exists-p ispell-personal-dictionary)
+        (write-region "" nil ispell-personal-dictionary nil 0))
+      ;; ispell-set-spellchecker-params has to be called
+      ;; before ispell-hunspell-add-multi-dic will work
+      (ispell-set-spellchecker-params)
+      (when use-multi-dict
+        (ispell-hunspell-add-multi-dic dict-string)))))
 
 ;;;; mail - contacts - calendar
 
@@ -901,9 +897,9 @@ https://tetov.se/"))
 ;;;;; calendars
 (add-hook 'diary-mark-entries-hook 'diary-mark-included-diary-files)
 
-(use-package! excorporate)
 (setq excorporate-configuration '("an6802jo@lu.se" . "https://webmail.lu.se/EWS/Exchange.asmx")
       excorporate-calendar-show-day-function #'exco-calfw-show-day)
+(use-package! excorporate)
 
 ;;;; term
 (setq vterm-kill-buffer-on-exit t
