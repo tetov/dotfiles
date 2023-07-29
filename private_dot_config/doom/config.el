@@ -765,7 +765,7 @@ ${body}
       ;; before ispell-hunspell-add-multi-dic will work
       (ispell-set-spellchecker-params)
       (when use-multi-dict
-        (ispell-hunspell-add-multi-dic dict-string)))))
+        (ispell-hunspell-add-multi-dic ispell-dictionary)))))
 
 ;;;; mail - contacts - calendar
 
@@ -946,7 +946,8 @@ https://tetov.se/"))
    "cmcd" "eshell/cd ${chezmoi source-path}"))
 
 ;;;; chezmoi
-(use-package! chezmoi)
+(use-package! chezmoi
+  :config )
 (after! chezmoi
   (require 'chezmoi-company)
   (add-hook 'chezmoi-mode-hook
