@@ -94,6 +94,19 @@ alias e=emacsclient
 alias en='emacsclient -n'
 alias et='emacsclient --tty'
 
+if command -v systemctl >/dev/null ; then
+  INIT_SYS_USER_CMD='systemctl --user'
+  EMACS_SERVICE='emacs.service'
+elif command -v sv >/dev/null ; then
+  INIT_SYS_USER_CMD='sv'
+  EMACS_SERVICE='emacsd'
+fi
+
+if [ -n "$INIT_SYS_USER_CMD" ] ; then
+  alias edstart="$INIT_SYS_USER_CMD start $EMACS_SERVICE"
+  alias edstop="$INIT_SYS_USER_CMD stop $EMACS_SERVICE"
+  alias edrestart="$INIT_SYS_USER_CMD restart $EMACS_SERVICE"
+fi
 # vim: set ft=sh ts=2
 
 # Local Variables:
