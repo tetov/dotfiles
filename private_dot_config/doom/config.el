@@ -947,9 +947,7 @@ https://tetov.se/"))
 
 ;;;; chezmoi
 (use-package! chezmoi
-  :config )
-(after! chezmoi
-  (require 'chezmoi-company)
+  :config 
   (add-hook 'chezmoi-mode-hook
             #'(lambda () (if chezmoi-mode
                              (add-to-list 'company-backends 'chezmoi-company-backend)
