@@ -165,11 +165,11 @@
   ;; check the mappings by inspecting evil-ex-commands (SPC h v)
 
   ;; Need to type out :quit to close frame
-  (evil-ex-define-cmd "quit" ' suspend-frame)
+  ;; (evil-ex-define-cmd "quit" ' suspend-frame)
   ;; :q should kill the current buffer rather than quitting emacs entirely
-  (evil-ex-define-cmd "q" 'kill-buffer-and-window)
-  (evil-ex-define-cmd "quitall" 'kill-some-buffers)
-  (evil-ex-define-cmd "wqall" ' evil-save-and-close)
+  ;; (evil-ex-define-cmd "q" 'kill-buffer-and-window)
+  ;; (evil-ex-define-cmd "quitall" 'kill-some-buffers)
+  ;; (evil-ex-define-cmd "wqall" ' evil-save-and-close)
 
   (evil-ex-define-cmd "mu[4e]" 'mu4e-search-bookmark)
 
@@ -317,6 +317,15 @@ Based on bh/clock-in-to-next."
 ;;;; org id
         org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
+
+;;;; todo setup
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "PROG(p)" "NEXT(n)" "|" "DONE(d!)")
+          (sequence "WAIT(w@/!)" "|" "CANC(c@/!)" "MEETING" "PHONE"))
+        org-enforce-todo-dependencies t
+        org-enforce-todo-checkbox-dependencies t
+        org-use-fast-todo-selection t
+        org-log-state-notes-into-drawer t)
 
 ;;;; projects setup
   (setq   bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17"
@@ -946,12 +955,12 @@ https://tetov.se/"))
    "cmcd" "eshell/cd ${chezmoi source-path}"))
 
 ;;;; chezmoi
-(use-package! chezmoi
-  :config 
-  (add-hook 'chezmoi-mode-hook
-            #'(lambda () (if chezmoi-mode
-                             (add-to-list 'company-backends 'chezmoi-company-backend)
-                           (setq company-backends (delete 'chezmoi-company-backend company-backends))))))
+(use-package! chezmoi)
+  ;; :config
+  ;; (add-hook 'chezmoi-mode-hook
+  ;;           #'(lambda () (if chezmoi-mode
+  ;;                            (add-to-list 'company-backends 'chezmoi-company-backend)
+  ;;                          (setq company-backends (delete 'chezmoi-company-backend company-backends))))))
 
 (map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
                            (:desc "chezmoi apply" "a" #'chezmoi-write)
