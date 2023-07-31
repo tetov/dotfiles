@@ -1,5 +1,6 @@
 {{ if eq .chezmoi.os "android" -}}
 #!{{ .usrPrefix }}/bin/sh
+set -x
 
 # Ensure that cronie and rclone are installed. 
 pkg install termux-services cronie rclone 
@@ -12,7 +13,7 @@ termux-wake-lock
 
 {{- $RCLONE := print .usrPrefix "/bin/rclone" }}
 {{- $remoteTopDir := "nextcloud:Apps/" }}
-{{- $localTopDir := "$HOME/Nextcloud/Apps/" }}
+{{- $localTopDir := expandenv "$HOME/Nextcloud/Apps/" }}
 
 {{- $dirs := dict 
      "org" "org" 
@@ -33,10 +34,10 @@ mkdir -p {{ $localPath }}
 # Set up the crontab for syncing using rclone
 # First, make sure the existing crontab doesn't have our rclone job for this directory
 
-CRON_JOB="*/15 * * * * {{ $RCLONE }} bisync {{ $remotePath}} {{ $localPath }}"
-
-if ! crontab -l | grep -q "$CRON_JOB"; then
-    (crontab -l; echo "$CRON_JOB") | crontab -
+{{- $cronInterval := "*/10 * * * *" }}
+{{- $cronJob := print $RCLONE " bisync " $remotePath " " $localPath }}
+if ! (crontab -l | grep -q '{{ $cronJob }}'); then
+    (crontab -l; echo '{{ print $cronInterval " " $cronJob }}') | crontab -
 fi
 
 {{- end }}
