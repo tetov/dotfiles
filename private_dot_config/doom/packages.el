@@ -7,12 +7,11 @@
 (package! org-roam-ui)
 
 ;; org-roam-bibtex
-;; (package! org-roam-bibtex
-;;   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+(package! org-roam-bibtex
+  :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 
-;; When using org-roam via the `+roam` flag
 ;; When using bibtex-completion via the `biblio` module
-;; (unpin! bibtex-completion)
+(unpin! bibtex-completion helm-bibtex ivy-bibtex)
 
 (package! backup-each-save)
 ;; (package! burly)

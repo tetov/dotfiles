@@ -96,20 +96,20 @@
     (cfw:ical-create-source "fastmail" (tetov-get-json-value tetov/keys-file "fastmail_calendar_url" "value") "IndianRed"))))
 
 ;;;; prefix map (SPC-m)
-(map! :leader (:prefix-map ("m" . "mine")
-                           (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
-                           (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
-                           (:desc "(e)-shell" "e" #'+eshell/toggle)
-                           (:desc "roam (f)ind node" "f" #'org-roam-node-find)
-                           (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
-                           (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
-                           (:desc "(M)ail menu" "m" #'mu4e-search-bookmark)
-                           (:desc "Compose (M)ail" "M" #'+mu4e/compose)
-                           (:desc "roam (r)efile" "r" #'org-roam-refile)
-                           (:desc "org (R)efile" "R" #'org-refile)
-                           (:desc "org-(q)l views" "q" #'org-ql-view)
-                           (:desc "(v)-term" "v" #'+vterm/toggle)
-                           (:desc "org capture default" "X" #'tetov/org-capture-default)))
+;; (map! :leader (:prefix-map ("m" . "mine")
+;;                            (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
+;;                            (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
+;;                            (:desc "(e)-shell" "e" #'+eshell/toggle)
+;;                            (:desc "roam (f)ind node" "f" #'org-roam-node-find)
+;;                            (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
+;;                            (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
+;;                            (:desc "(M)ail menu" "m" #'mu4e-search-bookmark)
+;;                            (:desc "Compose (M)ail" "M" #'+mu4e/compose)
+;;                            (:desc "roam (r)efile" "r" #'org-roam-refile)
+;;                            (:desc "org (R)efile" "R" #'org-refile)
+;;                            (:desc "org-(q)l views" "q" #'org-ql-view)
+;;                            (:desc "(v)-term" "v" #'+vterm/toggle)
+;;                            (:desc "org capture default" "X" #'tetov/org-capture-default)))
 
 ;;;; browse-url
 ;; configure firefox
@@ -316,7 +316,7 @@ Based on bh/clock-in-to-next."
 
 ;;;; org id
         org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-  (add-hook 'org-capture-mode-hook #'org-id-get-create)
+  (add-hook 'org-capture-before-finalize-hook #'org-id-get-create)
 
 ;;;; todo setup
   (setq org-todo-keywords
@@ -403,13 +403,13 @@ Based on bh/clock-in-to-next."
 :END:
 %:fromname: %a")))
 
-(defun add-property-with-date-captured ()
-  "Add DATE_CAPTURED property to the current item.
+  (defun tetov/add-property-with-date-captured ()
+    "Add DATE_CAPTURED property to the current item.
 From https://emacs.stackexchange.com/a/26120/40644"
-  (interactive)
-  (org-set-property "CAPTURED" (format-time-string "[%F %a %R]")))
+    (interactive)
+    (org-set-property "CAPTURED" (format-time-string "[%F %a %R]")))
 
-(add-hook 'org-capture-before-finalize-hook 'add-property-with-date-captured)
+  (add-hook 'org-capture-before-finalize-hook #'tetov/add-property-with-date-captured)
 
 ;;;;; org-agenda
   (add-hook 'org-agenda-finalize-hook #'org-agenda-show-clocking-issues)
@@ -715,11 +715,18 @@ ${body}
                 org-roam-ui-update-on-save t
                 org-roam-ui-open-on-start nil))
 
-;;;;; org-roam-bibtex
-;; (use-package! org-roam-bibtex
-;;   :after org-roam
-;;   :config
-;;   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+;;;;; bibliography references and tools
+(use-package! org-roam-bibtex
+  :after org-roam
+  :custom (setq orb-insert-interface 'helm-bibtex))
+(use-package! citar
+  :no-require
+  :custom
+  (org-cite-global-bibliography (list bibtex-completion-bibliography))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
 
 ;;;; backup
 (use-package! backup-each-save
