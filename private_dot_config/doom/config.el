@@ -273,7 +273,7 @@
               (org-element-insert-before link replacement)
               (org-element-extract-element link)))))))
 
-  ;; (add-hook 'org-export-before-processing-functions'tetov/remove-id-links)
+  ;; (add-hook 'org-export-before-processing-functions 'tetov/remove-id-links)
 
   (defun tetov/clock-in-to-prog (KW)
     "Switch a task from TODO to PROG when clocking in.
@@ -300,8 +300,7 @@ Based on bh/clock-in-to-next."
   (add-to-list 'org-tags-exclude-from-inheritance "REFILE")
   (add-to-list 'org-tags-exclude-from-inheritance "EMAIL")
 
-;;;; crypt (in after!)
-;;;; crypt (before after!)
+;;;; crypt
   (setq org-crypt-key "anton@tetov.se"
         org-crypt-disable-auto-save t)
 
@@ -310,10 +309,11 @@ Based on bh/clock-in-to-next."
 
 ;;;; refile
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5))
-        org-refile-use-outline-path 'file
+        org-refile-use-outline-path t
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-target-verify-function #'bh/verify-refile-target
+
 ;;;; org id
         org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   (add-hook 'org-capture-mode-hook #'org-id-get-create)
@@ -325,69 +325,70 @@ Based on bh/clock-in-to-next."
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t
         org-use-fast-todo-selection t
-        org-log-state-notes-into-drawer t)
+        org-log-state-notes-into-drawer t
 
 ;;;; projects setup
-  (setq   bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17"
+        bh/organization-task-id "a5b03c9e-2390-4ebe-9282-fa901a564a17"
 
 ;;;; Tags with fast selection keys
-          org-tag-alist (quote ((:startgroup)
-                                ("@work" . ?o)
-                                ("@home" . ?H)
-                                (:endgroup)
-                                ("rp" . ?r)))
+        org-tag-alist (quote ((:startgroup)
+                              ("@work" . ?o)
+                              ("@home" . ?H)
+                              (:endgroup)
+                              ("rp" . ?r)))
 
 ;;;; clocks (before after!)
-          ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
-          org-clock-history-length 23
-          ;; Resume clocking task on clock-in if the clock is open
-          org-clock-in-resume t
-          ;; Change tasks to NEXT when clocking in
-          org-clock-in-switch-to-state 'tetov/clock-in-to-prog
-          ;; Save clock data and state changes and notes in the LOGBOOK drawer
-          org-clock-into-drawer t
-          ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
-          org-clock-out-remove-zero-time-clocks t
-          ;; Clock out when moving task to a done state
-          org-clock-out-when-done t
-          ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-          org-clock-persist t
-          ;; Do not prompt to resume an active clock
-          org-clock-persist-query-resume nil
-          ;; Enable auto clock resolution for finding open clocks
-          org-clock-auto-clock-resolution 'when-no-clock-is-running
-          ;; Include current clocking task in clock reports
-          org-clock-report-include-clocking-task t
-          ;; don't ask if clock out when closing emacs (since it's probably just a restart)
-          org-clock-ask-before-exiting nil
-          org-clocktable-defaults '(:maxlevel 2
-                                    :lang "en"
-                                    :scope agenda
-                                    :block lastweek
-                                    :fileskip0 t
-                                    :match nil
-                                    :emphasize t
-                                    :link nil
-                                    :hidefiles t
-                                    :match "-rp"
-                                    :step day))
+        ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+        org-clock-history-length 23
+        ;; Resume clocking task on clock-in if the clock is open
+        org-clock-in-resume t
+        ;; Change tasks to NEXT when clocking in
+        org-clock-in-switch-to-state 'tetov/clock-in-to-prog
+        ;; Save clock data and state changes and notes in the LOGBOOK drawer
+        org-clock-into-drawer t
+        ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+        org-clock-out-remove-zero-time-clocks t
+        ;; Clock out when moving task to a done state
+        org-clock-out-when-done t
+        ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+        org-clock-persist t
+        ;; Do not prompt to resume an active clock
+        org-clock-persist-query-resume nil
+        ;; Enable auto clock resolution for finding open clocks
+        org-clock-auto-clock-resolution 'when-no-clock-is-running
+        ;; Include current clocking task in clock reports
+        org-clock-report-include-clocking-task t
+        ;; don't ask if clock out when closing emacs (since it's probably just a restart)
+        org-clock-ask-before-exiting nil
+        org-clocktable-defaults '(:maxlevel 2
+                                  :lang "en"
+                                  :scope agenda
+                                  :block lastweek
+                                  :fileskip0 t
+                                  :match nil
+                                  :emphasize t
+                                  :link nil
+                                  :hidefiles t
+                                  :match "-rp"
+                                  :step day))
 
 
   ;; Resume clocking task when emacs is restarted
   (org-clock-persistence-insinuate)
-  (map! :map org-mode-map
-        :localleader
-        (:prefix ("c" . "clock")
-         :desc "Insert past clock" "p" #'org-insert-past-clock))
+
+  ;; (map! :map org-mode-map
+  ;;       :localleader
+  ;;       (:prefix ("c" . "clock")
+  ;;        :desc "Insert past clock" "p" #'org-insert-past-clock))
 
   (add-hook 'org-clock-out-hook #'bh/remove-empty-drawer-on-clock-out)
   (add-hook 'org-clock-out-hook #'bh/clock-out-maybe)
 
 ;;;; capture
   (setq org-capture-templates `(("d" "default" entry (file org-default-notes-file)
-                                 "* TODO %?\n%U\n")
+                                 "* TODO %?\n")
                                 ("m" "Meeting" entry (file org-default-notes-file)
-                                 "* TODO %u Möte %? :MEETING:\n%U\n"
+                                 "* TODO %u Möte %? :MEETING:\n"
                                  :clock-in t
                                  :clock-keep t)
                                 ("e" "Email" entry (file org-default-notes-file)
@@ -400,8 +401,15 @@ Based on bh/clock-in-to-next."
 :message-id: %:message-id
 :received: %:date
 :END:
-%U
 %:fromname: %a")))
+
+(defun add-property-with-date-captured ()
+  "Add DATE_CAPTURED property to the current item.
+From https://emacs.stackexchange.com/a/26120/40644"
+  (interactive)
+  (org-set-property "CAPTURED" (format-time-string "[%F %a %R]")))
+
+(add-hook 'org-capture-before-finalize-hook 'add-property-with-date-captured)
 
 ;;;;; org-agenda
   (add-hook 'org-agenda-finalize-hook #'org-agenda-show-clocking-issues)
@@ -956,11 +964,11 @@ https://tetov.se/"))
 
 ;;;; chezmoi
 (use-package! chezmoi)
-  ;; :config
-  ;; (add-hook 'chezmoi-mode-hook
-  ;;           #'(lambda () (if chezmoi-mode
-  ;;                            (add-to-list 'company-backends 'chezmoi-company-backend)
-  ;;                          (setq company-backends (delete 'chezmoi-company-backend company-backends))))))
+;; :config
+;; (add-hook 'chezmoi-mode-hook
+;;           #'(lambda () (if chezmoi-mode
+;;                            (add-to-list 'company-backends 'chezmoi-company-backend)
+;;                          (setq company-backends (delete 'chezmoi-company-backend company-backends))))))
 
 (map! :leader (:prefix-map ("d" . "chezmoi dotfiles")
                            (:desc "chezmoi apply" "a" #'chezmoi-write)
