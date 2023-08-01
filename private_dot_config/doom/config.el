@@ -714,7 +714,7 @@ PhD student in Architecture & Construction Robotics
 Department of Architecture & Built Environment
 Lund University - LTH
 
-Phone no: +46 46-222 17 77
+Phone no: +46 46-222 71 11
 
 https://abm.lth.se/
 https://tetov.se/"))
