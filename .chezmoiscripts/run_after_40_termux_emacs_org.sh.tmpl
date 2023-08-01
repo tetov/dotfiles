@@ -2,8 +2,8 @@
 #!{{ .usrPrefix }}/bin/sh
 set -x
 
-# Ensure that cronie and rclone are installed. 
-pkg install termux-services cronie rclone 
+# Ensure that cronie and rclone are installed.
+pkg install termux-services cronie rclone
 
 sv-enable crond
 sv-enable emacsd
@@ -15,10 +15,10 @@ termux-wake-lock
 {{- $remoteTopDir := "nextcloud:Apps/" }}
 {{- $localTopDir := expandenv "$HOME/Nextcloud/Apps/" }}
 
-{{- $dirs := dict 
-     "org" "org" 
+{{- $dirs := dict
+     "org" "org"
      "org-attach" "org-attach"
-     "editor-backups/vim/localhost" "editor-backups/vim/luna-termux" 
+     "editor-backups/vim/localhost" "editor-backups/vim/luna-termux"
      "editor-backups/emacs/localhost" "editor-backups/emacs/luna-termux"  }}
 {{- range $local, $remote := $dirs }}
 
@@ -45,4 +45,3 @@ fi
 termux-wake-unlock
 
 {{- end }}
-
