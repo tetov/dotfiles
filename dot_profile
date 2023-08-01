@@ -82,11 +82,7 @@ else
       gpgconf --launch gpg-agent
     fi
   fi
-
-  agent_ssh_socket="$(gpgconf --list-dirs agent-ssh-socket)"
-
-  test -n "$agent_ssh_socket" && \
-    export SSH_AUTH_SOCK="$agent_ssh_socket"
+  export SSH_AUTH_SOCKET="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
 alias v=vim
