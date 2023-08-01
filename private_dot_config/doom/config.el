@@ -95,21 +95,21 @@
     (cfw:cal-create-source "Orange") ; diary source
     (cfw:ical-create-source "fastmail" (tetov-get-json-value tetov/keys-file "fastmail_calendar_url" "value") "IndianRed"))))
 
-;;;; prefix map (SPC-m)
-;; (map! :leader (:prefix-map ("m" . "mine")
-;;                            (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
-;;                            (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
-;;                            (:desc "(e)-shell" "e" #'+eshell/toggle)
-;;                            (:desc "roam (f)ind node" "f" #'org-roam-node-find)
-;;                            (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
-;;                            (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
-;;                            (:desc "(M)ail menu" "m" #'mu4e-search-bookmark)
-;;                            (:desc "Compose (M)ail" "M" #'+mu4e/compose)
-;;                            (:desc "roam (r)efile" "r" #'org-roam-refile)
-;;                            (:desc "org (R)efile" "R" #'org-refile)
-;;                            (:desc "org-(q)l views" "q" #'org-ql-view)
-;;                            (:desc "(v)-term" "v" #'+vterm/toggle)
-;;                            (:desc "org capture default" "X" #'tetov/org-capture-default)))
+;;;; prefix map (SPC-\)
+(map! :leader (:prefix-map ("\\" . "mine")
+                           (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
+                           (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
+                           (:desc "(e)-shell" "e" #'+eshell/toggle)
+                           (:desc "roam (f)ind node" "f" #'org-roam-node-find)
+                           (:desc "org (g)oto last captured" "g" #'org-capture-goto-last-stored)
+                           (:desc "org (G)oto last refiled" "G" #'org-refile-goto-last-stored)
+                           (:desc "(M)ail menu" "m" #'mu4e-search-bookmark)
+                           (:desc "Compose (M)ail" "M" #'+mu4e/compose)
+                           (:desc "roam (r)efile" "r" #'org-roam-refile)
+                           (:desc "org (R)efile" "R" #'org-refile)
+                           (:desc "org-(q)l views" "q" #'org-ql-view)
+                           (:desc "(v)-term" "v" #'+vterm/toggle)
+                           (:desc "org capture default" "\\" #'tetov/org-capture-default)))
 
 ;;;; browse-url
 ;; configure firefox
@@ -132,7 +132,7 @@
                                       'browse-url-generic
                                     'browse-url-firefox))
 
-(setq doom-localleader-key ",")
+(setq doom-localleader-key "\\")
 ;; highlight indentation
 (setq highlight-indent-guides-method 'fill)
 
@@ -232,6 +232,13 @@
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
+;;; completion
+(after! (:or vertico orderless)
+  (setq orderless-smart-case t
+        completion-ignore-case t
+        read-file-name-completion-ignore-case t
+        read-buffer-completion-ignore-case t))
+
 ;;; org
 
 ;;;;; org file locations (before after!)
@@ -243,9 +250,18 @@
       org-id-locations-file (file-name-concat org-directory ".orgids")
 ;;;;;; roam files
       org-roam-directory org-directory
-      org-roam-db-location (file-name-concat org-roam-directory "db/org-roam.db")
-;;;; references
-      bibtex-completion-bibliography (file-name-concat tetov/nextcloud-apps-dir "zotero.bib"))
+      org-roam-db-location (file-name-concat org-roam-directory "db/org-roam.db"))
+
+;;;; paths for references
+(let* ((bib-paths (list (file-name-concat tetov/nextcloud-apps-dir "zotero.bib")))
+       (bib-notes-subdir "refs")
+       (bib-note-path (file-name-concat org-directory bib-notes-subdir "/"))
+       (bib-note-paths (list bib-note-path)))
+  (setq! bibtex-completion-bibliography bib-paths
+         bibtex-completion-notes-path bib-note-path
+         citar-bibliography bib-paths
+         citar-notes-paths bib-note-paths
+         citar-org-roam-subdir bib-notes-subdir))
 
 (after! org
   (require 'org-element)
@@ -309,7 +325,7 @@ Based on bh/clock-in-to-next."
 
 ;;;; refile
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5))
-        org-refile-use-outline-path t
+        org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-target-verify-function #'bh/verify-refile-target
@@ -476,124 +492,6 @@ From https://emacs.stackexchange.com/a/26120/40644"
                         (descendants (planning))))))
 
 
-;;;;; org-ql-views
-  (setq org-super-agenda-header-map nil)
-  (map! :localleader :map 'org-ql-view-map :desc "org-ql-view dispatcher" "q" #'org-ql-view-dispatch)
-  ;; (evil-define-key 'normal org-ql-view-map
-  ;;   "j" 'evil-next-line
-  ;;   "k" 'evil-previous-line)
-  ;; (evil-define-key 'normal org-super-agenda-header-map
-  ;;   "j" 'evil-next-line
-  ;;   "k" 'evil-previous-line)
-  (customize-set-variable 'org-ql-views
-                          (list
-                           (cons "Overview: Agenda-like"
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(and (not (done))
-                                                    (or (habit)
-                                                        (deadline auto)
-                                                        (scheduled :to today)
-                                                        (ts-active :on today)))
-                                       :sort '(todo priority date)
-                                       :super-groups 'org-super-agenda-groups
-                                       :title "Agenda-like"))
-                           (cons "Overview: NEXT/PROG/WAIT"
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(todo "NEXT" "PROG" "WAIT")
-                                       :sort '(todo date priority)
-                                       :super-groups '((:todo "PROG") (:todo "NEXT") (:todo "WAIT"))
-                                       :title "Overview: NEXT/PROG/WAIT"))
-                           (cons "Calendar: Today"
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(ts-active :on today)
-                                       :title "Today"
-                                       :super-groups 'org-super-agenda-groups
-                                       :sort '(priority)))
-                           (cons "Calendar: This week"
-                                 (lambda ()
-                                   "Show items with an active timestamp during this calendar week."
-                                   (interactive)
-                                   (let* ((ts (ts-now))
-                                          (beg-of-week (->> ts
-                                                            (ts-adjust 'day (- (ts-dow (ts-now))))
-                                                            (ts-apply :hour 0 :minute 0 :second 0)))
-                                          (end-of-week (->> ts
-                                                            (ts-adjust 'day (- 6 (ts-dow (ts-now))))
-                                                            (ts-apply :hour 23 :minute 59 :second 59))))
-                                     (org-ql-search (org-agenda-files)
-                                       `(ts-active :from ,beg-of-week
-                                         :to ,end-of-week)
-                                       :title "This week"
-                                       :super-groups 'org-super-agenda-groups
-                                       :sort '(priority)))))
-                           (cons "Calendar: Next week"
-                                 (lambda ()
-                                   "Show items with an active timestamp during the next calendar week."
-                                   (interactive)
-                                   (let* ((ts (ts-adjust 'day 7 (ts-now)))
-                                          (beg-of-week (->> ts
-                                                            (ts-adjust 'day (- (ts-dow (ts-now))))
-                                                            (ts-apply :hour 0 :minute 0 :second 0)))
-                                          (end-of-week (->> ts
-                                                            (ts-adjust 'day (- 6 (ts-dow (ts-now))))
-                                                            (ts-apply :hour 23 :minute 59 :second 59))))
-                                     (org-ql-search (org-agenda-files)
-                                       `(ts-active :from ,beg-of-week
-                                         :to ,end-of-week)
-                                       :title "Next week"
-                                       :super-groups 'org-super-agenda-groups
-                                       :sort '(priority)))))
-                           (cons (propertize "Review: Stuck projects"
-                                             'help-echo "Projects with no tasks that are marked NEXT or PROG, and no TODOs with deadline/scheduled")
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(and
-                                                (project)
-                                                (not
-                                                 (or
-                                                  (descendants
-                                                   (todo "PROG" "WAIT" "NEXT"))
-                                                  (descendants
-                                                   (planning)))))
-                                       :title (propertize "Review: Stuck projects"
-                                                          'help-echo "Projects with no tasks that are marked NEXT or PROG, and no TODOs with deadline/scheduled")
-                                       :sort '(todo priority date)
-                                       :super-groups '((:auto-parent t))))
-                           (cons "Review: Recently timestamped" #'org-ql-view-recent-items)
-                           (cons (propertize "Review: Stale tasks"
-                                             'help-echo "Tasks without a timestamp in the past 2 weeks")
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(and (todo)
-                                                    (not (todo "NEXT" "PROG" "WAIT"))
-                                                    (not (ts :from -14)))
-                                       :title (propertize "Review: Stale tasks"
-                                                          'help-echo "Tasks without a timestamp in the past 2 weeks")
-                                       :sort '(todo priority date)
-                                       :super-groups '((:auto-parent t))))
-                           (cons (propertize "Review: Dangling tasks"
-                                             'help-echo "Tasks whose ancestor is done")
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(and (todo)
-                                                    (ancestors (done)))
-                                       :title (propertize "Review: Dangling tasks"
-                                                          'help-echo "Tasks whose ancestor is done")
-                                       :sort '(todo priority date)
-                                       :super-groups '((:auto-parent t))))
-                           (cons "Review: All projects"
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(project)
-                                       :sort '(date)
-                                       :title "Review: All projects"))
-                           (cons (propertize "Review: All unmarked TODOs"
-                                             'help-echo "TODO is not project, not habit, not NEXT nor PROG but it might have a planning attribute.")
-                                 (list :buffers-files #'org-agenda-files
-                                       :query '(and
-                                                (todo)
-                                                (not (habit))
-                                                (not (project))
-                                                (not (todo "PROG" "WAIT" "NEXT")))
-                                       :sort '(todo date)
-                                       :title (propertize "Review: All unmarked TODOs"
-                                                          'help-echo "TODO is not project, not habit, not NEXT nor PROG but it might have a planning attribute.")))))
 ;;;;; org-roam
   (when (tetov-is-android-p)
     ;; fix display issue on phone (wrong width in mini-buffer)
@@ -630,14 +528,14 @@ From https://emacs.stackexchange.com/a/26120/40644"
            :immediate-finish t
            :unnarrowed t)
           ("b" "bibliography reference" plain "%?"
-           :target (file+head "refs/${citekey}.org"
+           :target (file+head "refs/${citar-citekey}.org"
                               ":PROPERTIES:
 :CATEGORY: reference
-:type: %^{entry-type}
-:authors: %^{author}
+:type: ${citar-type}
+:authors: ${citar-author}
+:date: ${citar-date}
 :END:
-#+FILETAGS: %^{keywords}
-#+title: ${title}")
+#+title: ${citar-author} :: ${citar-title}")
            :unnarrowed t
            :immediate-finish t)
           ("r" "org roam ref" plain "%?"
@@ -669,6 +567,9 @@ ${body}
 #+end_quote
 ")
                                           :unnarrowed t)))
+
+;;;; references
+(setq citar-org-roam-capture-template-key "b")
 
 ;;;;;; org export
   (setq org-export-initial-scope 'subtree
@@ -715,28 +616,15 @@ ${body}
                 org-roam-ui-update-on-save t
                 org-roam-ui-open-on-start nil))
 
-;;;;; bibliography references and tools
-(use-package! org-roam-bibtex
-  :after org-roam
-  :custom (setq orb-insert-interface 'helm-bibtex))
-(use-package! citar
-  :no-require
-  :custom
-  (org-cite-global-bibliography (list bibtex-completion-bibliography))
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  (citar-bibliography org-cite-global-bibliography))
-
 ;;;; backup
 (use-package! backup-each-save
-  :config (progn
+  :config
             (require 'tetov-editor-backup)
             (setq backup-each-save-mirror-location (tetov-editor-backup-setup-dir tetov/nextcloud-apps-dir)
                   backup-each-save-remote-files t
                   backup-each-save-filter-function 'tetov-editor-backup-each-save-filter
                   ;; save to same file for 1 hour
-                  backup-each-save-time-format "%Y_%m_%d_%H_00_00")))
+                  backup-each-save-time-format "%Y_%m_%d_%H_00_00"))
 (add-hook 'after-save-hook #'backup-each-save)
 
 (auto-save-visited-mode 1)
@@ -926,10 +814,11 @@ https://tetov.se/"))
 (use-package! excorporate)
 
 ;;;; term
-(setq vterm-kill-buffer-on-exit t
-      vterm-always-compile-module t)
+(after! vterm
+  (setq vterm-kill-buffer-on-exit t
+        vterm-always-compile-module t))
 
-(after! 'eshell
+(after! eshell
   (set-eshell-alias!
    "q"  "exit"           ; built-in
    "f"  "find-file $1"
@@ -987,6 +876,10 @@ https://tetov.se/"))
                            (:desc "chezmoi open other file" "o" #'chezmoi-open-other)
                            (:desc "chezmoi template buffer display" "t" #'chezmoi-template-buffer-display)
                            (:desc "chezmoi toggle mode" "c" #'chezmoi-mode)))
+
+;;;; pdf-tools
+(after! pdf-tools
+  (setq pdf-view-continuous nil))
 
 ;;;; elfeed (RSS)
 (after! elfeed
