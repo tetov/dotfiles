@@ -132,7 +132,7 @@
                                       'browse-url-generic
                                     'browse-url-firefox))
 
-(setq doom-localleader-key "\\")
+(setq doom-localleader-key ",")
 ;; highlight indentation
 (setq highlight-indent-guides-method 'fill)
 
@@ -146,7 +146,6 @@
         evil-move-cursor-back nil)
 
   (evil-put-command-property 'evil-yank-line :motion 'evil-line)
-
   (evil-global-set-key 'normal (kbd "j") 'evil-next-visual-line)
   (evil-global-set-key 'normal (kbd "k") 'evil-previous-visual-line)
 
