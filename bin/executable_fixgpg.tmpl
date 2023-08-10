@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -eu
+
+kill_by_process_name() {
+    if [ -z "$1" ] ; then
+        echo "Usage: kill_by_process_name <process_name>"
+        return 1
+    fi
+
+    process_name="$1"
+
+    echo "Killing $process_name"
+
+    if [ $(pgrep -c "$process_name") -eq 0 ] ; then
+        echo "No processes matched"
+        return 0
+    fi
+
+    pkill --echo "$process_name"
+}
+
+POTENTIALLY_MEDDLESOME_PROCS="pinentry ssh-agent"
+
+for process_name in $POTENTIALLY_MEDDLESOME_PROCS ; do
+    kill_by_process_name "$process_name"
+done
+
+echo "Replacing gnome-keyring-daemon (to make sure it's not running ssh component)"
+gnome-keyring-daemon --replace --daemonize --components pkcs11,secrets
+
+echo "Using gpgconf to restart and reload gpg"
+gpgconf --kill gpg-agent
+gpgconf --reload
+
+echo "Restarting pcscd.service"
+systemctl restart pcscd.service
