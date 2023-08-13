@@ -446,6 +446,8 @@ From https://emacs.stackexchange.com/a/26120/40644"
 ;;;;; agenda views
   (setq org-agenda-custom-commands
         `(("d" "default"
+           ((agenda "" nil)))
+          ("x" "extended"
            ((agenda "" nil)
             (tags "REFILE"
                   ((org-agenda-overriding-header "Tasks to refile")
@@ -571,7 +573,7 @@ ${body}
 (setq citar-org-roam-capture-template-key "b")
 
 ;;;;;; org export
-  (setq org-export-initial-scope 'subtree
+  (setq org-export-initial-scope 'buffer
         org-export-with-author nil
         org-export-with-broken-links 'mark
         org-export-with-date nil
@@ -591,8 +593,7 @@ ${body}
 ;;;;;; ox-pandoc
         org-pandoc-options '((standalone . t))
         org-pandoc-options-for-latex-pdf `((standalone . t)
-                                           (pdf-engine . "xelatex")
-                                           (template . ,(substitute-in-file-name "$DOOMDIR/ox_pandoc_latex_template.tex")))
+                                           (pdf-engine . "xelatex"))
 ;;;;;; ox-hugo
         org-hugo-export-with-toc nil
         org-hugo-date-format "%Y-%m-%d"
