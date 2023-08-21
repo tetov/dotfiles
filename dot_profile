@@ -72,17 +72,12 @@ if [ "$(uname -o)" = "Android" ] ;  then
 else
   # For gpg agent forwarding. (Dir gets deleted on log out)
   gpgconf --create-socketdir
-  # if not SSH connection
-  if [ -z "$SSH_CLIENT" ]; then
-    # one way to check if vnc connection, assuming :0 is never used for vnc
-    # server..
-    # either there's no DISPLAY but if there is it should be :0
-    if [ -z "$DISPLAY" -o "$DISPLAY" = ":0" ] ; then
-      export GPG_TTY=$(tty)
-      gpgconf --launch gpg-agent
-    fi
-  fi
+
+  unset SSH_AGENT_PID
+  export GPG_TTY=$(tty)
+  gpg-connect-agent updatestartuptty /bye >/dev/null
   export SSH_AUTH_SOCKET="$(gpgconf --list-dirs agent-ssh-socket)"
+  export SSH_AUTH_SOCK="$SSH_AUTH_SOCKET"
 fi
 
 alias v=vim
