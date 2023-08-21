@@ -60,8 +60,8 @@ _path_append "$HOME/.poetry/bin"
 
 _path_append "$HOME/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin"
 
-# return if non-interactive
-[ -z "$PS1" ] && return
+# exit if non-interactive
+[ -z "$PS1" ] && exit
 
 if command -v emacsclient >/dev/null; then
   export VISUAL="emacsclient"
