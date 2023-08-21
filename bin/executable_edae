@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Check if systemctl is available and set INIT_SYS_USER_CMD and EMACS_SERVICE accordingly
+if command -v systemctl >/dev/null ; then
+  INIT_SYS_USER_CMD='systemctl --user'
+  EMACS_SERVICE='emacs.service'
+# If sv is available, set INIT_SYS_USER_CMD and EMACS_SERVICE accordingly
+elif command -v sv >/dev/null ; then
+  INIT_SYS_USER_CMD='sv'
+  EMACS_SERVICE='emacsd'
+# If neither systemctl nor sv is available, exit with an error
+else
+  echo "Neither 'systemctl' nor 'sv' found. Cannot proceed with edae command."
+  exit 1
+fi
+
+# Function to execute the INIT_SYS_USER_CMD with provided arguments
+edae() {
+  if [ -n "$1" ]; then
+    $INIT_SYS_USER_CMD $@ $EMACS_SERVICE
+  else
+    echo "Usage: edae <init_sys_command>"
+    exit 1
+  fi
+}
+
+# Call the main function with the provided arguments
+edae "$@"
