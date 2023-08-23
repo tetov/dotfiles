@@ -1,7 +1,7 @@
-{{ if lookPath "gsettings" -}}
 #!{{ .usrPrefix }}/bin/sh
 set -euf
 
+{{ if lookPath "gsettings" -}}
 if gsettings list-schemas | grep -q org.gnome.desktoop; then
     gsettings set org.gnome.desktop.calendar show-weekdate true
 
@@ -51,4 +51,16 @@ if gsettings list-schemas | grep -q org.gnome.settings-daemon.plugins.media-keys
     gsettings set org.gnome.settings-daemon.plugins.media-keys search "['<Alt>space']"
     gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>f']"
 fi
+
+if gsettings list-schemas | grep -q org.gnome.shell.extensions.auto-move-windows ; then
+    gsettings set org.gnome.shell.extensions.auto-move-windows application-list "['firefox.desktop:1', 'emacs.desktop:2', 'Alacritty.desktop:3', 'org.gnome.Terminal.desktop:3', 'org.gnome.Nautilus.desktop:3', 'org.ferdium.Ferdium.desktop:4', 'org.signal.Signal.desktop:4']"
+fi
+{{- end }}
+
+{{ if lookPath "gnome-extensions" -}}
+gnome-extensions enable gsconnect@andyholmes.github.io
+gnome-extensions enable auto-move-windows@gnome-shell-extensions.gcampax.github.com
+gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
+gnome-extensions enable caffeine@patapon.info
+gnome-extensions enable pop-shell@system76.com
 {{- end }}

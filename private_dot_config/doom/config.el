@@ -570,7 +570,7 @@ ${body}
                                           :unnarrowed t)))
 
 ;;;; references
-(setq citar-org-roam-capture-template-key "b")
+  (setq citar-org-roam-capture-template-key "b")
 
 ;;;;;; org export
   (setq org-export-initial-scope 'buffer
@@ -619,12 +619,12 @@ ${body}
 ;;;; backup
 (use-package! backup-each-save
   :config
-            (require 'tetov-editor-backup)
-            (setq backup-each-save-mirror-location (tetov-editor-backup-setup-dir tetov/nextcloud-apps-dir)
-                  backup-each-save-remote-files t
-                  backup-each-save-filter-function 'tetov-editor-backup-each-save-filter
-                  ;; save to same file for 1 hour
-                  backup-each-save-time-format "%Y_%m_%d_%H_00_00"))
+  (require 'tetov-editor-backup)
+  (setq backup-each-save-mirror-location (tetov-editor-backup-setup-dir tetov/nextcloud-apps-dir)
+        backup-each-save-remote-files t
+        backup-each-save-filter-function 'tetov-editor-backup-each-save-filter
+        ;; save to same file for 1 hour
+        backup-each-save-time-format "%Y_%m_%d_%H_00_00"))
 (add-hook 'after-save-hook #'backup-each-save)
 
 (auto-save-visited-mode 1)
@@ -708,7 +708,7 @@ ${body}
                       (smtpmail-smtp-user      . "anton_tetov.johansson@abm.lth.se")
                       (+mu4e-personal-addresses . '("anton_tetov.johansson@abm.lth.se"))
                       (mu4e-compose-signature  . "Best regards,
-Anton Tetov Johansson
+Anton Tetov Johansson (they/them)
 PhD student in Architecture & Construction Robotics
 
 Department of Architecture & Built Environment
@@ -807,13 +807,14 @@ https://tetov.se/"))
 (setq vdirel-repository (substitute-in-file-name "$XDG_DATA_HOME/vdirsyncer/contacts/Default"))
 
 ;;;;; calendars
-(add-hook 'diary-mark-entries-hook 'diary-mark-included-diary-files)
+(add-hook 'diary-mark-entries-hook #'diary-mark-included-diary-files)
 
 (setq excorporate-configuration '("an6802jo@lu.se" . "https://webmail.lu.se/EWS/Exchange.asmx")
       excorporate-calendar-show-day-function #'exco-calfw-show-day)
 (use-package! excorporate)
 
 ;;;; term
+;; https://github.com/syl20bnr/spacemacs/issues/2345#issuecomment-240634646
 (after! vterm
   (setq vterm-kill-buffer-on-exit t
         vterm-always-compile-module t))
