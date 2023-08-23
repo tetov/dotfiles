@@ -2,3 +2,7 @@ channel_priority: strict
 channels:
   - conda-forge
   - defaults
+
+# Local Variables:
+# mode: yaml
+# End:
