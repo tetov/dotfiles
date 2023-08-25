@@ -1,4 +1,4 @@
-#zmodule jeffreytse/zsh-vi-mode --if 'test ! -v INSIDE_EMACS'
+# zmodule jeffreytse/zsh-vi-mode --if 'test ! -v INSIDE_EMACS'
 
 zmodule agkozak/zsh-z
 zmodule lukechilds/zsh-nvm

@@ -48,7 +48,7 @@ Plug 'ChesleyTan/wordCount.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'qpkorr/vim-renamer'                " Bulk rename in vim
-#Plug 'sheerun/vim-wombat-scheme'
+"Plug 'sheerun/vim-wombat-scheme'
 Plug 'tpope/vim-commentary'              " Comment and uncomment
 Plug 'tpope/vim-fugitive'                " Git
 Plug 'tpope/vim-repeat'                  " Allows repetition (with .) for plugin commands
