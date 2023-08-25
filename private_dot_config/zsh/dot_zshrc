@@ -1,4 +1,6 @@
 # -*- mode: sh -*-
+
+# Include configs from 3 locations:
 # history settings
 HISTFILE=$XDG_STATE_HOME/zsh/history
 mkdir -p $(dirname $HISTFILE)
