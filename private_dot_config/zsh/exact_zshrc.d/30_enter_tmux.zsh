@@ -1,5 +1,5 @@
 if [[ ! -v TMUX ]] ; then
-    tmux attach-session -t $USER -f active-pane \
+    tmux attach-session -t $USER \
         || tmux new-session -s $USER
 fi
 
