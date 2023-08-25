@@ -75,7 +75,6 @@ else
 
   unset SSH_AGENT_PID
   export GPG_TTY=$(tty)
-  gpg-connect-agent updatestartuptty /bye >/dev/null
   export SSH_AUTH_SOCKET="$(gpgconf --list-dirs agent-ssh-socket)"
   export SSH_AUTH_SOCK="$SSH_AUTH_SOCKET"
 fi
