@@ -219,6 +219,16 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# workspace rules
+
+assign [app_id="firefox"] → workspace number 1
+assign [app_id="emacs"] → workspace number 2
+assign [class="Ferdium"] → workspace number 4
+assign [class="Signal"] → workspace number 4
+
+# floating rules
+for_window [class="1Password"] floating enable
+
 # Include configs from 3 locations:
 #  - /usr/share/sway/config.d
 #  - /etc/sway/config.d
