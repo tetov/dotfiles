@@ -1,3 +1,0 @@
-{{ if not (or (eq .chezmoi.os "android") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
-../rclone@.service
-{{- end }}
