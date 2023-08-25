@@ -3,5 +3,4 @@ Description=Synchronise mailboxes in group %i
 
 [Service]
 Type=oneshot
-ExecPre=/usr/bin/op whoami
 ExecStart=%h/bin/sync_emails.sh %i
