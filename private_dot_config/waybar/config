@@ -23,6 +23,12 @@
             "urgent": "",
             "focused": "",
             "default": ""
+        },
+        "persistent_workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": []
         }
     },
     "keyboard-state": {
