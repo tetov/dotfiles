@@ -1,7 +1,5 @@
-if [[ ! -v TMUX ]] ; then
-    tmux attach-session -t $USER \
-        || tmux new-session -s $USER
-fi
+[[ -v TMUX ]] || \
+    tmux new-session -A -s $USER-tmux-session -t $USER-tmux-session-group
 
 # Local Variables:
 # mode: sh
