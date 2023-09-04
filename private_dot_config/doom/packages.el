@@ -33,3 +33,6 @@
 
 (package! tetov
   :recipe (:host sourcehut :repo "tetov/tetov.el" :files ("src/*.el")))
+
+(package! taskjuggler-mode
+  :recipe (:host github :repo "tanju/taskjuggler-mode" :branch "main"))

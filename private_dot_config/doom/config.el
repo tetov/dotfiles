@@ -77,9 +77,7 @@
 
 ;;;; directory setup
 (setq tetov/win-user-dir "/mnt/c/Users/tetov")
-(setq tetov/nextcloud-dir (if (tetov-is-wsl-p)
-                              (file-name-concat tetov/win-user-dir "Nextcloud")
-                            (expand-file-name "~/Nextcloud")))
+(setq tetov/nextcloud-dir (expand-file-name "~/Nextcloud"))
 (setq tetov/nextcloud-apps-dir (file-name-concat tetov/nextcloud-dir "Apps"))
 
 ;;;; funcs outside of after! blocks
@@ -894,3 +892,6 @@ https://tetov.se/"))
 (setq org-pocket-capture-file org-default-notes-file)
 (after! pocket-reader
   (require 'org-pocket))
+
+;; taskjuggler
+(require 'taskjuggler-mode)
