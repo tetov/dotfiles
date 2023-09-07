@@ -1,5 +1,3 @@
-# zmodule jeffreytse/zsh-vi-mode --if 'test ! -v INSIDE_EMACS'
-
 zmodule agkozak/zsh-z
 zmodule lukechilds/zsh-nvm
 
@@ -10,4 +8,4 @@ zmodule romkatv/powerlevel10k --use degit
 zmodule zsh-users/zsh-completions --fpath src
 zmodule completion
 zmodule zsh-users/zsh-syntax-highlighting
-# zmodule zsh-users/zsh-autosuggestions
+zmodule zsh-users/zsh-autosuggestions
