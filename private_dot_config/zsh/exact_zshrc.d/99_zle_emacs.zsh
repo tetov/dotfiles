@@ -1,0 +1,2 @@
+# man zshzle
+bindkey -e
