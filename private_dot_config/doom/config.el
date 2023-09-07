@@ -94,7 +94,7 @@
     (cfw:ical-create-source "fastmail" (tetov-get-json-value tetov/keys-file "fastmail_calendar_url" "value") "IndianRed"))))
 
 ;;;; prefix map (SPC-\)
-(map! :leader (:prefix-map ("\\" . "mine")
+(map! :leader (:prefix-map ("l" . "lmine")
                            (:desc "(A)genda view" "a" #'tetov/open-my-agenda-view)
                            (:desc "roam (b)uffer toggle" "b" #'org-roam-buffer-toggle)
                            (:desc "(e)-shell" "e" #'+eshell/toggle)
@@ -135,14 +135,15 @@
 (setq highlight-indent-guides-method 'fill)
 
 ;;;; vimify
-(after! evil
-  (setq evil-respect-visual-line-mode t
-        evil-split-window-below t
-        evil-vsplit-window-right t
-        evil-want-Y-yank-to-eol t
-        evil-want-fine-undo t
-        evil-move-cursor-back nil)
+(setq evil-respect-visual-line-mode t
+      evil-split-window-below t
+      evil-vsplit-window-right t
+      evil-want-Y-yank-to-eol t
+      evil-want-fine-undo t
+      evil-move-cursor-back nil
+      evil-snipe-override-evil-repeat-keys nil)
 
+(after! evil
   (evil-put-command-property 'evil-yank-line :motion 'evil-line)
   (evil-global-set-key 'normal (kbd "j") 'evil-next-visual-line)
   (evil-global-set-key 'normal (kbd "k") 'evil-previous-visual-line)
@@ -504,7 +505,7 @@ From https://emacs.stackexchange.com/a/26120/40644"
 :CATEGORY: note
 :END:
 #+title: ${title}
-%U")
+")
            :immediate-finish t
            :unnarrowed t)
           ("p" "person" plain  "%?"
@@ -513,7 +514,7 @@ From https://emacs.stackexchange.com/a/26120/40644"
 :CATEGORY: person
 :END:
 #+title: ${title}
-%U")
+")
            :immediate-finish t
            :unnarrowed t)
           ("w" "writing" plain  "%?"
@@ -522,7 +523,7 @@ From https://emacs.stackexchange.com/a/26120/40644"
 :CATEGORY: writing
 :END:
 #+title: ${title}
-%U")
+")
 
            :immediate-finish t
            :unnarrowed t)
@@ -542,7 +543,7 @@ From https://emacs.stackexchange.com/a/26120/40644"
 :CATEGORY: reference
 :END:
 #+title: ${title}
-%U")
+")
            :immediate-finish
            :unnarrowed t)
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
@@ -552,7 +553,7 @@ From https://emacs.stackexchange.com/a/26120/40644"
 :END:
 #+FILETAGS: :dnd5e:eat-flay-prowl:privat:
 #+title: ${title}
-%U")
+")
            :immediate-finish t
            :unnarrowed t)))
 
@@ -561,9 +562,7 @@ From https://emacs.stackexchange.com/a/26120/40644"
 :CATEGORY: reference
 :END:
 #+title: ${title}
-#+begin_quote
 ${body}
-#+end_quote
 ")
                                           :unnarrowed t)))
 
@@ -613,6 +612,9 @@ ${body}
                 org-roam-ui-follow nil
                 org-roam-ui-update-on-save t
                 org-roam-ui-open-on-start nil))
+;; needed because roam messes up , binding?
+;; https://github.com/doomemacs/doomemacs/issues/4242#issuecomment-731436096
+(add-hook! 'org-mode-hook #'+org-init-keybinds-h)
 
 ;;;; backup
 (use-package! backup-each-save
