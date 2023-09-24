@@ -27,7 +27,8 @@ for process_name in $POTENTIALLY_MEDDLESOME_PROCS ; do
 done
 
 echo "Replacing gnome-keyring-daemon (to make sure it's not running ssh component)"
-gnome-keyring-daemon --replace --daemonize --components pkcs11,secrets
+command -v gnome-keyring-daemon >/dev/null && \
+    gnome-keyring-daemon --replace --daemonize --components pkcs11,secrets
 
 echo "Using gpgconf to stop gpg-agent and start again using gpg-agent --daemon"
 gpgconf --kill gpg-agent
