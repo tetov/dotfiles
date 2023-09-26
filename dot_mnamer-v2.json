@@ -1,0 +1,18 @@
+{
+  "episode_directory": "/opt/media_library/TV Shows/{series}/Season {season:02}",
+  "episode_format": "{series} - S{season:02}E{episode:02} - {title}.{extension}",
+  "movie_directory": "/opt/media_library/Movies/{name} - ({year})",
+  "movie_format": "{name} ({year}).{extension}",
+  "no_guess": false,
+  "no_overwrite": false,
+  "no_style": false,
+  "recurse": false,
+  "replace_after": {
+    "&": "and",
+    ";": ",",
+    "@": "at"
+  },
+  "replace_before": {},
+  "scene": false,
+  "verbose": false
+}
