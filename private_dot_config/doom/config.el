@@ -241,7 +241,7 @@
 
 ;;;;; org file locations (before after!)
 (setq org-directory (file-name-concat tetov/nextcloud-apps-dir "org")
-      org-agenda-files (directory-files org-directory nil (rx ".org" eos))
+      org-agenda-files (list org-directory (file-name-concat org-directory "daily"))
       org-default-notes-file (file-name-concat org-directory "refile.org")
       +org-capture-notes-file org-default-notes-file
       org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach")
