@@ -245,10 +245,8 @@
       org-default-notes-file (file-name-concat org-directory "refile.org")
       +org-capture-notes-file org-default-notes-file
       org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach")
-      org-id-locations-file (file-name-concat org-directory ".orgids")
 ;;;;;; roam files
-      org-roam-directory org-directory
-      org-roam-db-location (file-name-concat org-roam-directory "db/org-roam.db"))
+      org-roam-directory org-directory)
 
 ;;;; paths for references
 (let* ((bib-paths (list (file-name-concat tetov/nextcloud-apps-dir "zotero.bib")))
