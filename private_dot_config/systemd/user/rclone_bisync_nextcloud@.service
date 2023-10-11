@@ -1,0 +1,14 @@
+[Unit]
+Description=Rclone BiSync between local and Nextcloud
+Documentation=man:rclone(1)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStartPre=-/usr/bin/mkdir -p %h/Nextcloud/Apps/%i
+ExecStart=                                 \
+  /usr/bin/rclone bisync                   \
+    --config=%h/.config/rclone/rclone.conf \
+    --stats-log-level NOTICE               \
+    %h/Nextcloud/Apps/%i nextcloud:Apps/%i

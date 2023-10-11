@@ -1,0 +1,10 @@
+[Unit]
+Description=Run rclone-bisync on boot and every 10 minutes for Nextcloud/Apps/%i
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=10min
+Unit=rclone_bisync_nextcloud@.service
+
+[Install]
+WantedBy=timers.target
