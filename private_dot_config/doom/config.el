@@ -69,6 +69,7 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+(require 'cl-lib) ; For cl-letf
 
 ;; own files
 (require 'tetov)
@@ -596,6 +597,31 @@ ${body}
         org-hugo-goldmark t
         org-hugo-section "posts"
         org-hugo-base-dir "~/src/web/xyz/content/posts"))
+
+(setq tetov/site-src (expand-file-name "~/src/tetov.se"))
+
+(defun tetov/org-pandoc-export-to-site (&optional a s v b e)
+  "Export current buffer to site in GFM format"
+  (interactive)
+  (unless (boundp 'tetov/site-src)
+    (error "You must define the variable 'tetov/site-src' in your configuration."))
+  (let ((relative-path (org-entry-get nil "EXPORT_SITE_SRC_PATH" t)))
+    (unless relative-path
+      (error "You must specify EXPORT_SITE_SRC_PATH in the Org file."))
+    ;; Preserve user's current buffer and location.
+    (save-excursion
+      ;; Retrieve the export path from the Org file.
+      ;; Calculate the absolute desired path.
+      (let ((desired-path (file-name-concat tetov/site-src relative-path)))
+
+        ;; Export the Org content to a new GFM buffer.
+        (org-pandoc-export 'gfm a s v b e t)
+
+        ;; Save the buffer content to the desired file location.
+        (write-file desired-path)
+        ;; Display a message about the file write.
+        (message "Exported to %s" desired-path)))))
+
 ;;;;; org-roam-ui
 (use-package! websocket
   :after org-roam)
@@ -895,3 +921,8 @@ https://tetov.se/"))
 
 ;; taskjuggler
 (require 'taskjuggler-mode)
+
+;; rust
+(use-package rustic
+  :custom
+  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
