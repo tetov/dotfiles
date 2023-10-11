@@ -251,7 +251,7 @@
       org-roam-directory org-directory)
 
 ;;;; paths for references
-(let* ((bib-paths (list (file-name-concat tetov/nextcloud-apps-dir "zotero.bib")))
+(let* ((bib-paths (list (file-name-concat org-directory "zotero.bib")))
        (bib-notes-subdir "refs")
        (bib-note-path (file-name-concat org-directory bib-notes-subdir "/"))
        (bib-note-paths (list bib-note-path)))
