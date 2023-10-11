@@ -6,9 +6,9 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStartPre=-/usr/bin/mkdir -p %h/Nextcloud/%i
+ExecStartPre=-/usr/bin/mkdir -p %h/Nextcloud/%I
 ExecStart=                                 \
   /usr/bin/rclone bisync                   \
     --config=%h/.config/rclone/rclone.conf \
     --stats-log-level NOTICE               \
-    %h/Nextcloud/%i nextcloud:%i
+    %h/Nextcloud/%I nextcloud:%I
