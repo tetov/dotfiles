@@ -246,6 +246,7 @@
       org-default-notes-file (file-name-concat org-directory "refile.org")
       +org-capture-notes-file org-default-notes-file
       org-attach-id-dir (file-name-concat tetov/nextcloud-apps-dir "org-attach")
+      org-id-locations-file (file-name-concat doom-cache-dir ".org-id-locations")
 ;;;;;; roam files
       org-roam-directory org-directory)
 
