@@ -1,0 +1,12 @@
+#!{{ .usrPrefix }}/bin/env doomscript
+
+(require 'doom-start) ;; https://github.com/doomemacs/doomemacs/issues/6494#issuecomment-1162483877
+(nerd-icons-install-fonts t)
+;; compiles emacsql-sqlite if necessary
+(org-roam-db-sync)
+(pdf-tools-install t)
+(lsp-update-servers)
+
+;; Local Variables:
+;; mode: emacs-lisp
+;; End:

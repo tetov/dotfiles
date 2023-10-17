@@ -7,9 +7,4 @@
 {{- end }}
 
 {{ expandenv "$XDG_CONFIG_HOME/emacs/bin/doom" }} sync
-
-emacsclient --eval '(nerd-icons-install-fonts t)' --alternate-editor=
-# compiles emacsql-sqlite if necessary
-emacsclient --eval '(org-roam-db-sync)' --alternate-editor=
-emacsclient --eval '(pdf-tools-install t)' --alternate-editor=
 {{- end }}
