@@ -599,6 +599,37 @@ ${body}
         org-hugo-section "posts"
         org-hugo-base-dir "~/src/web/xyz/content/posts"))
 
+(defun consult-clock-in (&optional match scope resolve)
+  "Clock into an Org heading."
+  (interactive (list nil nil current-prefix-arg))
+  (require 'org-clock)
+  (org-clock-load)
+  (save-window-excursion
+    (consult-org-heading
+     match
+     (or scope
+         (thread-last org-clock-history
+                      (mapcar 'marker-buffer)
+                      (mapcar 'buffer-file-name)
+                      (delete-dups)
+                      (delq nil))
+         (user-error "No recent clocked tasks")))
+    (org-clock-in nil (when resolve
+                        (org-resolve-clocks)
+                        (org-read-date t t)))))
+
+(after! consult
+(consult-customize consult-clock-in
+                   :prompt "Clock in: "
+                   :preview-key "M-."
+                   :group
+                   (lambda (cand transform)
+                     (let* ((marker (get-text-property 0 'consult--candidate cand))
+                            (name (if (member marker org-clock-history)
+                                      "*Recent*"
+                                    (buffer-name (marker-buffer marker)))))
+                       (if transform (substring cand (1+ (length name))) name)))))
+
 (setq tetov/site-src (expand-file-name "~/src/tetov.se"))
 
 (defun tetov/org-pandoc-export-to-site (&optional a s v b e)
