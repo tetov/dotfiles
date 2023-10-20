@@ -1,0 +1,3 @@
+#!{{ .usrPrefix }}/bin/sh
+termux-wake-lock
+. $PREFIX/etc/profile
