@@ -525,7 +525,7 @@ From https://emacs.stackexchange.com/a/26120/40644"
 #+title: ${title}
 ")
 
-           :immediate-finish t
+           :immediate-finish nil
            :unnarrowed t)
           ("b" "bibliography reference" plain "%?"
            :target (file+head "refs/${citar-citekey}.org"
@@ -564,7 +564,11 @@ From https://emacs.stackexchange.com/a/26120/40644"
 #+title: ${title}
 ${body}
 ")
-                                          :unnarrowed t)))
+                                          :unnarrowed t)
+
+                                         (("d" "default" entry "* %?"
+                                           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n")))
+                                         ))
 
 ;;;; references
   (setq citar-org-roam-capture-template-key "b")
@@ -619,16 +623,16 @@ ${body}
                         (org-read-date t t)))))
 
 (after! consult
-(consult-customize consult-clock-in
-                   :prompt "Clock in: "
-                   :preview-key "M-."
-                   :group
-                   (lambda (cand transform)
-                     (let* ((marker (get-text-property 0 'consult--candidate cand))
-                            (name (if (member marker org-clock-history)
-                                      "*Recent*"
-                                    (buffer-name (marker-buffer marker)))))
-                       (if transform (substring cand (1+ (length name))) name)))))
+  (consult-customize consult-clock-in
+                     :prompt "Clock in: "
+                     :preview-key "M-."
+                     :group
+                     (lambda (cand transform)
+                       (let* ((marker (get-text-property 0 'consult--candidate cand))
+                              (name (if (member marker org-clock-history)
+                                        "*Recent*"
+                                      (buffer-name (marker-buffer marker)))))
+                         (if transform (substring cand (1+ (length name))) name)))))
 
 (setq tetov/site-src (expand-file-name "~/src/tetov.se"))
 
