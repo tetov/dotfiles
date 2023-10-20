@@ -42,6 +42,11 @@ fi
 
 {{- end }}
 
+# Some setup for termux share
+
+pip install requests beautifulsoup4
+xdg-mime default org-protocol.desktop x-scheme-handler/org-protocol
+
 termux-wake-unlock
 
 {{- end }}

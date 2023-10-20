@@ -1,0 +1,57 @@
+#!{{ .usrPrefix }}/bin/env python3
+import sys
+import urllib.parse
+import webbrowser
+import requests
+from bs4 import BeautifulSoup
+
+
+def get_title_from_url(url: str) -> str:
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup.title.string.strip() if soup.title else "Untitled"
+    except:
+        return "Untitled"
+
+
+def extract_title_body(content: str) -> [str, str]:
+    lines = content.split("\n", maxsplit=1)
+    if len(lines) == 2:
+        return lines[0], lines[2].strip()
+    else:
+        return lines[0], ""
+
+
+def construct_org_protocol_url(content):
+
+    params = {}
+
+    if content.startswith("http://") or content.startswith("https://"):
+        params["template_key"] = "l"
+        params["title"] = get_title_from_url(content)
+        params["ref"] = content
+        params["body"] = "Captured from phone."
+    else:
+        title, body = extract_title_body(content)
+
+        params["template_key"] = "d"
+        params["title"] = title
+        params["body"] = body
+
+    encoded_params = urllib.parse.urlencode(params)
+    org_url = f"org-protocol://roam-ref?{encoded_params}"
+    return org_url
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        raise Exception("No content recieved from share action.")
+    shared_content = sys.argv[1]
+    org_protocol_url = construct_org_protocol_url(shared_content)
+    webbrowser.open(org_protocol_url)
+
+# Local Variables:
+# mode: python
+# End:
