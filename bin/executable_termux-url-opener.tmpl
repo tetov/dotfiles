@@ -51,7 +51,7 @@ if __name__ == "__main__":
         raise Exception("No content recieved from share action.")
     shared_content = sys.argv[1]
     org_protocol_url = construct_org_protocol_url(shared_content)
-    subprocess.run(["emacsclient", "-U", org_protocol_url])
+    subprocess.run(["emacsclient", org_protocol_url])
 
 # Local Variables:
 # mode: python
