@@ -1,6 +1,6 @@
 #!{{ .usrPrefix }}/bin/env python3
 import sys
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 import subprocess
 
 import requests
@@ -8,21 +8,25 @@ from bs4 import BeautifulSoup
 
 
 def get_title_from_url(url: str) -> str:
+    def strip_url(url: str) -> str:
+        parsed = urlparse(url)
+        return parsed.hostname + parsed.path
+
     try:
-        response = requests.get(url, timeout=5)
+        response = requests.get(url)
         response.raise_for_status()
-        soup = BeautifulSoup(response.text, "html.parser")
-        return soup.title.string.strip() if soup.title else "Untitled"
-    except:
-        return "Untitled"
+    except requests.HTTPError:
+        return strip_url(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    return soup.title.string.strip() if soup.title else strip_url(url)
 
 
-def extract_title_body(content: str) -> [str, str]:
+def extract_title_body(content: str) -> tuple[str, str | None]:
     lines = content.split("\n", maxsplit=1)
     if len(lines) == 2:
         return lines[0], lines[2].strip()
     else:
-        return lines[0], ""
+        return lines[0], None
 
 
 def construct_org_protocol_url(content):
@@ -33,13 +37,14 @@ def construct_org_protocol_url(content):
         params["template_key"] = "l"
         params["title"] = get_title_from_url(content)
         params["ref"] = content
-        params["body"] = "Captured from phone."
+        params["body"] = "#+FROM: phone"
     else:
         title, body = extract_title_body(content)
 
         params["template_key"] = "d"
         params["title"] = title
-        params["body"] = body
+        if body:
+            params["body"] = body
 
     encoded_params = urlencode(params)
     org_url = f"org-protocol://roam-ref?{encoded_params}"
@@ -48,7 +53,7 @@ def construct_org_protocol_url(content):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        raise Exception("No content recieved from share action.")
+        raise RuntimeError("No content recieved from share action.")
     shared_content = sys.argv[1]
     org_protocol_url = construct_org_protocol_url(shared_content)
     subprocess.run(["emacsclient", org_protocol_url])
