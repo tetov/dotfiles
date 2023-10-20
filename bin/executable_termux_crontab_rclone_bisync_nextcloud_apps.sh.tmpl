@@ -1,0 +1,30 @@
+#!{{ .usrPrefix }}/bin/sh
+set -x
+
+termux-wake-lock
+
+{{- $RCLONE := print .usrPrefix "/bin/rclone" }}
+{{- $remoteTopDir := "nextcloud:Apps/" }}
+{{- $localTopDir := expandenv "$HOME/Nextcloud/Apps/" }}
+
+{{- $dirs := dict
+     "org" "org"
+     "org-attach" "org-attach"
+     "editor-backups" "editor-backups"  }}
+
+{{- range $local, $remote := $dirs }}
+
+{{- $localPath := print $localTopDir $local }}
+{{- $remotePath := print $remoteTopDir $remote }}
+
+# Ensure the local folder exists
+mkdir -p {{ $localPath }}
+
+# Create the remote directory if it doesn't exist
+{{ $RCLONE }} mkdir {{ $remotePath }}
+
+{{ $RCLONE }} bisync {{ $remotePath }} {{ $localPath }}
+
+{{- end }}
+
+termux-wake-unlock
