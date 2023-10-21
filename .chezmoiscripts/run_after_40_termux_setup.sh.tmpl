@@ -1,12 +1,12 @@
 {{ if eq .chezmoi.os "android" -}}
 #!{{ .usrPrefix }}/bin/sh
-set -x
+set -e
 
 # Ensure the device doesn't sleep during the setup
 termux-wake-lock
 
 # Ensure that cronie and rclone are installed.
-pkg install termux-services cronie rclone
+pkg install termux-{api,services} cronie rclone
 
 sv-enable crond
 sv-enable emacsd
