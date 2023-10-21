@@ -3,7 +3,7 @@ set -e
 
 termux-wake-lock
 
-{{- $RCLONE := print .usrPrefix "/bin/rclone" }}
+{{- $RCLONE := print .usrPrefix "/bin/rclone" " --log-level ERROR"}}
 {{- $remoteTopDir := "nextcloud:Apps/" }}
 {{- $localTopDir := expandenv "$HOME/Nextcloud/Apps/" }}
 
@@ -23,7 +23,7 @@ mkdir -p {{ $localPath }}
 # Create the remote directory if it doesn't exist
 {{ $RCLONE }} mkdir {{ $remotePath }}
 
-{{ $RCLONE }} -q --log-level ERROR bisync {{ $remotePath }} {{ $localPath }}
+{{ $RCLONE }} bisync {{ $remotePath }} {{ $localPath }}
 
 {{- end }}
 
