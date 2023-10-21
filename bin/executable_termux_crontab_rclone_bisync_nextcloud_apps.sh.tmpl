@@ -23,7 +23,7 @@ mkdir -p {{ $localPath }}
 # Create the remote directory if it doesn't exist
 {{ $RCLONE }} mkdir {{ $remotePath }}
 
-{{ $RCLONE }} bisync {{ $remotePath }} {{ $localPath }}
+{{ $RCLONE }} -q bisync {{ $remotePath }} {{ $localPath }}
 
 {{- end }}
 
