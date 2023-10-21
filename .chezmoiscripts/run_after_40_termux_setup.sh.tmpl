@@ -6,7 +6,7 @@ set -e
 termux-wake-lock
 
 # Ensure that cronie and rclone are installed.
-pkg install termux-api termux-services cronie rclone
+pkg install termux-api termux-services cronie rclone moreutils
 
 sv-enable crond
 sv-enable emacsd
@@ -15,7 +15,7 @@ sv-enable emacsd
 
 {{- $cronInterval := "*/10 * * * *" }}
 {{/* pipe stderr to where stdout is piped, but then pipe stdout to /dev/null*/}}
-{{- $cronJob := print $scriptFile " 2>&1 >/dev/null | termux-notification -t crontab" }}
+{{- $cronJob := print $scriptFile " 2>&1 >/dev/null | ifne termux-notification -t crontab" }}
 
 # pipe current crontab (minus any lines referencing the script file) + crontab line into crontab
 echo $(crontab -l | grep -v '{{ $scriptFile }}') '{{ print "\n" $cronInterval " " $cronJob }}' | crontab -
