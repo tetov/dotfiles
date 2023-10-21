@@ -4,7 +4,7 @@ set -e
 termux-wake-lock
 
 RCLONE_ARGS="--log-level ERROR"
-test -n "$1" && test "$1" = '--resync' && RCLONE_ARGS="$1"
+test -n "$1" && test "$1" = '--resync' && RCLONE_ARGS="$1 --progress --verbose"
 
 {{- $RCLONE := print .usrPrefix "/bin/rclone" " --log-level ERROR"}}
 {{- $remoteTopDir := "nextcloud:Apps/" }}
