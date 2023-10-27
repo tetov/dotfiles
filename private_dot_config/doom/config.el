@@ -557,18 +557,22 @@ From https://emacs.stackexchange.com/a/26120/40644"
            :immediate-finish t
            :unnarrowed t)))
 
-  (setq org-roam-capture-ref-templates `(("l" "org roam protocol ref" plain "%?"
-                                          :target (file+head "refs/${slug}.org" ":PROPERTIES:
+  (setq org-roam-capture-ref-templates
+        `(("l" "org roam protocol ref" plain "%?"
+           :target (file+head "refs/${slug}.org" ":PROPERTIES:
 :CATEGORY: reference
 :END:
 #+title: ${title}
 ${body}
 ")
-                                          :unnarrowed t)
 
-                                         (("d" "default" entry "* %?"
-                                           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n")))
-                                         ))
+           :immediate-finish t)
+
+          (("d" "default" entry "* %?"
+            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n")))
+
+          :immediate-finish t
+          ))
 
 ;;;; references
   (setq citar-org-roam-capture-template-key "b")
