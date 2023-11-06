@@ -16,6 +16,7 @@
 (package! org-ql)
 (package! org-ref)
 (package! org-wc)
+(package! org-analyzer)
 ;; (package! pocket-reader)
 ;; (package! scad-mode)
 ;; (package! vdirel)
