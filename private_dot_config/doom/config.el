@@ -607,6 +607,66 @@ ${body}
         org-hugo-section "posts"
         org-hugo-base-dir "~/src/web/xyz/content/posts"))
 
+(defun tetov/clock-sum-for-tag ()
+  "Print the total clocked time for a specific tag between START-DATE and END-DATE."
+  (interactive)
+  (let* ((start-date (org-read-date nil nil nil "Start date: "))
+         (end-date (org-read-date nil nil nil "End date: "))
+         (tag (completing-read "Tag: " (org-global-tags-completion-table)))
+         (org-agenda-tag-filter-preset (list (concat "+" tag)))
+         (org-agenda-files (org-agenda-files))
+         (org-agenda-buffer-tmp-name (generate-new-buffer-name "*Org Clock Sum Temp*"))
+         clocktable)
+
+    ;; Clear any other active agenda filters
+    (org-agenda-filter-apply nil 'tag)
+
+    ;; Generate clocktable in a temporary buffer
+    (with-temp-buffer
+      (rename-buffer org-agenda-buffer-tmp-name t)
+      (org-create-dblock
+       (list :type "clocktable"
+             :name "clocktable"
+             :scope (org-agenda-files) ; Use the list of Org agenda files
+             :maxlevel 6
+             :tstart start-date
+             :tend end-date
+             :tags tag))
+      (org-dblock-update)
+      (write-file "/tmp/debug-clocktable.org")
+      (setq clocktable (buffer-string)))
+    ;; Extract total time from clocktable
+    (if (and (string-match "^.+\\(|\\s-+\\([0-9]+:[0-9]+\\)\\s-+|\\)$" clocktable)
+             (match-string 2 clocktable))
+        (let ((total-time (match-string 2 clocktable)))
+          (message "Total clocked time for tag '%s' between %s and %s: %s"
+                   tag start-date end-date total-time))
+      (message "Failed to extract total time. Maybe there are no clocked entries for this tag and time range?"))))
+
+(defun tetov/org-agenda-clock-tag ()
+  "Display an Org agenda clock report for entries with a specified tag.
+The report covers entries clocked between START-DATE and END-DATE."
+  (interactive)
+
+  ;; Set the agenda time span to the desired range
+  (let* ((start-date (org-read-date nil nil nil "Start date: "))
+         (end-date (org-read-date nil nil nil "End date: "))
+         (tag (completing-read "Tag: " (org-global-tags-completion-table)))
+         (org-agenda-start-day start-date)
+         (org-agenda-span (1+ (- (time-to-days (org-time-string-to-time end-date))
+                                 (time-to-days (org-time-string-to-time start-date)))))
+         (org-agenda-show-log 'clockcheck)
+         (org-agenda-clockreport-mode t)
+         (org-agenda-log-mode-items '(clock))
+         (org-agenda-tag-filter-preset (list (concat "+" tag))))
+
+    ;; Open the agenda view
+    (if (get-buffer org-agenda-buffer-name)
+        (progn
+          (switch-to-buffer org-agenda-buffer-name)
+          (org-agenda-redo))
+      (org-agenda nil "a"))))
+
 (defun consult-clock-in (&optional match scope resolve)
   "Clock into an Org heading."
   (interactive (list nil nil current-prefix-arg))
