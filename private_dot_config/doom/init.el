@@ -91,7 +91,7 @@
        direnv
        docker
        editorconfig        ; let someone else argue about tabs vs spaces
-       ein               ; tame Jupyter notebooks with emacs
+       ein                 ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
@@ -140,7 +140,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        json                ; At least it ain't XML
-       ;;(java +lsp)         ; the poster child for carpal tunnel syndrome
+       ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
        javascript          ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -150,11 +150,12 @@
        ;;lua               ; one-based indices? one-based indices
        markdown            ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
-       ;;nix               ; I hereby declare "nix geht mehr!"
+       nix                 ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org
         +contacts
         +crypt
+        +dragndrop
         +hugo
         +journal
         +noter
