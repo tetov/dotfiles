@@ -14,9 +14,9 @@ fileext = ".vcf"
 
 [storage fastmail_card_remote]
 type = "carddav"
-url = "https://carddav.fastmail.com/"
-username = "tetov@fastmail.com"
-password = "{{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_pim.value }}"
+url = "{{ (onepasswordDetailFields "fpbrakjsxo5ry3ubnhayv7xzka").URLs.caldav}}"
+username = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
+password = "{{ (onepasswordItemFields "rjivcvjea74e77g5cgfey57kzy").fastmail_dav_password.value }}"
 
 [pair fastmail_cal_pair]
 a = "fastmail_cal_local"
@@ -30,7 +30,7 @@ fileext = ".vcf"
 
 [storage fastmail_cal_remote]
 type = "caldav"
-url = "https://caldav.fastmail.com/"
-username = "tetov@fastmail.com"
-password = "{{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_pim.value }}"
+url = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").caldav_url.value }}"
+username = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
+password = "{{ (onepasswordItemFields "rjivcvjea74e77g5cgfey57kzy").fastmail_dav_password.value }}"
 {{- end }}
