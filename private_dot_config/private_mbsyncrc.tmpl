@@ -9,7 +9,8 @@ IMAPAccount fastmail
 Host imap.fastmail.com
 Port 993
 User tetov@fastmail.com
-Pass {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_mail.value }}
+User {{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}
+Pass {{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").mail_password.value }}
 SSLVersion TLSv1.2
 SSLType IMAPS
 AuthMechs LOGIN
@@ -37,8 +38,8 @@ Expunge Both
 IMAPAccount lth
 Host imap.lu.se
 Port 993
-User an6802jo@lu.se
-Pass {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).lth_mail.value }}
+User {{ (onepasswordDetailsFields "tu2huwrewbdlbcqf6ldwjiojoi").username.value }}
+Pass {{ (onepasswordDetailsFields "tu2huwrewbdlbcqf6ldwjiojoi").password.value }}
 SSLType IMAPS
 PipelineDepth 1
 
