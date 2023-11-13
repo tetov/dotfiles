@@ -8,8 +8,8 @@ port 465
 from anton@tetov.se
 tls_starttls off
 auth on
-user tetov@fastmail.com
-password {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).fastmail_mail.value }}
+user {{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}
+password {{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").mail_password.value }}
 
 account lth
 host smtps.lu.se
@@ -17,8 +17,8 @@ port 587
 from anton_tetov.johansson@abm.lth.se
 auth on
 tls_starttls on
-user an6802jo@lu.se
-password {{ (expandenv "$XDG_CONFIG_HOME/chezmoi/secrets.json" | include | mustFromJson).lth_mail.value }}
+user {{ (onepasswordDetailsFields "tu2huwrewbdlbcqf6ldwjiojoi").username.value }}
+password {{ (onepasswordDetailsFields "tu2huwrewbdlbcqf6ldwjiojoi").password.value }}
 
 account default : fastmail
 {{- end }}
