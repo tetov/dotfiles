@@ -1,0 +1,12 @@
+#!{{ .usrPrefix }}/bin/sh
+
+{{- range (expandenv "$XDG_CONFIG_HOME/vdirsyncer/*" | glob) }}
+# {{ . }}: {{ include . | sha256sum }}
+{{- end}}
+
+
+if command -v vdirsyncer >/dev/null; then
+    echo "Running vdirsyncer discover"
+    vdirsyncer discover fastmail_cal_pair
+    vdirsyncer discover fastmail_card_pair
+fi
