@@ -14,7 +14,7 @@ fileext = ".vcf"
 
 [storage fastmail_card_remote]
 type = "carddav"
-url = "{{ (onepasswordDetailFields "fpbrakjsxo5ry3ubnhayv7xzka").URLs.caldav}}"
+url = "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").URLs.caldav}}"
 username = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
 password = "{{ (onepasswordItemFields "rjivcvjea74e77g5cgfey57kzy").fastmail_dav_password.value }}"
 
@@ -31,6 +31,6 @@ fileext = ".vcf"
 [storage fastmail_cal_remote]
 type = "caldav"
 url = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").caldav_url.value }}"
-username = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
+username = "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
 password = "{{ (onepasswordItemFields "rjivcvjea74e77g5cgfey57kzy").fastmail_dav_password.value }}"
 {{- end }}
