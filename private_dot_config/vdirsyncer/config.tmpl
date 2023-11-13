@@ -14,8 +14,8 @@ fileext = ".vcf"
 
 [storage fastmail_card_remote]
 type = "carddav"
-url = "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").URLs.caldav}}"
-username = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
+url = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").carddav_url.value }}"
+username = "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
 password = "{{ (onepasswordItemFields "rjivcvjea74e77g5cgfey57kzy").fastmail_dav_password.value }}"
 
 [pair fastmail_cal_pair]

@@ -2,8 +2,8 @@
 encryption = "age"
 
 [age]
-    identity = "{{ $xdgConfigHome }}/chezmoi/key.txt"
-    recipient = "age1j04sg30dcpwrsg42gns2pl2992lu3dzs3enyy9h6xxecm30hxd6q4nkrjv"
+    identity = "{{ (onepasswordItemFields "4w5t35r2k5zgz3bcptichq3cxu").private_key.value }}"
+    recipient = "{{ (onepasswordItemFields "4w5t35r2k5zgz3bcptichq3cxu").public_key.value }}"
 
 [git]
     autoCommit = true
