@@ -1,4 +1,4 @@
-{{ $setupMailCalendarContacts := promptBoolOnce . "setupMailCalendarContacts" "Setup mail, calendar and contacts" false }}
+{{ $setupMailCalendarContacts := promptBool "Setup mail, calendar and contacts" false }}
 encryption = "age"
 
 {{ if lookPath "op" -}}
