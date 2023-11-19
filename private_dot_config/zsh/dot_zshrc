@@ -22,10 +22,14 @@ setopt AUTO_NAME_DIRS # alias directories by assigning them to a variable
 
 # makes these available as ~src, ~org and so on.
 hash -d src=~/src
-hash -d org=~/src/org
+hash -d org=~/Nextcloud/Apps/org
 hash -d cmc=$XDG_DATA_HOME/chezmoi
 hash -d mio=/home/mio
-hash -d conf=~/.config
+hash -d conf=$XDG_CONF_HOME
+hash -d data=$XDG_DATA_HOME
+hash -d nextcloud=~/Nextcloud
+hash -d winhome=/mnt/c/Users/$(id -un)
+hash -d wnextcloud=/mnt/c/Users/$(id -un)/Nextcloud
 
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
