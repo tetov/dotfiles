@@ -1,9 +1,11 @@
-{{ $xdgConfigHome := default (expandenv "$HOME/.config") (env "XDG_CONFIG_HOME" ) -}}
+{{ $setupMailCalendarContacts := promptBoolOnce . "setupMailCalendarContacts" "Setup mail, calendar and contacts" false }}
 encryption = "age"
 
+{{ if lookPath "op" -}}
 [age]
     identity = "{{ (onepasswordItemFields "4w5t35r2k5zgz3bcptichq3cxu").private_key.value }}"
     recipient = "{{ (onepasswordItemFields "4w5t35r2k5zgz3bcptichq3cxu").public_key.value }}"
+{{- end }}
 
 [git]
     autoCommit = true
@@ -11,4 +13,4 @@ encryption = "age"
 
 [data]
     usrPrefix = "{{ default "/usr" (env "PREFIX") }}" # special on termux
-    setupMailCalendarContacts = false
+    setupMailCalendarContacts = {{ $setupMailCalendarContacts }}

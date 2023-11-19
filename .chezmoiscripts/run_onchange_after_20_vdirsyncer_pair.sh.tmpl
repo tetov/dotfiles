@@ -1,10 +1,11 @@
-{{ if .setupMailCalendarContacts }}
+{{ if and .setupMailCalendarContacts (expandenv "$XDG_DATA_HOME/vdirsyncer/") -}}
 #!{{ .usrPrefix }}/bin/sh
 
 {{- range (expandenv "$XDG_CONFIG_HOME/vdirsyncer/*" | glob) }}
 # {{ . }}: {{ include . | sha256sum }}
 {{- end}}
-
+# Contact dir exists: {{ expandenv "$XDG_DATA_HOME/vdirsyncer/contacts/Default" | stat | empty}}
+# Calendar dir exists: {{ expandenv "$XDG_DATA_HOME/vdirsyncer/calendars/Default" | stat | empty}}
 
 if command -v vdirsyncer >/dev/null; then
     echo "Running vdirsyncer discover"
