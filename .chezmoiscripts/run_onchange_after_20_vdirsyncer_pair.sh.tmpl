@@ -1,3 +1,4 @@
+{{ if .setupMailCalendarContacts }}
 #!{{ .usrPrefix }}/bin/sh
 
 {{- range (expandenv "$XDG_CONFIG_HOME/vdirsyncer/*" | glob) }}
@@ -10,3 +11,4 @@ if command -v vdirsyncer >/dev/null; then
     vdirsyncer discover fastmail_cal_pair
     vdirsyncer discover fastmail_card_pair
 fi
+{{ end }}
