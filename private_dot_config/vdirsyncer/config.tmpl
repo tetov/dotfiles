@@ -1,11 +1,10 @@
-{{ if .setupMailCalendarContacts -}}
 [general]
 status_path = "~/.local/state/vdirsyncer/"
 
 [pair fastmail_card_pair]
 a = "fastmail_card_local"
 b = "fastmail_card_remote"
-collections = ["from a", "from b"]
+collections = ["from b"]
 
 [storage fastmail_card_local]
 type = "filesystem"
@@ -17,6 +16,7 @@ type = "carddav"
 url = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").carddav_url.value }}"
 username = "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
 password = "{{ (onepasswordItemFields "rjivcvjea74e77g5cgfey57kzy").fastmail_dav_password.value }}"
+readonly = true
 
 [pair fastmail_cal_pair]
 a = "fastmail_cal_local"
@@ -33,4 +33,4 @@ type = "caldav"
 url = "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").caldav_url.value }}"
 username = "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}"
 password = "{{ (onepasswordItemFields "rjivcvjea74e77g5cgfey57kzy").fastmail_dav_password.value }}"
-{{- end }}
+readonly = true
