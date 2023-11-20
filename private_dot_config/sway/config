@@ -70,8 +70,7 @@ input * {
     xkb_layout "se,se"
     xkb_variant "us,"
     xkb_numlock enabled
-    xkb_options ctrl:nocaps
-    xkb_options grp:win_space_toggle
+    xkb_options caps:escape,grp:win_space_toggle
 }
 
 input type:touchpad {
