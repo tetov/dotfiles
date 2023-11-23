@@ -935,7 +935,7 @@ https://tetov.se/"))
 
 (setq excorporate-configuration '("an6802jo@lu.se" . "https://webmail.lu.se/EWS/Exchange.asmx")
       excorporate-calendar-show-day-function #'exco-calfw-show-day)
-(use-package! excorporate)
+;;(use-package! excorporate)
 
 ;;;; term
 ;; https://github.com/syl20bnr/spacemacs/issues/2345#issuecomment-240634646
