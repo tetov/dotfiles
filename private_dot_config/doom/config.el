@@ -1020,9 +1020,9 @@ https://tetov.se/"))
   (require 'org-pocket))
 
 ;; taskjuggler
-(require 'taskjuggler-mode)
+;;(require 'taskjuggler-mode)
 
 ;; rust
-(use-package rustic
-  :custom
-  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+;;(use-package rustic
+;;  :custom
+;;  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
