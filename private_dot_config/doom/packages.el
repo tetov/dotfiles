@@ -10,11 +10,11 @@
 ;; (package! burly)
 (package! chezmoi)
 (package! elfeed-protocol)
-(package! excorporate)
+;;(package! excorporate)
 (package! org-mime)
 (package! org-clock-convenience)
 (package! org-ql)
-(package! org-ref)
+;;(package! org-ref)
 (package! org-wc)
 (package! org-analyzer)
 ;; (package! pocket-reader)
@@ -35,5 +35,5 @@
 (package! tetov
   :recipe (:host sourcehut :repo "tetov/tetov.el" :files ("src/*.el")))
 
-(package! taskjuggler-mode
-  :recipe (:host github :repo "tanju/taskjuggler-mode" :branch "main"))
+;;(package! taskjuggler-mode
+ ;; :recipe (:host github :repo "tanju/taskjuggler-mode" :branch "main"))
