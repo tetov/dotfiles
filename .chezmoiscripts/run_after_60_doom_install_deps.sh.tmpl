@@ -7,17 +7,6 @@
 (pdf-tools-install t)
 (lsp-update-servers)
 (vterm-module-compile)
-(lsp-install-server nil "ansible-language-server")
-(lsp-ensure-server "ansible-language-server")
-(lsp-ensure-server "yamlls")
-
-(defun tetov/install-lsp-servers (server-list)
-  "Install multiple LSP servers from SERVER-LIST."
-  (let ((noninteractive t))
-    (dolist (server-id server-list)
-      (lsp-install-server t server-id))))
-
-(tetov/install-lsp-servers '(ansible-language-server yamlls))
 
 ;; Local Variables:
 ;; mode: emacs-lisp
