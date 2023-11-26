@@ -596,8 +596,7 @@ ${body}
 ;;;;;; ox-pandoc
         org-pandoc-options '((standalone . t))
         org-pandoc-options-for-latex-pdf `((standalone . t)
-                                           (pdf-engine . "xelatex")
-                                           ()))
+                                           (pdf-engine . "xelatex"))
 ;;;;;; ox-hugo
         org-hugo-export-with-toc nil
         org-hugo-date-format "%Y-%m-%d"
