@@ -37,3 +37,6 @@
 
 ;;(package! taskjuggler-mode
  ;; :recipe (:host github :repo "tanju/taskjuggler-mode" :branch "main"))
+
+(package! 1password
+  :recipe (:host github :repo "kamushadenes/1password.el" :files ("*.el")))
