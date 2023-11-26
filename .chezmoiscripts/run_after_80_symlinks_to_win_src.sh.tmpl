@@ -1,0 +1,10 @@
+{{ if (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
+#!{{ .usrPrefix }}/bin/sh
+
+set -x
+
+ln -s /mnt/c/Users/tetov/src/* ./
+
+exit 0
+
+{{ end }}

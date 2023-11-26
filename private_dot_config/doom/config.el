@@ -74,8 +74,6 @@
 ;; own files
 (require 'tetov)
 
-(setq tetov/secrets-file (expand-file-name "$XDG_CONFIG_HOME/chezmoi/secrets.json"))
-
 ;;;; directory setup
 (setq tetov/win-user-dir "/mnt/c/Users/tetov")
 (setq tetov/nextcloud-dir (expand-file-name "~/Nextcloud"))
@@ -92,7 +90,7 @@
    (list
     (cfw:org-create-source "Purple") ; org-agenda source
     (cfw:cal-create-source "Orange") ; diary source
-    (cfw:ical-create-source "fastmail" (tetov-get-json-value tetov/keys-file "fastmail_calendar_url" "value") "IndianRed"))))
+    (cfw:ical-create-source "fastmail" (1password-get-field "fpbrakjsxo5ry3ubnhayv7xzka" "main_calendar_ics") "IndianRed"))))
 
 ;;;; prefix map (SPC-\)
 (map! :leader (:prefix-map ("l" . "lmine")
@@ -598,7 +596,8 @@ ${body}
 ;;;;;; ox-pandoc
         org-pandoc-options '((standalone . t))
         org-pandoc-options-for-latex-pdf `((standalone . t)
-                                           (pdf-engine . "xelatex"))
+                                           (pdf-engine . "xelatex")
+                                           ()))
 ;;;;;; ox-hugo
         org-hugo-export-with-toc nil
         org-hugo-date-format "%Y-%m-%d"
@@ -1026,3 +1025,11 @@ https://tetov.se/"))
 ;;(use-package rustic
 ;;  :custom
 ;;  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+
+;; 1pasword
+(use-package! 1password
+  :demand t
+  :init
+  (message "Enabling 1password ...")
+  :config
+  (1password-auth-source-enable))
