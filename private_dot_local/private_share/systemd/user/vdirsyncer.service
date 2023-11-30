@@ -7,3 +7,5 @@ StartLimitBurst=2
 ExecStart=/usr/bin/vdirsyncer sync
 RuntimeMaxSec=3m
 Restart=on-failure
+
+# https://github.com/pimutils/vdirsyncer/blob/4237ff863c5026a8b8ab7c1e4c574227f91b39a1/contrib/vdirsyncer.service

@@ -8,7 +8,6 @@ SyncState *
 IMAPAccount fastmail
 Host imap.fastmail.com
 Port 993
-User tetov@fastmail.com
 User {{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}
 Pass {{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").mail_password.value }}
 SSLVersion TLSv1.2
@@ -23,16 +22,16 @@ Path ~/.local/share/mail/fastmail/
 Inbox ~/.local/share/mail/fastmail/INBOX
 SubFolders Verbatim
 
-Channel fastmail-often
+Channel fastmail-inbox
 Far :fastmail-remote:
 Near :fastmail-local:
-Patterns INBOX Drafts
+Patterns INBOX
 Expunge Both
 
-Channel fastmail-less-often
+Channel fastmail-rest
 Far :fastmail-remote:
 Near :fastmail-local:
-Patterns * !INBOX !Drafts
+Patterns * !INBOX
 Expunge Both
 
 IMAPAccount lth
@@ -51,37 +50,37 @@ Path ~/.local/share/mail/lth/
 Inbox ~/.local/share/mail/lth/INBOX
 SubFolders Verbatim
 
-Channel lth-often
+Channel lth-inbox
 Far :lth-remote:
 Near :lth-local:
-Patterns INBOX Drafts
+Patterns INBOX
 Expunge Both
 
-Channel lth-less-often
+Channel lth-rest
 Far :lth-remote:
 Near :lth-local:
-Patterns Archive "Sent Items" "Junk Email" "dirs/*" "Deleted Items"
+Patterns * !INBOX
 Expunge Both
 
 Group all
-Channel fastmail-often
-Channel fastmail-less-often
-Channel lth-often
-Channel lth-less-often
+Channel fastmail-inbox
+Channel fastmail-rest
+Channel lth-inbox
+Channel lth-rest
 
 Group fastmail-all
-Channel fastmail-often
-Channel fastmail-less-often
+Channel fastmail-inbox
+Channel fastmail-rest
 
 Group lth-all
-Channel lth-often
-Channel lth-less-often
+Channel lth-inbox
+Channel lth-rest
 
-Group often
-Channel lth-often
-Channel fastmail-often
+Group inbox
+Channel lth-inbox
+Channel fastmail-inbox
 
-Group less-often
-Channel lth-less-often
-Channel fastmail-less-often
+Group rest
+Channel lth-rest
+Channel fastmail-rest
 {{- end }}

@@ -1,0 +1,13 @@
+[Unit]
+Description=Execute scripts on IMAP mailbox changes (new/deleted/updated messages) using IDLE, golang version.
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/goimapnotify -conf %h/.config/imapnotify/%i.conf
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=default.target
+
+# https://gitlab.com/shackra/goimapnotify/-/blob/655f44404d439f862c49ce8ccfa4f4e7f1baea5f/goimapnotify@.service

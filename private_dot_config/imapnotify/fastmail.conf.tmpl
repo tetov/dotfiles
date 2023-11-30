@@ -1,0 +1,14 @@
+{
+  "host": "imap.fastmail.com",
+  "port": 993,
+  "tls": true,
+  "username": "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}",
+  "password": "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").mail_password.value }}",
+  "xoauth2": false,
+  "onNewMail": "{{ expandenv "$HOME/bin/sync-emails.sh fastmail-inbox" }}",
+  "onNewMailPost": "",
+  "wait": 20,
+  "boxes": [
+    "INBOX"
+  ]
+}

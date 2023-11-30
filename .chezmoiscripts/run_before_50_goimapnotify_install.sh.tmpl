@@ -1,0 +1,11 @@
+{{ if .setupMailCalendarContacts -}}
+#!{{ .usrPrefix }}/bin/sh
+
+set -x
+
+GOPATH=${GOPATH:-~/go}
+
+go install gitlab.com/shackra/goimapnotify@latest
+mv $GOPATH/bin/goimapnotify ~/.local/bin/
+
+{{ end }}
