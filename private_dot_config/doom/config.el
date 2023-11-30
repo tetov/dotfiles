@@ -257,7 +257,8 @@
          bibtex-completion-notes-path bib-note-path
          citar-bibliography bib-paths
          citar-notes-paths bib-note-paths
-         citar-org-roam-subdir bib-notes-subdir))
+         citar-org-roam-subdir bib-notes-subdir
+         org-cite-global-bibliography bib-paths))
 
 (after! org
   (require 'org-element)
@@ -498,34 +499,35 @@ From https://emacs.stackexchange.com/a/26120/40644"
 ;;;;;; roam capture templates
   (setq org-roam-capture-templates
         `(("n" "note" plain "%?"
+           :immediate-finish t
+           :unnarrowed t
            :target (file+head "notes/${slug}.org"
                               ":PROPERTIES:
 :CATEGORY: note
 :END:
-#+title: ${title}
-")
-           :immediate-finish t
-           :unnarrowed t)
+#+title: ${title}"))
+
           ("p" "person" plain  "%?"
+           :immediate-finish t
+           :unnarrowed t
            :target (file+head "persons/${slug}.org"
                               ":PROPERTIES:
 :CATEGORY: person
 :END:
-#+title: ${title}
-")
-           :immediate-finish t
-           :unnarrowed t)
+#+title: ${title}"))
+
           ("w" "writing" plain  "%?"
+           :immediate-finish nil
+           :unnarrowed t
            :target (file+head "writing/${slug}.org"
                               ":PROPERTIES:
 :CATEGORY: writing
 :END:
-#+title: ${title}
-")
+#+title: ${title}"))
 
-           :immediate-finish nil
-           :unnarrowed t)
           ("b" "bibliography reference" plain "%?"
+           :unnarrowed t
+           :immediate-finish t
            :target (file+head "refs/${citar-citekey}.org"
                               ":PROPERTIES:
 :CATEGORY: reference
@@ -533,44 +535,27 @@ From https://emacs.stackexchange.com/a/26120/40644"
 :authors: ${citar-author}
 :date: ${citar-date}
 :END:
-#+title: ${citar-author} :: ${citar-title}")
-           :unnarrowed t
-           :immediate-finish t)
-          ("r" "org roam ref" plain "%?"
-           :target (file+head "refs/${slug}.org" ":PROPERTIES:
-:CATEGORY: reference
-:END:
-#+title: ${title}
-")
-           :immediate-finish
-           :unnarrowed t)
+#+title: ${citar-author} :: ${citar-title}"))
+
           ("o" "rp notes (Eat Flay Prowl)" plain "%?"
-           :target (file+head "rp/${slug}.org"
-                              ":PROPERTIES:
+           :immediate-finish t
+           :unnarrowed t)
+          :target (file+head "rp/${slug}.org"
+                             ":PROPERTIES:
 :CATEGORY: rp
 :END:
 #+FILETAGS: :dnd5e:eat-flay-prowl:privat:
-#+title: ${title}
-")
-           :immediate-finish t
-           :unnarrowed t)))
+#+title: ${title}")))
 
   (setq org-roam-capture-ref-templates
-        `(("l" "org roam protocol ref" plain "%?"
+        `(("r" "org roam protocol ref" plain "%?"
+           :immediate-finish t
            :target (file+head "refs/${slug}.org" ":PROPERTIES:
 :CATEGORY: reference
 :END:
 #+title: ${title}
 ${body}
-")
-
-           :immediate-finish t)
-
-          (("d" "default" entry "* %?"
-            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n")))
-
-          :immediate-finish t
-          ))
+"))))
 
 ;;;; references
   (setq citar-org-roam-capture-template-key "b")
@@ -594,9 +579,10 @@ ${body}
         '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f")
 
 ;;;;;; ox-pandoc
-        org-pandoc-options '((standalone . t))
+        org-pandoc-options `((standalone . t) (data-dir .  ,(substitute-in-file-name "$XDG_DATA_HOME/pandoc")))
         org-pandoc-options-for-latex-pdf `((standalone . t)
-                                           (pdf-engine . "xelatex"))
+                                           (pdf-engine . "xelatex")
+                                           (data-dir . ,(substitute-in-file-name "$XDG_DATA_HOME/pandoc")))
 ;;;;;; ox-hugo
         org-hugo-export-with-toc nil
         org-hugo-date-format "%Y-%m-%d"
