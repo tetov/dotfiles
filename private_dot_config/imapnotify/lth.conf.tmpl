@@ -5,7 +5,7 @@
   "username": "{{ (onepasswordDetailsFields "tu2huwrewbdlbcqf6ldwjiojoi").username.value }}",
   "password": "{{ (onepasswordDetailsFields "tu2huwrewbdlbcqf6ldwjiojoi").password.value }}",
   "xoauth2": false,
-  "onNewMail": "{{ expandenv "$HOME/bin/sync-emails.sh" }} lth-inbox",
+  "onNewMail": "{{ expandenv "$HOME/bin/sync_emails.sh" }} lth-inbox",
   "boxes": [
     "INBOX"
   ]
