@@ -5,7 +5,7 @@
   "username": "{{ (onepasswordDetailsFields "fpbrakjsxo5ry3ubnhayv7xzka").username.value }}",
   "password": "{{ (onepasswordItemFields "fpbrakjsxo5ry3ubnhayv7xzka").mail_password.value }}",
   "xoauth2": false,
-  "onNewMail": "{{ expandenv "$HOME/bin/sync-emails.sh fastmail-inbox" }}",
+  "onNewMail": "{{ expandenv "$HOME/bin/sync_emails.sh fastmail-inbox" }}",
   "onNewMailPost": "",
   "wait": 20,
   "boxes": [
