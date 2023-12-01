@@ -3,7 +3,7 @@ Description=Timer to sync mailboxes in group %i
 
 [Timer]
 OnBootSec=3m
-OnUnitInactiveSec=5m
+OnUnitInactiveSec=15m
 OnCalendar=*-*-* *:20/3:00
 Persistent=true
 
